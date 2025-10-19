@@ -3,6 +3,9 @@
 #pragma once
 
 #include "DataCenter.h"
+#include "UE5_Solitaire/UI/UInitSceneWidget.h"
+#include "EngineUtils.h"
+#include "Camera/CameraActor.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
