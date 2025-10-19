@@ -48,7 +48,19 @@ void AGameLauncher::BeginPlay()
         UInitSceneWidget* mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GEngine->GameViewport->GetWorld(), BPClass);
         mUInitSceneWidget->Show();
     }
-    
+
+    //创建热更Actor
+    FTransform SpawnTM(FRotator::ZeroRotator, FVector(0, 0, 100));
+    AInitSceneHotUpdateMgr* NewActor = GetWorld()->SpawnActor<AInitSceneHotUpdateMgr>(AInitSceneHotUpdateMgr::StaticClass(), SpawnTM);
+    if (NewActor)
+    {
+        NewActor->SetActorLabel(TEXT("AInitSceneHotUpdateMgr"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("NewActor IS NULL"));
+    }
+
     //记载一些数据
     DataCenter::GetInstance()->Init();
 }

@@ -2,31 +2,21 @@
 
 #pragma once
 
-#include "Engine/AssetManager.h"
-#include "Engine/StreamableManager.h"
-
+#include "InitSceneHotUpdateComponent.h"
 #include "CoreMinimal.h"
-#include "Components/ActorComponent.h"
+#include "GameFramework/Actor.h"
 #include "InitSceneHotUpdateMgr.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API UInitSceneHotUpdateMgr : public UActorComponent
+class UE5_SOLITAIRE_API AInitSceneHotUpdateMgr : public AActor
 {
 	GENERATED_BODY()
-	
-public:
-	UInitSceneHotUpdateMgr();
 
+public:
+	AInitSceneHotUpdateMgr();
 protected:
 	virtual void BeginPlay() override;
-
-public:	
-	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
-
-	void LoadUIAsset(FPrimaryAssetId AssetId);
-	void OnAssetLoadCompleted();
-	void RequestLoadAllRes();
-
-	// 头文件里存句柄
-	TSharedPtr<FStreamableHandle> mFStreamableHandle;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+public:
+	virtual void Tick(float DeltaTime) override;
 };
