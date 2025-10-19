@@ -5,10 +5,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
 #include "GameData.h"
+#include "UE5_Solitaire/SimpleFramework/TSingleton.h"
 
 typedef void (*InitFinishFunc)();
 
-class DataCenter
+class DataCenter:public TSingleton<DataCenter>
 {
 public:
 	const FString DATA_SLOT_NAME = "SolitaireData";
