@@ -16,7 +16,19 @@ class UE5_SOLITAIRE_API UInitSceneWidget : public UUserWidget
 
 protected:
 	virtual void NativeConstruct() override;
-	
+	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+
 public:
+
+public:
+	void Init();
+	void Show();
+	void Hide();
+	void Refresh();
 	void SetLoadProgress(float Percent01);
+
+public:
+	bool bInit;
+	UUserWidget* mUIRoot;
+	UProgressBar* mUProgressBar;
 };

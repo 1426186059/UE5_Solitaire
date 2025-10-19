@@ -46,14 +46,9 @@ void AGameLauncher::BeginPlay()
     if (BPClass != NULL)
     {
         UInitSceneWidget* mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GEngine->GameViewport->GetWorld(), BPClass);
-        if(mUInitSceneWidget != NULL)
-        {
-            mUInitSceneWidget->AddToViewport(0);          // 第 0 层，保证最底
-            //mUInitSceneWidget->SetLoadProgress(0.f);      // 初始 0
-        }
+        mUInitSceneWidget->Show();
     }
-
-
+    
     //记载一些数据
     DataCenter::GetInstance()->Init();
 }

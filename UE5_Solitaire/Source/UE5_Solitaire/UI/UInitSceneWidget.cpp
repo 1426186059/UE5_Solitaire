@@ -6,13 +6,49 @@
 void UInitSceneWidget::NativeConstruct()
 {
     Super::NativeConstruct();
+}
 
-    // 方式 1：通过名称查找（推荐，无需 BindWidget）
-    UProgressBar* ProgressBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("ProgressBar")));
-    if (!ProgressBar)
+void UInitSceneWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+    Super::NativeTick(MyGeometry, InDeltaTime);
+}
+
+void UInitSceneWidget::Init()
+{
+    if (this->bInit) return;
+    this->bInit = true;
+
+    mUIRoot = Cast<UUserWidget>(GetWidgetFromName(TEXT("InitSceneUIBP")));
+    if (!mUIRoot)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Failed to find ProgressBar by name 'ProgressBar'!"));
+        UE_LOG(LogTemp, Error, TEXT("mUIRoot == null"));
     }
+
+    mUProgressBar = Cast<UProgressBar>(mUIRoot->GetWidgetFromName(TEXT("ProgressBar_139")));
+    if (!mUProgressBar)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to find ProgressBar by name 'ProgressBar'!"));
+    }
+
+    this->AddToViewport(0);
+}
+
+void UInitSceneWidget::Show()
+{
+    this->Init();
+    this->SetVisibility(ESlateVisibility::Visible);
+
+    mUProgressBar->SetPercent(0);
+}
+
+void UInitSceneWidget::Hide()
+{
+    this->SetVisibility(ESlateVisibility::Collapsed);
+}
+
+void UInitSceneWidget::Refresh()
+{
+    mUProgressBar->SetPercent(0);
 }
 
 void UInitSceneWidget::SetLoadProgress(float Percent01)

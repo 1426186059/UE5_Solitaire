@@ -6,29 +6,27 @@
 #include "Engine/StreamableManager.h"
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "InitSceneMgr.generated.h"
+#include "Components/ActorComponent.h"
+#include "InitSceneHotUpdateMgr.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API AInitSceneMgr : public AActor
+class UE5_SOLITAIRE_API UInitSceneHotUpdateMgr : public UActorComponent
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AInitSceneMgr();
+public:
+	UInitSceneHotUpdateMgr();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
+
 	void LoadUIAsset(FPrimaryAssetId AssetId);
 	void OnAssetLoadCompleted();
 	void RequestLoadAllRes();
 
 	// 头文件里存句柄
-	TSharedPtr<FStreamableHandle> LoadingHandle;
+	TSharedPtr<FStreamableHandle> mFStreamableHandle;
 };
