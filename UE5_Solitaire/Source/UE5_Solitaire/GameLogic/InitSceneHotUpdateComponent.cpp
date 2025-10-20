@@ -14,9 +14,8 @@ UInitSceneHotUpdateComponent::UInitSceneHotUpdateComponent()
 void UInitSceneHotUpdateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-    this->LoadUIAsset(FPrimaryAssetId(FName("UIAsset"), FName("DA_MainHUD")));
+    this->RequestAllPrimaryAsset();
     this->RequestLoadAllRes();
-
     UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent BeginPlay"));
 }
 
@@ -58,12 +57,18 @@ void UInitSceneHotUpdateComponent::RequestLoadAllRes()
 }
 
 // ¿ªÊ¼¼ÓÔØ
-void UInitSceneHotUpdateComponent::LoadUIAsset(FPrimaryAssetId AssetId)
+void UInitSceneHotUpdateComponent::RequestAllPrimaryAsset()
 {
+    TArray<FPrimaryAssetId> AssetsToLoad;
+    AssetsToLoad.Add(FPrimaryAssetId(FName("UIAsset"), FName("DA_MainHUD")));
+    
+    TArray<FName> LoadBundles;
+    LoadBundles.Add(FName("UI"));
+
     UAssetManager& AM = UAssetManager::Get();
-    mFStreamableHandle = AM.LoadPrimaryAsset(
-        AssetId, 
-        TArray<FName>{TEXT("UI")},
+    mFStreamableHandle = AM.LoadPrimaryAssets(
+        AssetsToLoad,
+        LoadBundles,
         FStreamableDelegate::CreateUObject(this, &UInitSceneHotUpdateComponent::OnAssetLoadCompleted),
         FStreamableManager::DefaultAsyncLoadPriority
     );

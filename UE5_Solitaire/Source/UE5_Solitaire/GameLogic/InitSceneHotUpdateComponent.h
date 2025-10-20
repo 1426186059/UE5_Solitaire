@@ -23,7 +23,7 @@ protected:
 public:	
 	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
-	void LoadUIAsset(FPrimaryAssetId AssetId);
+	void RequestAllPrimaryAsset();
 	void OnAssetLoadCompleted();
 	void RequestLoadAllRes();
 

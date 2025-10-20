@@ -23,22 +23,22 @@ void AGameLauncher::BeginPlay()
     }
 
     //指定照相机
-    APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
-    if (PC != NULL)
-    {
-        for (TActorIterator<ACameraActor> It(GetWorld()); It; ++It)
-        {
-            ACameraActor* Actor = *It;
-            if (Actor->GetActorLabel() == "CameraActor")
-            {
-                PC->SetViewTarget(Actor);
-            }
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Log, TEXT("PC IS NULL"));
-    }
+    //APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
+    //if (PC != NULL)
+    //{
+    //    for (TActorIterator<ACameraActor> It(GetWorld()); It; ++It)
+    //    {
+    //        ACameraActor* Actor = *It;
+    //        //if (Actor->GetActorLabel() == "CameraActor")
+    //        {
+    //            PC->SetViewTarget(Actor);
+    //        }
+    //    }
+    //}
+    //else
+    //{
+    //    UE_LOG(LogTemp, Log, TEXT("PC IS NULL"));
+    //}
 
     //加载InitScene界面
     TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
@@ -54,7 +54,9 @@ void AGameLauncher::BeginPlay()
     AInitSceneHotUpdateMgr* NewActor = GetWorld()->SpawnActor<AInitSceneHotUpdateMgr>(AInitSceneHotUpdateMgr::StaticClass(), SpawnTM);
     if (NewActor)
     {
+#if UE_EDITOR
         NewActor->SetActorLabel(TEXT("AInitSceneHotUpdateMgr"));
+#endif
     }
     else
     {
