@@ -13,5 +13,17 @@ UCLASS()
 class UE5_SOLITAIRE_API UMainUIWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void NativeConstruct() override;
+	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+
+public:
+	void Init();
+	void Show();
+	void Hide();
+	void Refresh();
+
+private:
+	bool bInit;
+	UUserWidget* mUIRoot;
 };

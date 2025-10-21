@@ -5,8 +5,9 @@
 #include "EngineUtils.h"
 #include "Camera/CameraActor.h"
 #include "UE5_Solitaire/UI/UInitSceneWidget.h"
+#include "UE5_Solitaire/UI/MainUIWidget.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
-//#include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
+#include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"

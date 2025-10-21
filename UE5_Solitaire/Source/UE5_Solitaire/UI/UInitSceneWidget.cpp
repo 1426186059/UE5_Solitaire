@@ -87,7 +87,7 @@ void UInitSceneWidget::UpdateFinishFunc()
         this->RemoveFromParent();
     }
 
-    //KKEventMgr::GetSingleton()->Broadcast(GameConst::EventId_InitSceneDoFinishOK, nullptr);
+    KKEventMgr::GetSingleton()->Broadcast(GameConst::EventId_InitSceneDoFinishOK, nullptr);
 }
 
 void UInitSceneWidget::UpdateErrorFunc()

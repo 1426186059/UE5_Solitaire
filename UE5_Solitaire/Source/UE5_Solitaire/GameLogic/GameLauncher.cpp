@@ -40,7 +40,7 @@ void AGameLauncher::BeginPlay()
     //    UE_LOG(LogTemp, Log, TEXT("PC IS NULL"));
     //}
 
-    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK).AddUObject(this, &AGameLauncher::GoToLobby);
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK).AddUObject(this, &AGameLauncher::GoToLobby);
     
     //º”‘ÿInitSceneΩÁ√Ê
     TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
@@ -67,11 +67,11 @@ void AGameLauncher::Tick(float DeltaTime)
 
 void AGameLauncher::GoToLobby(void* param)
 {
-    TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
-        TEXT("/Game/ResourceABs/InitScene/BPS/IntSceneCWBP.IntSceneCWBP_C"));
+    TSubclassOf<UMainUIWidget> BPClass = LoadClass<UMainUIWidget>(nullptr,
+        TEXT("/Game/ResourceABs/MainScene/BPS/MainUICWBP.MainUICWBP_C"));
     if (BPClass != NULL)
     {
-        UInitSceneWidget* mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GEngine->GameViewport->GetWorld(), BPClass);
+        UMainUIWidget* mUInitSceneWidget = CreateWidget<UMainUIWidget>(GEngine->GameViewport->GetWorld(), BPClass);
         mUInitSceneWidget->Show();
     }
 }
