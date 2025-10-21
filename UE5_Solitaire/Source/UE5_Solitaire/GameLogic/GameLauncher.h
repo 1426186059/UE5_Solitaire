@@ -19,14 +19,14 @@ class UE5_SOLITAIRE_API AGameLauncher : public AKKActorSingleton
 public:	
 	AGameLauncher();
 
+	//static AGameLauncher* GetSingleton(bool bCreate = true)
+	//{
+	//	return AKKActorSingleton::GetSingleton<AGameLauncher>(bCreate);
+	//}
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 public:	
 	virtual void Tick(float DeltaTime) override;
-
-	static AGameLauncher* GetInstance(bool bCreate = true)
-	{
-		return AKKActorSingleton::GetInstance<AGameLauncher>(bCreate);
-	}
 };
