@@ -40,6 +40,8 @@ void AGameLauncher::BeginPlay()
     //    UE_LOG(LogTemp, Log, TEXT("PC IS NULL"));
     //}
 
+    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK).AddUObject(this, &AGameLauncher::GoToLobby);
+    
     //º”‘ÿInitSceneΩÁ√Ê
     TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
         TEXT("/Game/ResourceABs/InitScene/BPS/IntSceneCWBP.IntSceneCWBP_C"));
@@ -63,7 +65,7 @@ void AGameLauncher::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AGameLauncher::GoToLobby()
+void AGameLauncher::GoToLobby(void* param)
 {
     TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
         TEXT("/Game/ResourceABs/InitScene/BPS/IntSceneCWBP.IntSceneCWBP_C"));

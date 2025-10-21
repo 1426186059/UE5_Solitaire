@@ -6,6 +6,7 @@
 #include "Camera/CameraActor.h"
 #include "UE5_Solitaire/UI/UInitSceneWidget.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
+//#include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -29,5 +30,5 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 public:	
 	virtual void Tick(float DeltaTime) override;
-	void GoToLobby();
+	void GoToLobby(void* param);
 };

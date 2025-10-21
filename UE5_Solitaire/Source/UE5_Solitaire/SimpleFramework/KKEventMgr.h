@@ -6,20 +6,36 @@
 #include "Delegates/MulticastDelegateBase.h"
 #include "KKSingleton.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(mTMulticastDelegate, void*);
+DECLARE_MULTICAST_DELEGATE_OneParam(Action_voidPtr_Delegate, void*);
 
 class UE5_SOLITAIRE_API KKEventMgr : public KKSingleton<KKEventMgr>
 {
 public:
-    FDelegateHandle AddListener(int nEventId, mTMulticastDelegate::FDelegate Func)
+    Action_voidPtr_Delegate GetEventList(int nEventId)
     {
         if (!mEventDic.Contains(nEventId))
         {
-            mTMulticastDelegate mEventList;
+            Action_voidPtr_Delegate mEventList;
             mEventDic.Add(nEventId, mEventList);
         }
-        return mEventDic[nEventId].Add(Func);
+        return mEventDic[nEventId];
     }
+
+    //FDelegateHandle AddListener(int nEventId, void* Func)
+    //{
+    //    Action_voidPtr_Delegate mList = GetEventList(nEventId)
+    //    return mList.AddRaw(nullptr, Func);
+    //}
+
+    //FDelegateHandle AddListener(int nEventId, Action_voidPtr_Delegate::FDelegate Func)
+    //{
+    //    if (!mEventDic.Contains(nEventId))
+    //    {
+    //        Action_voidPtr_Delegate mEventList;
+    //        mEventDic.Add(nEventId, mEventList);
+    //    }
+    //    return mEventDic[nEventId].AddRaw(Func);
+    //}
     
     void RemoveListener(int nEventId, FDelegateHandle Func)
     {
@@ -40,9 +56,7 @@ public:
 private:
     KKEventMgr() = default;
     ~KKEventMgr() = default;
-
     KKEventMgr(const KKEventMgr&) = delete;
     KKEventMgr& operator=(const KKEventMgr&) = delete;
-
-    TMap<int32, mTMulticastDelegate> mEventDic;
+    TMap<int32, Action_voidPtr_Delegate> mEventDic;
 };

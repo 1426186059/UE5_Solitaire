@@ -4,6 +4,8 @@
 
 #include "Components/ProgressBar.h"
 #include "UE5_Solitaire/GameLogic/InitSceneHotUpdateMgr.h"
+#include "UE5_Solitaire/GameLogic/GameConst.h"
+//#include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"

@@ -16,7 +16,7 @@ void UInitSceneHotUpdateComponent::BeginPlay()
 	Super::BeginPlay();
     //this->RequestAllPrimaryAsset();
     this->RequestLoadAllRes();
-    UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent BeginPlay"));
+    //UE_LOG(LogTemp, Log, TEXT("UInitSceneWidget Show 111111"));
 }
 
 // 每帧 Tick（或定时器）里轮询

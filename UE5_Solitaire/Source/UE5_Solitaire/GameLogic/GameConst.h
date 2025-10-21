@@ -16,5 +16,5 @@ private:
     GameConst(const GameConst&) = delete;
     GameConst& operator=(const GameConst&) = delete;
 public:
-    const int EventId_InitSceneHotUpdate_1 = 0;
+    static const int EventId_InitSceneDoFinishOK = 1;
 };

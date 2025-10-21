@@ -43,7 +43,7 @@ void UInitSceneWidget::Show()
     //创建热更Actor
     mInitSceneHotUpdateMgr = GetWorld()->SpawnActor<AInitSceneHotUpdateMgr>(AInitSceneHotUpdateMgr::StaticClass());
     mInitSceneHotUpdateMgr->UpdateProgressFunc.AddUObject(this, &UInitSceneWidget::UpdateProgressFunc);
-    mInitSceneHotUpdateMgr->UpdateFinishFunc.AddUObject(this, &UInitSceneWidget::UpdateFinishFunc);
+    mInitSceneHotUpdateMgr->UpdateFinishFunc.AddUObject(this, &UInitSceneWidget::UpdateFinishFunc);;
     mInitSceneHotUpdateMgr->UpdateErrorFunc.AddUObject(this, &UInitSceneWidget::UpdateErrorFunc);
     mInitSceneHotUpdateMgr->UpdateVersionFunc.AddUObject(this, &UInitSceneWidget::UpdateVersionFunc);
 }
@@ -52,10 +52,13 @@ void UInitSceneWidget::Hide()
 {
     this->SetVisibility(ESlateVisibility::Collapsed);
 
-    mInitSceneHotUpdateMgr->UpdateProgressFunc.RemoveAll(this);
-    mInitSceneHotUpdateMgr->UpdateFinishFunc.RemoveAll(this);
-    mInitSceneHotUpdateMgr->UpdateErrorFunc.RemoveAll(this);
-    mInitSceneHotUpdateMgr->UpdateVersionFunc.RemoveAll(this);
+    if (mInitSceneHotUpdateMgr != nullptr)
+    {
+        mInitSceneHotUpdateMgr->UpdateProgressFunc.RemoveAll(this);
+        mInitSceneHotUpdateMgr->UpdateFinishFunc.RemoveAll(this);
+        mInitSceneHotUpdateMgr->UpdateErrorFunc.RemoveAll(this);
+        mInitSceneHotUpdateMgr->UpdateVersionFunc.RemoveAll(this);
+    }
 }
 
 void UInitSceneWidget::Refresh()
@@ -70,24 +73,29 @@ void UInitSceneWidget::UpdateProgressFunc(float Percent01)
 
 void UInitSceneWidget::UpdateFinishFunc()
 {
-    UE_LOG(LogTemp, Error, TEXT("Update Finish Func"));
+    UE_LOG(LogTemp, Log, TEXT("UInitSceneWidget UpdateFinishFunc"));
 
-    mInitSceneHotUpdateMgr->Destroy();
-    mInitSceneHotUpdateMgr = nullptr;
+    if (mInitSceneHotUpdateMgr)
+    {
+        mInitSceneHotUpdateMgr->Destroy(); //避免在委托回调中修改委托本身（推荐） ，导致的崩溃
+        mInitSceneHotUpdateMgr = nullptr;
+    }
 
     this->Hide();
     if (this->IsInViewport())
     {
         this->RemoveFromParent();
     }
+
+    //KKEventMgr::GetSingleton()->Broadcast(GameConst::EventId_InitSceneDoFinishOK, nullptr);
 }
 
 void UInitSceneWidget::UpdateErrorFunc()
 {
-    UE_LOG(LogTemp, Error, TEXT("UpdateErrorFunc"));
+    UE_LOG(LogTemp, Error, TEXT("UInitSceneWidget UpdateErrorFunc"));
 }
 
 void UInitSceneWidget::UpdateVersionFunc()
 {
-    UE_LOG(LogTemp, Error, TEXT("Update Version Func"));
+    UE_LOG(LogTemp, Error, TEXT("UInitSceneWidget UpdateVersionFunc"));
 }
