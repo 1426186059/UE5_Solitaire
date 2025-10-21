@@ -4,7 +4,10 @@
 
 #include "CoreMinimal.h"
 
-static class UE5_SOLITAIRE_API GameConst
+DECLARE_MULTICAST_DELEGATE(ActionDelegate);
+DECLARE_MULTICAST_DELEGATE_OneParam(Action_Float_Delegate, float);
+
+class UE5_SOLITAIRE_API GameConst
 {
 private:
     // 1. 私有构造函数：禁止实例化
@@ -13,5 +16,5 @@ private:
     GameConst(const GameConst&) = delete;
     GameConst& operator=(const GameConst&) = delete;
 public:
-    static int EventId_InitSceneHotUpdate_1 = 0;
+    const int EventId_InitSceneHotUpdate_1 = 0;
 };

@@ -3,6 +3,8 @@
 #pragma once
 
 #include "InitSceneHotUpdateComponent.h"
+#include "GameConst.h"
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "InitSceneHotUpdateMgr.generated.h"
@@ -22,4 +24,10 @@ public:
 
 public:
 	UInitSceneHotUpdateComponent* mUInitSceneHotUpdateMgr;
+
+	float fPercent;
+	Action_Float_Delegate UpdateProgressFunc;
+	ActionDelegate UpdateFinishFunc;
+	ActionDelegate UpdateErrorFunc;
+	ActionDelegate UpdateVersionFunc;
 };

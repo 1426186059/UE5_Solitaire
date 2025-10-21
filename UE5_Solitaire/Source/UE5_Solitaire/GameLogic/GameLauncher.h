@@ -4,9 +4,11 @@
 
 #include "DataCenter.h"
 #include "InitSceneHotUpdateMgr.h"
-#include "UE5_Solitaire/UI/UInitSceneWidget.h"
 #include "EngineUtils.h"
 #include "Camera/CameraActor.h"
+
+#include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
+#include "UE5_Solitaire/UI/UInitSceneWidget.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"

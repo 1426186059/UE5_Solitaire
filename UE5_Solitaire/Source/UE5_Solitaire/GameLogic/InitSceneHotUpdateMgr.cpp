@@ -4,15 +4,24 @@ AInitSceneHotUpdateMgr::AInitSceneHotUpdateMgr()
 {
     PrimaryActorTick.bCanEverTick = true;
 
-    //挂载 热更组件, 如果不在这里挂载，会导致游戏崩溃
-    mUInitSceneHotUpdateMgr = CreateDefaultSubobject<UInitSceneHotUpdateComponent>(TEXT("InitSceneHotUpdateComponent"));
-    this->AddInstanceComponent(mUInitSceneHotUpdateMgr);
+    //增加组件方法1
+    //mUInitSceneHotUpdateMgr = CreateDefaultSubobject<UInitSceneHotUpdateComponent>(TEXT("InitSceneHotUpdateComponent"));
+    //this->AddInstanceComponent(mUInitSceneHotUpdateMgr);
 }
 
 void AInitSceneHotUpdateMgr::BeginPlay()
 {
     Super::BeginPlay();
+
+    //增加组件方法2
+    mUInitSceneHotUpdateMgr = NewObject<UInitSceneHotUpdateComponent>(this, TEXT("InitSceneHotUpdateComponent2"));
     mUInitSceneHotUpdateMgr->RegisterComponent();
+    this->AddInstanceComponent(mUInitSceneHotUpdateMgr);
+
+    mUInitSceneHotUpdateMgr->UpdateProgressFunc = this->UpdateProgressFunc;
+    mUInitSceneHotUpdateMgr->UpdateFinishFunc = this->UpdateFinishFunc;
+    mUInitSceneHotUpdateMgr->UpdateErrorFunc = this->UpdateErrorFunc;
+    mUInitSceneHotUpdateMgr->UpdateVersionFunc = this->UpdateVersionFunc;
 }
 
 void AInitSceneHotUpdateMgr::EndPlay(const EEndPlayReason::Type EndPlayReason)

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/ProgressBar.h"
+#include "UE5_Solitaire/GameLogic/InitSceneHotUpdateMgr.h"
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"

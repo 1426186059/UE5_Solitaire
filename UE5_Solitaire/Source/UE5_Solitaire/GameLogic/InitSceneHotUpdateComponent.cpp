@@ -23,12 +23,22 @@ void UInitSceneHotUpdateComponent::BeginPlay()
 void UInitSceneHotUpdateComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-    if (mFStreamableHandle.IsValid() && mFStreamableHandle->IsLoadingInProgress())
+    if (mFStreamableHandle.IsValid())
     {
-        float Percent = mFStreamableHandle->GetProgress();          // 0.0~1.0
-        int32 Loaded, Requested;
-        mFStreamableHandle->GetLoadedCount(Loaded, Requested);    // 已加载 / 总量
-        UE_LOG(LogTemp, Log, TEXT("UI AInitSceneMgr Loading: %.0f (%d / %d)"), Percent * 100.f, Loaded, Requested);
+        if (mFStreamableHandle->IsLoadingInProgress())
+        {
+            float Percent = mFStreamableHandle->GetProgress();          // 0.0~1.0
+            int32 Loaded, Requested;
+            mFStreamableHandle->GetLoadedCount(Loaded, Requested);    // 已加载 / 总量
+            this->UpdateProgressFunc.Broadcast(Percent);
+
+            UE_LOG(LogTemp, Log, TEXT("UI AInitSceneMgr Loading: %.0f (%d / %d)"), Percent, Loaded, Requested);
+        }
+
+        if (mFStreamableHandle->HasLoadCompleted())
+        {
+
+        }
     }
 }
 
@@ -47,13 +57,12 @@ void UInitSceneHotUpdateComponent::RequestLoadAllRes()
     AssetsToLoad.Add(FSoftObjectPath(TEXT("/Game/ResourceABs/MainScene/AtlasGroup/card9")));
 
     FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
-    TSharedPtr<FStreamableHandle> Handle = Streamable.RequestAsyncLoad(
+    mFStreamableHandle = Streamable.RequestAsyncLoad(
         AssetsToLoad,
         FStreamableDelegate::CreateUObject(this, &UInitSceneHotUpdateComponent::OnAssetLoadCompleted)
     );
 }
 
-// 开始加载
 void UInitSceneHotUpdateComponent::RequestAllPrimaryAsset()
 {
     TArray<FPrimaryAssetId> AssetsToLoad;
@@ -73,7 +82,8 @@ void UInitSceneHotUpdateComponent::RequestAllPrimaryAsset()
 
 void UInitSceneHotUpdateComponent::OnAssetLoadCompleted()
 {
-    UE_LOG(LogTemp, Log, TEXT("所有UI资产加载完成"));
+    UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Finish Ok"));
     mFStreamableHandle.Reset();
+    this->UpdateFinishFunc.Broadcast();
 }
 

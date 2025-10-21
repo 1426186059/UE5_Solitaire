@@ -49,22 +49,8 @@ void AGameLauncher::BeginPlay()
         mUInitSceneWidget->Show();
     }
 
-    //创建热更Actor
-    FTransform SpawnTM(FRotator::ZeroRotator, FVector(0, 0, 100));
-    AInitSceneHotUpdateMgr* NewActor = GetWorld()->SpawnActor<AInitSceneHotUpdateMgr>(AInitSceneHotUpdateMgr::StaticClass(), SpawnTM);
-    if (NewActor)
-    {
-#if UE_EDITOR
-        NewActor->SetActorLabel(TEXT("AInitSceneHotUpdateMgr"));
-#endif
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("NewActor IS NULL"));
-    }
-
     //记载一些数据
-    DataCenter::GetInstance()->Init();
+    DataCenter::GetSingleton()->Init();
 }
 
 void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)

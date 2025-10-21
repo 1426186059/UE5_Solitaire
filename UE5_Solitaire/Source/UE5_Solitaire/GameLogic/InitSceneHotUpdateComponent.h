@@ -4,6 +4,7 @@
 
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
+#include "GameConst.h"
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
@@ -29,4 +30,9 @@ public:
 
 
 	TSharedPtr<FStreamableHandle> mFStreamableHandle;
+	float fPercent;
+	Action_Float_Delegate UpdateProgressFunc;
+	ActionDelegate UpdateFinishFunc;
+	ActionDelegate UpdateErrorFunc;
+	ActionDelegate UpdateVersionFunc;
 };

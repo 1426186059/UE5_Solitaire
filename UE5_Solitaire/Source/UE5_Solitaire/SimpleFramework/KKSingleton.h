@@ -6,7 +6,7 @@ template<typename T>
 class KKSingleton
 {
 public:
-    static T* GetInstance()
+    static T* GetSingleton()
     {
         static T Instance;
         return &Instance;
