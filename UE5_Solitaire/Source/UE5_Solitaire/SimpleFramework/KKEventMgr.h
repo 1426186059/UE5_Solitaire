@@ -10,15 +10,16 @@ DECLARE_MULTICAST_DELEGATE_OneParam(Action_voidPtr_Delegate, void*);
 
 class UE5_SOLITAIRE_API KKEventMgr : public KKSingleton<KKEventMgr>
 {
+    friend class KKSingleton<KKEventMgr>;
 public:
-    Action_voidPtr_Delegate GetEventList(int nEventId)
+    Action_voidPtr_Delegate* GetEventList(int nEventId)
     {
         if (!mEventDic.Contains(nEventId))
         {
             Action_voidPtr_Delegate mEventList;
             mEventDic.Add(nEventId, mEventList);
         }
-        return mEventDic[nEventId];
+        return &mEventDic[nEventId];
     }
 
     //FDelegateHandle AddListener(int nEventId, void* Func)
