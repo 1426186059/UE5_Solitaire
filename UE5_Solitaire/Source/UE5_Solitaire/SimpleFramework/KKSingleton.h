@@ -3,7 +3,7 @@
 #pragma once
 
 template<typename T>
-class TSingleton
+class KKSingleton
 {
 public:
     static T* GetInstance()
@@ -13,13 +13,13 @@ public:
     }
 
     // 禁止拷贝和移动（单例不应被复制）
-    TSingleton(const TSingleton&) = delete;
-    TSingleton& operator=(const TSingleton&) = delete;
-    TSingleton(TSingleton&&) = delete;
-    TSingleton& operator=(TSingleton&&) = delete;
+    KKSingleton(const KKSingleton&) = delete;
+    KKSingleton& operator=(const KKSingleton&) = delete;
+    KKSingleton(KKSingleton&&) = delete;
+    KKSingleton& operator=(KKSingleton&&) = delete;
 
 protected:
     // 允许派生类构造/析构
-    TSingleton() = default;
-    virtual ~TSingleton() = default;
+    KKSingleton() = default;
+    virtual ~KKSingleton() = default;
 };
