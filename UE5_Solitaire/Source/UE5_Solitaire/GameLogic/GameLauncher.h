@@ -12,11 +12,8 @@
 #include "GameFramework/GameUserSettings.h"
 #include "GameLauncher.generated.h"
 
-//KKActorSingletonDefine(AGameLauncher);
-//typedef KKActorSingleton<AGameLauncher> AGameLauncherSingleton;
-
 UCLASS()
-class UE5_SOLITAIRE_API AGameLauncher : public AActor
+class UE5_SOLITAIRE_API AGameLauncher : public AKKActorSingleton
 {
 	GENERATED_BODY()
 public:	
@@ -28,4 +25,8 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	static AGameLauncher* GetInstance(bool bCreate = true)
+	{
+		return AKKActorSingleton::GetInstance<AGameLauncher>(bCreate);
+	}
 };
