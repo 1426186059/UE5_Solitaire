@@ -23,7 +23,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	UInitSceneHotUpdateComponent* mUInitSceneHotUpdateMgr;
+	UInitSceneHotUpdateComponent* mInitSceneHotUpdateComponent;
 
 	float fPercent;
 	Action_Float_Delegate UpdateProgressFunc;

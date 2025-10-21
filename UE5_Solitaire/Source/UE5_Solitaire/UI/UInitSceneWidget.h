@@ -26,10 +26,16 @@ public:
 	void Show();
 	void Hide();
 	void Refresh();
-	void SetLoadProgress(float Percent01);
+
+	void UpdateProgressFunc(float Percent01);
+	void UpdateFinishFunc();
+	void UpdateErrorFunc();
+	void UpdateVersionFunc();
 
 public:
 	bool bInit;
 	UUserWidget* mUIRoot;
 	UProgressBar* mUProgressBar;
+
+	AInitSceneHotUpdateMgr* mInitSceneHotUpdateMgr;
 };

@@ -30,14 +30,14 @@ void UInitSceneHotUpdateComponent::TickComponent(float DeltaTime, ELevelTick Tic
             float Percent = mFStreamableHandle->GetProgress();          // 0.0~1.0
             int32 Loaded, Requested;
             mFStreamableHandle->GetLoadedCount(Loaded, Requested);    // 已加载 / 总量
-            this->UpdateProgressFunc.Broadcast(Percent);
+            this->UpdateProgressFunc->Broadcast(Percent);
 
             UE_LOG(LogTemp, Log, TEXT("UI AInitSceneMgr Loading: %.0f (%d / %d)"), Percent, Loaded, Requested);
         }
 
         if (mFStreamableHandle->HasLoadCompleted())
         {
-
+            this->UpdateProgressFunc->Broadcast(1.0f);
         }
     }
 }
@@ -84,6 +84,6 @@ void UInitSceneHotUpdateComponent::OnAssetLoadCompleted()
 {
     UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Finish Ok"));
     mFStreamableHandle.Reset();
-    this->UpdateFinishFunc.Broadcast();
+    this->UpdateFinishFunc->Broadcast();
 }
 

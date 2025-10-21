@@ -63,3 +63,14 @@ void AGameLauncher::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AGameLauncher::GoToLobby()
+{
+    TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
+        TEXT("/Game/ResourceABs/InitScene/BPS/IntSceneCWBP.IntSceneCWBP_C"));
+    if (BPClass != NULL)
+    {
+        UInitSceneWidget* mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GEngine->GameViewport->GetWorld(), BPClass);
+        mUInitSceneWidget->Show();
+    }
+}
+

@@ -31,8 +31,8 @@ public:
 
 	TSharedPtr<FStreamableHandle> mFStreamableHandle;
 	float fPercent;
-	Action_Float_Delegate UpdateProgressFunc;
-	ActionDelegate UpdateFinishFunc;
-	ActionDelegate UpdateErrorFunc;
-	ActionDelegate UpdateVersionFunc;
+	Action_Float_Delegate* UpdateProgressFunc;
+	ActionDelegate* UpdateFinishFunc;
+	ActionDelegate* UpdateErrorFunc;
+	ActionDelegate* UpdateVersionFunc;
 };

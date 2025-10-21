@@ -41,23 +41,21 @@ void UInitSceneWidget::Show()
     mUProgressBar->SetPercent(0);
 
     //创建热更Actor
-    FTransform SpawnTM(FRotator::ZeroRotator, FVector(0, 0, 100));
-    AInitSceneHotUpdateMgr* NewActor = GetWorld()->SpawnActor<AInitSceneHotUpdateMgr>(AInitSceneHotUpdateMgr::StaticClass(), SpawnTM);
-    if (NewActor)
-    {
-#if UE_EDITOR
-        NewActor->SetActorLabel(TEXT("AInitSceneHotUpdateMgr"));
-#endif
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("NewActor IS NULL"));
-    }
+    mInitSceneHotUpdateMgr = GetWorld()->SpawnActor<AInitSceneHotUpdateMgr>(AInitSceneHotUpdateMgr::StaticClass());
+    mInitSceneHotUpdateMgr->UpdateProgressFunc.AddUObject(this, &UInitSceneWidget::UpdateProgressFunc);
+    mInitSceneHotUpdateMgr->UpdateFinishFunc.AddUObject(this, &UInitSceneWidget::UpdateFinishFunc);
+    mInitSceneHotUpdateMgr->UpdateErrorFunc.AddUObject(this, &UInitSceneWidget::UpdateErrorFunc);
+    mInitSceneHotUpdateMgr->UpdateVersionFunc.AddUObject(this, &UInitSceneWidget::UpdateVersionFunc);
 }
 
 void UInitSceneWidget::Hide()
 {
     this->SetVisibility(ESlateVisibility::Collapsed);
+
+    mInitSceneHotUpdateMgr->UpdateProgressFunc.RemoveAll(this);
+    mInitSceneHotUpdateMgr->UpdateFinishFunc.RemoveAll(this);
+    mInitSceneHotUpdateMgr->UpdateErrorFunc.RemoveAll(this);
+    mInitSceneHotUpdateMgr->UpdateVersionFunc.RemoveAll(this);
 }
 
 void UInitSceneWidget::Refresh()
@@ -65,8 +63,31 @@ void UInitSceneWidget::Refresh()
     mUProgressBar->SetPercent(0);
 }
 
-void UInitSceneWidget::SetLoadProgress(float Percent01)
+void UInitSceneWidget::UpdateProgressFunc(float Percent01)
 {
-   /* if (PB_Main)
-        PB_Main->SetPercent(FMath::Clamp(Percent01, 0.f, 1.f));*/
+    mUProgressBar->SetPercent(Percent01);
+}
+
+void UInitSceneWidget::UpdateFinishFunc()
+{
+    UE_LOG(LogTemp, Error, TEXT("Update Finish Func"));
+
+    mInitSceneHotUpdateMgr->Destroy();
+    mInitSceneHotUpdateMgr = nullptr;
+
+    this->Hide();
+    if (this->IsInViewport())
+    {
+        this->RemoveFromParent();
+    }
+}
+
+void UInitSceneWidget::UpdateErrorFunc()
+{
+    UE_LOG(LogTemp, Error, TEXT("UpdateErrorFunc"));
+}
+
+void UInitSceneWidget::UpdateVersionFunc()
+{
+    UE_LOG(LogTemp, Error, TEXT("Update Version Func"));
 }

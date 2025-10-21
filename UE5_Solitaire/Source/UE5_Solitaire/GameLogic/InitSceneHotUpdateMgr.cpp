@@ -14,14 +14,15 @@ void AInitSceneHotUpdateMgr::BeginPlay()
     Super::BeginPlay();
 
     //增加组件方法2
-    mUInitSceneHotUpdateMgr = NewObject<UInitSceneHotUpdateComponent>(this, TEXT("InitSceneHotUpdateComponent2"));
-    mUInitSceneHotUpdateMgr->RegisterComponent();
-    this->AddInstanceComponent(mUInitSceneHotUpdateMgr);
+    mInitSceneHotUpdateComponent = NewObject<UInitSceneHotUpdateComponent>(this, TEXT("InitSceneHotUpdateComponent2"));
+    mInitSceneHotUpdateComponent->RegisterComponent();
+    this->AddInstanceComponent(mInitSceneHotUpdateComponent);
 
-    mUInitSceneHotUpdateMgr->UpdateProgressFunc = this->UpdateProgressFunc;
-    mUInitSceneHotUpdateMgr->UpdateFinishFunc = this->UpdateFinishFunc;
-    mUInitSceneHotUpdateMgr->UpdateErrorFunc = this->UpdateErrorFunc;
-    mUInitSceneHotUpdateMgr->UpdateVersionFunc = this->UpdateVersionFunc;
+    UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Finish Ok 2222"));
+    mInitSceneHotUpdateComponent->UpdateProgressFunc = &this->UpdateProgressFunc;
+    mInitSceneHotUpdateComponent->UpdateFinishFunc = &this->UpdateFinishFunc;
+    mInitSceneHotUpdateComponent->UpdateErrorFunc = &this->UpdateErrorFunc;
+    mInitSceneHotUpdateComponent->UpdateVersionFunc = &this->UpdateVersionFunc;
 }
 
 void AInitSceneHotUpdateMgr::EndPlay(const EEndPlayReason::Type EndPlayReason)
