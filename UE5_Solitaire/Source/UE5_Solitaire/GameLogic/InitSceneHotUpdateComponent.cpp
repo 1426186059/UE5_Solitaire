@@ -14,7 +14,7 @@ UInitSceneHotUpdateComponent::UInitSceneHotUpdateComponent()
 void UInitSceneHotUpdateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-    this->RequestAllPrimaryAsset();
+    //this->RequestAllPrimaryAsset();
     this->RequestLoadAllRes();
     UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent BeginPlay"));
 }
@@ -49,10 +49,7 @@ void UInitSceneHotUpdateComponent::RequestLoadAllRes()
     FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
     TSharedPtr<FStreamableHandle> Handle = Streamable.RequestAsyncLoad(
         AssetsToLoad,
-        FStreamableDelegate::CreateLambda([]() 
-            {
-                UE_LOG(LogTemp, Log, TEXT("All assets loaded!"));
-            })
+        FStreamableDelegate::CreateUObject(this, &UInitSceneHotUpdateComponent::OnAssetLoadCompleted)
     );
 }
 
