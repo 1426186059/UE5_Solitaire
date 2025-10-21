@@ -21,22 +21,6 @@ public:
         }
         return &mEventDic[nEventId];
     }
-
-    //FDelegateHandle AddListener(int nEventId, void* Func)
-    //{
-    //    Action_voidPtr_Delegate mList = GetEventList(nEventId)
-    //    return mList.AddRaw(nullptr, Func);
-    //}
-
-    //FDelegateHandle AddListener(int nEventId, Action_voidPtr_Delegate::FDelegate Func)
-    //{
-    //    if (!mEventDic.Contains(nEventId))
-    //    {
-    //        Action_voidPtr_Delegate mEventList;
-    //        mEventDic.Add(nEventId, mEventList);
-    //    }
-    //    return mEventDic[nEventId].AddRaw(Func);
-    //}
     
     void RemoveListener(int nEventId, FDelegateHandle Func)
     {
