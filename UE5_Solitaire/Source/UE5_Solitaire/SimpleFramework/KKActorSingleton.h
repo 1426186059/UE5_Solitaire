@@ -7,24 +7,27 @@
 #include "KKActorSingleton.generated.h"
 
 // 这种方法不行
-#define KKActorSingletonDefine(ClassName)												\
+#define KKActorSingletonDefine(ClassName)										\
 	UCLASS()																	\
 	class ClassName##Singleton : public AActor									\
 	{																			\
 		GENERATED_BODY()														\
-		public ClassName##Singleton()											\
+	public:																		\
+		ClassName##Singleton()											\
 		{																		\
 			PrimaryActorTick.bCanEverTick = true;								\
 		}																		\
-		protected virtual void BeginPlay() override								\
+	protected:																	\
+		virtual void BeginPlay() override								\
 		{																		\
 			Super::BeginPlay();													\
 		}																		\
-		protected virtual void EndPlay(EEndPlayReason::Type Reason) override	\
+		virtual void EndPlay(EEndPlayReason::Type Reason) override	\
 		{																		\
 			Super::EndPlay(Reason);												\
 		}																		\
-		public virtual void Tick(float DeltaTime) override						\
+	public:																		\
+		virtual void Tick(float DeltaTime) override						\
 		{																		\
 			Super::Tick(DeltaTime);												\
 		}																		\
