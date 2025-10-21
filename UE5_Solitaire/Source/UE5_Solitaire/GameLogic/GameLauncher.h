@@ -19,10 +19,10 @@ class UE5_SOLITAIRE_API AGameLauncher : public AKKActorSingleton
 public:	
 	AGameLauncher();
 
-	//static AGameLauncher* GetSingleton(bool bCreate = true)
-	//{
-	//	return AKKActorSingleton::GetSingleton<AGameLauncher>(bCreate);
-	//}
+	static AGameLauncher* GetSingleton(bool bCreate = true)
+	{
+		return AKKActorSingleton::GetSingleton<AGameLauncher>(bCreate);
+	}
 
 protected:
 	virtual void BeginPlay() override;
