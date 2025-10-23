@@ -12,7 +12,7 @@ public:
     {
         if (GEngine && GEngine->GameViewport)
         {
-            if (TSharedPtr<FSceneViewport> VP = GEngine->GameViewport->GetGameViewport())
+            if (FSceneViewport* VP = GEngine->GameViewport->GetGameViewport())
             {
                 return VP->GetSize();        // ÕæÊµÏñËØ
             }
