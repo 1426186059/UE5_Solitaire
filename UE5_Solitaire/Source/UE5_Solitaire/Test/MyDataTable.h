@@ -1,0 +1,21 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Engine/DataTable.h"
+#include "MyDataTable.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class UE5_SOLITAIRE_API UMyDataTable : public UDataTable
+{
+	GENERATED_BODY()
+	
+	UMyDataTable()
+	{
+		//RowStruct = FMyItemRow::StaticStruct();   // 告诉表用哪一行结构
+	}
+};
