@@ -8,6 +8,11 @@ void UMainUIWidget::NativeConstruct()
     Super::NativeConstruct();
 }
 
+void UMainUIWidget::NativeOnInitialized()
+{
+    Super::NativeOnInitialized();
+}
+
 void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
