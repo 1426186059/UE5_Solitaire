@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Components/Widget.h"
+#include "Components/CanvasPanel.h"
 #include "Components/Image.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/SizeBoxSlot.h"
+
 
 class UMGHelper
 {
@@ -41,6 +43,21 @@ public:
         return FIntPoint::ZeroValue;
     }
 
+    static FVector2D GetUMGRootSzie(UUserWidget* mWidget)
+    {
+        return mWidget->GetDesiredSize();
+        //return mWidget->GetCachedGeometry().GetLocalSize();
+        auto mCanvasPanel = Cast<UCanvasPanel>(mWidget->GetRootWidget());
+        return GetUMGRootSzie(mCanvasPanel);
+    }
+
+    static FVector2D GetUMGRootSzie(UCanvasPanel* mCanvasPanel)
+    {
+        FGeometry RootGeom = mCanvasPanel->GetCachedGeometry();   // 根节点几何
+        return  RootGeom.GetLocalSize();
+        //return mCanvasPanel->GetDesiredSize();
+    }
+
     static void SetWidgetScale(UWidget* mUWidget, const FVector2D& NewScale)
     {
         mUWidget->SetRenderScale(NewScale);
@@ -51,6 +68,10 @@ public:
         if (UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(Child->Slot))
         {
             Slot->SetSize(NewSize);          // 立即生效
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("UMGHelper SetWidgetSize: Error"));
         }
     }
 

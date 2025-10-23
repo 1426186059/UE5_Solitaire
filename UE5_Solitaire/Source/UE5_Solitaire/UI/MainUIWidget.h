@@ -3,10 +3,11 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
+#include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
+#include "Components/CanvasPanel.h"
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
 #include "MainUIWidget.generated.h"
 
 UCLASS()

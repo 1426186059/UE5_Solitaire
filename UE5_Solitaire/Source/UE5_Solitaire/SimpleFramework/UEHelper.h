@@ -8,7 +8,7 @@
 class UEHelper
 {
 public:
-    static FIntPoint GetScreenResolution()
+    static FIntPoint GetScreenSize()
     {
         if (GEngine && GEngine->GameViewport)
         {
@@ -20,15 +20,14 @@ public:
         return FIntPoint::ZeroValue;
     }
 
-
-    static FIntPoint GetScreenSize()
-    {
-        if (GEngine && GEngine->GetGameUserSettings())
-        {
-            return GEngine->GetGameUserSettings()->GetScreenResolution();
-        }
-        return FIntPoint::ZeroValue;
-    }
+    //static FIntPoint GetScreenSize()
+    //{
+    //    if (GEngine && GEngine->GetGameUserSettings())
+    //    {
+    //        return GEngine->GetGameUserSettings()->GetScreenResolution();
+    //    }
+    //    return FIntPoint::ZeroValue;
+    //}
 
 private:
     // 禁止拷贝和移动（单例不应被复制）
