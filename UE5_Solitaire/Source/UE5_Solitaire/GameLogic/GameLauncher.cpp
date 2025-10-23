@@ -21,6 +21,17 @@ void AGameLauncher::BeginPlay()
         UserSettings->ApplySettings(false);
         UserSettings->SaveSettings();
     }
+    
+    if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
+    {
+        //隐藏手机界面 2个虚拟摇杆。
+        PC->ActivateTouchInterface(nullptr);   // 把整个 Touch Interface 卸掉
+        PC->SetVirtualJoystickVisibility(false);
+
+        //显示鼠标
+        PC->SetShowMouseCursor(true);
+        PC->SetInputMode(FInputModeGameAndUI().SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock));
+    }
 
     //指定照相机
     //APlayerController* PC = UGameplayStatics::GetPlayerController(this, 0);
