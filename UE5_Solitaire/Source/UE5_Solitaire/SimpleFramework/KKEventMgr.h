@@ -30,7 +30,7 @@ public:
         }
     }
 
-    void Broadcast(int nEventId, void* Param)
+    void Broadcast(int nEventId, void* Param = nullptr)
     {
         if (mEventDic.Contains(nEventId))
         {

@@ -41,13 +41,9 @@ void UMainUIWidget::Init()
         return;
     }
 
-    if (!mUIRoot)
-    {
-        UE_LOG(LogTemp, Error, TEXT("mUIRootCanvasPanel == null"));
-        return;
-    }
-
     this->AddToViewport(0);
+
+
 }
 
 void UMainUIWidget::Show()
