@@ -25,6 +25,14 @@ void UMainUIWidget::Init()
     }
 
     this->AddToViewport(0);
+
+    auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
+    if (!mBG)
+    {
+        UE_LOG(LogTemp, Error, TEXT("mBG == null"));
+    }
+
+    UMGAdapterTool::GetSingleton()->FitBG(mBG);
 }
 
 void UMainUIWidget::Show()

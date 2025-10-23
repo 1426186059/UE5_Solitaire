@@ -2,13 +2,13 @@
 
 #pragma once
 
+#include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
+#include "Components/Image.h"
+
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "MainUIWidget.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class UE5_SOLITAIRE_API UMainUIWidget : public UUserWidget
 {
