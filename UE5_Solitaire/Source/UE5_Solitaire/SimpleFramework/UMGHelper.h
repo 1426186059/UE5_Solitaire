@@ -80,4 +80,10 @@ public:
         }
     }
 
+private:
+    // 禁止拷贝和移动（单例不应被复制）
+    UMGHelper(const UMGHelper&) = delete;
+    UMGHelper& operator=(const UMGHelper&) = delete;
+    UMGHelper(UMGHelper&&) = delete;
+    UMGHelper& operator=(UMGHelper&&) = delete;
 };
