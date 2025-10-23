@@ -45,8 +45,6 @@ public:
 
     static FVector2D GetUMGRootSzie(UUserWidget* mWidget)
     {
-        return mWidget->GetDesiredSize();
-        //return mWidget->GetCachedGeometry().GetLocalSize();
         auto mCanvasPanel = Cast<UCanvasPanel>(mWidget->GetRootWidget());
         return GetUMGRootSzie(mCanvasPanel);
     }
@@ -55,7 +53,6 @@ public:
     {
         FGeometry RootGeom = mCanvasPanel->GetCachedGeometry();   // 根节点几何
         return  RootGeom.GetLocalSize();
-        //return mCanvasPanel->GetDesiredSize();
     }
 
     static void SetWidgetScale(UWidget* mUWidget, const FVector2D& NewScale)

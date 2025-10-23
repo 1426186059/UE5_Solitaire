@@ -8,16 +8,11 @@
 class UEHelper
 {
 public:
-    static FIntPoint GetScreenSize()
+    static FVector2D GetScreenSize()
     {
-        if (GEngine && GEngine->GameViewport)
-        {
-            if (FSceneViewport* VP = GEngine->GameViewport->GetGameViewport())
-            {
-                return VP->GetSize();        // ÕæÊµÏñËØ
-            }
-        }
-        return FIntPoint::ZeroValue;
+        FVector2D mSize;
+        GEngine->GameViewport->GetViewportSize(mSize);
+        return mSize;
     }
 
     //static FIntPoint GetScreenSize()

@@ -25,8 +25,10 @@ public:
 	void Show();
 	void Hide();
 	void Refresh();
-
+	void OnScreenSizeChanged();
 private:
 	bool bInit;
 	UUserWidget* mUIRoot;
+
+	FVector2D mOldSize;
 };

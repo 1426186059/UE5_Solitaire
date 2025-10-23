@@ -13,22 +13,19 @@ void UMainUIWidget::NativeConstruct()
 {
     Super::NativeConstruct();
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NativeConstruct"));
-
-    Init();
-    auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
-    if (!mBG)
-    {
-        UE_LOG(LogTemp, Error, TEXT("mBG == null"));
-    }
-    UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
 }
 
 void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
+
+    FVector2D mSize = UMGHelper::GetUMGRootSzie(this->mUIRoot);
+    if (mSize != mOldSize)
+    {
+        mOldSize = mSize;
+        this->OnScreenSizeChanged();
+    }
 }
-
-
 
 void UMainUIWidget::Init()
 {
@@ -68,4 +65,11 @@ void UMainUIWidget::Hide()
 void UMainUIWidget::Refresh()
 {
     //mUProgressBar->SetPercent(0);
+}
+
+void UMainUIWidget::OnScreenSizeChanged()
+{
+    //BG   ≈‰∆¡ƒª
+    auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
+    UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
 }

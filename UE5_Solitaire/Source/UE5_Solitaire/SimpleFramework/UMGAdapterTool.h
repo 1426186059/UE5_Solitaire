@@ -23,7 +23,6 @@ public:
 	void FitBG(UUserWidget* mRootWidget, UImage* mUImage) //这个的话，根据原有精灵尺寸，等比例缩放
 	{
 		FVector2D mScreenSize = UMGHelper::GetUMGRootSzie(mRootWidget);
-		//FIntPoint mScreenSize = UEHelper::GetScreenSize();
 		FIntPoint mSize = UMGHelper::GetImageOriginalSize(mUImage);
 
 		float ratio1 = mScreenSize.Y / (float)mScreenSize.X;
@@ -49,22 +48,6 @@ public:
 		UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool FitBG: %.3f, %.3f"), ratio1, ratio2);
 		UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mActualSize: %s"), *mActualSize.ToString());
 	}
-
-	void FitBG(UWidget* mWidget)
-	{
-		FIntPoint mResolution = GEngine->GetGameUserSettings()->GetScreenResolution();
-		FVector2D mBGXY = mWidget->GetDesiredSize();   // FVector2D
-		
-		float ratio1 = mResolution.Y / (float)mResolution.X;
-		float ratio2 = mBGXY.Y / (float)mBGXY.X;
-
-		if (ratio1 > ratio2) //屏幕更长了
-		{
-			float scale = ratio1 / ratio2;
-			UMGHelper::SetWidgetScale(mWidget, FVector2D(scale, scale));
-		}
-	}
-	
 private:
 	bool bInit;
 };
