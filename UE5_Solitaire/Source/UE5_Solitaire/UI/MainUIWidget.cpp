@@ -69,3 +69,10 @@ void UMainUIWidget::OnScreenSizeChanged()
     auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
 }
+
+void UMainUIWidget::OnScreenSizeChanged()
+{
+    //BG   ≈‰∆¡ƒª
+    auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
+    UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
+}

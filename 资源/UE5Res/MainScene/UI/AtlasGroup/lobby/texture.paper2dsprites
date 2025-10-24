@@ -1,0 +1,472 @@
+{
+  "frames": {
+    "hall/hall_bg_bj1.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 750,
+        "h": 216
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 750,
+        "h": 216
+      },
+      "sourceSize": {
+        "w": 750,
+        "h": 216
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_shengli_bg_dk1.png": {
+      "frame": {
+        "x": 750,
+        "y": 0,
+        "w": 130,
+        "h": 59
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 130,
+        "h": 59
+      },
+      "sourceSize": {
+        "w": 130,
+        "h": 59
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_bg_bj3.png": {
+      "frame": {
+        "x": 880,
+        "y": 0,
+        "w": 126,
+        "h": 33
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 126,
+        "h": 33
+      },
+      "sourceSize": {
+        "w": 126,
+        "h": 33
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_card_number_bg02.png": {
+      "frame": {
+        "x": 880,
+        "y": 33,
+        "w": 122,
+        "h": 238
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 122,
+        "h": 238
+      },
+      "sourceSize": {
+        "w": 122,
+        "h": 238
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_zhuti_pai_xuanzhong.png": {
+      "frame": {
+        "x": 750,
+        "y": 59,
+        "w": 113,
+        "h": 164
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 113,
+        "h": 164
+      },
+      "sourceSize": {
+        "w": 113,
+        "h": 164
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_icon_tb6.png": {
+      "frame": {
+        "x": 0,
+        "y": 216,
+        "w": 414,
+        "h": 69
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 1,
+        "y": 0,
+        "w": 414,
+        "h": 69
+      },
+      "sourceSize": {
+        "w": 416,
+        "h": 69
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_chongwan_icon_tb2.png": {
+      "frame": {
+        "x": 414,
+        "y": 216,
+        "w": 294,
+        "h": 327
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 294,
+        "h": 327
+      },
+      "sourceSize": {
+        "w": 294,
+        "h": 327
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_yindao_an_2.png": {
+      "frame": {
+        "x": 708,
+        "y": 216,
+        "w": 35,
+        "h": 56
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 35,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 35,
+        "h": 56
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_card_number_bg01.png": {
+      "frame": {
+        "x": 743,
+        "y": 223,
+        "w": 106,
+        "h": 106
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 106,
+        "h": 106
+      },
+      "sourceSize": {
+        "w": 106,
+        "h": 106
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/lvtu_icon_16.png": {
+      "frame": {
+        "x": 849,
+        "y": 271,
+        "w": 103,
+        "h": 103
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 103,
+        "h": 103
+      },
+      "sourceSize": {
+        "w": 103,
+        "h": 103
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_btn_anniu1.png": {
+      "frame": {
+        "x": 952,
+        "y": 271,
+        "w": 66,
+        "h": 68
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 66,
+        "h": 68
+      },
+      "sourceSize": {
+        "w": 66,
+        "h": 68
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_icon_shouji.png": {
+      "frame": {
+        "x": 952,
+        "y": 339,
+        "w": 64,
+        "h": 65
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 64,
+        "h": 65
+      },
+      "sourceSize": {
+        "w": 64,
+        "h": 65
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_xstishi_tb1.png": {
+      "frame": {
+        "x": 708,
+        "y": 329,
+        "w": 99,
+        "h": 111
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 99,
+        "h": 111
+      },
+      "sourceSize": {
+        "w": 99,
+        "h": 111
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_icon_tb1.png": {
+      "frame": {
+        "x": 708,
+        "y": 440,
+        "w": 95,
+        "h": 86
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 14,
+        "y": 18,
+        "w": 95,
+        "h": 86
+      },
+      "sourceSize": {
+        "w": 130,
+        "h": 120
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_card_number_bg.png": {
+      "frame": {
+        "x": 803,
+        "y": 440,
+        "w": 45,
+        "h": 45
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 45,
+        "h": 45
+      },
+      "sourceSize": {
+        "w": 45,
+        "h": 45
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_icon_tb5.png": {
+      "frame": {
+        "x": 848,
+        "y": 374,
+        "w": 88,
+        "h": 94
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 20,
+        "y": 14,
+        "w": 88,
+        "h": 94
+      },
+      "sourceSize": {
+        "w": 130,
+        "h": 120
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_icon_tb4.png": {
+      "frame": {
+        "x": 936,
+        "y": 440,
+        "w": 82,
+        "h": 76
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 21,
+        "y": 23,
+        "w": 82,
+        "h": 76
+      },
+      "sourceSize": {
+        "w": 130,
+        "h": 120
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_icon_tb2.png": {
+      "frame": {
+        "x": 848,
+        "y": 468,
+        "w": 75,
+        "h": 75
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 29,
+        "y": 24,
+        "w": 75,
+        "h": 75
+      },
+      "sourceSize": {
+        "w": 130,
+        "h": 120
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "hall/hall_icon_tb3.png": {
+      "frame": {
+        "x": 923,
+        "y": 516,
+        "w": 73,
+        "h": 71
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 28,
+        "y": 24,
+        "w": 73,
+        "h": 71
+      },
+      "sourceSize": {
+        "w": 130,
+        "h": 120
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1018,
+      "h": 587
+    },
+    "scale": 1,
+    "target": "paper2d"
+  }
+}

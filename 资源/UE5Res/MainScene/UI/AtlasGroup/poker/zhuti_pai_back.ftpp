@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\AtlasGroup\\poker\\zhuti_pai_back",
+  "images": [],
+  "folders": [
+    "D:/Me/MyProject/UE5_Solitaire/资源/美术资源/7纸牌/zhuti_pai_back"
+  ],
+  "packOptions": {
+    "textureName": "texture",
+    "textureFormat": "png",
+    "removeFileExtension": false,
+    "prependFolderName": true,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "UnrealEngine",
+    "fileName": "pack-result",
+    "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\AtlasGroup\\poker\\zhuti_pai_back",
+    "width": 1024,
+    "height": 1024,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 0,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}

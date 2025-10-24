@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\AtlasGroup\\setting",
+  "images": [],
+  "folders": [
+    "D:/Me/MyProject/UE5_Solitaire/资源/美术资源/4设置/setting"
+  ],
+  "packOptions": {
+    "textureName": "texture",
+    "textureFormat": "png",
+    "removeFileExtension": false,
+    "prependFolderName": true,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "UnrealEngine",
+    "fileName": "pack-result",
+    "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\AtlasGroup\\setting",
+    "width": 1024,
+    "height": 1024,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 0,
+    "extrude": 0,
+    "allowRotation": false,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}

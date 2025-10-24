@@ -1,0 +1,472 @@
+{
+  "frames": {
+    "shouji/sj_bg_jd1.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 250,
+        "h": 260
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 250,
+        "h": 260
+      },
+      "sourceSize": {
+        "w": 250,
+        "h": 260
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_bg_jd2.png": {
+      "frame": {
+        "x": 0,
+        "y": 260,
+        "w": 250,
+        "h": 260
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 250,
+        "h": 260
+      },
+      "sourceSize": {
+        "w": 250,
+        "h": 260
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb12.png": {
+      "frame": {
+        "x": 0,
+        "y": 520,
+        "w": 110,
+        "h": 155
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 38,
+        "y": 24,
+        "w": 110,
+        "h": 155
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb10.png": {
+      "frame": {
+        "x": 0,
+        "y": 675,
+        "w": 143,
+        "h": 142
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 28,
+        "y": 24,
+        "w": 143,
+        "h": 142
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb15.png": {
+      "frame": {
+        "x": 110,
+        "y": 520,
+        "w": 124,
+        "h": 142
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 24,
+        "w": 124,
+        "h": 142
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb6.png": {
+      "frame": {
+        "x": 0,
+        "y": 817,
+        "w": 99,
+        "h": 142
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 45,
+        "y": 25,
+        "w": 99,
+        "h": 142
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb9.png": {
+      "frame": {
+        "x": 99,
+        "y": 817,
+        "w": 99,
+        "h": 142
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 47,
+        "y": 25,
+        "w": 99,
+        "h": 142
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb17.png": {
+      "frame": {
+        "x": 143,
+        "y": 662,
+        "w": 124,
+        "h": 141
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 24,
+        "w": 124,
+        "h": 141
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb13.png": {
+      "frame": {
+        "x": 234,
+        "y": 520,
+        "w": 120,
+        "h": 141
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 39,
+        "y": 24,
+        "w": 120,
+        "h": 141
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb11.png": {
+      "frame": {
+        "x": 198,
+        "y": 803,
+        "w": 99,
+        "h": 141
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 43,
+        "y": 24,
+        "w": 99,
+        "h": 141
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb7.png": {
+      "frame": {
+        "x": 267,
+        "y": 661,
+        "w": 99,
+        "h": 141
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 25,
+        "w": 99,
+        "h": 141
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb1.png": {
+      "frame": {
+        "x": 354,
+        "y": 802,
+        "w": 113,
+        "h": 140
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 38,
+        "y": 24,
+        "w": 113,
+        "h": 140
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb2.png": {
+      "frame": {
+        "x": 467,
+        "y": 802,
+        "w": 98,
+        "h": 140
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 46,
+        "y": 26,
+        "w": 98,
+        "h": 140
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb14.png": {
+      "frame": {
+        "x": 565,
+        "y": 520,
+        "w": 124,
+        "h": 139
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 23,
+        "w": 124,
+        "h": 139
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb3.png": {
+      "frame": {
+        "x": 366,
+        "y": 659,
+        "w": 97,
+        "h": 140
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 47,
+        "y": 26,
+        "w": 97,
+        "h": 140
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb4.png": {
+      "frame": {
+        "x": 463,
+        "y": 659,
+        "w": 97,
+        "h": 140
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 39,
+        "y": 26,
+        "w": 97,
+        "h": 140
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb8.png": {
+      "frame": {
+        "x": 560,
+        "y": 659,
+        "w": 93,
+        "h": 140
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 49,
+        "y": 26,
+        "w": 93,
+        "h": 140
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb16.png": {
+      "frame": {
+        "x": 565,
+        "y": 799,
+        "w": 124,
+        "h": 139
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 31,
+        "y": 24,
+        "w": 124,
+        "h": 139
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "shouji/sj_icon_tb5.png": {
+      "frame": {
+        "x": 653,
+        "y": 659,
+        "w": 98,
+        "h": 138
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 47,
+        "y": 27,
+        "w": 98,
+        "h": 138
+      },
+      "sourceSize": {
+        "w": 195,
+        "h": 193
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 751,
+      "h": 959
+    },
+    "scale": 1,
+    "target": "paper2d"
+  }
+}

@@ -1,0 +1,927 @@
+{
+  "frames": {
+    "0通用/common_meiri_dk_img03.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 715,
+        "h": 120
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 715,
+        "h": 120
+      },
+      "sourceSize": {
+        "w": 715,
+        "h": 120
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_dk_img04.png": {
+      "frame": {
+        "x": 715,
+        "y": 0,
+        "w": 666,
+        "h": 5
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 666,
+        "h": 5
+      },
+      "sourceSize": {
+        "w": 666,
+        "h": 5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_dk_img04_hei.png": {
+      "frame": {
+        "x": 1381,
+        "y": 0,
+        "w": 666,
+        "h": 5
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 666,
+        "h": 5
+      },
+      "sourceSize": {
+        "w": 666,
+        "h": 5
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img03.png": {
+      "frame": {
+        "x": 715,
+        "y": 5,
+        "w": 658,
+        "h": 373
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 658,
+        "h": 373
+      },
+      "sourceSize": {
+        "w": 658,
+        "h": 373
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_dk_img05.png": {
+      "frame": {
+        "x": 1373,
+        "y": 5,
+        "w": 655,
+        "h": 143
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 655,
+        "h": 143
+      },
+      "sourceSize": {
+        "w": 655,
+        "h": 143
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_dk_img07.png": {
+      "frame": {
+        "x": 2028,
+        "y": 5,
+        "w": 10,
+        "h": 10
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 10,
+        "h": 10
+      },
+      "sourceSize": {
+        "w": 10,
+        "h": 10
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img04.png": {
+      "frame": {
+        "x": 1373,
+        "y": 148,
+        "w": 655,
+        "h": 143
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 655,
+        "h": 143
+      },
+      "sourceSize": {
+        "w": 655,
+        "h": 143
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_dk_img06.png": {
+      "frame": {
+        "x": 1373,
+        "y": 291,
+        "w": 639,
+        "h": 470
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 639,
+        "h": 470
+      },
+      "sourceSize": {
+        "w": 639,
+        "h": 470
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img01.png": {
+      "frame": {
+        "x": 2012,
+        "y": 291,
+        "w": 38,
+        "h": 35
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 38,
+        "h": 35
+      },
+      "sourceSize": {
+        "w": 38,
+        "h": 35
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/dt_rw_img03.png": {
+      "frame": {
+        "x": 2012,
+        "y": 329,
+        "w": 32,
+        "h": 34
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 34
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 34
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_shezhi_btn_anniu2.png": {
+      "frame": {
+        "x": 2012,
+        "y": 361,
+        "w": 29,
+        "h": 52
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 36,
+        "y": 20,
+        "w": 29,
+        "h": 52
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 93
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_dating_icon_tb8.png": {
+      "frame": {
+        "x": 2012,
+        "y": 413,
+        "w": 25,
+        "h": 27
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 25,
+        "h": 27
+      },
+      "sourceSize": {
+        "w": 25,
+        "h": 27
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/Heart.png": {
+      "frame": {
+        "x": 0,
+        "y": 120,
+        "w": 500,
+        "h": 451
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 500,
+        "h": 451
+      },
+      "sourceSize": {
+        "w": 500,
+        "h": 451
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img08.png": {
+      "frame": {
+        "x": 500,
+        "y": 120,
+        "w": 213,
+        "h": 206
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 213,
+        "h": 206
+      },
+      "sourceSize": {
+        "w": 213,
+        "h": 206
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_btn_img05.png": {
+      "frame": {
+        "x": 500,
+        "y": 326,
+        "w": 173,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 173,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 173,
+        "h": 73
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/dt_icon_tb3.png": {
+      "frame": {
+        "x": 673,
+        "y": 326,
+        "w": 40,
+        "h": 50
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 40,
+        "h": 50
+      },
+      "sourceSize": {
+        "w": 40,
+        "h": 50
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_chongwan_icon_tb8.png": {
+      "frame": {
+        "x": 673,
+        "y": 378,
+        "w": 294,
+        "h": 327
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 294,
+        "h": 327
+      },
+      "sourceSize": {
+        "w": 294,
+        "h": 327
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_btn_img05_hei.png": {
+      "frame": {
+        "x": 500,
+        "y": 399,
+        "w": 173,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 173,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 173,
+        "h": 73
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_btn_img06.png": {
+      "frame": {
+        "x": 500,
+        "y": 472,
+        "w": 173,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 173,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 173,
+        "h": 73
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_btn_img06_hei.png": {
+      "frame": {
+        "x": 500,
+        "y": 545,
+        "w": 173,
+        "h": 73
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 173,
+        "h": 73
+      },
+      "sourceSize": {
+        "w": 173,
+        "h": 73
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img02.png": {
+      "frame": {
+        "x": 1000,
+        "y": 378,
+        "w": 230,
+        "h": 262
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 230,
+        "h": 262
+      },
+      "sourceSize": {
+        "w": 230,
+        "h": 262
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_zhuti_img_01.png": {
+      "frame": {
+        "x": 1262,
+        "y": 378,
+        "w": 110,
+        "h": 110
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 110,
+        "h": 110
+      },
+      "sourceSize": {
+        "w": 110,
+        "h": 110
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_btn_img02.png": {
+      "frame": {
+        "x": 1262,
+        "y": 488,
+        "w": 69,
+        "h": 106
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 106
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 106
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_btn_img03.png": {
+      "frame": {
+        "x": 1262,
+        "y": 557,
+        "w": 69,
+        "h": 106
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 69,
+        "h": 106
+      },
+      "sourceSize": {
+        "w": 69,
+        "h": 106
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img06.png": {
+      "frame": {
+        "x": 1000,
+        "y": 608,
+        "w": 230,
+        "h": 262
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 230,
+        "h": 262
+      },
+      "sourceSize": {
+        "w": 230,
+        "h": 262
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/dating_icon_tb6.png": {
+      "frame": {
+        "x": 1262,
+        "y": 626,
+        "w": 98,
+        "h": 74
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 98,
+        "h": 74
+      },
+      "sourceSize": {
+        "w": 98,
+        "h": 74
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_meiri_icon_1.png": {
+      "frame": {
+        "x": 1262,
+        "y": 700,
+        "w": 159,
+        "h": 97
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 159,
+        "h": 97
+      },
+      "sourceSize": {
+        "w": 159,
+        "h": 97
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/Music.png": {
+      "frame": {
+        "x": 0,
+        "y": 571,
+        "w": 234,
+        "h": 253
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 234,
+        "h": 253
+      },
+      "sourceSize": {
+        "w": 234,
+        "h": 253
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img05.png": {
+      "frame": {
+        "x": 253,
+        "y": 571,
+        "w": 142,
+        "h": 148
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 142,
+        "h": 148
+      },
+      "sourceSize": {
+        "w": 142,
+        "h": 148
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img06 2.png": {
+      "frame": {
+        "x": 401,
+        "y": 571,
+        "w": 84,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_game_bg_dk2.png": {
+      "frame": {
+        "x": 485,
+        "y": 618,
+        "w": 146,
+        "h": 57
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 146,
+        "h": 57
+      },
+      "sourceSize": {
+        "w": 146,
+        "h": 57
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon_img07.png": {
+      "frame": {
+        "x": 401,
+        "y": 651,
+        "w": 84,
+        "h": 80
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 84,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 84,
+        "h": 80
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_paizhuo_bg_dk3.png": {
+      "frame": {
+        "x": 253,
+        "y": 713,
+        "w": 135,
+        "h": 145
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 135,
+        "h": 145
+      },
+      "sourceSize": {
+        "w": 135,
+        "h": 145
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_dk_img03.png": {
+      "frame": {
+        "x": 0,
+        "y": 805,
+        "w": 118,
+        "h": 56
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 118,
+        "h": 56
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 56
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_btn_img04.png": {
+      "frame": {
+        "x": 118,
+        "y": 805,
+        "w": 65,
+        "h": 84
+      },
+      "rotated": true,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 65,
+        "h": 84
+      },
+      "sourceSize": {
+        "w": 65,
+        "h": 84
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_shezhi_btn_anniu1.png": {
+      "frame": {
+        "x": 202,
+        "y": 805,
+        "w": 44,
+        "h": 51
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 28,
+        "y": 21,
+        "w": 44,
+        "h": 51
+      },
+      "sourceSize": {
+        "w": 100,
+        "h": 93
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_meiri_icon_2.png": {
+      "frame": {
+        "x": 0,
+        "y": 861,
+        "w": 63,
+        "h": 70
+      },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 8,
+        "y": 1,
+        "w": 63,
+        "h": 70
+      },
+      "sourceSize": {
+        "w": 80,
+        "h": 74
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "0通用/common_icon.png": {
+      "frame": {
+        "x": 631,
+        "y": 672,
+        "w": 59,
+        "h": 59
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 59,
+        "h": 59
+      },
+      "sourceSize": {
+        "w": 59,
+        "h": 59
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 2047,
+      "h": 924
+    },
+    "scale": 1
+  }
+}

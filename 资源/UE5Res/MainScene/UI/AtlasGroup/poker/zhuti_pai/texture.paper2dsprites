@@ -1,0 +1,664 @@
+{
+  "frames": {
+    "zhuti_pai/zhuti_1_pai1.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 105,
+        "h": 155
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 105,
+        "h": 155
+      },
+      "sourceSize": {
+        "w": 105,
+        "h": 155
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_1_pai2.png": {
+      "frame": {
+        "x": 0,
+        "y": 155,
+        "w": 105,
+        "h": 155
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 105,
+        "h": 155
+      },
+      "sourceSize": {
+        "w": 105,
+        "h": 155
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_1_pai3.png": {
+      "frame": {
+        "x": 0,
+        "y": 310,
+        "w": 105,
+        "h": 155
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 105,
+        "h": 155
+      },
+      "sourceSize": {
+        "w": 105,
+        "h": 155
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_2_pai1.png": {
+      "frame": {
+        "x": 0,
+        "y": 465,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_2_pai2.png": {
+      "frame": {
+        "x": 0,
+        "y": 619,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_2_pai3.png": {
+      "frame": {
+        "x": 0,
+        "y": 773,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_3_pai1.png": {
+      "frame": {
+        "x": 104,
+        "y": 465,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_3_pai2.png": {
+      "frame": {
+        "x": 104,
+        "y": 619,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_3_pai3.png": {
+      "frame": {
+        "x": 104,
+        "y": 773,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_4_pai1.png": {
+      "frame": {
+        "x": 105,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_4_pai2.png": {
+      "frame": {
+        "x": 105,
+        "y": 154,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_4_pai3.png": {
+      "frame": {
+        "x": 105,
+        "y": 308,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_5_pai1.png": {
+      "frame": {
+        "x": 208,
+        "y": 462,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_5_pai2.png": {
+      "frame": {
+        "x": 208,
+        "y": 616,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_5_pai3.png": {
+      "frame": {
+        "x": 208,
+        "y": 770,
+        "w": 104,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 104,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 104,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_6_pai3.png": {
+      "frame": {
+        "x": 209,
+        "y": 0,
+        "w": 103,
+        "h": 154
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 103,
+        "h": 154
+      },
+      "sourceSize": {
+        "w": 103,
+        "h": 154
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_7_pai1.png": {
+      "frame": {
+        "x": 209,
+        "y": 154,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_7_pai2.png": {
+      "frame": {
+        "x": 209,
+        "y": 306,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_7_pai3.png": {
+      "frame": {
+        "x": 311,
+        "y": 154,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_8_pai1.png": {
+      "frame": {
+        "x": 312,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_8_pai2.png": {
+      "frame": {
+        "x": 311,
+        "y": 306,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_8_pai3.png": {
+      "frame": {
+        "x": 413,
+        "y": 306,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_9_pai1.png": {
+      "frame": {
+        "x": 413,
+        "y": 152,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_9_pai2.png": {
+      "frame": {
+        "x": 414,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_9_pai3.png": {
+      "frame": {
+        "x": 516,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 102,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 102,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_6_pai1.png": {
+      "frame": {
+        "x": 618,
+        "y": 0,
+        "w": 101,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 101,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 101,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "zhuti_pai/zhuti_6_pai2.png": {
+      "frame": {
+        "x": 719,
+        "y": 0,
+        "w": 101,
+        "h": 152
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 101,
+        "h": 152
+      },
+      "sourceSize": {
+        "w": 101,
+        "h": 152
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 820,
+      "h": 927
+    },
+    "scale": 1,
+    "target": "paper2d"
+  }
+}
