@@ -45,7 +45,7 @@ public:
     static RowData ParseRowData(FString Line)
     {
         TArray<FString> Cols;
-        Line.ParseIntoArray(Cols, TEXT(","));
+        Line.ParseIntoArray(Cols, TEXT(","), false);
 
         RowData data;
         for (int i = 0; i < Cols.Num(); i++)

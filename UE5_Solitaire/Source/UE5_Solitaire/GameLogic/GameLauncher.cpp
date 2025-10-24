@@ -13,6 +13,9 @@ void AGameLauncher::BeginPlay()
 {
 	Super::BeginPlay();
 
+    //一些测试例子
+    Test::Do();
+
     //设置目标帧率
     UGameUserSettings* UserSettings = GEngine->GetGameUserSettings();
     if (UserSettings)

@@ -12,4 +12,5 @@ class UE5_SOLITAIRE_API Test
 public:
 	Test();
 	~Test();
+	static void Do();
 };

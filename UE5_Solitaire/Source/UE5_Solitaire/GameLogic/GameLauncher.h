@@ -4,6 +4,8 @@
 #include "InitSceneHotUpdateMgr.h"
 #include "EngineUtils.h"
 #include "Camera/CameraActor.h"
+
+#include "UE5_Solitaire/Test/Test.h"
 #include "UE5_Solitaire/UI/UInitSceneWidget.h"
 #include "UE5_Solitaire/UI/MainUIWidget.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
