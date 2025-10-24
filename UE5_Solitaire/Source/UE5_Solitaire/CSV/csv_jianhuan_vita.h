@@ -46,18 +46,25 @@ public:
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","));
-        ensure(Cols.Num() == 9, "Cols Num: " + Cols.Num());
-        
+
         RowData data;
-        data.sid = Cols[0];
-        data.layer = FCString::Atoi(*Cols[1]);
-        data.qid = FCString::Atoi(*Cols[2]);
-        data.step = FCString::Atoi(*Cols[3]);
-        data.available = FCString::Atoi(*Cols[4]);
-        data.jianhuanstr = Cols[5];
-        data.sourcefrom = Cols[6];
-        data.fromid = FCString::Atoi(*Cols[7]);
-        data.sourcestr = Cols[8];
+        for (int i = 0; i < Cols.Num(); i++)
+        {
+            switch (i)
+            {
+            case 0: data.sid = Cols[i]; break;
+            case 1: data.layer = FCString::Atoi(*Cols[i]); break;
+            case 2: data.qid = FCString::Atoi(*Cols[i]); break;
+            case 3: data.step = FCString::Atoi(*Cols[i]); break;
+            case 4: data.available = FCString::Atoi(*Cols[i]); break;
+            case 5: data.jianhuanstr = Cols[i]; break;
+            case 6: data.sourcefrom = Cols[i]; break;
+            case 7: data.fromid = FCString::Atoi(*Cols[i]); break;
+            case 8: data.sourcestr = Cols[i]; break;
+            default: break;
+            }
+        }
+
         return data;
     }
 

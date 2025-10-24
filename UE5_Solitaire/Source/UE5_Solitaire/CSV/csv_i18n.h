@@ -45,18 +45,24 @@ public:
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","));
-        ensure(Cols.Num() == 9, "Cols Num: " + Cols.Num());
 
         RowData data;
-        data.key = Cols[0];
-        data.English = Cols[1];
-        data.Chinese = Cols[2];
-        data.Japanese = Cols[3];
-        data.Hindi = Cols[4];
-        data.Arabic = Cols[5];
-        data.French = Cols[6];
-        data.Spanish = Cols[7];
-        data.Russian = Cols[8];
+        for (int i = 0; i < Cols.Num(); i++)
+        {
+            switch (i)
+            {
+            case 0: data.key = Cols[i]; break;
+            case 1: data.English = Cols[i]; break;
+            case 2: data.Chinese = Cols[i]; break;
+            case 3: data.Japanese = Cols[i]; break;
+            case 4: data.Hindi = Cols[i]; break;
+            case 5: data.Arabic = Cols[i]; break;
+            case 6: data.French = Cols[i]; break;
+            case 7: data.Spanish = Cols[i]; break;
+            case 8: data.Russian = Cols[i]; break;
+            default: break;
+            }
+        }
         return data;
     }
 
