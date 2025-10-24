@@ -27,10 +27,17 @@ public:
     {
         TArray<FString> Lines;
         csvFileContent.ParseIntoArrayLines(Lines);
-        for (int i = 1; i < Lines.Num(); ++i)        // 跳过表头
+        for (int i = 3; i < Lines.Num(); ++i)        // 跳过表头
         {
-            RowData mRawData = ParseRowData(Lines[i]);
-            mTable.Add(mRawData);
+            if (!Lines[i].IsEmpty())
+            {
+                RowData mRawData = ParseRowData(Lines[i]);
+                mTable.Add(mRawData);
+            }
+            else
+            {
+                break;
+            }
         }
     }
 
@@ -38,17 +45,18 @@ public:
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","));
+        ensure(Cols.Num() == 9, "Cols Num: " + Cols.Num());
 
         RowData data;
-        data.key = Cols[1];
-        data.English = Cols[2];
-        data.Chinese = Cols[3];
-        data.Japanese = Cols[4];
-        data.Hindi = Cols[5];
-        data.Arabic = Cols[6];
-        data.French = Cols[7];
-        data.Spanish = Cols[8];
-        data.Russian = Cols[9];
+        data.key = Cols[0];
+        data.English = Cols[1];
+        data.Chinese = Cols[2];
+        data.Japanese = Cols[3];
+        data.Hindi = Cols[4];
+        data.Arabic = Cols[5];
+        data.French = Cols[6];
+        data.Spanish = Cols[7];
+        data.Russian = Cols[8];
         return data;
     }
 

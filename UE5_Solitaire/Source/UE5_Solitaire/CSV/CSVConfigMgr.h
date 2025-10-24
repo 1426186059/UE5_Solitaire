@@ -12,6 +12,8 @@ class UE5_SOLITAIRE_API CSVConfigMgr : public KKSingleton<CSVConfigMgr>
 {
     friend class KKSingleton<CSVConfigMgr>;
 public:
+    static const int RowOffset = 3;
+public:
     void Init();
 private:
     template<typename T>

@@ -8,7 +8,7 @@ class CSV_jianhuan_vita
 {
     struct RowData
     {
-        FString id;
+        FString sid;
         int32 layer;
         int32 qid;
         int32 step;
@@ -21,16 +21,24 @@ class CSV_jianhuan_vita
 
 private:
     static TArray<RowData> mTable;
+     const int nRowOffset = 3;
 
 public:
     static void ParseData(FString csvFileContent)
     {
         TArray<FString> Lines;
         csvFileContent.ParseIntoArrayLines(Lines);
-        for (int i = 1; i < Lines.Num(); ++i)        // 跳过表头
+        for (int i = 3; i < Lines.Num(); ++i)        // 跳过表头
         {
-            RowData mRawData = ParseRowData(Lines[i]);
-            mTable.Add(mRawData);
+            if (!Lines[i].IsEmpty())
+            {
+                RowData mRawData = ParseRowData(Lines[i]);
+                mTable.Add(mRawData);
+            }
+            else
+            {
+                break;
+            }
         }
     }
 
@@ -38,17 +46,18 @@ public:
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","));
-
+        ensure(Cols.Num() == 9, "Cols Num: " + Cols.Num());
+        
         RowData data;
-        data.id = Cols[1];
-        data.layer = FCString::Atoi(*Cols[2]);
-        data.qid = FCString::Atoi(*Cols[3]);
-        data.step = FCString::Atoi(*Cols[4]);
-        data.available = FCString::Atoi(*Cols[5]);
-        data.jianhuanstr = Cols[6];
-        data.sourcefrom = Cols[7];
-        data.fromid = FCString::Atoi(*Cols[8]);
-        data.sourcestr = Cols[9];
+        data.sid = Cols[0];
+        data.layer = FCString::Atoi(*Cols[1]);
+        data.qid = FCString::Atoi(*Cols[2]);
+        data.step = FCString::Atoi(*Cols[3]);
+        data.available = FCString::Atoi(*Cols[4]);
+        data.jianhuanstr = Cols[5];
+        data.sourcefrom = Cols[6];
+        data.fromid = FCString::Atoi(*Cols[7]);
+        data.sourcestr = Cols[8];
         return data;
     }
 
