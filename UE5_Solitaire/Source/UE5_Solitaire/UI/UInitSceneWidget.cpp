@@ -48,7 +48,7 @@ void UInitSceneWidget::Show()
     mInitSceneHotUpdateMgr->UpdateVersionFunc.AddUObject(this, &UInitSceneWidget::UpdateVersionFunc);
 }
 
-void UInitSceneWidget::Hide()
+void UInitSceneWidget::Hide(bool bDestory)
 {
     this->SetVisibility(ESlateVisibility::Collapsed);
 
@@ -58,6 +58,14 @@ void UInitSceneWidget::Hide()
         mInitSceneHotUpdateMgr->UpdateFinishFunc.RemoveAll(this);
         mInitSceneHotUpdateMgr->UpdateErrorFunc.RemoveAll(this);
         mInitSceneHotUpdateMgr->UpdateVersionFunc.RemoveAll(this);
+    }
+
+    if (bDestory)
+    {
+        if (this->IsInViewport())
+        {
+            this->RemoveFromParent();
+        }
     }
 }
 
@@ -80,13 +88,7 @@ void UInitSceneWidget::UpdateFinishFunc()
         mInitSceneHotUpdateMgr->Destroy(); //避免在委托回调中修改委托本身（推荐） ，导致的崩溃
         mInitSceneHotUpdateMgr = nullptr;
     }
-
-    this->Hide();
-    if (this->IsInViewport())
-    {
-        this->RemoveFromParent();
-    }
-
+    
     KKEventMgr::GetSingleton()->Broadcast(GameConst::EventId_InitSceneDoFinishOK, nullptr);
 }
 

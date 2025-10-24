@@ -7,7 +7,7 @@
 #include "dt_i18n.generated.h"
 
 USTRUCT()
-struct F_i18n_TableRow : public FTableRowBase
+struct FTableRow_i18n : public FTableRowBase
 {
     GENERATED_BODY()
 
@@ -23,12 +23,12 @@ struct F_i18n_TableRow : public FTableRowBase
 };
 
 UCLASS()
-class UE5_SOLITAIRE_API U_i18n_DataTable : public UDataTable
+class UE5_SOLITAIRE_API UDataTable_i18n : public UDataTable
 {
     GENERATED_BODY()
 
-    U_i18n_DataTable()
+    UDataTable_i18n()
     {
-        RowStruct = F_i18n_TableRow::StaticStruct();   // 告诉表用哪一行结构
+        RowStruct = FTableRow_i18n::StaticStruct();   // 告诉表用哪一行结构
     }
 };

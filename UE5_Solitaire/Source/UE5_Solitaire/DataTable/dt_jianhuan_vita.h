@@ -7,7 +7,7 @@
 #include "dt_jianhuan_vita.generated.h"
 
 USTRUCT()
-struct F_jianhuan_vita_TableRow : public FTableRowBase
+struct FTableRow_jianhuan_vita : public FTableRowBase
 {
     GENERATED_BODY()
 
@@ -23,12 +23,12 @@ struct F_jianhuan_vita_TableRow : public FTableRowBase
 };
 
 UCLASS()
-class UE5_SOLITAIRE_API U_jianhuan_vita_DataTable : public UDataTable
+class UE5_SOLITAIRE_API UDataTable_jianhuan_vita : public UDataTable
 {
     GENERATED_BODY()
 
-    U_jianhuan_vita_DataTable()
+    UDataTable_jianhuan_vita()
     {
-        RowStruct = F_jianhuan_vita_TableRow::StaticStruct();   // 告诉表用哪一行结构
+        RowStruct = FTableRow_jianhuan_vita::StaticStruct();   // 告诉表用哪一行结构
     }
 };

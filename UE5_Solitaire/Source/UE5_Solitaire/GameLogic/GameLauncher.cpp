@@ -51,19 +51,16 @@ void AGameLauncher::BeginPlay()
     //    UE_LOG(LogTemp, Log, TEXT("PC IS NULL"));
     //}
 
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->AddUObject(this, &AGameLauncher::GoToLobby);
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->AddUObject(this, &AGameLauncher::StartEnterGame);
     
     //加载InitScene界面
     TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
         TEXT("/Game/ResourceABs/InitScene/BPS/IntSceneCWBP.IntSceneCWBP_C"));
     if (BPClass != NULL)
     {
-        UInitSceneWidget* mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GEngine->GameViewport->GetWorld(), BPClass);
+        mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GEngine->GameViewport->GetWorld(), BPClass);
         mUInitSceneWidget->Show();
     }
-
-    //记载一些数据
-    DataCenter::GetSingleton()->Init();
 }
 
 void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -76,17 +73,33 @@ void AGameLauncher::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void AGameLauncher::GoToLobby(void* param)
+void AGameLauncher::StartEnterGame(void* param)
 {
-    UE_LOG(LogTemp, Log, TEXT("AGameLauncher GoToLobby"));
+    UE_LOG(LogTemp, Log, TEXT("AGameLauncher StartEnterGame"));
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->RemoveAll(this);
+
+    //加载游戏数据
+    DataCenter::GetSingleton()->Init();
+    CSVConfigMgr::GetSingleton()->Init();
+    DTMgr::GetSingleton()->Init();
+
+    //上面热更新加载完成，所以这里加载一些数据
+    this->GoToLobby();
+}
+
+void AGameLauncher::GoToLobby()
+{   
+    if (mUInitSceneWidget != nullptr)
+    {
+        mUInitSceneWidget->Hide(true);
+    }
 
     TSubclassOf<UMainUIWidget> BPClass = LoadClass<UMainUIWidget>(nullptr,
         TEXT("/Game/ResourceABs/MainScene/BPS/MainUICWBP.MainUICWBP_C"));
     if (BPClass != NULL)
     {
-        UMainUIWidget* mUInitSceneWidget = CreateWidget<UMainUIWidget>(GEngine->GameViewport->GetWorld(), BPClass);
-        mUInitSceneWidget->Show();
+        UMainUIWidget* mUMainUIWidget = CreateWidget<UMainUIWidget>(GEngine->GameViewport->GetWorld(), BPClass);
+        mUMainUIWidget->Show();
     }
 }
 

@@ -8,6 +8,8 @@
 #include "UE5_Solitaire/UI/MainUIWidget.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 #include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
+#include "UE5_Solitaire/CSV/CSVConfigMgr.h"
+#include "UE5_Solitaire/DataTable/DTMgr.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -31,5 +33,9 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 public:	
 	virtual void Tick(float DeltaTime) override;
-	void GoToLobby(void* param);
+	void StartEnterGame(void* param);
+	void GoToLobby();
+
+private:
+	UInitSceneWidget* mUInitSceneWidget;
 };

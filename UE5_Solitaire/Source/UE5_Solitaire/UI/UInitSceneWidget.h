@@ -22,11 +22,9 @@ protected:
 	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 public:
-
-public:
 	void Init();
 	void Show();
-	void Hide();
+	void Hide(bool bDestory = false);
 	void Refresh();
 
 	void UpdateProgressFunc(float Percent01);
