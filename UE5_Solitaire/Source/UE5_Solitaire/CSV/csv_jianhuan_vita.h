@@ -6,7 +6,7 @@
 
 class CSV_jianhuan_vita
 {
-    struct RawData
+    struct RowData
     {
         FString id;
         int32 layer;
@@ -20,7 +20,7 @@ class CSV_jianhuan_vita
     };
 
 private:
-    static TArray<RawData> mTable;
+    static TArray<RowData> mTable;
 
 public:
     static void ParseData(FString csvFileContent)
@@ -29,17 +29,17 @@ public:
         csvFileContent.ParseIntoArrayLines(Lines);
         for (int i = 1; i < Lines.Num(); ++i)        // Ìø¹ý±íÍ·
         {
-            auto mRawData = ParseRawData(Lines[i]);
+            RowData mRawData = ParseRowData(Lines[i]);
             mTable.Add(mRawData);
         }
     }
 
-    static RawData ParseRawData(FString Line)
+    static RowData ParseRowData(FString Line)
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","));
 
-        RawData data;
+        RowData data;
         data.id = Cols[1];
         data.layer = FCString::Atoi(*Cols[2]);
         data.qid = FCString::Atoi(*Cols[3]);

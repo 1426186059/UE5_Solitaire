@@ -6,7 +6,7 @@
 
 class CSV_i18n
 {
-    struct RawData
+    struct RowData
     {
         FString key;
         FString English;
@@ -20,7 +20,7 @@ class CSV_i18n
     };
 
 private:
-    static TArray<RawData> mTable;
+    static TArray<RowData> mTable;
 
 public:
     static void ParseData(FString csvFileContent)
@@ -29,17 +29,17 @@ public:
         csvFileContent.ParseIntoArrayLines(Lines);
         for (int i = 1; i < Lines.Num(); ++i)        // Ìø¹ý±íÍ·
         {
-            RawData mRawData = ParseRawData(Lines[i]);
+            RowData mRawData = ParseRowData(Lines[i]);
             mTable.Add(mRawData);
         }
     }
 
-    static RawData ParseRawData(FString Line)
+    static RowData ParseRowData(FString Line)
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","));
 
-        RawData data;
+        RowData data;
         data.key = Cols[1];
         data.English = Cols[2];
         data.Chinese = Cols[3];

@@ -3,5 +3,5 @@
 
 #include "csv_jianhuan_vita.h"
 
-TArray<CSV_jianhuan_vita::RawData> CSV_jianhuan_vita::mTable = TArray<CSV_jianhuan_vita::RawData>();
+TArray<CSV_jianhuan_vita::RowData> CSV_jianhuan_vita::mTable = TArray<CSV_jianhuan_vita::RowData>();
 
