@@ -21,7 +21,6 @@ class CSV_jianhuan_vita
 
 private:
     static TArray<RowData> mTable;
-     const int nRowOffset = 3;
 
 public:
     static void ParseData(FString csvFileContent)
