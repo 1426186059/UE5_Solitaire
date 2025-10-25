@@ -19,9 +19,20 @@ public:
 	void Show();
 	void Hide();
 	void Refresh();
+
+	void SetPokerId(int nPokerId);
+	void SetTurnOverState(bool bShow, int nStepIndex);
+	bool orTurnOverStateIsTrue();
+	
 private:
 	bool bInit;
 
 	UUserWidget* mUIRoot;
 	UImage* mIcon;
+
+	int nPokerId;
+	bool bTurnOverState = false;
+	int32 nStepIndex_ForFirstShowPokerId = -1;
+	FVector2D beginPos = {};
+	bool bInDrag = false;
 };

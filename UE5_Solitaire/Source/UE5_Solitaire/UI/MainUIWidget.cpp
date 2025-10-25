@@ -46,8 +46,24 @@ void UMainUIWidget::Init()
     UButton* mGameNodeBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("gameNodeBtn"));
     mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
 
-    UWidget* mFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos");
+    this->mFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos");
     this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
+
+    this->tableCardNode4APos = {};
+    for (int i = 1; i <= 4; i++)
+    {
+        UWidget* mWidget = mUIRoot->GetWidgetFromName("4APos" + i);
+        this->tableCardNode4APos.Add(mWidget);
+    }
+
+    this->tableCardNodeTop7Pos = {};
+    for (int i = 1; i <= 7; i++)
+    {
+        UWidget* mWidget = mUIRoot->GetWidgetFromName("Top7Pos" + i);
+        this->tableCardNodeTop7Pos.Add(mWidget);
+    }
+
+
 }
 
 void UMainUIWidget::Show()
@@ -79,10 +95,54 @@ void UMainUIWidget::OnBtnClicked_GameNodeBtn()
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
 }
 
+
+
+void UMainUIWidget::RecycleAndInitCardGo()
+{
+
+}
+
 void UMainUIWidget::InitGame()
 {
-    mSendCardListGo = {};
+    //local tableOpStepItem = RecordStepDataHandler.data.tableOpStepItem
+    //    local mInitSendCardList = RecordStepDataHandler.data.mInitSendCardList
+    //    if  RecordStepDataHandler:orGameEnd() then
+    //        self : NewGameBegin_ForNormal(true)
+    //            return
+    //        end
+    //        self.mLastSendCardList = mInitSendCardList
+    //        -------------------------- - 初始化资源------------------------------
+    this->RecycleAndInitCardGo();
+    this->bGameEnd = false;
+    //this->nGameMode = RecordStepDataHandler.data.nGameMode
+    this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
+            
+    ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
+    for (int i = 1; i < mInitSendCardList.Num(); i++)
+    {
+        this->mSendCardListGo[i].SetPokerId(mInitSendCardList[i]);
+        this->mSendCardListGo[i].SetTurnOverState(false);
+    }
 
+    for (int i = 1; i <= 7; i++)
+    {
+        for (int j = 1; j < i; j++)
+        {
+            int nTopIndex = i;
+            UPokerItemWidget* mCardItem = this->mSendCardListGo.RemoveAt(0);
+            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
+            this->SetRelativePos(mCardItem, this->GetCardNodeTop7MaxHeightPos(nTopIndex));
+            if (i == j)
+            {
+                mCardItem->SetTurnOverState(true, 0);
+            }
+        }
+    }
+
+    //TODO 这里就是恢复逻辑
+
+    //初始化播放发牌动画
+    mSendCardListGo = {};
     TSubclassOf<UPokerItemWidget> PokerItemWBP = LoadClass<UPokerItemWidget>(nullptr,
         TEXT("/Game/ResourceABs/MainScene/BPS/PokerItemCWBP.PokerItemCWBP_C"));
 
@@ -91,7 +151,7 @@ void UMainUIWidget::InitGame()
         UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
         return;
     }
-    
+
     for (int i = 0; i < 52; i++)
     {
         UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(GEngine->GameViewport->GetWorld(), PokerItemWBP);
@@ -100,6 +160,7 @@ void UMainUIWidget::InitGame()
         mSendCardListGo.Add(mPokerItem);
     }
 
+    this->RecoverGame(true);
 }
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
@@ -108,118 +169,211 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
     {
         for (int i = 1; i <= 7; i++)
         {
-            /*for j = 1, #self.tableCardNodeTop7Go[i] do
-                local mCardItem = self.tableCardNodeTop7Go[i][j]
-                mCardItem.transform:SetAsLastSibling()
-                mCardItem : Show()
-                mCardItem : ForceShowBackUI()
-                mCardItem : SetEventTriggerState(mCardItem : orTurnOverStateIsTrue())
-                local fromPos = self : GetCardNodeSendPokerPos()
-                mCardItem.transform.localPosition = fromPos
-                end
-                end
+            for (int j = 1; j < this->tableCardNodeTop7Go[i].Num(); j++)
+            {
+                auto mCardItem = this->tableCardNodeTop7Go[i][j];
+                /* mCardItem.transform:SetAsLastSibling()
+                 mCardItem : Show()
+                 mCardItem : ForceShowBackUI()
+                 mCardItem : SetEventTriggerState(mCardItem : orTurnOverStateIsTrue())
+                 local fromPos = self : GetCardNodeSendPokerPos()
+                 mCardItem.transform.localPosition = fromPos
+                 end
+                 end
 
-                for i = 1, 4 do
-                    for j = 1, #self.tableCardNode4AGo[i] do
-                        local mCardItem = self.tableCardNode4AGo[i][j]
-                        mCardItem.transform:SetAsLastSibling()
-                        mCardItem : ForceShowBackUI()
-                        mCardItem : Show()
-                        mCardItem : SetEventTriggerState(j == #self.tableCardNode4AGo[i])
-                        local fromPos = self : GetCardNodeSendPokerPos()
-                        mCardItem.transform.localPosition = fromPos
-                        end
-                        end
+                 for i = 1, 4 do
+                     for j = 1, #self.tableCardNode4AGo[i] do
+                         local mCardItem = self.tableCardNode4AGo[i][j]
+                         mCardItem.transform:SetAsLastSibling()
+                         mCardItem : ForceShowBackUI()
+                         mCardItem : Show()
+                         mCardItem : SetEventTriggerState(j == #self.tableCardNode4AGo[i])
+                         local fromPos = self : GetCardNodeSendPokerPos()
+                         mCardItem.transform.localPosition = fromPos
+                         end
+                         end
 
-                        for i = 1, #self.tableCardDraw3Go do
-                            local mCardItem = self.tableCardDraw3Go[i]
-                            mCardItem.transform:SetAsFirstSibling()
-                            mCardItem : ForceShowBackUI()
-                            mCardItem : SetEventTriggerState(i == 1)
+                         for i = 1, #self.tableCardDraw3Go do
+                             local mCardItem = self.tableCardDraw3Go[i]
+                             mCardItem.transform:SetAsFirstSibling()
+                             mCardItem : ForceShowBackUI()
+                             mCardItem : SetEventTriggerState(i == 1)
 
-                            if i <= 3 then
-                                mCardItem : Show()
-                            else
-                                mCardItem : Hide()
-                                end
+                             if i <= 3 then
+                                 mCardItem : Show()
+                             else
+                                 mCardItem : Hide()
+                                 end
 
-                                local fromPos = self : GetCardNodeSendPokerPos()
-                                mCardItem.transform.localPosition = fromPos
-                                end
+                                 local fromPos = self : GetCardNodeSendPokerPos()
+                                 mCardItem.transform.localPosition = fromPos
+                                 end
 
-                                ------------------ - 动画播放-------------------- -
-                                AudioHandler : PlaySound("start_new")
-                                for i = 1, 7 do
-                                    for j = 1, #self.tableCardNodeTop7Go[i] do
-                                        local mCardItem = self.tableCardNodeTop7Go[i][j]
-                                        local fromPos = self:GetCardNodeSendPokerPos()
-                                        local toPos = self : GetCardNodeTop7Pos(i, j)
-                                        local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
-                                            self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
-                                            end, function()
-                                            if mCardItem : orTurnOverStateIsTrue() then
-                                                mCardItem : PlayTurnOverAni()
-                                                end
-                                                end) : SetDelay(0.05 * j)
-                                                end
-                                                end
+                                 ------------------ - 动画播放-------------------- -
+                                 AudioHandler : PlaySound("start_new")
+                                 for i = 1, 7 do
+                                     for j = 1, #self.tableCardNodeTop7Go[i] do
+                                         local mCardItem = self.tableCardNodeTop7Go[i][j]
+                                         local fromPos = self:GetCardNodeSendPokerPos()
+                                         local toPos = self : GetCardNodeTop7Pos(i, j)
+                                         local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
+                                             self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
+                                             end, function()
+                                             if mCardItem : orTurnOverStateIsTrue() then
+                                                 mCardItem : PlayTurnOverAni()
+                                                 end
+                                                 end) : SetDelay(0.05 * j)
+                                                 end
+                                                 end
 
-                                                TweenMgr : delayedCall(0.5, function()
-                                                    local n4ACount = 0
-                                                    for i = 1, 4 do
-                                                        for j = 1, #self.tableCardNode4AGo[i] do
-                                                            n4ACount = n4ACount + 1
+                                                 TweenMgr : delayedCall(0.5, function()
+                                                     local n4ACount = 0
+                                                     for i = 1, 4 do
+                                                         for j = 1, #self.tableCardNode4AGo[i] do
+                                                             n4ACount = n4ACount + 1
 
-                                                            local mCardItem = self.tableCardNode4AGo[i][j]
-                                                            local fromPos = self:GetCardNodeSendPokerPos()
-                                                            local toPos = self : GetCardNode4APos(i)
-                                                            local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
-                                                                self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
-                                                                end, function()
-                                                                if mCardItem : orTurnOverStateIsTrue() then
-                                                                    mCardItem : PlayTurnOverAni()
-                                                                    end
-                                                                    end)
-                                                            end
-                                                            end
+                                                             local mCardItem = self.tableCardNode4AGo[i][j]
+                                                             local fromPos = self:GetCardNodeSendPokerPos()
+                                                             local toPos = self : GetCardNode4APos(i)
+                                                             local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
+                                                                 self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
+                                                                 end, function()
+                                                                 if mCardItem : orTurnOverStateIsTrue() then
+                                                                     mCardItem : PlayTurnOverAni()
+                                                                     end
+                                                                     end)
+                                                             end
+                                                             end
 
-                                                            if n4ACount > 0 then
-                                                                AudioHandler : PlaySound("P2")
-                                                                end
-                                                                end)
+                                                             if n4ACount > 0 then
+                                                                 AudioHandler : PlaySound("P2")
+                                                                 end
+                                                                 end)
 
-                                                TweenMgr : delayedCall(1.0, function()
-                                                    local nDraw3Count = 0
-                                                    for i = 1, #self.tableCardDraw3Go do
-                                                        nDraw3Count = nDraw3Count + 1
+                                                 TweenMgr : delayedCall(1.0, function()
+                                                     local nDraw3Count = 0
+                                                     for i = 1, #self.tableCardDraw3Go do
+                                                         nDraw3Count = nDraw3Count + 1
 
-                                                        local mCardItem = self.tableCardDraw3Go[i]
-                                                        local fromPos = self:GetCardNodeSendPokerPos()
-                                                        local toPos = self : GetCardNodeDraw3Pos(i)
-                                                        local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
-                                                            self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
-                                                            end, function()
-                                                            if mCardItem : orTurnOverStateIsTrue() then
-                                                                mCardItem : PlayTurnOverAni()
-                                                                end
-                                                                end)
-                                                        end
+                                                         local mCardItem = self.tableCardDraw3Go[i]
+                                                         local fromPos = self:GetCardNodeSendPokerPos()
+                                                         local toPos = self : GetCardNodeDraw3Pos(i)
+                                                         local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
+                                                             self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
+                                                             end, function()
+                                                             if mCardItem : orTurnOverStateIsTrue() then
+                                                                 mCardItem : PlayTurnOverAni()
+                                                                 end
+                                                                 end)
+                                                         end
 
-                                                        if nDraw3Count > 0 then
-                                                            AudioHandler : PlaySound("P2")
-                                                            end
-                                                            end)
-                                                        else
-                                                            self:RefreshAllPokerState()
-                                                            end
+                                                         if nDraw3Count > 0 then
+                                                             AudioHandler : PlaySound("P2")
+                                                             end
+                                                             end)
+                                                         else
+                                                             self:RefreshAllPokerState()
+                                                             end
 
-                                                            GameEventHandler : Brocast(EventName.RefreshTopBottomUI)
-                                                            self.mTimer : Start()
-                                                            self : UpdateGameMode()
-                                                            self : ResetRemainHintCount()
-                                                            self : onAddScore_InitParam()
-                                                            self.GameWinAniMgr : DestroyAniNode()
-                                                            self : DoWhenSet_FastGame()*/
+                                                             GameEventHandler : Brocast(EventName.RefreshTopBottomUI)
+                                                             self.mTimer : Start()
+                                                             self : UpdateGameMode()
+                                                             self : ResetRemainHintCount()
+                                                             self : onAddScore_InitParam()
+                                                             self.GameWinAniMgr : DestroyAniNode()
+                                                             self : DoWhenSet_FastGame()*/
+            }
         }
     }
+}
+
+//------------------------------------ 相对位置计算 --------------------------------------------
+FVector2D UMainUIWidget::GetRelativePosByGo(UWidget* target)
+{
+    return target->GetRenderTransform().Translation;
+}
+
+void UMainUIWidget::SetRelativePos(UWidget* target, FVector2D relativePos)
+{
+    target->SetRenderTranslation(relativePos);
+}
+
+float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
+{
+    UWidget* tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    int nStartPosIndex = 5;
+    int nZhengCount = 0;
+    for(auto v : this->tableCardNodeTop7Go)
+    {
+        if (v->orTurnOverStateIsTrue())
+        {
+            nZhengCount = nZhengCount + 1;
+        }
+    }
+
+    if (nZhengCount <= nStartPosIndex)
+    {
+        return UMainUIWidget::N_TOP7_GAP_HEIGHT;
+    }
+    else
+    {
+        float fPercent = (nZhengCount - nStartPosIndex) / (13 - nStartPosIndex);
+        return UMainUIWidget::N_TOP7_GAP_HEIGHT * (1 - fPercent) + 40 * fPercent;
+    }
+}
+
+FVector2D UMainUIWidget::GetCardNodeTop7MaxHeightPos(int nTopIndex)
+{
+    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num())
+}
+
+FVector2D UMainUIWidget::GetCardNodeTop7NextMaxHeightPos(int nTopIndex)
+{
+    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num() + 1)
+}
+
+FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex)
+{
+    float nGapZhengDis = this->GetTop7_Gap_Height(nTopIndex);
+    FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
+    UWidget* tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    float posY = oriPos.y;
+    for (int i = 1; i < nHeightIndex - 1; i++)
+    {
+        UWidget* mCardItem = this->tableCardNodeTop7Go[i];
+        if (mCardItem == nullptr or mCardItem->orTurnOverStateIsTrue())
+        {
+            posY = posY - nGapZhengDis;
+        }
+        else
+        {
+            posY = posY - 20;
+        }
+    }
+
+    return Unity.Vector3(oriPos.x, posY, oriPos.z);
+}
+
+FVector2D UMainUIWidget::GetCardNode4APos(int nTopIndex)
+{
+    return this->tableCardNode4APos[nTopIndex];
+}
+
+FVector2D UMainUIWidget::GetCardNodeDraw3Pos(int nIndex)
+{
+    if (nIndex <= 3)
+    {
+        float fOffsetX = -44 * (nIndex - 1);
+        return self.mCardNodeDraw3BeginPos + Unity.Vector3(fOffsetX, 0, 0);
+    }
+    else
+    {
+        float fOffsetX = -1 * (nIndex - 3)
+        return self:GetCardNodeDraw3Pos(3) + Unity.Vector3(fOffsetX, 0, 0)
+    }
+}
+
+FVector2D UMainUIWidget::GetCardNodeSendPokerPos()
+{
+    return this->tranFaPaiPos
 }

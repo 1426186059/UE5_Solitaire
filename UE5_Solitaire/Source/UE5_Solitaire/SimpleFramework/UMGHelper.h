@@ -80,6 +80,11 @@ public:
         }
     }
 
+    static void SetLocalPos(UWidget* target, FVector2D pos)
+    {
+        target->SetRenderTranslation(pos);
+    }
+
 private:
     // 禁止拷贝和移动（单例不应被复制）
     UMGHelper(const UMGHelper&) = delete;

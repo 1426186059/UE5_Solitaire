@@ -3,6 +3,8 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
+#include "UE5_Solitaire/GameLogic/GameConst.h"
+
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "Components/Button.h"
@@ -34,11 +36,36 @@ public:
 	
 	void InitGame();
 	void RecoverGame(bool bPlayAni);
+	void RecycleAndInitCardGo();
+
+	FVector2D GetRelativePosByGo(UWidget* target);
+	void SetRelativePos(UWidget* target, FVector2D relativePos);
+	float GetTop7_Gap_Height(int nTopIndex);
+	FVector2D GetCardNodeTop7MaxHeightPos(int nTopIndex);
+	FVector2D GetCardNodeTop7NextMaxHeightPos(int nTopIndex);
+	FVector2D GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex);
+	FVector2D GetCardNode4APos(int nTopIndex);
+	FVector2D GetCardNodeDraw3Pos(int nIndex);
+	FVector2D GetCardNodeSendPokerPos();
 private:
 	bool bInit;
 	UUserWidget* mUIRoot;
 	FVector2D mOldSize;
 
 	UCanvasPanel* PokerItemParent;
-	TArray<UUserWidget*> mSendCardListGo;
+	UWidget* mFaPaiPos;
+	TArray<UWidget*> tableCardNode4APos;
+	TArray<UWidget*> tableCardNodeTop7Pos;
+
+	TArray<UPokerItemWidget*> tableCardNode4AGo;
+	TArray<UPokerItemWidget*> tableCardNodeTop7Go;
+	TArray<UPokerItemWidget*> mSendCardListGo;
+
+	TArray<int> mInitSendCardList;
+
+	static const float N_TOP7_GAP_HEIGHT = 50.0;
+	SolitaireGameMode nGameMode = SolitaireGameMode::Normal;
+	bool bGameEnd = false;
+	float fRobotThinkingTime = 0;
+	float fIQTime = 0;
 };

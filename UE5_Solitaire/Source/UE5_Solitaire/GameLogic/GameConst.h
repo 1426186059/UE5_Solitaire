@@ -18,3 +18,11 @@ private:
 public:
     static const int EventId_InitSceneDoFinishOK = 1;
 };
+
+enum SolitaireGameMode
+{
+    Normal = 1,
+    DailyChallenge = 2,
+    Trip = 3,
+    Rank = 4,
+};

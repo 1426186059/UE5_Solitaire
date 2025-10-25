@@ -33,5 +33,39 @@ void UPokerItemWidget::Hide()
 
 void UPokerItemWidget::Refresh()
 {
-    //mUProgressBar->SetPercent(0);
+    this->Init();
+    if (this->orTurnOverStateIsTrue())
+    {
+        this->mIcon.sprite = this->GetPokerSprite(this->nPokerId);
+    }
+    else
+    {
+        this->mIcon.sprite = this->GetPokerSprite(-1);
+    }
+}
+
+void UPokerItemWidget::SetPokerId(int nPokerId)
+{
+    this->nPokerId = nPokerId;
+}
+
+void UPokerItemWidget::SetTurnOverState(bool bShow, int nStepIndex)
+{
+    //if self.bTurnOverState == bShow then return end
+
+    //self.bTurnOverState = bShow
+    //if bShow then
+    //if nStepIndex == nil then
+    //nStepIndex = GameView:GetNowRecordStepIndex()
+    //end
+
+    //self.nStepIndex_ForFirstShowPokerId = nStepIndex
+    //else
+    //self.nStepIndex_ForFirstShowPokerId = -1
+    //end
+}
+
+bool UPokerItemWidget::orTurnOverStateIsTrue()
+{
+    return this->bTurnOverState
 }
