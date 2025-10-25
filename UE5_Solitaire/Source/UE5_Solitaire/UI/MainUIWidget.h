@@ -5,6 +5,7 @@
 #include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
+#include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 
 #include "CoreMinimal.h"
@@ -26,6 +27,8 @@ public:
 	void Hide();
 	void Refresh();
 	void OnScreenSizeChanged();
+
+	UFUNCTION() void OnBtnClicked_GameNodeBtn();
 private:
 	bool bInit;
 	UUserWidget* mUIRoot;
