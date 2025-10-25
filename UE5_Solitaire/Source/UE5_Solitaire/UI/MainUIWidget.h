@@ -29,9 +29,12 @@ public:
 	void OnScreenSizeChanged();
 
 	UFUNCTION() void OnBtnClicked_GameNodeBtn();
+	
+	void InitGame();
+	void RecoverGame(bool bPlayAni);
 private:
 	bool bInit;
 	UUserWidget* mUIRoot;
-
 	FVector2D mOldSize;
+	TArray<UUserWidget*> mSendCardListGo;
 };
