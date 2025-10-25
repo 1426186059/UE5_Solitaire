@@ -45,11 +45,8 @@ void UMainUIWidget::Init()
 
     UButton* mGameNodeBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("gameNodeBtn"));
     mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
-}
 
-void UMainUIWidget::OnBtnClicked_GameNodeBtn()
-{
-    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
+    UWidget* mFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos");
 }
 
 void UMainUIWidget::Show()
@@ -74,6 +71,11 @@ void UMainUIWidget::OnScreenSizeChanged()
     //BG   ≈‰∆¡ƒª
     auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
+}
+
+void UMainUIWidget::OnBtnClicked_GameNodeBtn()
+{
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
 }
 
 //void UMainUIWidget::OnScreenSizeChanged()
