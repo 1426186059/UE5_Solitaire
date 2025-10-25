@@ -53,17 +53,19 @@ private:
 	FVector2D mOldSize;
 
 	UCanvasPanel* PokerItemParent;
-	UWidget* mFaPaiPos;
-	TArray<UWidget*> tableCardNode4APos;
-	TArray<UWidget*> tableCardNodeTop7Pos;
 
-	TArray<UPokerItemWidget*> tableCardNode4AGo;
-	TArray<UPokerItemWidget*> tableCardNodeTop7Go;
+	FVector2D tranFaPaiPos;
+	FVector2D mCardNodeDraw3BeginPos;
+	TArray<FVector2D> tableCardNode4APos;
+	TArray<FVector2D> tableCardNodeTop7Pos;
+
+	TArray<TArray<UPokerItemWidget*>> tableCardNode4AGo;
+	TArray<TArray<UPokerItemWidget*>> tableCardNodeTop7Go;
 	TArray<UPokerItemWidget*> mSendCardListGo;
 
 	TArray<int> mInitSendCardList;
 
-	static const float N_TOP7_GAP_HEIGHT = 50.0;
+	const float N_TOP7_GAP_HEIGHT = 50.0f;
 	SolitaireGameMode nGameMode = SolitaireGameMode::Normal;
 	bool bGameEnd = false;
 	float fRobotThinkingTime = 0;

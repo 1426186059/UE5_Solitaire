@@ -6,6 +6,7 @@
 #include "Components/Image.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+#include "PaperSprite.h"
 
 #include "CoreMinimal.h"
 #include "PokerItemWidget.generated.h"
@@ -21,7 +22,7 @@ public:
 	void Refresh();
 
 	void SetPokerId(int nPokerId);
-	void SetTurnOverState(bool bShow, int nStepIndex);
+	void SetTurnOverState(bool bShow, int nStepIndex = 0);
 	bool orTurnOverStateIsTrue();
 	
 private:

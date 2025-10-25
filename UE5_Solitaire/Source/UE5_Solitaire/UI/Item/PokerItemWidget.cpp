@@ -36,11 +36,15 @@ void UPokerItemWidget::Refresh()
     this->Init();
     if (this->orTurnOverStateIsTrue())
     {
-        this->mIcon.sprite = this->GetPokerSprite(this->nPokerId);
+        UPaperSprite* MySprite = LoadObject<UPaperSprite>(nullptr,
+            TEXT("/Game/UI/Sprites/Icon_01.Icon_01"));
+
+        UImage* MyImg = Cast<UImage>(WidgetTree->FindWidget(FName("IconImage")));
+        this->mIcon->SetBrushFromAtlasInterface(MySprite);
     }
     else
     {
-        this->mIcon.sprite = this->GetPokerSprite(-1);
+        this->mIcon.SetBrushFromTexture = this->GetPokerSprite(-1);
     }
 }
 

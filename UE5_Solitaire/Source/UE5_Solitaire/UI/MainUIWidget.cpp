@@ -46,23 +46,22 @@ void UMainUIWidget::Init()
     UButton* mGameNodeBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("gameNodeBtn"));
     mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
 
-    this->mFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos");
-    this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
-
+    this->tranFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos")->GetRenderTransform().Translation;
+    this->mCardNodeDraw3BeginPos = mUIRoot->GetWidgetFromName("Draw3Pos1")->GetRenderTransform().Translation;
     this->tableCardNode4APos = {};
     for (int i = 1; i <= 4; i++)
     {
-        UWidget* mWidget = mUIRoot->GetWidgetFromName("4APos" + i);
-        this->tableCardNode4APos.Add(mWidget);
+        FVector2D mPos = mUIRoot->GetWidgetFromName("4APos" + i)->GetRenderTransform().Translation;
+        this->tableCardNode4APos.Add(mPos);
     }
-
     this->tableCardNodeTop7Pos = {};
     for (int i = 1; i <= 7; i++)
     {
-        UWidget* mWidget = mUIRoot->GetWidgetFromName("Top7Pos" + i);
-        this->tableCardNodeTop7Pos.Add(mWidget);
+        FVector2D mPos = mUIRoot->GetWidgetFromName("Top7Pos" + i)->GetRenderTransform().Translation;
+        this->tableCardNodeTop7Pos.Add(mPos);
     }
 
+    this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
 
 }
 
@@ -116,12 +115,12 @@ void UMainUIWidget::InitGame()
     this->bGameEnd = false;
     //this->nGameMode = RecordStepDataHandler.data.nGameMode
     this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
-            
+    
     ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
     for (int i = 1; i < mInitSendCardList.Num(); i++)
     {
-        this->mSendCardListGo[i].SetPokerId(mInitSendCardList[i]);
-        this->mSendCardListGo[i].SetTurnOverState(false);
+        this->mSendCardListGo[i]->SetPokerId(mInitSendCardList[i]);
+        this->mSendCardListGo[i]->SetTurnOverState(false);
     }
 
     for (int i = 1; i <= 7; i++)
@@ -129,16 +128,15 @@ void UMainUIWidget::InitGame()
         for (int j = 1; j < i; j++)
         {
             int nTopIndex = i;
-            UPokerItemWidget* mCardItem = this->mSendCardListGo.RemoveAt(0);
+            UPokerItemWidget* mCardItem = this->mSendCardListGo.Pop();
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
             this->SetRelativePos(mCardItem, this->GetCardNodeTop7MaxHeightPos(nTopIndex));
             if (i == j)
             {
-                mCardItem->SetTurnOverState(true, 0);
+                mCardItem->SetTurnOverState(true);
             }
         }
     }
-
     //TODO 这里就是恢复逻辑
 
     //初始化播放发牌动画
@@ -300,10 +298,10 @@ void UMainUIWidget::SetRelativePos(UWidget* target, FVector2D relativePos)
 
 float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
 {
-    UWidget* tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    TArray<UPokerItemWidget*> tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     int nStartPosIndex = 5;
     int nZhengCount = 0;
-    for(auto v : this->tableCardNodeTop7Go)
+    for(auto v : tableCardNodeTop7Go)
     {
         if (v->orTurnOverStateIsTrue())
         {
@@ -324,23 +322,23 @@ float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
 
 FVector2D UMainUIWidget::GetCardNodeTop7MaxHeightPos(int nTopIndex)
 {
-    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num())
+    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num());
 }
 
 FVector2D UMainUIWidget::GetCardNodeTop7NextMaxHeightPos(int nTopIndex)
 {
-    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num() + 1)
+    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num() + 1);
 }
 
 FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex)
 {
     float nGapZhengDis = this->GetTop7_Gap_Height(nTopIndex);
     FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
-    UWidget* tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
-    float posY = oriPos.y;
+    TArray<UPokerItemWidget*> tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    float posY = oriPos.Y;
     for (int i = 1; i < nHeightIndex - 1; i++)
     {
-        UWidget* mCardItem = this->tableCardNodeTop7Go[i];
+        UPokerItemWidget* mCardItem = tableCardNodeTop7Go[i];
         if (mCardItem == nullptr or mCardItem->orTurnOverStateIsTrue())
         {
             posY = posY - nGapZhengDis;
@@ -351,7 +349,7 @@ FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex)
         }
     }
 
-    return Unity.Vector3(oriPos.x, posY, oriPos.z);
+    return FVector2D(oriPos.X, posY);
 }
 
 FVector2D UMainUIWidget::GetCardNode4APos(int nTopIndex)
@@ -364,16 +362,37 @@ FVector2D UMainUIWidget::GetCardNodeDraw3Pos(int nIndex)
     if (nIndex <= 3)
     {
         float fOffsetX = -44 * (nIndex - 1);
-        return self.mCardNodeDraw3BeginPos + Unity.Vector3(fOffsetX, 0, 0);
+        return this->mCardNodeDraw3BeginPos + FVector2D(fOffsetX, 0);
     }
     else
     {
-        float fOffsetX = -1 * (nIndex - 3)
-        return self:GetCardNodeDraw3Pos(3) + Unity.Vector3(fOffsetX, 0, 0)
+        float fOffsetX = -1 * (nIndex - 3);
+        return this->GetCardNodeDraw3Pos(3) + FVector2D(fOffsetX, 0);
     }
 }
 
 FVector2D UMainUIWidget::GetCardNodeSendPokerPos()
 {
-    return this->tranFaPaiPos
+    return this->tranFaPaiPos;
+}
+
+UPaperSprite* UMainUIWidget::GetPokerSprite(int nPokerId)
+{
+    if (nPokerId > 0)
+    {
+        local CardHandler = ThemeSolitaire.CardHandler;
+        int nDigetId = CardHandler:GetDigital(nPokerId);
+        int nSubDigetId = CardHandler:GetSubDigital(nPokerId);
+
+        UPaperSprite* PokerSprite = LoadObject<UPaperSprite>(nullptr,
+            TEXT("/Game/ResourceABs/MainScene/UI/AtlasGroup/poker/%s/Frames/card_1_di_%d_%d_png.card_1_di_%d_%d_png"),
+            TEXT("card1"), nDigetId, nSubDigetId, nDigetId, nSubDigetId);
+
+        return PokerSprite;
+    }
+    else
+    { 
+        local sprite = self.mCardBackSprite
+        return sprite
+    }
 }
