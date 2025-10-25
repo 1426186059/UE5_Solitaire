@@ -21,5 +21,7 @@ public:
 	void Refresh();
 private:
 	bool bInit;
+
 	UUserWidget* mUIRoot;
+	UImage* mIcon;
 };

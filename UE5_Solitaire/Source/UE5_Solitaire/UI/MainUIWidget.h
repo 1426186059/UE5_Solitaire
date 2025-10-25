@@ -8,6 +8,8 @@
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 
+#include "Item/PokerItemWidget.h"
+
 #include "CoreMinimal.h"
 #include "MainUIWidget.generated.h"
 
@@ -36,5 +38,7 @@ private:
 	bool bInit;
 	UUserWidget* mUIRoot;
 	FVector2D mOldSize;
+
+	UCanvasPanel* PokerItemParent;
 	TArray<UUserWidget*> mSendCardListGo;
 };

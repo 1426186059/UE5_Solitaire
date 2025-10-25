@@ -47,6 +47,7 @@ void UMainUIWidget::Init()
     mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
 
     UWidget* mFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos");
+    this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
 }
 
 void UMainUIWidget::Show()
@@ -82,24 +83,23 @@ void UMainUIWidget::InitGame()
 {
     mSendCardListGo = {};
 
-    TSubclassOf<UMainUIWidget> BPClass = LoadClass<UMainUIWidget>(nullptr,
-        TEXT("/Game/ResourceABs/MainScene/BPS/MainUICWBP.MainUICWBP_C"));
-    if (BPClass != NULL)
+    TSubclassOf<UPokerItemWidget> PokerItemWBP = LoadClass<UPokerItemWidget>(nullptr,
+        TEXT("/Game/ResourceABs/MainScene/BPS/PokerItemCWBP.PokerItemCWBP_C"));
+
+    if (PokerItemWBP == NULL)
     {
-        UMainUIWidget* mUMainUIWidget = CreateWidget<UMainUIWidget>(GEngine->GameViewport->GetWorld(), BPClass);
-        mUMainUIWidget->Show();
+        UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
+        return;
+    }
+    
+    for (int i = 0; i < 52; i++)
+    {
+        UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(GEngine->GameViewport->GetWorld(), PokerItemWBP);
+        this->PokerItemParent->AddChild(mPokerItem);
+        mPokerItem->Show();
+        mSendCardListGo.Add(mPokerItem);
     }
 
-     //   local cardItemPrefab = ThemeSolitaire.mCommonResSerialization:FindPrefab("CardItem")
-     //   local CardItemGenerator = require "Lua.MainLogic.view.CardItem"
-     //   for i = 1, 52 do
-     //       local goPanel = Unity.Object.Instantiate(cardItemPrefab)
-     //       goPanel.transform : SetParent(self.PokerItemParent, false)
-     //       goPanel : SetActive(true)
-     //       local CardItem = LuaHelper.CreateNewInstance(CardItemGenerator)
-     //       CardItem : Init(goPanel, self)
-     //       table.insert(self.mSendCardListGo, CardItem)
-     //end
 }
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
