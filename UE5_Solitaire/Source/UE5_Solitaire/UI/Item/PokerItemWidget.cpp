@@ -68,3 +68,16 @@ bool UPokerItemWidget::orTurnOverStateIsTrue()
 {
     return this->bTurnOverState;
 }
+
+void UPokerItemWidget::ForceShowBackUI()
+{
+    this->mIcon->SetBrushFromAtlasInterface(ResCenter::GetSingleton()->GetPokerSprite(-1));
+}
+
+void UPokerItemWidget::SetEventTriggerState(bool bCanClick)
+{
+    if (this->IsFocusable() != bCanClick)
+    {
+        this->SetIsFocusable(bCanClick);
+    }
+}

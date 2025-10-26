@@ -25,6 +25,8 @@ public:
 	void SetPokerId(int nPokerId);
 	void SetTurnOverState(bool bShow, int nStepIndex = 0);
 	bool orTurnOverStateIsTrue();
+	void ForceShowBackUI();
+	void SetEventTriggerState(bool bCanClick);
 	
 private:
 	bool bInit;

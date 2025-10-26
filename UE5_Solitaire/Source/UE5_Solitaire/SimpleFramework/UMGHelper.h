@@ -80,9 +80,31 @@ public:
         }
     }
 
-    static void SetLocalPos(UWidget* target, FVector2D pos)
+    static void SetPosition(UWidget* target, FVector2D pos)
     {
-        target->SetRenderTranslation(pos);
+        UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        Slot->SetPosition(pos);
+    }
+
+    static void SetChildIndex(UWidget* target, int nIndex, UCanvasPanel* Parent = nullptr)
+    {
+        if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
+        Parent->RemoveChild(target);
+        Parent->InsertChildAt(nIndex, target);
+    }
+
+    static void SetAsFirstChildIndex(UWidget* target, UCanvasPanel* Parent = nullptr)
+    {
+        if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
+        Parent->RemoveChild(target);
+        Parent->InsertChildAt(0, target);
+    }
+
+    static void SetAsLastChildIndex(UWidget* target, UCanvasPanel* Parent = nullptr)
+    {
+        if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
+        Parent->RemoveChild(target);
+        Parent->AddChildToCanvas(target);
     }
 
 private:

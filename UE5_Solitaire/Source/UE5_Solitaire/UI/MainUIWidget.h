@@ -66,6 +66,7 @@ private:
 	TArray<TArray<UPokerItemWidget*>> tableCardNode4AGo;
 	TArray<TArray<UPokerItemWidget*>> tableCardNodeTop7Go;
 	TArray<UPokerItemWidget*> mSendCardListGo;
+	TArray<UPokerItemWidget*> tableCardDraw3Go;
 
 	TArray<int> mInitSendCardList;
 
