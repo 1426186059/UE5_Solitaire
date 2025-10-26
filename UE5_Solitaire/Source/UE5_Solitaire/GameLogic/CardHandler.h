@@ -9,15 +9,16 @@
 #include "GameConst.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
 #include "UE5_Solitaire/SimpleFramework/KKRandomTool.h"
-#include "UE5_Solitaire/CSV/csv_jianhuan_vita.h"
+#include "UE5_Solitaire/CSV/CSVConfigMgr.h"
 
 class CardHandler :public KKSingleton<CardHandler>
 {
 private:
-	static TArray<int> ConfusingDic;
+	TMap<int, int> ConfusingDic;
 public:
 	void Init();
-	
+	void InitConfusingDic();
+
 	TArray<int> GetInitCards_ForNormalMode();
 	TArray<int> GetInitCards_ForRankMode();
 	TArray<int> GetInitCards_ForChallengeMode();

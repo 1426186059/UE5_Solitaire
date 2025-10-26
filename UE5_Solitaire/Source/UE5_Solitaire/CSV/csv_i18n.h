@@ -6,6 +6,8 @@
 
 class CSV_i18n
 {
+    friend class CSVConfigMgr;
+public:
     struct RowData
     {
         FString key;
@@ -19,12 +21,11 @@ class CSV_i18n
         FString Russian;
     };
 
+    TArray<RowData> mTable;
 private:
-    static TArray<RowData> mTable;
-
-public:
-    static void ParseData(FString csvFileContent)
+    static CSV_i18n* ParseData(FString csvFileContent)
     {
+        CSV_i18n* nDataClass = new CSV_i18n();
         TArray<FString> Lines;
         csvFileContent.ParseIntoArrayLines(Lines);
         for (int i = 3; i < Lines.Num(); ++i)        // Ìø¹ý±íÍ·
@@ -32,13 +33,14 @@ public:
             if (!Lines[i].IsEmpty())
             {
                 RowData mRawData = ParseRowData(Lines[i]);
-                mTable.Add(mRawData);
+                nDataClass->mTable.Add(mRawData);
             }
             else
             {
                 break;
             }
         }
+        return nDataClass;
     }
 
     static RowData ParseRowData(FString Line)

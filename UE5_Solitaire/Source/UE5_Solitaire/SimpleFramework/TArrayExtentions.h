@@ -4,32 +4,30 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Slate/SceneViewport.h"
 
-class UEHelper
+class TArrayExtentions
 {
 public:
-    static FVector2D GetScreenSize()
+    template<typename T>
+    static T RemoveLast(TArray<T>& mList)
     {
-        FVector2D mSize;
-        GEngine->GameViewport->GetViewportSize(mSize);
-        return mSize;
+        return mList.Pop();
     }
 
-    //static FIntPoint GetScreenSize()
-    //{
-    //    if (GEngine && GEngine->GetGameUserSettings())
-    //    {
-    //        return GEngine->GetGameUserSettings()->GetScreenResolution();
-    //    }
-    //    return FIntPoint::ZeroValue;
-    //}
+    template<typename T>
+    static T Remove(TArray<T>& mList, int nIndex)
+    {
+        T t = mList[nIndex];
+        mList.RemoveAt(nIndex);
+        return t;
+    }
 
 private:
     // 禁止拷贝和移动（单例不应被复制）
-    UEHelper(const UEHelper&) = delete;
-    UEHelper& operator=(const UEHelper&) = delete;
-    UEHelper(UEHelper&&) = delete;
-    UEHelper& operator=(UEHelper&&) = delete;
-
+    TArrayExtentions() = delete;
+    ~TArrayExtentions() = delete;
+    TArrayExtentions(const TArrayExtentions&) = delete;
+    TArrayExtentions& operator=(const TArrayExtentions&) = delete;
+    TArrayExtentions(TArrayExtentions&&) = delete;
+    TArrayExtentions& operator=(TArrayExtentions&&) = delete;
 };

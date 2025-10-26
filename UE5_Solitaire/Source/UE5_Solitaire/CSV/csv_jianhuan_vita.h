@@ -6,6 +6,7 @@
 
 class CSV_jianhuan_vita
 {
+    friend class CSVConfigMgr;
 public:
     struct RowData
     {
@@ -20,10 +21,16 @@ public:
         FString sourcestr;
     };
 
-    static TArray<RowData> mTable;
-
-    static void ParseData(FString csvFileContent)
+    TArray<RowData> mTable;
+    TArray<RowData>* GetTable()
     {
+        return &mTable;
+    }
+
+private:
+    static CSV_jianhuan_vita* ParseData(FString csvFileContent)
+    {
+        CSV_jianhuan_vita* mDataClass = new CSV_jianhuan_vita();
         TArray<FString> Lines;
         csvFileContent.ParseIntoArrayLines(Lines);
         for (int i = 3; i < Lines.Num(); ++i)        // Ìø¹ý±íÍ·
@@ -31,13 +38,14 @@ public:
             if (!Lines[i].IsEmpty())
             {
                 RowData mRawData = ParseRowData(Lines[i]);
-                mTable.Add(mRawData);
+                mDataClass->mTable.Add(mRawData);
             }
             else
             {
                 break;
             }
         }
+        return mDataClass;
     }
 
     static RowData ParseRowData(FString Line)

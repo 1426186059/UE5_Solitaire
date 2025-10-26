@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include <typeindex>
+#include <typeinfo>
+
 #include "CoreMinimal.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
 
@@ -11,13 +14,30 @@
 class UE5_SOLITAIRE_API CSVConfigMgr : public KKSingleton<CSVConfigMgr>
 {
     friend class KKSingleton<CSVConfigMgr>;
+
 public:
-    static const int RowOffset = 3;
+    CSV_jianhuan_vita* mCSV_jianhuan_vita;
+    CSV_i18n* mCSV_i18n;
+   // TMap<std:type_index, std::unique_ptr<void>> mConfigDic;
 public:
     void Init();
 private:
     template<typename T>
-    void LoadCSV(FString csvFileName)
+    T* LoadCSV(FString csvFileName)
+    {
+        FString path = FPaths::ProjectContentDir() / TEXT("/ResourceABs/MainScene/Config/CSV/") / csvFileName;
+
+        FString CsvStr;
+        if (!FFileHelper::LoadFileToString(CsvStr, *path))
+        {
+            UE_LOG(LogTemp, Warning, TEXT("CSV not found in Pak"));
+            return nullptr;
+        }
+        return T::ParseData(CsvStr);
+    }
+
+    template<typename T>
+    void LoadCSV2(FString csvFileName)
     {
         FString path = FPaths::ProjectContentDir() / TEXT("/ResourceABs/MainScene/Config/CSV/") / csvFileName;
 
@@ -27,8 +47,10 @@ private:
             UE_LOG(LogTemp, Warning, TEXT("CSV not found in Pak"));
             return;
         }
+        T* t = T::ParseData(CsvStr);
 
-        T::ParseData(CsvStr);
+        std::type_index TType = std::type_index(typeid(T));
+        //mConfigDic.Add(TType, t);
     }
 
 private:

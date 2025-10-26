@@ -36,27 +36,22 @@ void UPokerItemWidget::Refresh()
     this->Init();
     if (this->orTurnOverStateIsTrue())
     {
-        UPaperSprite* MySprite = LoadObject<UPaperSprite>(nullptr,
-            TEXT("/Game/UI/Sprites/Icon_01.Icon_01"));
-
-        UImage* MyImg = Cast<UImage>(WidgetTree->FindWidget(FName("IconImage")));
-        this->mIcon->SetBrushFromAtlasInterface(MySprite);
+        this->mIcon->SetBrushFromAtlasInterface(ResCenter::GetSingleton()->GetPokerSprite(this->nPokerId));
     }
     else
     {
-        this->mIcon.SetBrushFromTexture = this->GetPokerSprite(-1);
+        this->mIcon->SetBrushFromAtlasInterface(ResCenter::GetSingleton()->GetPokerSprite(-1));
     }
 }
 
-void UPokerItemWidget::SetPokerId(int nPokerId)
+void UPokerItemWidget::SetPokerId(int nPokerId1)
 {
-    this->nPokerId = nPokerId;
+    this->nPokerId = nPokerId1;
 }
 
 void UPokerItemWidget::SetTurnOverState(bool bShow, int nStepIndex)
 {
     //if self.bTurnOverState == bShow then return end
-
     //self.bTurnOverState = bShow
     //if bShow then
     //if nStepIndex == nil then
@@ -71,5 +66,5 @@ void UPokerItemWidget::SetTurnOverState(bool bShow, int nStepIndex)
 
 bool UPokerItemWidget::orTurnOverStateIsTrue()
 {
-    return this->bTurnOverState
+    return this->bTurnOverState;
 }

@@ -7,6 +7,7 @@
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "PaperSprite.h"
+#include "UE5_Solitaire/GameLogic/ResCenter.h"
 
 #include "CoreMinimal.h"
 #include "PokerItemWidget.generated.h"

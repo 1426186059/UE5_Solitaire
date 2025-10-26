@@ -2,14 +2,14 @@
 
 void CardHandler::Init()
 {
-	  
+    InitConfusingDic();
 }
 
 //local SpecialCardList = require "Lua.MainLogic.data.SpecialCardList"
 TArray<int> CardHandler::GetInitCards_ForNormalMode()
 {
-    int nDifficultLayer = DataCenter::GetSingleton()->data.nDifficultLayer;
-    int nGameLevel = DataCenter::GetSingleton()->data.nGameLevel;
+    int nDifficultLayer = DataCenter::GetSingleton()->data->nDifficultLayer;
+    int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
     nGameLevel = FMath::Max(nGameLevel, 1);
 
     //if (nGameLevel <= #SpecialCardList)
@@ -37,7 +37,7 @@ TArray<int> CardHandler::GetInitCards_ForRankMode()
     TArray<int> tableCards = {};
     for (int i = 1; i < 13; i++)
     {
-        for (int j = 1; k <= 4; j++) // 1:♣️，2:♥️ 3 : ♦️ 4：♠️
+        for (int j = 1; j <= 4; j++)     // 1:♣️，2:♥️ 3 : ♦️ 4：♠️
         {
             int nPokerId = this->GetPokerId(i, j);
             tableCards.Add(nPokerId);
@@ -58,20 +58,22 @@ TArray<int> CardHandler::GetInitCards_ForRankMode()
 
 TArray<int> CardHandler::GetInitCards_ForChallengeMode()
 {
-    int nGameLevel = DataCenter::GetSingleton()->data.nGameLevel;
+    int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
     int nDifficultLayer = KKRandomTool::GetSingleton()->RandomInt(2, 10);
     return GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
 }
 
 TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGameLevel)
 {
-    int nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
+    nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
     nGameLevel = FMath::Max(nGameLevel, 1);
 
+    TArray<CSV_jianhuan_vita::RowData>& mTable = CSVConfigMgr::GetSingleton()->mCSV_jianhuan_vita->mTable;
+
     TArray<int> tableIndex = {};
-    for (int k = 0; k < CSV_jianhuan_vita::mTable.Num(); k++)
+    for (int k = 0; k < mTable.Num(); k++)
     {
-        CSV_jianhuan_vita::RowData v = CSV_jianhuan_vita::mTable[k];
+        CSV_jianhuan_vita::RowData v = mTable[k];
         if (v.layer == nDifficultLayer)
         {
             tableIndex.Add(k);
@@ -81,10 +83,10 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     if (tableIndex.Num() > 0)
     {
         int nRandomIndex = tableIndex[FMath::RandRange(0, tableIndex.Num())];
-        TArray<int> tablePokerId = GetExcelTablePokerId(ExcelConfigHandler.Config_jianhuan_vita[nRandomIndex]);
-        if (tablePokerId)
+        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mTable[nRandomIndex]);
+        if (bTrue)
         {
-            return tablePokerId
+            return tablePokerId;
         }
     }
 
@@ -148,17 +150,25 @@ int CardHandler::GetColor(int nPokerId)
 }
 
 //----------------------------------------------------------Excel 数据解析----------------------------------------------------------------------------------
-TArray<int> CardHandler::ConfusingDic = {
-    27,53,95,52,66,62,0,33,68,5,20,85,92,
-    35,40,22,43,31,23,57,80,55,9,98,67,58,
-    97,65,99,3,75,34,90,16,70,60,25,79,86,
-    69,29,76,28,12,50,39,42,59,96,63,26,17
-};
-CardHandler::ConfusingDic = LuaHelper.GetKeyValueSwitchTable(ConfusingDic1);
+void CardHandler::InitConfusingDic()
+{
+    TArray<int> ConfusingList = {
+        27,53,95,52,66,62,0,33,68,5,20,85,92,
+        35,40,22,43,31,23,57,80,55,9,98,67,58,
+        97,65,99,3,75,34,90,16,70,60,25,79,86,
+        69,29,76,28,12,50,39,42,59,96,63,26,17
+    };
+
+    this->ConfusingDic = {};
+    for (int i = 0; i < ConfusingList.Num(); i++)
+    {
+        this->ConfusingDic[ConfusingList[i]] = i + 1;
+    }
+}
 
 int CardHandler::GetExcelToLocalPokerId(int nExcelNum)
 {
-    int cardNum = ConfusingDic[nExcelNum] + 1;
+    int cardNum = this->ConfusingDic[nExcelNum] + 1;
     ensureMsgf(cardNum, TEXT("Error: %d"), nExcelNum);
 
     SolitaireColorType nColorType;
@@ -213,7 +223,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(CSV_j
 
     if (this->CheckCardListError(tablePokerId) == false)
     {
-        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %d"), configItem.sid);
+        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem.sid);
         return { false, tablePokerId };
     }
 
@@ -246,13 +256,13 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(CSV_jianhuan_vit
 
     if (this->CheckCardListError(tablePokerId) == false)
     {
-        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %d"), configItem.sid);
+        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem.sid);
         return {false, tablePokerId};
     }
 
     this->reverseTable(tablePokerId, tablePokerId.Num() - 24, tablePokerId.Num() - 1);
     this->reverseTable(tablePokerId, 0, tablePokerId.Num() - 1);
-    ensureMsgf(tablePokerId.Num() == 52, TEXT("Error: %d %d"), tablePokerId.Num(), configItem.sid);
+    ensureMsgf(tablePokerId.Num() == 52, TEXT("Error: %d %s"), tablePokerId.Num(), *configItem.sid);
     return {true, tablePokerId };
 }
 

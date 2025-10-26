@@ -298,10 +298,10 @@ void UMainUIWidget::SetRelativePos(UWidget* target, FVector2D relativePos)
 
 float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
 {
-    TArray<UPokerItemWidget*> tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    TArray<UPokerItemWidget*>& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     int nStartPosIndex = 5;
     int nZhengCount = 0;
-    for(auto v : tableCardNodeTop7Go)
+    for(auto v : mListCardNodeTop7Go)
     {
         if (v->orTurnOverStateIsTrue())
         {
@@ -334,11 +334,11 @@ FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex)
 {
     float nGapZhengDis = this->GetTop7_Gap_Height(nTopIndex);
     FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
-    TArray<UPokerItemWidget*> tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    TArray<UPokerItemWidget*> mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     float posY = oriPos.Y;
     for (int i = 1; i < nHeightIndex - 1; i++)
     {
-        UPokerItemWidget* mCardItem = tableCardNodeTop7Go[i];
+        UPokerItemWidget* mCardItem = mListCardNodeTop7Go[i];
         if (mCardItem == nullptr or mCardItem->orTurnOverStateIsTrue())
         {
             posY = posY - nGapZhengDis;
@@ -374,25 +374,4 @@ FVector2D UMainUIWidget::GetCardNodeDraw3Pos(int nIndex)
 FVector2D UMainUIWidget::GetCardNodeSendPokerPos()
 {
     return this->tranFaPaiPos;
-}
-
-UPaperSprite* UMainUIWidget::GetPokerSprite(int nPokerId)
-{
-    if (nPokerId > 0)
-    {
-        local CardHandler = ThemeSolitaire.CardHandler;
-        int nDigetId = CardHandler:GetDigital(nPokerId);
-        int nSubDigetId = CardHandler:GetSubDigital(nPokerId);
-
-        UPaperSprite* PokerSprite = LoadObject<UPaperSprite>(nullptr,
-            TEXT("/Game/ResourceABs/MainScene/UI/AtlasGroup/poker/%s/Frames/card_1_di_%d_%d_png.card_1_di_%d_%d_png"),
-            TEXT("card1"), nDigetId, nSubDigetId, nDigetId, nSubDigetId);
-
-        return PokerSprite;
-    }
-    else
-    { 
-        local sprite = self.mCardBackSprite
-        return sprite
-    }
 }
