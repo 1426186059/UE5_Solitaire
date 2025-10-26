@@ -34,3 +34,11 @@ enum SolitaireColorType
     Club = 1,  // Ã·»¨
     Diamond = 3, //·½Æ¬
 };
+
+enum SolitairePokerPosType : int32
+{
+    Top7Pos = 1,
+    A4Pos = 2,
+    Draw3Pos = 3,
+    SendPokerPos = 4,
+};

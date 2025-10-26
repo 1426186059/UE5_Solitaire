@@ -138,9 +138,10 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
     //        end
     //        self.mLastSendCardList = mInitSendCardList
     //        -------------------------- - 初始化资源------------------------------
+
     this->RecycleAndInitCardGo();
     this->bGameEnd = false;
-    //this->nGameMode = RecordStepDataHandler.data.nGameMode
+    this->nGameMode = (SolitaireGameMode)RecordStepDataHandler::GetSingleton()->data->nGameMode;
     this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
 
     ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());

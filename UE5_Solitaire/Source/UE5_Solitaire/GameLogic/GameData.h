@@ -22,7 +22,7 @@ public:
     UPROPERTY() int32 nTotalWinGameCount = 0;
 
     //TArray<int> tableOpRecord = {};
-    UPROPERTY() URecordStepDataHandlerData* RecoverGameData = {};
+    UPROPERTY() URecordStepDataHandlerData* tableOpRecord = {};
     //data.DailyChallengeData = {}
     //    data.StatisticData = {}
     //    data.ThemeData = {}
@@ -79,13 +79,4 @@ public:
     UPROPERTY() TArray<int32> mSelectCardList = {};
     UPROPERTY() int32 nScore = 0;
     UPROPERTY() int32 nTureOverPokerId = 0;
-};
-
-UENUM()
-enum PosType : int32
-{
-    Top7Pos = 1,
-    A4Pos = 2,
-    Draw3Pos = 3,
-    SendPokerPos = 4,
 };

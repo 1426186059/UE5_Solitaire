@@ -4,6 +4,10 @@
 
 #include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
 #include "UE5_Solitaire/GameLogic/GameConst.h"
+#include "UE5_Solitaire/GameLogic/DataCenter.h"
+#include "UE5_Solitaire/GameLogic/ResCenter.h"
+#include "UE5_Solitaire/GameLogic/RecordStepDataHandler.h"
+#include "UE5_Solitaire/GameLogic/CardHandler.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"

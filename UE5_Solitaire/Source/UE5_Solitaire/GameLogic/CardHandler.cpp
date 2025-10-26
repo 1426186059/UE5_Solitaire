@@ -139,7 +139,7 @@ std::tuple<int, int> CardHandler::GetTwoDigital(int nPokerId)
 int CardHandler::GetColor(int nPokerId)
 {
     int nSubDigital = this->GetSubDigital(nPokerId);
-    if (nSubDigital == 2 or nSubDigital == 3)
+    if (nSubDigital == 2 || nSubDigital == 3)
     {
         return 1;
     }

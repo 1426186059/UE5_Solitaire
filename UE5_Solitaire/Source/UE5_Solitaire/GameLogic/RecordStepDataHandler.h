@@ -14,4 +14,9 @@
 class RecordStepDataHandler :public KKSingleton<RecordStepDataHandler>
 {
 	
+public:
+	URecordStepDataHandlerData* data;
+
+public:
+	void Init();
 };
