@@ -12,6 +12,7 @@
 #include "ResCenter.h"
 #include "DataCenter.h"
 #include "CardHandler.h"
+#include "RecordStepDataHandler.h"
 
 #include "CoreMinimal.h"
 #include "Camera/CameraActor.h"

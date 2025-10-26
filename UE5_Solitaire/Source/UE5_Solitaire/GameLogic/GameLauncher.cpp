@@ -80,12 +80,14 @@ void AGameLauncher::StartEnterGame(void* param)
     UE_LOG(LogTemp, Log, TEXT("AGameLauncher StartEnterGame"));
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->RemoveAll(this);
 
-    //加载游戏数据
+    //加载CSV配置表
     CSVConfigMgr::GetSingleton()->Init();
     DTMgr::GetSingleton()->Init();
 
+    //加载游戏数据
     DataCenter::GetSingleton()->Init();
     CardHandler::GetSingleton()->Init();
+    RecordStepDataHandler::GetSingleton()->Init();
 
     //资源中心初始化
     ResCenter::GetSingleton()->Init();
