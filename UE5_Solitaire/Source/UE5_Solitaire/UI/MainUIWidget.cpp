@@ -48,6 +48,7 @@ void UMainUIWidget::Init()
 
     this->tranFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos")->GetRenderTransform().Translation;
     this->mCardNodeDraw3BeginPos = mUIRoot->GetWidgetFromName("Draw3Pos1")->GetRenderTransform().Translation;
+    
     this->tableCardNode4APos = {};
     for (int i = 1; i <= 4; i++)
     {
