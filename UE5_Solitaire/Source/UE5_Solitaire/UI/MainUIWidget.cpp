@@ -72,7 +72,7 @@ void UMainUIWidget::Show()
 {
     this->Init();
     this->SetVisibility(ESlateVisibility::Visible);
-
+    this->InitGame();
 }
 
 void UMainUIWidget::Hide()
@@ -106,42 +106,6 @@ void UMainUIWidget::RecycleAndInitCardGo()
 
 void UMainUIWidget::InitGame()
 {
-    //local tableOpStepItem = RecordStepDataHandler.data.tableOpStepItem
-    //    local mInitSendCardList = RecordStepDataHandler.data.mInitSendCardList
-    //    if  RecordStepDataHandler:orGameEnd() then
-    //        self : NewGameBegin_ForNormal(true)
-    //            return
-    //        end
-    //        self.mLastSendCardList = mInitSendCardList
-    //        -------------------------- - 初始化资源------------------------------
-    this->RecycleAndInitCardGo();
-    this->bGameEnd = false;
-    //this->nGameMode = RecordStepDataHandler.data.nGameMode
-    this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
-    
-    ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
-    for (int i = 1; i < mInitSendCardList.Num(); i++)
-    {
-        this->mSendCardListGo[i]->SetPokerId(mInitSendCardList[i]);
-        this->mSendCardListGo[i]->SetTurnOverState(false);
-    }
-
-    for (int i = 1; i <= 7; i++)
-    {
-        for (int j = 1; j < i; j++)
-        {
-            int nTopIndex = i;
-            UPokerItemWidget* mCardItem = this->mSendCardListGo.Pop();
-            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
-            this->SetRelativePos(mCardItem, this->GetCardNodeTop7MaxHeightPos(nTopIndex));
-            if (i == j)
-            {
-                mCardItem->SetTurnOverState(true);
-            }
-        }
-    }
-    //TODO 这里就是恢复逻辑
-
     //初始化播放发牌动画
     mSendCardListGo = {};
     TSubclassOf<UPokerItemWidget> PokerItemWBP = LoadClass<UPokerItemWidget>(nullptr,
@@ -166,6 +130,41 @@ void UMainUIWidget::InitGame()
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
 {
+    //local tableOpStepItem = RecordStepDataHandler.data.tableOpStepItem
+    //local mInitSendCardList = RecordStepDataHandler.data.mInitSendCardList
+    //    if  RecordStepDataHandler:orGameEnd() then
+    //        self : NewGameBegin_ForNormal(true)
+    //            return
+    //        end
+    //        self.mLastSendCardList = mInitSendCardList
+    //        -------------------------- - 初始化资源------------------------------
+    this->RecycleAndInitCardGo();
+    this->bGameEnd = false;
+    //this->nGameMode = RecordStepDataHandler.data.nGameMode
+    this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
+
+    ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
+    for (int i = 1; i < mInitSendCardList.Num(); i++)
+    {
+        this->mSendCardListGo[i]->SetPokerId(mInitSendCardList[i]);
+        this->mSendCardListGo[i]->SetTurnOverState(false);
+    }
+
+    for (int i = 1; i <= 7; i++)
+    {
+        for (int j = 1; j < i; j++)
+        {
+            int nTopIndex = i;
+            UPokerItemWidget* mCardItem = this->mSendCardListGo.Pop();
+            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
+            this->SetRelativePos(mCardItem, this->GetCardNodeTop7MaxHeightPos(nTopIndex));
+            if (i == j)
+            {
+                mCardItem->SetTurnOverState(true);
+            }
+        }
+    }
+
     if (bPlayAni)
     {
         for (int i = 1; i <= 7; i++)
