@@ -158,7 +158,6 @@ CardHandler::ConfusingDic = LuaHelper.GetKeyValueSwitchTable(ConfusingDic1);
 
 int CardHandler::GetExcelToLocalPokerId(int nExcelNum)
 {
-    //解析cardnum
     int cardNum = ConfusingDic[nExcelNum] + 1;
     ensureMsgf(cardNum, TEXT("Error: %d"), nExcelNum);
 
