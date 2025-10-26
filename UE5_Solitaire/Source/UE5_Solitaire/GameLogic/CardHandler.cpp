@@ -68,7 +68,7 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
     nGameLevel = FMath::Max(nGameLevel, 1);
 
-    TArray<CSV_jianhuan_vita::RowData>& mTable = CSVConfigMgr::GetSingleton()->mCSV_jianhuan_vita->mTable;
+    TArray<CSV_jianhuan_vita::RowData>& mTable = CSVConfigMgr::GetSingleton()->GetCSV<CSV_jianhuan_vita>()->mTable;
 
     TArray<int> tableIndex = {};
     for (int k = 0; k < mTable.Num(); k++)
