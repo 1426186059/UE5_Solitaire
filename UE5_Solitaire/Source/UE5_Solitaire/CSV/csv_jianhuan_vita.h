@@ -6,6 +6,7 @@
 
 class CSV_jianhuan_vita
 {
+public:
     struct RowData
     {
         FString sid;
@@ -19,10 +20,8 @@ class CSV_jianhuan_vita
         FString sourcestr;
     };
 
-private:
     static TArray<RowData> mTable;
 
-public:
     static void ParseData(FString csvFileContent)
     {
         TArray<FString> Lines;

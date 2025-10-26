@@ -26,3 +26,11 @@ enum SolitaireGameMode
     Trip = 3,
     Rank = 4,
 };
+
+enum SolitaireColorType
+{
+    Spade = 4, //ºÚÌÒ
+    Heart = 2, //ºìÌÒ
+    Club = 1,  // Ã·»¨
+    Diamond = 3, //·½Æ¬
+};

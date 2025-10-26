@@ -5,13 +5,32 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
 #include "GameData.h"
+#include "DataCenter.h"
+#include "GameConst.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
+#include "UE5_Solitaire/SimpleFramework/KKRandomTool.h"
+#include "UE5_Solitaire/CSV/csv_jianhuan_vita.h"
 
 class CardHandler :public KKSingleton<CardHandler>
 {
+private:
+	static TArray<int> ConfusingDic;
 public:
 	void Init();
-
-	void LoadData();
-	void SaveData();
+	
+	TArray<int> GetInitCards_ForNormalMode();
+	TArray<int> GetInitCards_ForRankMode();
+	TArray<int> GetInitCards_ForChallengeMode();
+	TArray<int> GetInitCards_ExcelRandom(int nDifficultLayer, int nGameLevel);
+	TArray<int> GetInitCards_Random();
+	int GetPokerId(int nDigitId, int nColorType);
+	int GetDigital(int nPokerId);
+	int GetSubDigital(int nPokerId);
+	std::tuple<int, int> GetTwoDigital(int nPokerId);
+	int GetColor(int nPokerId);
+	int GetExcelToLocalPokerId(int nExcelNum);
+	std::tuple<bool, TArray<int>> GetExcelTablePokerId_ForHalfWay(CSV_jianhuan_vita::RowData configItem);
+	std::tuple<bool, TArray<int>> GetExcelTablePokerId(CSV_jianhuan_vita::RowData configItem);
+	void reverseTable(TArray<int>& t, int nBeginIndex, int nEndIndex);
+	bool CheckCardListError(const TArray<int>& mCardList);
 };
