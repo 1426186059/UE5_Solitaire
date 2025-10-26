@@ -2,18 +2,11 @@
 
 #pragma once
 
-#include <typeindex>
-
 #include "CoreMinimal.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
 
 #include "csv_i18n.h"
 #include "csv_jianhuan_vita.h"
-
-inline uint32 GetTypeHash(const std::type_index& Idx)
-{
-    return static_cast<uint32>(Idx.hash_code());
-}
 
 class UE5_SOLITAIRE_API CSVConfigMgr : public KKSingleton<CSVConfigMgr>
 {
