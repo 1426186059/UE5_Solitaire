@@ -14,7 +14,7 @@
 class CardHandler :public KKSingleton<CardHandler>
 {
 private:
-	TMap<int, int> ConfusingDic;
+	TMap<int32, int32> ConfusingDic;
 public:
 	void Init();
 	void InitConfusingDic();

@@ -51,13 +51,15 @@ void UMainUIWidget::Init()
     this->tableCardNode4APos = {};
     for (int i = 1; i <= 4; i++)
     {
-        FVector2D mPos = mUIRoot->GetWidgetFromName("4APos" + i)->GetRenderTransform().Translation;
+        FName Key = FName(FString::Printf(TEXT("4APos%d"), i));
+        FVector2D mPos = mUIRoot->GetWidgetFromName(Key)->GetRenderTransform().Translation;
         this->tableCardNode4APos.Add(mPos);
     }
     this->tableCardNodeTop7Pos = {};
     for (int i = 1; i <= 7; i++)
     {
-        FVector2D mPos = mUIRoot->GetWidgetFromName("Top7Pos" + i)->GetRenderTransform().Translation;
+        FName Key = FName(FString::Printf(TEXT("Top7Pos%d"), i));
+        FVector2D mPos = mUIRoot->GetWidgetFromName(Key)->GetRenderTransform().Translation;
         this->tableCardNodeTop7Pos.Add(mPos);
     }
 

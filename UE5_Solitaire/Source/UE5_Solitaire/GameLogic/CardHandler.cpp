@@ -162,7 +162,7 @@ void CardHandler::InitConfusingDic()
     this->ConfusingDic = {};
     for (int i = 0; i < ConfusingList.Num(); i++)
     {
-        this->ConfusingDic[ConfusingList[i]] = i + 1;
+        this->ConfusingDic.Add(ConfusingList[i], i + 1);
     }
 }
 
