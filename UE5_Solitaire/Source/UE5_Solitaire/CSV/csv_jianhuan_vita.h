@@ -20,14 +20,15 @@ public:
         int32 fromid;
         FString sourcestr;
     };
-
-    TArray<RowData> mTable;
-    TArray<RowData>* GetTable()
+    
+    TArray<RowData>& GetTable()
     {
-        return &mTable;
+        return mTable;
     }
 
 private:
+    TArray<RowData> mTable;
+
     static CSV_jianhuan_vita* ParseData(FString csvFileContent)
     {
         CSV_jianhuan_vita* mDataClass = new CSV_jianhuan_vita();

@@ -20,9 +20,14 @@ public:
         FString Spanish;
         FString Russian;
     };
-
-    TArray<RowData> mTable;
+    
+    TArray<RowData>& GetTable()
+    {
+        return mTable;
+    }
 private:
+    TArray<RowData> mTable;
+
     static CSV_i18n* ParseData(FString csvFileContent)
     {
         CSV_i18n* nDataClass = new CSV_i18n();
