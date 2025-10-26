@@ -5,7 +5,6 @@
 
 AGameLauncher::AGameLauncher()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 }
 
@@ -82,9 +81,14 @@ void AGameLauncher::StartEnterGame(void* param)
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->RemoveAll(this);
 
     //加载游戏数据
-    DataCenter::GetSingleton()->Init();
     CSVConfigMgr::GetSingleton()->Init();
     DTMgr::GetSingleton()->Init();
+
+    DataCenter::GetSingleton()->Init();
+    CardHandler::GetSingleton()->Init();
+
+    //资源中心初始化
+    ResCenter::GetSingleton()->Init();
 
     //上面热更新加载完成，所以这里加载一些数据
     this->GoToLobby();

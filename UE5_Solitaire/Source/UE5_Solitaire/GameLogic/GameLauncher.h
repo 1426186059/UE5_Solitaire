@@ -1,10 +1,5 @@
 #pragma once
 
-#include "DataCenter.h"
-#include "InitSceneHotUpdateMgr.h"
-#include "EngineUtils.h"
-#include "Camera/CameraActor.h"
-
 #include "UE5_Solitaire/Test/Test.h"
 #include "UE5_Solitaire/UI/UInitSceneWidget.h"
 #include "UE5_Solitaire/UI/MainUIWidget.h"
@@ -13,9 +8,16 @@
 #include "UE5_Solitaire/CSV/CSVConfigMgr.h"
 #include "UE5_Solitaire/DataTable/DTMgr.h"
 
+#include "InitSceneHotUpdateMgr.h"
+#include "ResCenter.h"
+#include "DataCenter.h"
+#include "CardHandler.h"
+
 #include "CoreMinimal.h"
+#include "Camera/CameraActor.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/GameUserSettings.h"
+#include "EngineUtils.h"
 #include "GameLauncher.generated.h"
 
 UCLASS()
