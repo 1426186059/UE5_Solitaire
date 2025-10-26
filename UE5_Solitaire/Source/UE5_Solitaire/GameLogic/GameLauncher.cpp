@@ -92,7 +92,7 @@ void AGameLauncher::StartEnterGame(void* param)
     //资源中心初始化
     ResCenter::GetSingleton()->Init();
 
-    //上面热更新加载完成，所以这里加载一些数据
+    //加载 大厅UI
     this->GoToLobby();
 }
 
