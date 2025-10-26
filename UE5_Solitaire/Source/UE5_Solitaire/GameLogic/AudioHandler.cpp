@@ -20,3 +20,10 @@ void UAudioHandler::Init()
     //        });
     //}
 }
+
+void UAudioHandler::PlaySound(FName name)
+{
+    FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name.ToString(), *name.ToString());
+    USoundWave* Sound = LoadObject<USoundWave>(nullptr, *resPath);
+    UGameplayStatics::PlaySound2D(this, Sound);
+}

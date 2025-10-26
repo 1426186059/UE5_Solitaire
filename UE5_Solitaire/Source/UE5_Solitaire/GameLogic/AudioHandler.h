@@ -23,4 +23,5 @@ public:
 
 public:
 	void Init();
+	void PlaySound(FName name);
 };

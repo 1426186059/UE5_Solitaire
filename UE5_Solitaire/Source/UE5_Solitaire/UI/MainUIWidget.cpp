@@ -217,7 +217,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
         }
 
         // ------------------ - ¶¯»­²¥·Å-------------------- -
-        //AudioHandler: PlaySound("start_new");
+        UAudioHandler::GetSingleton()->PlaySound("start_new");
         for (int i = 1; i <= 7; i++)
         {
             for (int j = 1; j < this->tableCardNodeTop7Go[i].Num(); j++)

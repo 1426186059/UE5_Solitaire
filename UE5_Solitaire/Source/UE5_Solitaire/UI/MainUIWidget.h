@@ -8,6 +8,7 @@
 #include "UE5_Solitaire/GameLogic/ResCenter.h"
 #include "UE5_Solitaire/GameLogic/RecordStepDataHandler.h"
 #include "UE5_Solitaire/GameLogic/CardHandler.h"
+#include "UE5_Solitaire/GameLogic/AudioHandler.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
