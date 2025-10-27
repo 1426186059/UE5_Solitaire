@@ -73,3 +73,124 @@ void DataCenter::OnSaveDataComplete(const FString& SlotName, const int32 UserInd
 		UE_LOG(LogTemp, Log, TEXT("SaveGameAsync failed."));
 	}
 }
+
+
+void DataCenter::AddMagicWandCount(int32 nAddCount)
+{
+	this->data->nMagicWandCount = this->data->nMagicWandCount + nAddCount;
+	this->data->nMagicWandCount = FMath::Clamp(this->data->nMagicWandCount, 0, 9);
+}
+
+void DataCenter::AddTotalGameCount()
+{
+	this->data->nTotalGameCount = this->data->nTotalGameCount + 1;
+}
+
+void DataCenter::AddTotalWinGameCount()
+{
+	this->data->nTotalWinGameCount = this->data->nTotalWinGameCount + 1;
+}
+
+void DataCenter::AddCoinCount(int32 nCointCount)
+{
+	this->data->nCoinCount = this->data->nCoinCount + nCointCount;
+}
+
+void DataCenter::SetDrawCount(int32 nDrawCount)
+{
+	this->data->nDrawCount = nDrawCount;
+}
+
+void DataCenter::AddGameLevel()
+{
+	this->data->nGameLevel = this->data->nGameLevel + 1;
+}
+
+void DataCenter::AddNomalModeTotalWinCount()
+{
+	this->data->nNomalModeTotalWinCount = this->data->nNomalModeTotalWinCount + 1;
+}
+
+void DataCenter::AddDifficultLayerWinResult(bool bWin)
+{
+	if (bWin)
+	{
+		this->data->nDifficultLayer_ContinueLoseCount = 0;
+		this->data->nDifficultLayer_ContinueWinCount = this->data->nDifficultLayer_ContinueWinCount + 1;
+		if (this->data->data.nDifficultLayer_ContinueWinCount > 3)
+		{
+			this->data->nDifficultLayer_ContinueWinCount = 0;
+			this->data->nDifficultLayer = this->data->nDifficultLayer + 1;
+		}
+	}
+	else
+	{
+		this->data->nDifficultLayer_ContinueWinCount = 0;
+		this->data->nDifficultLayer_ContinueLoseCount = this->data->nDifficultLayer_ContinueLoseCount + 1;
+		if (this->data->nDifficultLayer_ContinueLoseCount > 3)
+		{
+			this->data->nDifficultLayer_ContinueLoseCount = 0;
+			this->data->nDifficultLayer = this->data->nDifficultLayer - 1;
+		}
+	}
+	this->data->nDifficultLayer = FMath::Clamp(this->data->nDifficultLayer, 1, 10);
+}
+
+void DataCenter::SetLanguageName(FString langName)
+{
+	this->data->langName = langName;
+	//CS.LanguageManager.Instance : OnSelectLanguage(self.data.langName)
+}
+
+void DataCenter::SetUIStype(int32 nUIStyle)
+{
+	this->data->nUIStyle = nUIStyle;
+	//CS.UIStyleSwitchMgr.Instance : DoSwitch(self.data.nUIStyle)
+}
+
+void DataCenter::SetSoundOpen(bool bTrue)
+{
+	this->data->bOpenSound = bTrue;
+}
+
+void DataCenter::SetClickToMove(bool bTrue)
+{
+	this->data->bClickToMove = bTrue;
+}
+
+void DataCenter::SetAutoHint(bool bTrue)
+{
+	this->data->bAutoHint = bTrue;
+}
+
+void DataCenter::SetAutoComplete(bool bTrue)
+{
+	this->data->bAutoComplete = bTrue;
+}
+
+void DataCenter::SetFastGame(bool bTrue)
+{
+	this->data->bFastGame = bTrue;
+}
+
+void DataCenter::SetIQMode(bool bTrue)
+{
+	this->data->bIQMode = bTrue;
+}
+
+void DataCenter::AddIQValue(int32 nIQValue)
+{
+	this->data->nIQValue = this->data->nIQValue + nIQValue;
+	this->data->nIQValue = FMath::Clamp(this->data->nIQValue, 75, 300);
+}
+
+void DataCenter::UpdateMusic(int32 nMusicIndex)
+{
+	this->data->nMusicIndex = nMusicIndex;
+}
+
+void DataCenter::SetLeftHandMode(bool bLeftHandMode)
+{
+	this->data->bLeftHandMode = bLeftHandMode;
+}
+

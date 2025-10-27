@@ -18,11 +18,11 @@ public:
     UPROPERTY() int32 nTotalGameCount = 0;
     UPROPERTY() int32 nTotalWinGameCount = 0;
 
-    //TArray<int> tableOpRecord = {};
     UPROPERTY() URecordStepData* tableOpRecord = {};
-    //data.DailyChallengeData = {}
-    //    data.StatisticData = {}
+    UPROPERTY() UStatisticData* StatisticData = {};
     UPROPERTY() UThemeData* ThemeData = {};
+
+    //data.DailyChallengeData = {}
     //    data.DailyTaskData = {}
     //    data.CollectPokerTaskData = {}
     //    data.StampData = {}
@@ -121,4 +121,25 @@ public:
     UPROPERTY() int64 nTimeStamp;
     UPROPERTY() int32 nGameMode;
     UPROPERTY() bool bFinish;
+};
+
+UCLASS()
+class UE5_SOLITAIRE_API UStatisticData : public UObject
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY() int32 nGameCount = 0;
+    UPROPERTY() int32 nGameWinCount = 0;
+    UPROPERTY() int32 nSumScore = 0;
+    UPROPERTY() int32 nAverageScore = 0;
+    UPROPERTY() int32 nMaxScore = 0;
+    UPROPERTY() int32 nSumMoveCount = 0;
+    UPROPERTY() int32 nAverageMoveCount = 0;
+    UPROPERTY() int32 nMinMoveCount = 0;
+    UPROPERTY() int32 nSumTime = 0;
+    UPROPERTY() int32 nAverageTime = 0;
+    UPROPERTY() int32 nMinTime = 0;
+    UPROPERTY() int32 nNowWinningStreakCount = 0;
+    UPROPERTY() int32 nMaxWinningStreakCount = 0;
 };

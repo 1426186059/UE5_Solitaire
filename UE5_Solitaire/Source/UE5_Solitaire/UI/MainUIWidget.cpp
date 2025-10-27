@@ -354,7 +354,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             {
                 DataCenter::GetSingleton()->AddNomalModeTotalWinCount();
             }
-            DataCenter::GetSingleton()->AddDifficultLayerWinResult(RecordStepDataHandler.data.bWin);
+            DataCenter::GetSingleton()->AddDifficultLayerWinResult(RecordStepDataHandler::GetSingleton()->data->bWin);
         }
 
         if (RecordStepDataHandler::GetSingleton()->data->bWin)
