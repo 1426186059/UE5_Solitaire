@@ -23,7 +23,7 @@ public:
 	URecordStepData_OpStepItem* GetOpStepItemDefaultData();
 	void SetDbDataWithMeta();
 	void InitStepRecordFromOther(URecordStepData* mmmData);
-	void InitStepRecord(SolitaireGameMode nGameMode, TArray<int> mInitSendCardList);
+	void InitStepRecord(int32 nGameMode, TArray<int> mInitSendCardList);
 	void AddUndoCount(int nCount);
 	void ResetUndoCountTo0();
 	void AddStepRecord(URecordStepData_OpStepItem* mOpStepItemData);

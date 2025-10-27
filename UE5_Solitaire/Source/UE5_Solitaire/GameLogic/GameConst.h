@@ -18,6 +18,7 @@ private:
 public:
     static const int EventId_InitSceneDoFinishOK = 1;
     static const int EventId_UpdatePokerAtlas = 2;
+    static const int EventId_RefreshTopBottomUI = 3;
 };
 
 enum SolitaireGameMode

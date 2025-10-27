@@ -146,7 +146,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
     this->RecycleAndInitCardGo();
     this->bGameEnd = false;
     this->nGameMode = (SolitaireGameMode)RecordStepDataHandler::GetSingleton()->data->nGameMode;
-    //this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
+    this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
 
     ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
     for (int i = 0; i < mInitSendCardList.Num(); i++)
@@ -230,7 +230,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 auto fromPos = this->GetCardNodeSendPokerPos();
                 auto toPos = this->GetCardNodeTop7Pos(i, j);
 
-                /*local mTween = TweenMgr:AddGoTween(self.transform, 0.3, function(fTimePercent)
+                /*local mTween = TweenMgr:AddGoTween(this->transform, 0.3, function(fTimePercent)
                     self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
                     end, function()
                     if mCardItem : orTurnOverStateIsTrue() then
@@ -243,13 +243,13 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                         TweenMgr : delayedCall(0.5, function()
                             local n4ACount = 0
                             for i = 1, 4 do
-                                for j = 1, #self.tableCardNode4AGo[i] do
+                                for j = 1, #this->tableCardNode4AGo[i] do
                                     n4ACount = n4ACount + 1
 
-                                    local mCardItem = self.tableCardNode4AGo[i][j]
+                                    local mCardItem = this->tableCardNode4AGo[i][j]
                                     local fromPos = self:GetCardNodeSendPokerPos()
-                                    local toPos = self : GetCardNode4APos(i)
-                                    local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
+                                    local toPos = this-> GetCardNode4APos(i)
+                                    local mTween = TweenMgr : AddGoTween(this->transform, 0.3, function(fTimePercent)
                                         self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
                                         end, function()
                                         if mCardItem : orTurnOverStateIsTrue() then
@@ -266,13 +266,13 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
 
                         TweenMgr : delayedCall(1.0, function()
                             local nDraw3Count = 0
-                            for i = 1, #self.tableCardDraw3Go do
+                            for i = 1, #this->tableCardDraw3Go do
                                 nDraw3Count = nDraw3Count + 1
 
-                                local mCardItem = self.tableCardDraw3Go[i]
+                                local mCardItem = this->tableCardDraw3Go[i]
                                 local fromPos = self:GetCardNodeSendPokerPos()
-                                local toPos = self : GetCardNodeDraw3Pos(i)
-                                local mTween = TweenMgr : AddGoTween(self.transform, 0.3, function(fTimePercent)
+                                local toPos = this-> GetCardNodeDraw3Pos(i)
+                                local mTween = TweenMgr : AddGoTween(this->transform, 0.3, function(fTimePercent)
                                     self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
                                     end, function()
                                     if mCardItem : orTurnOverStateIsTrue() then
@@ -290,12 +290,12 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                                     end
 
                                     GameEventHandler : Brocast(EventName.RefreshTopBottomUI)
-                                    self.mTimer : Start()
-                                    self : UpdateGameMode()
-                                    self : ResetRemainHintCount()
-                                    self : onAddScore_InitParam()
-                                    self.GameWinAniMgr : DestroyAniNode()
-                                    self : DoWhenSet_FastGame()*/
+                                    this->mTimer : Start()
+                                    this-> UpdateGameMode()
+                                    this-> ResetRemainHintCount()
+                                    this-> onAddScore_InitParam()
+                                    this->GameWinAniMgr : DestroyAniNode()
+                                    this-> DoWhenSet_FastGame()*/
                                     //}
             }
         }
@@ -334,141 +334,171 @@ void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)
 
 void UMainUIWidget::NewGameBegin(bool bRePlay)
 {
-   // ----------------------------------------------广告--------------------------------------------
-   /* if ThemeSolitaire.Config : orTriggerBannerAds() then
-        if not GoogleAdsHandler.bShowBannerAds then
-            GoogleAdsHandler : Show_BannerAds(true)
-            end
-            end
+    // ----------------------------------------------广告--------------------------------------------
+    //if (ThemeSolitaire.Config:orTriggerBannerAds() then
+    //     if not GoogleAdsHandler.bShowBannerAds then
+    //         GoogleAdsHandler : Show_BannerAds(true)
+    //         end
+    //         end
 
-            if ThemeSolitaire.Config : orTriggerRewardedInterstitialAds() then
-                GoogleAdsHandler : Show_RewardedInterstitialAds()
-                end
+    //         if ThemeSolitaire.Config : orTriggerRewardedInterstitialAds() then
+    //             GoogleAdsHandler : Show_RewardedInterstitialAds()
+    //             end
 
-                --------------------------------------对上把数据 记录整理--------------------------------------------
-                if DataCenter.data.nTotalGameCount > 0 then
-                    if RecordStepDataHandler.data.nGameMode == ThemeSolitaire.GameMode.Normal then
-                        if RecordStepDataHandler.data.bWin then
-                            DataCenter : AddNomalModeTotalWinCount()
-                            end
-                            DataCenter : AddDifficultLayerWinResult(RecordStepDataHandler.data.bWin)
-                            end
+                 //--------------------------------------对上把数据 记录整理--------------------------------------------
+    if (DataCenter::GetSingleton()->data->nTotalGameCount > 0)
+    {
+        if (RecordStepDataHandler::GetSingleton()->data->nGameMode == SolitaireGameMode::Normal)
+        {
+            if (RecordStepDataHandler::GetSingleton()->data->bWin)
+            {
+                DataCenter::GetSingleton()->AddNomalModeTotalWinCount();
+            }
+            DataCenter::GetSingleton()->AddDifficultLayerWinResult(RecordStepDataHandler.data.bWin);
+        }
 
-                            if RecordStepDataHandler.data.bWin then
-                                DataCenter : AddTotalWinGameCount()
-                                end
+        if (RecordStepDataHandler::GetSingleton()->data->bWin)
+        {
+            DataCenter::GetSingleton()->AddTotalWinGameCount();
+        }
 
-                                StatisticDataHandler : onGameStatistic(
-                                    RecordStepDataHandler.data.bWin,
-                                    RecordStepDataHandler.data.nMoveCount,
-                                    RecordStepDataHandler.data.nTime,
-                                    RecordStepDataHandler.data.nScore)
+        StatisticDataHandler::GetSingleton()->onGameStatistic(
+            RecordStepDataHandler::GetSingleton()->data->bWin,
+            RecordStepDataHandler::GetSingleton()->data->nMoveCount,
+            RecordStepDataHandler::GetSingleton()->data->nTime,
+            RecordStepDataHandler::GetSingleton()->data->nScore);
 
-                                if RecordStepDataHandler.data.bWin then
-                                    if DataCenter.data.nNomalModeTotalWinCount == 2 and DataCenter.data.bFastGame == false then
-                                        TweenMgr : delayedCall(1.0, function()
-                                            ThemeSolitaire.Guide_FastPlayView:Show()
-                                            end)
-                                        end
+        if (RecordStepDataHandler::GetSingleton()->data->bWin)
+        {
+            if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 2 && DataCenter::GetSingleton()->data->bFastGame == false)
+            {
 
-                                        if DataCenter.data.nNomalModeTotalWinCount == 4 and DataCenter.data.nMusicIndex == 0 then
-                                            TweenMgr : delayedCall(1.0, function()
-                                                ThemeSolitaire.Guide_MusicOnView:Show()
-                                                end)
-                                            end
-                                            end
-                                            end
+                /*              TweenMgr: delayedCall(1.0, function()
+                                  ThemeSolitaire.Guide_FastPlayView:Show()
+                                  end)*/
+            }
 
-                                            ----------------------------初始化数据--------------------------------------------
-                                            DataCenter.data.nDifficultLayer = LuaHelper.Clamp(DataCenter.data.nDifficultLayer, 1, 10)
-                                            if not bRePlay then
-                                                DataCenter : AddGameLevel()
-                                                end
+            if (DataCenter.data.nNomalModeTotalWinCount == 4 and DataCenter.data.nMusicIndex == 0)
+            {
+                //TweenMgr: delayedCall(1.0, function()
+                //    ThemeSolitaire.Guide_MusicOnView:Show()
+                //    end)
+            }
+        }
+    }
 
-                                                DataCenter.data.nIQValue = 100
-                                                DataCenter : AddTotalGameCount()
-                                                self : TellRobot_PlayerAlive()
-                                                self : RecycleAndInitCardGo()
-                                                self.bGameEnd = false
-                                                self.PokerItemParent.gameObject : SetActive(true)
+    // ----------------------------初始化数据--------------------------------------------
+    DataCenter::GetSingleton()->data->nDifficultLayer = FMath::Clamp(DataCenter::GetSingleton()->data->nDifficultLayer, 1, 10);
+    if (!bRePlay)
+    {
+        DataCenter::GetSingleton()->AddGameLevel();
+    }
 
-                                                --------------------------------------事件---------------------------------- -
-                                                self : PrintGameStartInfo()
+    DataCenter::GetSingleton()->data->nIQValue = 100;
+    DataCenter::GetSingleton()->AddTotalGameCount();
+    this->TellRobot_PlayerAlive();
+    this->RecycleAndInitCardGo();
+    this->bGameEnd = false;
+    this->PokerItemParent->SetVisibility(ESlateVisibility::Visible);
 
-                                                local mSendCardList = nil
-                                                if bRePlay and self.mLastSendCardList then
-                                                    mSendCardList = self.mLastSendCardList
-                                                else
-                                                    if self.nGameMode == ThemeSolitaire.GameMode.DailyChallenge then
-                                                        mSendCardList = CardHandler:GetInitCards_ForChallengeMode()
-                                                        elseif self.nGameMode == ThemeSolitaire.GameMode.Rank then
-                                                        mSendCardList = CardHandler : GetInitCards_ForRankMode()
-                                                        elseif self.nGameMode == ThemeSolitaire.GameMode.Trip then
-                                                        mSendCardList = CardHandler : GetInitCards_ForTripMode()
-                                                    else
-                                                        mSendCardList = CardHandler:GetInitCards_ForNormalMode()
-                                                        end
-                                                        end
-                                                        self.mLastSendCardList = mSendCardList
+    //--------------------------------------事件---------------------------------- -
+    this->PrintGameStartInfo();
 
-                                                        Debug.Assert(#mSendCardList == 52, #mSendCardList)
-                                                        Debug.Assert(#self.mSendCardListGo == 52, #self.mSendCardListGo)
-                                                        RecordStepDataHandler:InitStepRecord(self.nGameMode, LuaHelper.DeepCloneTable(mSendCardList))
-                                                        ThemeSolitaire.CollectPokerTaskDataHandler : SetGameBeginPokerId(mSendCardList)
+    TArray<int32> mSendCardList = {};
+    if (bRePlay)
+    {
+        mSendCardList = this->mLastSendCardList;
+    }
+    else
+    {
+        if (this->nGameMode == SolitaireGameMode::DailyChallenge)
+        {
+            mSendCardList = CardHandler::GetSingleton()->GetInitCards_ForChallengeMode();
+        }
+        else if (this->nGameMode == SolitaireGameMode::Rank)
+        {
+            mSendCardList = CardHandler::GetSingleton()->GetInitCards_ForRankMode();
+        }
+        else if (this->nGameMode == SolitaireGameMode::Trip)
+        {
+            //mSendCardList = CardHandler::GetSingleton()->GetInitCards_ForTripMode();
+        }
+        else
+        {
+            mSendCardList = CardHandler::GetSingleton()->GetInitCards_ForNormalMode();
+        }
+    }
 
-                                                        for i = 1, #mSendCardList do
-                                                            local nPokerId = mSendCardList[i]
-                                                            self:SetRelativePos(self.mSendCardListGo[i], self.tranFaPaiPos)
+    this->mLastSendCardList = mSendCardList;
 
-                                                            self.mSendCardListGo[i] : SetPokerId(nPokerId)
-                                                            self.mSendCardListGo[i] : Show()
-                                                            self.mSendCardListGo[i] : SetTurnOverState(false)
-                                                            self.mSendCardListGo[i] : RefreshUI()
-                                                            self.mSendCardListGo[i] : SetEventTriggerState(false)
-                                                            end
+    ensureMsgf(mSendCardList.Num() == 52, TEXT("%d"), mSendCardList.Num());
+    ensureMsgf(this->mSendCardListGo.Num() == 52, TEXT("%d"), this->mSendCardListGo.Num());
+    RecordStepDataHandler::GetSingleton()->InitStepRecord(this->nGameMode, mSendCardList);
+    CollectPokerTaskDataHandler::GetSingleton()->SetGameBeginPokerId(mSendCardList);
 
-                                                            GameEventHandler : Brocast(EventName.RefreshTopBottomUI)
-                                                            -------------------------- - 做发牌动画-------------------------------- -
-                                                            AudioHandler : PlaySound("start_new")
-                                                            for i = 1, 7 do
-                                                                for j = 1, i do
-                                                                    local nTopIndex = i
-                                                                    local mCardItem = table.remove(self.mSendCardListGo)
-                                                                    table.insert(self.tableCardNodeTop7Go[nTopIndex], mCardItem)
-                                                                    local nHeightIndex = #self.tableCardNodeTop7Go[nTopIndex]
-                                                                    local bTurnOverState = nHeightIndex == nTopIndex
-                                                                    if bTurnOverState then
-                                                                        mCardItem : SetTurnOverState(true)
-                                                                        end
-                                                                        mCardItem.transform : SetAsLastSibling()
+    for (int i = 0; i < mSendCardList.Num(); i++)
+    {
+        int32 nPokerId = mSendCardList[i];
+        this->SetRelativePos(this->mSendCardListGo[i], this->tranFaPaiPos);
 
-                                                                        local from = self : GetRelativePosByGo(mCardItem)
-                                                                        local to = self : GetCardNodeTop7MaxHeightPos(nTopIndex)
-                                                                        self : SetRelativePos(mCardItem, from)
-                                                                        LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3) : setDelay(0.05 * (j - 1)) : setOnComplete(function()
-                                                                            GameEventHandler:Brocast(EventName.RefreshTopBottomUI)
-                                                                            if bTurnOverState then
-                                                                                mCardItem : PlayTurnOverAni()
-                                                                                mCardItem : SetEventTriggerState(true)
-                                                                                end
-                                                                                end)
+        this->mSendCardListGo[i]->SetPokerId(nPokerId);
+        this->mSendCardListGo[i]->Show();
+        this->mSendCardListGo[i]->SetTurnOverState(false);
+        this->mSendCardListGo[i]->Refresh();
+        this->mSendCardListGo[i]->SetEventTriggerState(false);
+    }
 
-                                                                        end
-                                                                        end
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+    //--------------------------- 做发牌动画---------------------------------
+    AudioHandler::GetSingleton()->PlaySound("start_new");
 
-                                                                        self.GameWinAniMgr:DestroyAniNode()
-                                                                        self : UpdateGameMode()
-                                                                        self : onAddScore_InitParam()
-                                                                        self.mTimer : Start()
-                                                                        self : TellRobot_PlayerAlive()
-                                                                        self : ResetRemainHintCount()
-                                                                        LeanTween.delayedCall(self.transform.gameObject, 1.0, function()
-                                                                            self:DoWhenSet_FastGame()
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = 0; j <= i; j++)
+        {
+            int32 nTopIndex = i;
+            auto mCardItem = this->mSendCardListGo.Pop();
+            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-                                                                            if ThemeSolitaire.Config.bRobotTest then
-                                                                                self : StartRobotPlay()
-                                                                                end
-                                                                                end)*/
+            int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
+            bool bTurnOverState = nHeightIndex == nTopIndex;
+            if (bTurnOverState)
+            {
+                mCardItem->SetTurnOverState(true);
+            }
+
+            UMGHelper::SetAsLastChildIndex(mCardItem);
+
+            FVector2D from = this->GetRelativePosByGo(mCardItem);
+            FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
+            this->SetRelativePos(mCardItem, from);
+
+            /*  LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3) : setDelay(0.05 * (j - 1)):setOnComplete(function()
+                                      GameEventHandler:Brocast(EventName.RefreshTopBottomUI)
+                                      if bTurnOverState then
+                                          mCardItem : PlayTurnOverAni()
+                                          mCardItem : SetEventTriggerState(true)
+                                          end
+                                          end)
+
+                                  end*/
+        }
+    }
+
+    this->GameWinAniMgr:DestroyAniNode()
+    this->UpdateGameMode()
+    this->onAddScore_InitParam()
+    this->mTimer : Start()
+    this->TellRobot_PlayerAlive()
+    this->ResetRemainHintCount()
+    LeanTween.delayedCall(this->transform.gameObject, 1.0, function()
+        self:DoWhenSet_FastGame()
+
+        if (ThemeSolitaire.Config.bRobotTest)
+        {
+            this->StartRobotPlay();
+        }
+            );
 }
 
 //------------------------------------ 相对位置计算 --------------------------------------------

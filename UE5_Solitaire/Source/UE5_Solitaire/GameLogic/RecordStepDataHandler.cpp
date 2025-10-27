@@ -51,7 +51,7 @@ void RecordStepDataHandler::InitStepRecordFromOther(URecordStepData* mmmData)
 	this->data = mmmData;
 }
 
-void RecordStepDataHandler::InitStepRecord(SolitaireGameMode nGameMode, TArray<int> mInitSendCardList)
+void RecordStepDataHandler::InitStepRecord(int32 nGameMode, TArray<int> mInitSendCardList)
 {
 	//ThemeSolitaire.AllRecordDataHandler : SaveGameRecordToDirectory()
 	this->data = this->GetDefaultData();
