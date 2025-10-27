@@ -100,11 +100,6 @@ void AGameLauncher::StartEnterGame(void* param)
 
 void AGameLauncher::GoToLobby()
 {   
-    if (mUInitSceneWidget != nullptr)
-    {
-        mUInitSceneWidget->Hide(true);
-    }
-
     TSubclassOf<UMainUIWidget> BPClass = LoadClass<UMainUIWidget>(nullptr,
         TEXT("/Game/ResourceABs/MainScene/BPS/MainUICWBP.MainUICWBP_C"));
 
@@ -112,6 +107,12 @@ void AGameLauncher::GoToLobby()
     {
         UMainUIWidget* mUMainUIWidget = CreateWidget<UMainUIWidget>(GEngine->GameViewport->GetWorld(), BPClass);
         mUMainUIWidget->Show();
+    }
+
+    if (mUInitSceneWidget != nullptr)
+    {
+        mUInitSceneWidget->Hide(true);
+        mUInitSceneWidget = nullptr;
     }
 }
 
