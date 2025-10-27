@@ -14,188 +14,304 @@ void ThemeDataHandler::Init()
 	}
 }
 
-//void ThemeDataHandler::InitDefaultTheme()
-//{
-//	if (this->data.themeBgId <= 0)
-//	{
-//		auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<CSV_jianhuan_vita>()->GetTable();
-//		this->UnLockNewTheme(mThemeConfig);
-//		this->UseNewTheme(mThemeConfig);
-//	}
-//}
-//
-//function ThemeDataHandler : InitDefaultThemeElement()
-//	for k, v  in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_theme) do
-//	local mConfig = v;
-//	if self:hasThemeid(mConfig.id) then
-//	self : addbgid(self : GetThemeElements_internalid_byId(mConfig.table))
-//	self : addfrontid(self : GetThemeElements_internalid_byId(mConfig.front))
-//	self : addbackid(self : GetThemeElements_internalid_byId(mConfig.back))
-//	end
-//end
-//
-//self : RefreshThemePai()
-//end
-//
-//function ThemeDataHandler : UnLockNewTheme(mThemeConfig)
-//self : addThemeid(mThemeConfig.id);
-//self:InitDefaultThemeElement()
-//end
-//
-//function ThemeDataHandler : UseNewTheme(mThemeConfig)
-//self.data.themeBgId = self : GetThemeElements_internalid_byId(mThemeConfig.table)
-//self.data.themeBackId = self : GetThemeElements_internalid_byId(mThemeConfig.back)
-//self.data.themeZhengId = self : GetThemeElements_internalid_byId(mThemeConfig.front)
-//self : RefreshThemePai()
-//GameEventHandler : Brocast(ThemeSolitaire.EventName.UpdatePokerAtlas)
-//end
-//
-//function ThemeDataHandler : UseNewThemeBg(Id)
-//self.data.themeBgId = Id;
-//self:RefreshThemePai();
-//
-//
-//GameEventHandler:Brocast(ThemeSolitaire.EventName.UpdatePokerAtlas)
-//end
-//
-//function ThemeDataHandler : UseNewThemeFront(Id)
-//self.data.themeZhengId = Id;
-//
-//
-//GameEventHandler:Brocast(ThemeSolitaire.EventName.UpdatePokerAtlas)
-//end
-//
-//function ThemeDataHandler : UseNewThemeBack(Id)
-//self.data.themeBackId = Id;
-//
-//GameEventHandler:Brocast(ThemeSolitaire.EventName.UpdatePokerAtlas)
-//end
-//
-//function ThemeDataHandler : RefreshThemePai()
-//local themeBgId = self.data.themeBgId
-//if themeBgId > 0 then
-//self.data.themePaiId = self:GetThemePaiId_ForBgId(themeBgId)
-//end
-//end
-//
+bool ThemeDataHandler::hasThemeid(int32 id)
+{
+	return this->data->array_themeids.Contains(id);
+}
+
+bool ThemeDataHandler::hasBgid(int32 id)
+{
+	return this->data->array_bgids.Contains(id);
+}
+
+bool ThemeDataHandler::hasFrontid(int32 id)
+{
+	return this->data->array_frontids.Contains(id);
+}
+
+bool ThemeDataHandler::hasBackid(int32 id)
+{
+	return this->data->array_backids.Contains(id);
+}
+
+void ThemeDataHandler::addThemeid(int32 id)
+{
+	if (!this->hasThemeid(id))
+	{
+		this->data->array_themeids.Add(id);
+	}
+}
+
+void ThemeDataHandler::addbgid(int32 id)
+{
+	if (!this->hasBgid(id))
+	{
+		this->data->array_bgids.Add(id);
+	}
+}
+
+void ThemeDataHandler::addfrontid(int32 id)
+{
+	if (!this->hasFrontid(id))
+	{
+		this->data->array_frontids.Add(id);
+	}
+}
+
+void ThemeDataHandler::addbackid(int32 id)
+{
+	if (!this->hasBackid(id))
+	{
+		this->data->array_backids.Add(id);
+	}
+}
+
+void ThemeDataHandler::InitDefaultTheme()
+{
+	if (this->data->themeBgId <= 0)
+	{
+		auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+		auto mThemeConfig = mTable[4];
+		this->UnLockNewTheme(mThemeConfig);
+		this->UseNewTheme(mThemeConfig);
+	}
+}
+
+void ThemeDataHandler::InitDefaultThemeElement()
+{
+	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto v : mThemeConfig)
+	{
+		auto mConfig = v;
+		if (this->hasThemeid(mConfig.id))
+		{
+			this->addbgid(this->GetThemeElements_internalid_byId(mConfig.table));
+			this->addfrontid(this->GetThemeElements_internalid_byId(mConfig.front));
+			this->addbackid(this->GetThemeElements_internalid_byId(mConfig.back));
+		}
+	}
+
+	this->RefreshThemePai();
+}
+
+void ThemeDataHandler::UnLockNewTheme(csv_theme::RowData mThemeConfig)
+{
+	this->addThemeid(mThemeConfig.id);
+	this->InitDefaultThemeElement();
+}
+
+
+void ThemeDataHandler::UseNewTheme(csv_theme::RowData mThemeConfig)
+{
+	this->data->themeBgId = this->GetThemeElements_internalid_byId(mThemeConfig.table);
+	this->data->themeBackId = this->GetThemeElements_internalid_byId(mThemeConfig.back);
+	this->data->themeZhengId = this->GetThemeElements_internalid_byId(mThemeConfig.front);
+	this->RefreshThemePai();
+	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
+}
+
+void ThemeDataHandler::UseNewThemeBg(int32 Id)
+{
+	this->data->themeBgId = Id;
+	this->RefreshThemePai();
+	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
+}
+
+void ThemeDataHandler::UseNewThemeFront(int32 Id)
+{
+	this->data->themeZhengId = Id;
+	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
+}
+
+void ThemeDataHandler::UseNewThemeBack(int32 Id)
+{
+	this->data->themeBackId = Id;
+	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
+}
+
+void ThemeDataHandler::RefreshThemePai()
+{
+	int32 themeBgId = this->data->themeBgId;
+	if (themeBgId > 0)
+	{
+		this->data->themePaiId = this->GetThemePaiId_ForBgId(themeBgId);
+	}
+}
+
 //-- 是否主题中的元素，比如桌面Bg，牌面，牌背，跟随主题解锁
-//function ThemeDataHandler : orThemeUnLockToUnLockMe(mTargetConfig)
-//Debug.Assert(mTargetConfig.itemunlock == 4)
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_theme) do
-//local mConfig = v
-//if mConfig.table == mTargetConfig.id then
-//return self : hasThemeid(mConfig.id);
-//elseif mConfig.back == mTargetConfig.id then
-//return self:hasThemeid(mConfig.id);
-//elseif mConfig.front == mTargetConfig.id then
-//return self:hasThemeid(mConfig.id);
-//end
-//end
-//return false;
-//end
+bool ThemeDataHandler::orThemeUnLockToUnLockMe(csv_themeitem::RowData mTargetConfig)
+{
+	ensure(mTargetConfig.itemunlock == 4);
+	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto v : mThemeConfig)
+	{
+		csv_theme::RowData& mConfig = v;
+		if (mConfig.table == mTargetConfig.id)
+		{
+			return this->hasThemeid(mConfig.id);
+		}
+		else if (mConfig.back == mTargetConfig.id)
+		{
+			return this->hasThemeid(mConfig.id);
+		}
+		else if (mConfig.front == mTargetConfig.id)
+		{
+			return this->hasThemeid(mConfig.id);
+		}
+	}
+	return false;
+}
+
+FString ThemeDataHandler::GetBgThemeName(csv_themeitem::RowData mTargetConfig)
+{
+	ensure(mTargetConfig.itemunlock == 4);
+	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto v : mThemeConfig)
+	{
+		csv_theme::RowData& mConfig = v;
+		if (mConfig.table == mTargetConfig.id)
+		{
+			//return GameHelper:GetLanguageSwitchDes(mConfig.name)
+		}
+	}
+	return "";
+}
+
+//int32 ThemeDataHandler::GetBgUnLock_ForStageRemainWinCount(csv_stagereward::RowData mTargetConfig)
+//{
+//	ensure(mTargetConfig.itemunlock == 2);
+//	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_stagereward>()->GetTable();
+//	for (auto v : mTable)
+//	{
+//		auto mConfig = v;
+//		if (mConfig.rewardid == mTargetConfig.id)
+//		{
+//			return mConfig.wincount - DataCenter::GetSingleton()->data->mStageReward_WinCount;
+//		}
+//	}
+//	return 0;
+//}
+
+int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
+{
+	int32 tableid = this->GetThemeElements_Id_byInternalidAndType(Internalid, 1);
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_table2element>()->GetTable();
+	for (auto v : mTable)
+	{
+		auto mConfig = v;
+		if (mConfig.tableid == tableid)
+		{
+			return this->GetThemeElements_internalid_byId(mConfig.paiid);
+		}
+	}
+	
+	ensureMsgf(false, TEXT("%d %d"), Internalid, tableid);
+	return -1;
+}
+
+csv_theme::RowData* ThemeDataHandler::GetUsedThemeConfig()
+{
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto v : mTable)
+	{
+		auto mConfig = v;
+		if (
+			mConfig.table == this->GetThemeElements_Id_byInternalidAndType(this->data->themeBgId, 1) &&
+			mConfig.front == this->GetThemeElements_Id_byInternalidAndType(this->data->themeZhengId, 2) &&
+			mConfig.back == this->GetThemeElements_Id_byInternalidAndType(this->data->themeBackId, 3)
+			)
+		{
+			return &mConfig;
+		}
+	}
+	return nullptr;
+}
+
+csv_theme::RowData* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
+{
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto v : mTable)
+	{
+		auto mConfig = v;
+		if (mConfig.id == nThemeId)
+		{
+			return &mConfig;
+		}
+	}
+	return nullptr;
+}
+
 //
-//function ThemeDataHandler : GetBgThemeName(mTargetConfig)
-//Debug.Assert(mTargetConfig.itemunlock == 4)
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_theme) do
-//local mConfig = v
-//if mConfig.table == mTargetConfig.id then
-//return GameHelper : GetLanguageSwitchDes(mConfig.name)
-//end
-//end
-//return "";
-//end
-//
-//function ThemeDataHandler : GetBgUnLock_ForStageRemainWinCount(mTargetConfig)
-//Debug.Assert(mTargetConfig.itemunlock == 2);
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_stagereward) do
-//local mConfig = v
-//if mConfig.rewardid == mTargetConfig.id then
-//return mConfig.wincount - ThemeSolitaire.DataCenter.data.mStageReward_WinCount;
-//end
-//end
-//return 0
-//end
-//
-//function ThemeDataHandler : GetThemePaiId_ForBgId(Internalid)
-//local tableid = self : GetThemeElements_Id_byInternalidAndType(Internalid, 1)
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_table2element) do
-//local mConfig = v
-//if mConfig.tableid == tableid then
-//return self : GetThemeElements_internalid_byId(mConfig.paiid);
-//end
-//end
-//
-//Debug.Assert(false, Internalid, tableid);
-//return -1
-//end
-//
-//function ThemeDataHandler : GetUsedThemeConfig()
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_theme) do
-//local mConfig = v
-//if mConfig.table == self : GetThemeElements_Id_byInternalidAndType(self.data.themeBgId, 1) and
-//mConfig.front == self : GetThemeElements_Id_byInternalidAndType(self.data.themeZhengId, 2) and
-//mConfig.back == self : GetThemeElements_Id_byInternalidAndType(self.data.themeBackId, 3) then
-//return mConfig;
-//end
-//end
-//return nil
-//end
-//
-//function ThemeDataHandler : GetThemeConfigById(nThemeId)
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_theme) do
-//local mConfig = v
-//if mConfig.id == nThemeId then
-//return mConfig
-//end
-//end
-//return nil
-//end
-//
-//function ThemeDataHandler : GetThemeElements_internalid_byId(id)
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_themeitem) do
-//local mConfig = v
-//if mConfig.id == id then
-//return mConfig.internalid;
-//end
-//end
-//Debug.Assert(false, id)
-//return -1;
-//end
-//
+int32 ThemeDataHandler::GetThemeElements_internalid_byId(int32 id)
+{
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
+	for (auto v : mTable)
+	{
+		auto mConfig = v;
+		if (mConfig.id == id)
+		{
+			return mConfig.internalid;
+		}
+	}
+
+	ensureMsgf(false, TEXT("%d"), id);
+	return -1;
+}
+
 //--type 1:Bg 2 : front 3 : back 4 : 主题元素
-//function ThemeDataHandler : GetThemeElements_Id_byInternalidAndType(Internalid, type)
-//for k, v in ipairs(ThemeSolitaire.ExcelConfigHandler.Config_themeitem) do
-//local mConfig = v
-//if mConfig.internalid == Internalid and mConfig.type == type then
-//return mConfig.id
-//end
-//end
-//Debug.Assert(false, Internalid);
-//return -1
-//end
-//
-//function ThemeDataHandler : GetThemeThumbPath(nId, nType)
-//if nType == 0 then
-//return "thumb_theme_"..nId
-//elseif nType == 1 then
-//return "thumb_bg_"..nId
-//elseif nType == 2 then
-//return "thumb_card_"..nId
-//elseif nType == 3 then
-//return "thumb_cardback_"..nId
-//else
-//Debug.Assert(false, nType)
-//end
-//end
-//
-//function ThemeDataHandler : GetGamePoolBg_AtlasSpriteName(nPaiId)
-//return "zhuti_"..nPaiId.."_pai1"
-//end
-//
-//function ThemeDataHandler : GetGameResultBg_AtlasSpriteName(nPaiId)
-//return "zhuti_"..nPaiId.."_pai3"
-//end
-//
-//function ThemeDataHandler : GetGameLongBg_AtlasSpriteName(nPaiId)
-//return "zhuti_"..nPaiId.."_pai2"
-//end
+int32 ThemeDataHandler::GetThemeElements_Id_byInternalidAndType(int32 Internalid, int32 type)
+{
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
+	for (auto v : mTable)
+	{
+		auto mConfig = v;
+		if (mConfig.internalid == Internalid && mConfig.type == type)
+		{
+			return mConfig.id;
+		}
+	}
+	
+	ensureMsgf(false, TEXT("%d"), Internalid);
+	return -1;
+}
+
+FString ThemeDataHandler::GetThemeThumbPath(int32 nId, int32 nType)
+{
+	if (nType == 0)
+	{
+		return FString::Printf(TEXT("thumb_theme_%d"), nId);
+	}
+	else if (nType == 1)
+	{
+		return FString::Printf(TEXT("thumb_bg_%d"), nId);
+	}
+	else if (nType == 2)
+	{
+		return FString::Printf(TEXT("thumb_card_%d"), nId);
+	}
+	else if (nType == 3)
+	{
+		return FString::Printf(TEXT("thumb_cardback_%d"), nId);
+	}
+	else
+	{
+		ensureMsgf(false, TEXT("%d"), nType);
+	}
+
+	return std::move(FString());
+}
+
+FString ThemeDataHandler::GetGamePoolBg_AtlasSpriteName(int32 nPaiId)
+{
+	return FString::Printf(TEXT("zhuti_%d_pai1"), nPaiId);
+}
+
+FString ThemeDataHandler::GetGameResultBg_AtlasSpriteName(int32 nPaiId)
+{
+	return FString::Printf(TEXT("zhuti_%d_pai3"), nPaiId);
+}
+
+FString ThemeDataHandler::GetGameLongBg_AtlasSpriteName(int32 nPaiId)
+{
+	return FString::Printf(TEXT("zhuti_%d_pai2"), nPaiId);
+}

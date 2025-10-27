@@ -17,6 +17,7 @@ private:
     GameConst& operator=(const GameConst&) = delete;
 public:
     static const int EventId_InitSceneDoFinishOK = 1;
+    static const int EventId_UpdatePokerAtlas = 2;
 };
 
 enum SolitaireGameMode
