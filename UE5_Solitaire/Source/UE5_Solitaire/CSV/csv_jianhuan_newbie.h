@@ -55,7 +55,7 @@ private:
             {
             case 0: data.RowName = Cols[i]; break;
             case 1: data.index = FCString::Atoi(*Cols[i]); break;
-            case 2: data.sid = FCString::Atoi(*Cols[i]); break;
+            case 2: data.sid = Cols[i]; break;
             default: break;
             }
         }

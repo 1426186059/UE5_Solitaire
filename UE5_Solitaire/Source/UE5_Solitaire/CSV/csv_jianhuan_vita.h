@@ -10,6 +10,7 @@ class csv_jianhuan_vita
 public:
     struct RowData
     {
+        FString RowName;
         FString sid;
         int32 layer;
         int32 qid;

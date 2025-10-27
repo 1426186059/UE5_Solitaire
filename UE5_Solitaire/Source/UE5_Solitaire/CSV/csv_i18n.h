@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 
-class CSV_i18n
+class csv_i18n
 {
     friend class CSVConfigMgr;
 public:
     struct RowData
     {
+        FString RowName;
         FString key;
         FString English;
         FString Chinese;
@@ -28,9 +29,9 @@ public:
 private:
     TArray<RowData> mTable;
 
-    static CSV_i18n* ParseData(FString csvFileContent)
+    static csv_i18n* ParseData(FString csvFileContent)
     {
-        CSV_i18n* nDataClass = new CSV_i18n();
+        csv_i18n* nDataClass = new csv_i18n();
         TArray<FString> Lines;
         csvFileContent.ParseIntoArrayLines(Lines);
         for (int i = 3; i < Lines.Num(); ++i)        // Ìø¹ý±íÍ·
@@ -74,8 +75,8 @@ private:
     }
 
 private:
-    CSV_i18n() = default;
-    ~CSV_i18n() = default;
-    CSV_i18n(const CSV_i18n&) = delete;
-    CSV_i18n& operator=(const CSV_i18n&) = delete;
+    csv_i18n() = default;
+    ~csv_i18n() = default;
+    csv_i18n(const csv_i18n&) = delete;
+    csv_i18n& operator=(const csv_i18n&) = delete;
 };

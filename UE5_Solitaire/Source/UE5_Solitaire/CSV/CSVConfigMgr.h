@@ -6,7 +6,12 @@
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
 
 #include "csv_i18n.h"
+#include "csv_jianhuan_newbie.h"
 #include "csv_jianhuan_vita.h"
+#include "csv_stagereward.h"
+#include "csv_table2element.h"
+#include "csv_theme.h"
+#include "csv_themeitem.h"
 
 class UE5_SOLITAIRE_API CSVConfigMgr : public KKSingleton<CSVConfigMgr>
 {

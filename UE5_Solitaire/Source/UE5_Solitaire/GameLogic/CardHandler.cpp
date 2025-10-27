@@ -68,12 +68,12 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
     nGameLevel = FMath::Max(nGameLevel, 1);
 
-    auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<CSV_jianhuan_vita>()->GetTable();
+    auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_vita>()->GetTable();
 
     TArray<int> tableIndex = {};
     for (int k = 0; k < mTable.Num(); k++)
     {
-        CSV_jianhuan_vita::RowData v = mTable[k];
+        csv_jianhuan_vita::RowData v = mTable[k];
         if (v.layer == nDifficultLayer)
         {
             tableIndex.Add(k);
@@ -198,7 +198,7 @@ int CardHandler::GetExcelToLocalPokerId(int nExcelNum)
     return nPokerId;
 }
 
-std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(CSV_jianhuan_vita::RowData configItem)
+std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(csv_jianhuan_vita::RowData configItem)
 {
     TArray<FString> tablePokerStr;
     configItem.jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
@@ -231,7 +231,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(CSV_j
     return { true, tablePokerId };
 }
 
-std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(CSV_jianhuan_vita::RowData configItem)
+std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vita::RowData configItem)
 {
     TArray<FString> tablePokerStr;
     configItem.jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);

@@ -15,8 +15,8 @@ public:
         FString name;
         int32 table;
         int32 front;
-        FString back;
-        FString pai;
+        int32 back;
+        int32 pai;
         int32 unlocktype;
         int32 unlockcost;
         int32 order;

@@ -30,8 +30,8 @@ public:
 	std::tuple<int, int> GetTwoDigital(int nPokerId);
 	int GetColor(int nPokerId);
 	int GetExcelToLocalPokerId(int nExcelNum);
-	std::tuple<bool, TArray<int>> GetExcelTablePokerId_ForHalfWay(CSV_jianhuan_vita::RowData configItem);
-	std::tuple<bool, TArray<int>> GetExcelTablePokerId(CSV_jianhuan_vita::RowData configItem);
+	std::tuple<bool, TArray<int>> GetExcelTablePokerId_ForHalfWay(csv_jianhuan_vita::RowData configItem);
+	std::tuple<bool, TArray<int>> GetExcelTablePokerId(csv_jianhuan_vita::RowData configItem);
 	void reverseTable(TArray<int>& t, int nBeginIndex, int nEndIndex);
 	bool CheckCardListError(const TArray<int>& mCardList);
 };
