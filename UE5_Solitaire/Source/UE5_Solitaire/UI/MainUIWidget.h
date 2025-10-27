@@ -11,6 +11,7 @@
 #include "UE5_Solitaire/GameLogic/AudioHandler.h"
 #include "UE5_Solitaire/GameLogic/ThemeDataHandler.h"
 #include "UE5_Solitaire/GameLogic/AllRecordDataHandler.h"
+#include "UE5_Solitaire/GameLogic/StatisticDataHandler.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"

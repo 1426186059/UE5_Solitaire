@@ -378,7 +378,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
                                   end)*/
             }
 
-            if (DataCenter.data.nNomalModeTotalWinCount == 4 and DataCenter.data.nMusicIndex == 0)
+            if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 4 and DataCenter::GetSingleton()->data->nMusicIndex == 0)
             {
                 //TweenMgr: delayedCall(1.0, function()
                 //    ThemeSolitaire.Guide_MusicOnView:Show()
@@ -396,13 +396,13 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
     DataCenter::GetSingleton()->data->nIQValue = 100;
     DataCenter::GetSingleton()->AddTotalGameCount();
-    this->TellRobot_PlayerAlive();
+    //this->TellRobot_PlayerAlive();
     this->RecycleAndInitCardGo();
     this->bGameEnd = false;
     this->PokerItemParent->SetVisibility(ESlateVisibility::Visible);
 
     //--------------------------------------事件---------------------------------- -
-    this->PrintGameStartInfo();
+    //this->PrintGameStartInfo();
 
     TArray<int32> mSendCardList = {};
     if (bRePlay)
@@ -434,7 +434,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     ensureMsgf(mSendCardList.Num() == 52, TEXT("%d"), mSendCardList.Num());
     ensureMsgf(this->mSendCardListGo.Num() == 52, TEXT("%d"), this->mSendCardListGo.Num());
     RecordStepDataHandler::GetSingleton()->InitStepRecord(this->nGameMode, mSendCardList);
-    CollectPokerTaskDataHandler::GetSingleton()->SetGameBeginPokerId(mSendCardList);
+    //CollectPokerTaskDataHandler::GetSingleton()->SetGameBeginPokerId(mSendCardList);
 
     for (int i = 0; i < mSendCardList.Num(); i++)
     {
@@ -450,7 +450,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
     //--------------------------- 做发牌动画---------------------------------
-    AudioHandler::GetSingleton()->PlaySound("start_new");
+    UAudioHandler::GetSingleton()->PlaySound("start_new");
 
     for (int i = 0; i < 7; i++)
     {
@@ -485,20 +485,20 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         }
     }
 
-    this->GameWinAniMgr:DestroyAniNode()
-    this->UpdateGameMode()
-    this->onAddScore_InitParam()
-    this->mTimer : Start()
-    this->TellRobot_PlayerAlive()
-    this->ResetRemainHintCount()
-    LeanTween.delayedCall(this->transform.gameObject, 1.0, function()
-        self:DoWhenSet_FastGame()
+   // this->GameWinAniMgr:DestroyAniNode()
+    //this->UpdateGameMode()
+    //this->onAddScore_InitParam()
+    //this->mTimer : Start()
+    //this->TellRobot_PlayerAlive()
+    //this->ResetRemainHintCount()
+    //LeanTween.delayedCall(this->transform.gameObject, 1.0, function()
+    //    self:DoWhenSet_FastGame()
 
-        if (ThemeSolitaire.Config.bRobotTest)
-        {
-            this->StartRobotPlay();
-        }
-            );
+    //    if (ThemeSolitaire.Config.bRobotTest)
+    //    {
+    //        this->StartRobotPlay();
+    //    }
+    //        );
 }
 
 //------------------------------------ 相对位置计算 --------------------------------------------

@@ -19,4 +19,9 @@ public:
 
 public:
 	void Init();
+
+	UStatisticData* GetDefaultData();
+	void SetDbDataWithMeta();
+	void ResetData();
+	void onGameStatistic(bool bWin, int32 nMove, int32 nTime, int32 nScore);
 };

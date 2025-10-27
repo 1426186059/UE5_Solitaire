@@ -117,7 +117,7 @@ void DataCenter::AddDifficultLayerWinResult(bool bWin)
 	{
 		this->data->nDifficultLayer_ContinueLoseCount = 0;
 		this->data->nDifficultLayer_ContinueWinCount = this->data->nDifficultLayer_ContinueWinCount + 1;
-		if (this->data->data.nDifficultLayer_ContinueWinCount > 3)
+		if (this->data->nDifficultLayer_ContinueWinCount > 3)
 		{
 			this->data->nDifficultLayer_ContinueWinCount = 0;
 			this->data->nDifficultLayer = this->data->nDifficultLayer + 1;
