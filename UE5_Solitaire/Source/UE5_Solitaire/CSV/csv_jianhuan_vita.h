@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-class CSV_jianhuan_vita
+class csv_jianhuan_vita
 {
     friend class CSVConfigMgr;
 public:
@@ -29,9 +29,9 @@ public:
 private:
     TArray<RowData> mTable;
 
-    static CSV_jianhuan_vita* ParseData(FString csvFileContent)
+    static csv_jianhuan_vita* ParseData(FString csvFileContent)
     {
-        CSV_jianhuan_vita* mDataClass = new CSV_jianhuan_vita();
+        csv_jianhuan_vita* mDataClass = new csv_jianhuan_vita();
         TArray<FString> Lines;
         csvFileContent.ParseIntoArrayLines(Lines);
         for (int i = 3; i < Lines.Num(); ++i)        // Ìø¹ý±íÍ·
@@ -76,8 +76,8 @@ private:
     }
 
 private:
-    CSV_jianhuan_vita() = default;
-    ~CSV_jianhuan_vita() = default;
-    CSV_jianhuan_vita(const CSV_jianhuan_vita&) = delete;
-    CSV_jianhuan_vita& operator=(const CSV_jianhuan_vita&) = delete;
+    csv_jianhuan_vita() = default;
+    ~csv_jianhuan_vita() = default;
+    csv_jianhuan_vita(const csv_jianhuan_vita&) = delete;
+    csv_jianhuan_vita& operator=(const csv_jianhuan_vita&) = delete;
 };
