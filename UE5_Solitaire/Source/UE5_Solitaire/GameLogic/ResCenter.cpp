@@ -15,7 +15,7 @@ UPaperSprite* ResCenter::GetPokerSprite(int nPokerId)
         FString resPath = FString::Printf(
             TEXT("/Game/ResourceABs/MainScene/UI/AtlasGroup/poker/%s/Frames/card_1_di_%d_%d_png.card_1_di_%d_%d_png"),
             TEXT(""), nDigetId, nSubDigetId, nDigetId, nSubDigetId);
-           
+          
         UPaperSprite* PokerSprite = LoadObject<UPaperSprite>(nullptr, *resPath);
         return PokerSprite;
     }

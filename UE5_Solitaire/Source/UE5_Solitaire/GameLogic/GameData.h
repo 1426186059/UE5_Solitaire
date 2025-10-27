@@ -22,7 +22,7 @@ public:
     UPROPERTY() URecordStepDataHandlerData* tableOpRecord = {};
     //data.DailyChallengeData = {}
     //    data.StatisticData = {}
-    //    data.ThemeData = {}
+    UPROPERTY() UThemeData* ThemeData = {};
     //    data.DailyTaskData = {}
     //    data.CollectPokerTaskData = {}
     //    data.StampData = {}
@@ -76,4 +76,21 @@ public:
     UPROPERTY() TArray<int32> mSelectCardList = {};
     UPROPERTY() int32 nScore = 0;
     UPROPERTY() int32 nTureOverPokerId = 0;
+};
+
+UCLASS()
+class UE5_SOLITAIRE_API UThemeData : public UObject
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY() int64 nTimeStamp = 0;
+    UPROPERTY() TArray<int32> array_themeids = {};
+    UPROPERTY() TArray<int32> array_bgids = {};
+    UPROPERTY() TArray<int32> array_frontids = {};
+    UPROPERTY() TArray<int32> array_backids = {};
+    UPROPERTY() int32 themeBgId = 0;
+    UPROPERTY() int32 themeBackId = 0;
+    UPROPERTY() int32 themeZhengId = 0;
+    UPROPERTY() int32 themePaiId = 0;
 };
