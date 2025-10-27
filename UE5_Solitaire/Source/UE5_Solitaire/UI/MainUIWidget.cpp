@@ -318,15 +318,157 @@ void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)
         }
         else
         {
-            local nLastRecordData = AllRecordDataHandler:RemoveAndGetLastDifferentGameModeRecordTable(self.nGameMode)
-                if nLastRecordData then
-                    RecordStepDataHandler : InitStepRecordFromOther(nLastRecordData)
-                    self : RecoverGame()
-                else
-                    self : NewGameBegin(false)
-                    end
+            auto nLastRecordData = AllRecordDataHandler::GetSingleton()->RemoveAndGetLastDifferentGameModeRecordTable(this->nGameMode);
+            if (nLastRecordData)
+            {
+                RecordStepDataHandler::GetSingleton()->InitStepRecordFromOther(nLastRecordData);
+                this->RecoverGame();
+            }
+            else
+            {
+                this->NewGameBegin(false);
+            }
         }
     }
+}
+
+void UMainUIWidget::NewGameBegin(bool bRePlay)
+{
+   // ----------------------------------------------广告--------------------------------------------
+   /* if ThemeSolitaire.Config : orTriggerBannerAds() then
+        if not GoogleAdsHandler.bShowBannerAds then
+            GoogleAdsHandler : Show_BannerAds(true)
+            end
+            end
+
+            if ThemeSolitaire.Config : orTriggerRewardedInterstitialAds() then
+                GoogleAdsHandler : Show_RewardedInterstitialAds()
+                end
+
+                --------------------------------------对上把数据 记录整理--------------------------------------------
+                if DataCenter.data.nTotalGameCount > 0 then
+                    if RecordStepDataHandler.data.nGameMode == ThemeSolitaire.GameMode.Normal then
+                        if RecordStepDataHandler.data.bWin then
+                            DataCenter : AddNomalModeTotalWinCount()
+                            end
+                            DataCenter : AddDifficultLayerWinResult(RecordStepDataHandler.data.bWin)
+                            end
+
+                            if RecordStepDataHandler.data.bWin then
+                                DataCenter : AddTotalWinGameCount()
+                                end
+
+                                StatisticDataHandler : onGameStatistic(
+                                    RecordStepDataHandler.data.bWin,
+                                    RecordStepDataHandler.data.nMoveCount,
+                                    RecordStepDataHandler.data.nTime,
+                                    RecordStepDataHandler.data.nScore)
+
+                                if RecordStepDataHandler.data.bWin then
+                                    if DataCenter.data.nNomalModeTotalWinCount == 2 and DataCenter.data.bFastGame == false then
+                                        TweenMgr : delayedCall(1.0, function()
+                                            ThemeSolitaire.Guide_FastPlayView:Show()
+                                            end)
+                                        end
+
+                                        if DataCenter.data.nNomalModeTotalWinCount == 4 and DataCenter.data.nMusicIndex == 0 then
+                                            TweenMgr : delayedCall(1.0, function()
+                                                ThemeSolitaire.Guide_MusicOnView:Show()
+                                                end)
+                                            end
+                                            end
+                                            end
+
+                                            ----------------------------初始化数据--------------------------------------------
+                                            DataCenter.data.nDifficultLayer = LuaHelper.Clamp(DataCenter.data.nDifficultLayer, 1, 10)
+                                            if not bRePlay then
+                                                DataCenter : AddGameLevel()
+                                                end
+
+                                                DataCenter.data.nIQValue = 100
+                                                DataCenter : AddTotalGameCount()
+                                                self : TellRobot_PlayerAlive()
+                                                self : RecycleAndInitCardGo()
+                                                self.bGameEnd = false
+                                                self.PokerItemParent.gameObject : SetActive(true)
+
+                                                --------------------------------------事件---------------------------------- -
+                                                self : PrintGameStartInfo()
+
+                                                local mSendCardList = nil
+                                                if bRePlay and self.mLastSendCardList then
+                                                    mSendCardList = self.mLastSendCardList
+                                                else
+                                                    if self.nGameMode == ThemeSolitaire.GameMode.DailyChallenge then
+                                                        mSendCardList = CardHandler:GetInitCards_ForChallengeMode()
+                                                        elseif self.nGameMode == ThemeSolitaire.GameMode.Rank then
+                                                        mSendCardList = CardHandler : GetInitCards_ForRankMode()
+                                                        elseif self.nGameMode == ThemeSolitaire.GameMode.Trip then
+                                                        mSendCardList = CardHandler : GetInitCards_ForTripMode()
+                                                    else
+                                                        mSendCardList = CardHandler:GetInitCards_ForNormalMode()
+                                                        end
+                                                        end
+                                                        self.mLastSendCardList = mSendCardList
+
+                                                        Debug.Assert(#mSendCardList == 52, #mSendCardList)
+                                                        Debug.Assert(#self.mSendCardListGo == 52, #self.mSendCardListGo)
+                                                        RecordStepDataHandler:InitStepRecord(self.nGameMode, LuaHelper.DeepCloneTable(mSendCardList))
+                                                        ThemeSolitaire.CollectPokerTaskDataHandler : SetGameBeginPokerId(mSendCardList)
+
+                                                        for i = 1, #mSendCardList do
+                                                            local nPokerId = mSendCardList[i]
+                                                            self:SetRelativePos(self.mSendCardListGo[i], self.tranFaPaiPos)
+
+                                                            self.mSendCardListGo[i] : SetPokerId(nPokerId)
+                                                            self.mSendCardListGo[i] : Show()
+                                                            self.mSendCardListGo[i] : SetTurnOverState(false)
+                                                            self.mSendCardListGo[i] : RefreshUI()
+                                                            self.mSendCardListGo[i] : SetEventTriggerState(false)
+                                                            end
+
+                                                            GameEventHandler : Brocast(EventName.RefreshTopBottomUI)
+                                                            -------------------------- - 做发牌动画-------------------------------- -
+                                                            AudioHandler : PlaySound("start_new")
+                                                            for i = 1, 7 do
+                                                                for j = 1, i do
+                                                                    local nTopIndex = i
+                                                                    local mCardItem = table.remove(self.mSendCardListGo)
+                                                                    table.insert(self.tableCardNodeTop7Go[nTopIndex], mCardItem)
+                                                                    local nHeightIndex = #self.tableCardNodeTop7Go[nTopIndex]
+                                                                    local bTurnOverState = nHeightIndex == nTopIndex
+                                                                    if bTurnOverState then
+                                                                        mCardItem : SetTurnOverState(true)
+                                                                        end
+                                                                        mCardItem.transform : SetAsLastSibling()
+
+                                                                        local from = self : GetRelativePosByGo(mCardItem)
+                                                                        local to = self : GetCardNodeTop7MaxHeightPos(nTopIndex)
+                                                                        self : SetRelativePos(mCardItem, from)
+                                                                        LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3) : setDelay(0.05 * (j - 1)) : setOnComplete(function()
+                                                                            GameEventHandler:Brocast(EventName.RefreshTopBottomUI)
+                                                                            if bTurnOverState then
+                                                                                mCardItem : PlayTurnOverAni()
+                                                                                mCardItem : SetEventTriggerState(true)
+                                                                                end
+                                                                                end)
+
+                                                                        end
+                                                                        end
+
+                                                                        self.GameWinAniMgr:DestroyAniNode()
+                                                                        self : UpdateGameMode()
+                                                                        self : onAddScore_InitParam()
+                                                                        self.mTimer : Start()
+                                                                        self : TellRobot_PlayerAlive()
+                                                                        self : ResetRemainHintCount()
+                                                                        LeanTween.delayedCall(self.transform.gameObject, 1.0, function()
+                                                                            self:DoWhenSet_FastGame()
+
+                                                                            if ThemeSolitaire.Config.bRobotTest then
+                                                                                self : StartRobotPlay()
+                                                                                end
+                                                                                end)*/
 }
 
 //------------------------------------ 相对位置计算 --------------------------------------------

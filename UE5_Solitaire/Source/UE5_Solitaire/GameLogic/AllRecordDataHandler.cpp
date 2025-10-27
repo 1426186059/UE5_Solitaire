@@ -1,12 +1,12 @@
 ﻿#include "AllRecordDataHandler.h"
 
-FString AllRecordDataHandler::GameRecordDirPath = "ThemeSolitaire/";
-FString AllRecordDataHandler::GameRecordFileIndexName = "ThemeSolitaire/index.txt";
+const FString AllRecordDataHandler::GameRecordDirPath = "ThemeSolitaire/";
+const FString AllRecordDataHandler::GameRecordFileIndexName = "ThemeSolitaire/index.txt";
 
 void AllRecordDataHandler::Init()
 {
 	USaveGame* mFileIndex = UGameplayStatics::LoadGameFromSlot(AllRecordDataHandler::GameRecordFileIndexName, DataCenter::DATA_USER_INDEX);
-	if (mFileIndex ~= nullptr)
+	if (mFileIndex != nullptr)
 	{
 		this->data = Cast<UAllRecordData>(mFileIndex);
 	}
@@ -46,7 +46,7 @@ void AllRecordDataHandler::SaveGameRecordToDirectory()
 	while (this->data->tableFileNameItem.Num() > 100)
 	{
 		auto mItem = this->data->tableFileNameItem.Pop();
-		FString fileName = mItem.fileName;
+		fileName = mItem->fileName;
 		UGameplayStatics::DeleteGameInSlot(fileName, DataCenter::DATA_USER_INDEX);
 	}
 
@@ -95,7 +95,7 @@ URecordStepData* AllRecordDataHandler::RemoveAndGetLastDifferentGameModeRecordTa
 	for (int i = 0; i < this->data->tableFileNameItem.Num(); i++)
 	{
 		auto mItem = this->data->tableFileNameItem[i];
-		if (mItem.nGameMode == nNowGameMode && mItem.bFinish == false)
+		if (mItem->nGameMode == nNowGameMode && mItem->bFinish == false)
 		{
 			nRemoveIndex = i;
 			break;
@@ -104,8 +104,8 @@ URecordStepData* AllRecordDataHandler::RemoveAndGetLastDifferentGameModeRecordTa
 
 	if (nRemoveIndex > 0)
 	{
-		auto fileNameItem = this->data->tableFileNameItem.RemoveAt(nRemoveIndex);
-		FString fileName = fileNameItem.fileName;
+		auto fileNameItem = TArrayExtentions::Remove(this->data->tableFileNameItem, nRemoveIndex);
+		FString fileName = fileNameItem->fileName;
 		USaveGame* mOpData = UGameplayStatics::LoadGameFromSlot(fileName, DataCenter::DATA_USER_INDEX);
 		if (mOpData)
 		{
@@ -121,11 +121,11 @@ void AllRecordDataHandler::ClearAllTripGame()
 {
 	for (int i = this->data->tableFileNameItem.Num() - 1; i >= 0; i--)
 	{
-		auto mItem = this->data.tableFileNameItem[i];
-		if (mItem.nGameMode == SolitaireGameMode::Trip)
+		auto mItem = this->data->tableFileNameItem[i];
+		if (mItem->nGameMode == SolitaireGameMode::Trip)
 		{
 			this->data->tableFileNameItem.RemoveAt(i);
-			FString fileName = mItem.fileName;
+			FString fileName = mItem->fileName;
 			UGameplayStatics::DeleteGameInSlot(fileName, DataCenter::DATA_USER_INDEX);
 		}
 	}
@@ -138,7 +138,7 @@ URecordStepData* AllRecordDataHandler::RemoveAndGetTripHalfGame() //残局
 	for (int i = this->data->tableFileNameItem.Num(); i >= 3; i--)
 	{
 		auto mItem = this->data->tableFileNameItem[i];
-		if (mItem.nGameMode == SolitaireGameMode::Normal && mItem.bFinish == false)
+		if (mItem->nGameMode == SolitaireGameMode::Normal && mItem->bFinish == false)
 		{
 			nRemoveIndex = i;
 			break;
@@ -147,8 +147,8 @@ URecordStepData* AllRecordDataHandler::RemoveAndGetTripHalfGame() //残局
 
 	if (nRemoveIndex > 0)
 	{
-		auto fileNameItem = this->data->tableFileNameItem.RemoveAt(nRemoveIndex);
-		FString fileName = fileNameItem.fileName;
+		auto fileNameItem = TArrayExtentions::Remove(this->data->tableFileNameItem, nRemoveIndex);
+		FString fileName = fileNameItem->fileName;
 		USaveGame* mOpData = UGameplayStatics::LoadGameFromSlot(fileName, DataCenter::DATA_USER_INDEX);
 		if (mOpData)
 		{

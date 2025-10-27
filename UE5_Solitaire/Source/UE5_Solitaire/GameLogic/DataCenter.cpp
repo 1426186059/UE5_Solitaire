@@ -1,7 +1,7 @@
 #include "DataCenter.h"
 
-FString DataCenter::DATA_SLOT_NAME = "SolitaireData";
-int32 DataCenter::DATA_USER_INDEX = 0;
+const FString DataCenter::DATA_SLOT_NAME = "SolitaireData";
+const int32 DataCenter::DATA_USER_INDEX = 0;
 
 void DataCenter::Init(InitFinishFunc func)
 {

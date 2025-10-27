@@ -7,9 +7,11 @@
 #include "GameData.h"
 #include "DataCenter.h"
 #include "GameConst.h"
+#include "RecordStepDataHandler.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
 #include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
 #include "UE5_Solitaire/SimpleFramework/KKTimeTool.h"
+#include "UE5_Solitaire/SimpleFramework/TArrayExtentions.h"
 #include "UE5_Solitaire/CSV/CSVConfigMgr.h"
 
 class AllRecordDataHandler :public KKSingleton<AllRecordDataHandler>

@@ -10,6 +10,7 @@
 #include "UE5_Solitaire/GameLogic/CardHandler.h"
 #include "UE5_Solitaire/GameLogic/AudioHandler.h"
 #include "UE5_Solitaire/GameLogic/ThemeDataHandler.h"
+#include "UE5_Solitaire/GameLogic/AllRecordDataHandler.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
@@ -41,8 +42,9 @@ public:
 	UFUNCTION() void OnBtnClicked_GameNodeBtn();
 	
 	void InitGame();
-	void RecoverGame(bool bPlayAni);
+	void RecoverGame(bool bPlayAni = false);
 	void RecycleAndInitCardGo();
+	void NewGameBegin(bool bRePlay = false);
 
 	FVector2D GetRelativePosByGo(UWidget* target);
 	void SetRelativePos(UWidget* target, FVector2D relativePos);
