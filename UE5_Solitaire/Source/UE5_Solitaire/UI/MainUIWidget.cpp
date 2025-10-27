@@ -125,6 +125,7 @@ void UMainUIWidget::InitGame()
         mSendCardListGo.Add(mPokerItem);
     }
 
+    this->tableCardNodeTop7Go.SetNumZeroed(7);
     this->RecoverGame(true);
 }
 
@@ -151,9 +152,9 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
         this->mSendCardListGo[i]->SetTurnOverState(false);
     }
 
-    for (int i = 1; i <= 7; i++)
+    for (int i = 0; i < 7; i++)
     {
-        for (int j = 1; j < i; j++)
+        for (int j = 0; j <= i; j++)
         {
             int nTopIndex = i;
             UPokerItemWidget* mCardItem = this->mSendCardListGo.Pop();

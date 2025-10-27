@@ -85,7 +85,7 @@ void AGameLauncher::StartEnterGame(void* param)
     DTMgr::GetSingleton()->Init();
 
     //加载游戏数据
-    DataCenter::GetSingleton()->Init();
+    DataCenter::GetSingleton()->Init(); //改为同步调用了
     CardHandler::GetSingleton()->Init();
     RecordStepDataHandler::GetSingleton()->Init();
 

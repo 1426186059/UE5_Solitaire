@@ -19,8 +19,8 @@ public:
 	InitFinishFunc mInitFinishFunc;
 	void Init(InitFinishFunc func = NULL);
 
-	void LoadData();
-	void SaveData();
+	void LoadData(bool bSync = true);
+	void SaveData(bool bSync = true);
 
 	void OnLoadDataComplete(const FString& SlotName, const int32 UserIndex, USaveGame* SaveGameInstance);
 	void OnSaveDataComplete(const FString& SlotName, const int32 UserIndex, bool bSuccess);
