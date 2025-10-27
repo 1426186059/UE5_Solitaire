@@ -126,6 +126,7 @@ void UMainUIWidget::InitGame()
     }
 
     this->tableCardNodeTop7Go.SetNumZeroed(7);
+    this->tableCardNode4AGo.SetNumZeroed(4);
     this->RecoverGame(true);
 }
 
