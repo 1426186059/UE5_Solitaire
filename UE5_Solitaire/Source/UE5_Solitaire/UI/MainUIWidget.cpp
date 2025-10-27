@@ -132,14 +132,16 @@ void UMainUIWidget::InitGame()
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
 {
-    //local tableOpStepItem = RecordStepDataHandler.data.tableOpStepItem
-    //local mInitSendCardList = RecordStepDataHandler.data.mInitSendCardList
-    //    if  RecordStepDataHandler:orGameEnd() then
-    //        self : NewGameBegin_ForNormal(true)
-    //            return
-    //        end
-    //        self.mLastSendCardList = mInitSendCardList
-    //        -------------------------- - 初始化资源------------------------------
+    auto tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+    auto mInitSendCardList = RecordStepDataHandler::GetSingleton()->data->mInitSendCardList;
+    if (RecordStepDataHandler::GetSingleton()->orGameEnd())
+    {
+        //this->NewGameBegin_ForNormal(true);
+        return;
+    }
+    this->mLastSendCardList = mInitSendCardList;
+
+    //-------------------------- - 初始化资源------------------------------
 
     this->RecycleAndInitCardGo();
     this->bGameEnd = false;
@@ -147,7 +149,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
     //this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
 
     ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
-    for (int i = 1; i < mInitSendCardList.Num(); i++)
+    for (int i = 0; i < mInitSendCardList.Num(); i++)
     {
         this->mSendCardListGo[i]->SetPokerId(mInitSendCardList[i]);
         this->mSendCardListGo[i]->SetTurnOverState(false);

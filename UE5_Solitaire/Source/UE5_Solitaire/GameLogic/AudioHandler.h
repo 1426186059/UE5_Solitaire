@@ -24,8 +24,8 @@ public:
 
 public:
 	void Init();
-	void PlaySound(FName name);
-	void PlayBackMusic(FName name);
+	void PlaySound(const FString& name);
+	void PlayBackMusic(const FString& name);
 
 private:
 	UAudioComponent* mBGMAudioComponent;

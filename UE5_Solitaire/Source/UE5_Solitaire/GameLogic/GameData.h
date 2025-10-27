@@ -19,7 +19,7 @@ public:
     UPROPERTY() int32 nTotalWinGameCount = 0;
 
     //TArray<int> tableOpRecord = {};
-    UPROPERTY() URecordStepDataHandlerData* tableOpRecord = {};
+    UPROPERTY() URecordStepData* tableOpRecord = {};
     //data.DailyChallengeData = {}
     //    data.StatisticData = {}
     UPROPERTY() UThemeData* ThemeData = {};
@@ -50,7 +50,7 @@ public:
 
 
 UCLASS()
-class UE5_SOLITAIRE_API URecordStepDataHandlerData : public UObject
+class UE5_SOLITAIRE_API URecordStepData : public UObject
 {
     GENERATED_BODY()
 
@@ -61,12 +61,12 @@ public:
     UPROPERTY() int32 nScore = 0;
     UPROPERTY() bool bWin = false;
     UPROPERTY() TArray<int32> mInitSendCardList = {};
-    UPROPERTY() TArray<URecordStepDataHandlerData_OpStepItem*> tableOpStepItem = {};
+    UPROPERTY() TArray<URecordStepData_OpStepItem*> tableOpStepItem = {};
     UPROPERTY() int32 nUndoCount = 0;
 };
 
 UCLASS()
-class UE5_SOLITAIRE_API URecordStepDataHandlerData_OpStepItem : public UObject
+class UE5_SOLITAIRE_API URecordStepData_OpStepItem : public UObject
 {
     GENERATED_BODY()
 

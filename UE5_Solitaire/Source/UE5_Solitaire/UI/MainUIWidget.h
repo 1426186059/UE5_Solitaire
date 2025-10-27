@@ -70,7 +70,7 @@ private:
 	TArray<UPokerItemWidget*> mSendCardListGo;
 	TArray<UPokerItemWidget*> tableCardDraw3Go;
 
-	TArray<int> mInitSendCardList;
+	TArray<int> mLastSendCardList;
 
 	const float N_TOP7_GAP_HEIGHT = 50.0f;
 	SolitaireGameMode nGameMode = SolitaireGameMode::Normal;

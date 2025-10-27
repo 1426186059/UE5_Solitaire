@@ -15,8 +15,28 @@ class RecordStepDataHandler :public KKSingleton<RecordStepDataHandler>
 {
 	
 public:
-	URecordStepDataHandlerData* data;
+	URecordStepData* data;
 
 public:
 	void Init();
+	URecordStepData* GetDefaultData();
+	URecordStepData_OpStepItem* GetOpStepItemDefaultData();
+	void SetDbDataWithMeta();
+	void InitStepRecordFromOther(URecordStepData* mmmData);
+	void InitStepRecord(SolitaireGameMode nGameMode, TArray<int> mInitSendCardList);
+	void AddUndoCount(int nCount);
+	void ResetUndoCountTo0();
+	void AddStepRecord(URecordStepData_OpStepItem* mOpStepItemData);
+	std::tuple<int32, URecordStepData_OpStepItem*> GetNowStepRecord();
+	bool orCanUndo();
+	bool orCanForward();
+	FString GetPosTypeName(SolitairePokerPosType nPosType);
+	void PrintOp(URecordStepData_OpStepItem* mOpStepItemData);
+	void PrintAllOp();
+
+	void AddMoveCount();
+	void AddScore(int32 nCount);
+	void AddTime(int32 nCount);
+	void SetLoseWin(bool bWin);
+	bool orGameEnd();
 };

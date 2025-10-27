@@ -5,14 +5,15 @@ void UAudioHandler::Init()
    
 }
 
-void UAudioHandler::PlaySound(FName name)
+void UAudioHandler::PlaySound(const FString& name)
 {
-    FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name.ToString(), *name.ToString());
+    ///"/Game/ResourceABs/MainScene/Audio/journeynewlevel.journeynewlevel";
+    FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
     USoundWave* Sound = LoadObject<USoundWave>(nullptr, *resPath);
     UGameplayStatics::PlaySound2D(this, Sound);
 }
 
-void UAudioHandler::PlayBackMusic(FName name)
+void UAudioHandler::PlayBackMusic(const FString& name)
 {
     if (mBGMAudioComponent == nullptr)
     {
@@ -22,7 +23,7 @@ void UAudioHandler::PlayBackMusic(FName name)
     }
 
     // 加载 SoundCue
-    FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name.ToString(), *name.ToString());
+    FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
     USoundWave* Sound = LoadObject<USoundWave>(nullptr, *resPath);
     
     mBGMAudioComponent->SetSound(Sound);
