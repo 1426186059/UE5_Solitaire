@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/GameplayStatics.h"
-#include "GameData.h"
-#include "DataCenter.h"
-#include "GameConst.h"
+#include "Components/AudioComponent.h"
+
 #include "UE5_Solitaire/SimpleFramework/KKObjectSingleton.h"
 #include "UE5_Solitaire/CSV/CSVConfigMgr.h"
+#include "DataCenter.h"
+
 #include "AudioHandler.generated.h"
 
 UCLASS()
@@ -24,4 +25,8 @@ public:
 public:
 	void Init();
 	void PlaySound(FName name);
+	void PlayBackMusic(FName name);
+
+private:
+	UAudioComponent* mBGMAudioComponent;
 };

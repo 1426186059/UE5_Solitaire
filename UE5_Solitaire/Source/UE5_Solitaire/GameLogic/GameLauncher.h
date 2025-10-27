@@ -10,6 +10,7 @@
 
 #include "InitSceneHotUpdateMgr.h"
 #include "ResCenter.h"
+#include "AudioHandler.h"
 #include "DataCenter.h"
 #include "CardHandler.h"
 #include "RecordStepDataHandler.h"
