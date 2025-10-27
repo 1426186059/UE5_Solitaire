@@ -88,6 +88,7 @@ void AGameLauncher::StartEnterGame(void* param)
     DataCenter::GetSingleton()->Init(); //改为同步调用了
     CardHandler::GetSingleton()->Init();
     RecordStepDataHandler::GetSingleton()->Init();
+    ThemeDataHandler::GetSingleton()->Init();
 
     //资源中心初始化
     ResCenter::GetSingleton()->Init();

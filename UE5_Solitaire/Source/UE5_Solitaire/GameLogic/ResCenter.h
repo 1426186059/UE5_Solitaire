@@ -8,6 +8,7 @@
 
 #include "CardHandler.h"
 #include "DataCenter.h"
+#include "ThemeDataHandler.h"
 
 class ResCenter : public KKSingleton<ResCenter>
 {

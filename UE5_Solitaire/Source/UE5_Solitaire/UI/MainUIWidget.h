@@ -9,6 +9,7 @@
 #include "UE5_Solitaire/GameLogic/RecordStepDataHandler.h"
 #include "UE5_Solitaire/GameLogic/CardHandler.h"
 #include "UE5_Solitaire/GameLogic/AudioHandler.h"
+#include "UE5_Solitaire/GameLogic/ThemeDataHandler.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"

@@ -170,9 +170,9 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
 
     if (bPlayAni)
     {
-        for (int i = 1; i <= 7; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 1; j < this->tableCardNodeTop7Go[i].Num(); j++)
+            for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
             {
                 auto mCardItem = this->tableCardNodeTop7Go[i][j];
                 UMGHelper::SetAsLastChildIndex(mCardItem);
@@ -184,7 +184,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             }
         }
 
-        for (int i = 1; i <= 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             for (int j = 0; j < this->tableCardNode4AGo[i].Num(); j++)
             {
@@ -198,7 +198,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             }
         }
 
-        for (int i = 1; i < this->tableCardDraw3Go.Num(); i++)
+        for (int i = 0; i < this->tableCardDraw3Go.Num(); i++)
         {
             auto mCardItem = this->tableCardDraw3Go[i];
             UMGHelper::SetAsLastChildIndex(mCardItem);
@@ -220,9 +220,9 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
 
         // ------------------ - ¶¯»­²¥·Å-------------------- -
         UAudioHandler::GetSingleton()->PlaySound("start_new");
-        for (int i = 1; i <= 7; i++)
+        for (int i = 0; i < 7; i++)
         {
-            for (int j = 1; j < this->tableCardNodeTop7Go[i].Num(); j++)
+            for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
             {
                 auto mCardItem = this->tableCardNodeTop7Go[i][j];
                 auto fromPos = this->GetCardNodeSendPokerPos();
