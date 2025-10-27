@@ -136,7 +136,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
     auto mInitSendCardList = RecordStepDataHandler::GetSingleton()->data->mInitSendCardList;
     if (RecordStepDataHandler::GetSingleton()->orGameEnd())
     {
-        //this->NewGameBegin_ForNormal(true);
+        this->NewGameBegin_ForNormal(true);
         return;
     }
     this->mLastSendCardList = mInitSendCardList;
@@ -298,6 +298,33 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                                     self : DoWhenSet_FastGame()*/
                                     //}
             }
+        }
+    }
+}
+
+void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)
+{
+    this->nGameMode = (int32)SolitaireGameMode::Normal;
+    if (bForceNewGame)
+    {
+        this->NewGameBegin(false);
+    }
+    else
+    {
+        if (RecordStepDataHandler::GetSingleton()->data->nGameMode == this->nGameMode &&
+            RecordStepDataHandler::GetSingleton()->orGameEnd() == false)
+        {
+            //--ÅÆ¾ÖÎ´¸Ä±ä
+        }
+        else
+        {
+            local nLastRecordData = AllRecordDataHandler:RemoveAndGetLastDifferentGameModeRecordTable(self.nGameMode)
+                if nLastRecordData then
+                    RecordStepDataHandler : InitStepRecordFromOther(nLastRecordData)
+                    self : RecoverGame()
+                else
+                    self : NewGameBegin(false)
+                    end
         }
     }
 }

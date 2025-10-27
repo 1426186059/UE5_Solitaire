@@ -8,7 +8,11 @@ class KKTimeTool : public KKSingleton<KKTimeTool>
 {
     friend class KKSingleton<KKTimeTool>;
 public:
-    
+
+    static int64 GetTimeStamp()
+    {
+        return FDateTime::Now().ToUnixTimestamp();
+    }
 
 
 private:

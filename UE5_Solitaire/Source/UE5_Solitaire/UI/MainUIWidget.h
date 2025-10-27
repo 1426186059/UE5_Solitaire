@@ -53,6 +53,8 @@ public:
 	FVector2D GetCardNode4APos(int nTopIndex);
 	FVector2D GetCardNodeDraw3Pos(int nIndex);
 	FVector2D GetCardNodeSendPokerPos();
+
+	void NewGameBegin_ForNormal(bool bForceNewGame);
 private:
 	bool bInit;
 	UUserWidget* mUIRoot;
@@ -73,7 +75,7 @@ private:
 	TArray<int> mLastSendCardList;
 
 	const float N_TOP7_GAP_HEIGHT = 50.0f;
-	SolitaireGameMode nGameMode = SolitaireGameMode::Normal;
+	int32 nGameMode;
 	bool bGameEnd = false;
 	float fRobotThinkingTime = 0;
 	float fIQTime = 0;

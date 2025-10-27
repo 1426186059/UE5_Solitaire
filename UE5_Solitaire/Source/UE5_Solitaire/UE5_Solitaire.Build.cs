@@ -7,8 +7,17 @@ public class UE5_Solitaire : ModuleRules
 	public UE5_Solitaire(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "UMG", "Paper2D" });
+		
+		PublicDependencyModuleNames.AddRange(new string[] { 
+			"Core", 
+			"CoreUObject", 
+			"Engine", 
+			"InputCore", 
+			"UMG", 
+			"Paper2D", 
+			"Json", 
+			"JsonUtilities" 
+		});
 
         PrivateDependencyModuleNames.AddRange(new string[] {
            // "ChunkDownloader"

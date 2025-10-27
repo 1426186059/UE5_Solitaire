@@ -48,6 +48,23 @@ public:
     UPROPERTY() int32 nIQValue = 100;
 };
 
+UCLASS()
+class UE5_SOLITAIRE_API UAllRecordData_OpRecord : public USaveGame
+{
+    GENERATED_BODY()
+public:
+    UPROPERTY() URecordStepData* tableOpRecord = nullptr;
+};
+
+UCLASS()
+class UE5_SOLITAIRE_API UAllRecordData : public USaveGame
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY() TArray<UAllRecordData_fileNameItem*> tableFileNameItem;
+};
+
 
 UCLASS()
 class UE5_SOLITAIRE_API URecordStepData : public UObject
@@ -93,4 +110,15 @@ public:
     UPROPERTY() int32 themeBackId = 0;
     UPROPERTY() int32 themeZhengId = 0;
     UPROPERTY() int32 themePaiId = 0;
+};
+
+UCLASS()
+class UE5_SOLITAIRE_API UAllRecordData_fileNameItem : public UObject
+{
+    GENERATED_BODY()
+public:
+    UPROPERTY() FString fileName;
+    UPROPERTY() int64 nTimeStamp;
+    UPROPERTY() int32 nGameMode;
+    UPROPERTY() bool bFinish;
 };

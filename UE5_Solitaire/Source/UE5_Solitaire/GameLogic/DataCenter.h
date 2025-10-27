@@ -12,8 +12,8 @@ typedef void (*InitFinishFunc)();
 class DataCenter:public KKSingleton<DataCenter>
 {
 public:
-	const FString DATA_SLOT_NAME = "SolitaireData";
-	const int32 DATA_USER_INDEX = 0;
+	static const FString DATA_SLOT_NAME;
+	static const int32 DATA_USER_INDEX;
 
 	UGameData* data;
 	InitFinishFunc mInitFinishFunc;
