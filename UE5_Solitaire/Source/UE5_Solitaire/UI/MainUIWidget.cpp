@@ -37,6 +37,7 @@ void UMainUIWidget::Init()
         FVector2D mPos = mUIRoot->GetWidgetFromName(Key)->GetRenderTransform().Translation;
         this->tableCardNode4APos.Add(mPos);
     }
+
     this->tableCardNodeTop7Pos = {};
     for (int i = 1; i <= 7; i++)
     {
@@ -49,12 +50,11 @@ void UMainUIWidget::Init()
 void UMainUIWidget::Show()
 {
     Super::Show();
-    this->CheckFirstLayoutOkToInit();
 }
 
 void UMainUIWidget::Hide()
 {
-    this->SetVisibility(ESlateVisibility::Hidden);
+    Super::Hide();
 }
 
 void UMainUIWidget::Refresh()
@@ -70,13 +70,12 @@ void UMainUIWidget::OnScreenSizeChanged()
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
 }
 
-void UMainUIWidget:OnFirstLayoutFinish()
+void UMainUIWidget::OnFirstLayoutFinish()
 {
-    Super::OnScreenSizeChanged();
-    this->CheckFirstLayoutOkToInit();
+    Super::OnFirstLayoutFinish();
 }
 
-void UMainUIWidget:CheckFirstLayoutOkToInit()
+void UMainUIWidget::CheckFirstLayoutOkToInit()
 {
     if (!this->orFirstLayoutFinish()) return;
 

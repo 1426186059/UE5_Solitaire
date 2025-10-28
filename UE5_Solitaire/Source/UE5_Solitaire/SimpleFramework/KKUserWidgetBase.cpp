@@ -34,6 +34,7 @@ void UKKUserWidgetBase::Show()
 {
     this->SetVisibility(ESlateVisibility::Visible);
     this->bShowUI = true;
+    this->CheckFirstLayoutOkToInit();
 }
 
 void UKKUserWidgetBase::Hide()
@@ -59,7 +60,7 @@ void UKKUserWidgetBase::OnScreenSizeChanged()
 
 void UKKUserWidgetBase::OnFirstLayoutFinish()
 {
-
+    this->CheckFirstLayoutOkToInit();
 }
 
 void UKKUserWidgetBase::CheckFirstLayoutOkToInit()
