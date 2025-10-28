@@ -40,9 +40,7 @@ public:
 	void RecoverGame(bool bPlayAni = false);
 	void RecycleAndInitCardGo();
 	void NewGameBegin(bool bRePlay = false);
-
-	FVector2D GetRelativePosByGo(UWidget* target);
-	void SetRelativePos(UWidget* target, FVector2D relativePos);
+	
 	float GetTop7_Gap_Height(int nTopIndex);
 	FVector2D GetCardNodeTop7MaxHeightPos(int nTopIndex);
 	FVector2D GetCardNodeTop7NextMaxHeightPos(int nTopIndex);

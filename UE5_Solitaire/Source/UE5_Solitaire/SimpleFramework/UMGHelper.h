@@ -100,6 +100,24 @@ public:
         return Slot->GetPosition();
     }
 
+    static void SetSlotAnchor(UWidget* target, FAnchors t)
+    {
+        UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        return Slot->SetAnchors(t);
+    }
+
+    static void SetSlotAlignment(UWidget* target, FVector2D t)
+    {
+        UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        return Slot->SetAlignment(t);
+    }
+
+    static void SetSlotAutoSize(UWidget* target, bool bAutoSize)
+    {
+        UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        return Slot->SetAutoSize(bAutoSize);
+    }
+
     static void SetRenderPos(UWidget* target, FVector2D pos)
     {
         target->SetRenderTranslation(pos);
@@ -120,9 +138,9 @@ public:
 
     static void SetRelativePos(UWidget* RootWidget, UWidget* target, FVector2D RelativePos)
     {
-        FVector2D RootAbsPos = RootWidget->GetPaintSpaceGeometry().GetAbsolutePosition();
-        FVector2D AbsolutePos = RootAbsPos + RelativePos;
-        target->GetPaintSpaceGeometry().AbsoluteToLocal(AbsolutePos);
+        FVector2D RootAbsPos = RootWidget->GetPaintSpaceGeometry().LocalToAbsolute(RelativePos);
+        FVector2D targetPos = target->GetPaintSpaceGeometry().AbsoluteToLocal(RootAbsPos);
+        UMGHelper::SetSlotPos(target, targetPos);
     }
 
     static void SetChildIndex(UWidget* target, int nIndex, UCanvasPanel* Parent = nullptr)

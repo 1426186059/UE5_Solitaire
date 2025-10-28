@@ -96,6 +96,10 @@ void UMainUIWidget::InitGame()
     {
         UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(this, PokerItemWBP);
         this->PokerItemParent->AddChild(mPokerItem);
+        UMGHelper::SetSlotAnchor(mPokerItem, FAnchors(0.5f));
+        UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5f));
+        UMGHelper::SetSlotAutoSize(mPokerItem, true);
+
         mPokerItem->Show();
         mSendCardListGo.Add(mPokerItem);
     }
@@ -137,7 +141,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             int nTopIndex = i;
             UPokerItemWidget* mCardItem = this->mSendCardListGo.Pop();
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
-            this->SetRelativePos(mCardItem, this->GetCardNodeTop7MaxHeightPos(nTopIndex));
+            UMGHelper::SetSlotPos(mCardItem, this->GetCardNodeTop7MaxHeightPos(nTopIndex));
             if (i == j)
             {
                 mCardItem->SetTurnOverState(true);
@@ -157,7 +161,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 mCardItem->ForceShowBackUI();
                 mCardItem->SetEventTriggerState(mCardItem->orTurnOverStateIsTrue());
                 FVector2D fromPos = this->GetCardNodeSendPokerPos();
-                this->SetRelativePos(mCardItem, fromPos);
+                UMGHelper::SetSlotPos(mCardItem, fromPos);
             }
         }
 
@@ -171,7 +175,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 mCardItem->Show();
                 mCardItem->SetEventTriggerState(j + 1 == this->tableCardNode4AGo[i].Num());
                 FVector2D fromPos = this->GetCardNodeSendPokerPos();
-                this->SetRelativePos(mCardItem, fromPos);
+                UMGHelper::SetSlotPos(mCardItem, fromPos);
             }
         }
 
@@ -192,7 +196,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             }
 
             FVector2D fromPos = this->GetCardNodeSendPokerPos();
-            this->SetRelativePos(mCardItem, fromPos);
+            UMGHelper::SetSlotPos(mCardItem, fromPos);
         }
 
         // ------------------ - 动画播放-------------------- -
@@ -415,7 +419,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     for (int i = 0; i < mSendCardList.Num(); i++)
     {
         int32 nPokerId = mSendCardList[i];
-        this->SetRelativePos(this->mSendCardListGo[i], this->tranFaPaiPos);
+        UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->tranFaPaiPos);
 
         this->mSendCardListGo[i]->SetPokerId(nPokerId);
         this->mSendCardListGo[i]->Show();
@@ -478,16 +482,6 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 }
 
 //------------------------------------ 相对位置计算 --------------------------------------------
-FVector2D UMainUIWidget::GetRelativePosByGo(UWidget* target)
-{
-    return UMGHelper::GetSlotPos(target);
-}
-
-void UMainUIWidget::SetRelativePos(UWidget* target, FVector2D relativePos)
-{
-    UMGHelper::SetSlotPos(target, relativePos);
-}
-
 float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
 {
     TArray<UPokerItemWidget*>& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
