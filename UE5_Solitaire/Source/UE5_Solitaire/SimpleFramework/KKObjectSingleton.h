@@ -19,7 +19,7 @@ protected:
 		static_assert(TIsDerivedFrom<T, UKKObjectSingleton>::Value, "T must be an UKKObjectSingleton derived class");
 		if (mInstance == nullptr && bCreate)
 		{
-			mInstance = NewObject<T>();
+			mInstance = NewObject<T>(GEngine->GetWorld());
 		}
 		return Cast<T>(mInstance);
 	}

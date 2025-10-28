@@ -5,7 +5,7 @@ void RecordStepDataHandler::Init()
 	URecordStepData* mmmData = DataCenter::GetSingleton()->data->tableOpRecord;
 	if (mmmData == nullptr)
 	{
-		this->data = NewObject<URecordStepData>();
+		this->data = NewObject<URecordStepData>(DataCenter::GetSingleton()->data);
 		DataCenter::GetSingleton()->data->tableOpRecord = this->data;
 	}
 	else

@@ -5,7 +5,7 @@ void ThemeDataHandler::Init()
 	UThemeData* mmmData = DataCenter::GetSingleton()->data->ThemeData;
 	if (mmmData == nullptr)
 	{
-		this->data = NewObject<UThemeData>();
+		this->data = NewObject<UThemeData>(DataCenter::GetSingleton()->data);
 		DataCenter::GetSingleton()->data->ThemeData = this->data;
 	}
 	else

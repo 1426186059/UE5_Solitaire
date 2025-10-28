@@ -5,7 +5,7 @@ void StatisticDataHandler::Init()
 	UStatisticData* mmmData = DataCenter::GetSingleton()->data->StatisticData;
 	if (mmmData == nullptr)
 	{
-		this->data = NewObject<UStatisticData>();
+		this->data = NewObject<UStatisticData>(DataCenter::GetSingleton()->data);
 		DataCenter::GetSingleton()->data->StatisticData = this->data;
 	}
 	else
