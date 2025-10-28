@@ -32,15 +32,24 @@ void UKKUserWidgetBase::Init()
 
 void UKKUserWidgetBase::Show()
 {
+    this->AddToViewport(0);
     this->SetVisibility(ESlateVisibility::Visible);
     this->bShowUI = true;
     this->CheckFirstLayoutOkToInit();
 }
 
-void UKKUserWidgetBase::Hide()
+void UKKUserWidgetBase::Hide(bool bDestroy)
 {
     this->bShowUI = false;
     this->SetVisibility(ESlateVisibility::Hidden);
+    
+    if (bDestroy)
+    {
+        if (this->IsInViewport())
+        {
+            this->RemoveFromParent();
+        }
+    }
 }
 
 void UKKUserWidgetBase::Refresh()
@@ -50,7 +59,6 @@ void UKKUserWidgetBase::Refresh()
 
 void UKKUserWidgetBase::OnScreenSizeChanged()
 {
-    UE_LOG(LogTemp, Log, TEXT("OnScreenSizeChanged  OnLayoutFinish"));
     if (!this->bFirstLayoutFinish)
     {
         this->bFirstLayoutFinish = true;

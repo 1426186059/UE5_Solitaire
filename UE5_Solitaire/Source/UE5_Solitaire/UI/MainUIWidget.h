@@ -31,10 +31,6 @@ class UE5_SOLITAIRE_API UMainUIWidget : public UKKUserWidgetBase
 	GENERATED_BODY()
 public:
 	virtual void Init() override;
-	virtual void Show() override;
-	virtual void Hide() override;
-	virtual void Refresh() override;
-	virtual void OnFirstLayoutFinish() override;
 	virtual void OnScreenSizeChanged() override;
 	virtual void CheckFirstLayoutOkToInit() override;
 

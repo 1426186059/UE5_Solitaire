@@ -19,8 +19,7 @@ class UE5_SOLITAIRE_API UInitSceneWidget : public UUserWidget
 
 protected:
 	virtual void NativeConstruct() override;
-	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
-
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
 	void Init();
 	void Show();

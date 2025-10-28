@@ -47,21 +47,6 @@ void UMainUIWidget::Init()
     }
 }
 
-void UMainUIWidget::Show()
-{
-    Super::Show();
-}
-
-void UMainUIWidget::Hide()
-{
-    Super::Hide();
-}
-
-void UMainUIWidget::Refresh()
-{
-    //mUProgressBar->SetPercent(0);
-}
-
 void UMainUIWidget::OnScreenSizeChanged()
 {
     Super::OnScreenSizeChanged();
@@ -70,18 +55,19 @@ void UMainUIWidget::OnScreenSizeChanged()
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
 }
 
-void UMainUIWidget::OnFirstLayoutFinish()
-{
-    Super::OnFirstLayoutFinish();
-}
-
 void UMainUIWidget::CheckFirstLayoutOkToInit()
 {
     if (!this->orFirstLayoutFinish()) return;
 
     this->Init();
     this->InitGame();
+    this->SetVisibility(ESlateVisibility::Visible);
 }
+
+
+
+
+//--------------------------------------------------------------------------------------------------------------------
 
 void UMainUIWidget::OnBtnClicked_GameNodeBtn()
 {

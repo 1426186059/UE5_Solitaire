@@ -20,7 +20,7 @@ protected:
 public:
 	virtual void Init();
 	virtual void Show();
-	virtual void Hide();
+	virtual void Hide(bool bDestroy = false);
 	virtual void Refresh();
 	virtual void OnScreenSizeChanged();
 	virtual void OnFirstLayoutFinish();
