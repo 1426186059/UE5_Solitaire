@@ -221,7 +221,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
         }
 
         // ------------------ - 动画播放-------------------- -
-        UAudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
+        AudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
         for (int i = 0; i < 7; i++)
         {
             for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
@@ -450,7 +450,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
     //--------------------------- 做发牌动画---------------------------------
-    UAudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
+    AudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
 
     for (int i = 0; i < 7; i++)
     {

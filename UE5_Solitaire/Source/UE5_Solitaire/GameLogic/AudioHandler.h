@@ -6,20 +6,20 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/AudioComponent.h"
 
-#include "UE5_Solitaire/SimpleFramework/KKObjectSingleton.h"
+#include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 #include "UE5_Solitaire/CSV/CSVConfigMgr.h"
 #include "DataCenter.h"
 
 #include "AudioHandler.generated.h"
 
 UCLASS()
-class UAudioHandler : public UKKObjectSingleton
+class AudioHandler : public AKKActorSingleton
 {
 	GENERATED_BODY()
 public:
-	static UAudioHandler* GetSingleton(bool bCreate = true)
+	static AudioHandler* GetSingleton(bool bCreate = true)
 	{
-		return UKKObjectSingleton::GetSingleton<UAudioHandler>(bCreate);
+		return AKKActorSingleton::GetSingleton<AudioHandler>(bCreate);
 	}
 
 public:

@@ -1,11 +1,11 @@
 ﻿#include "AudioHandler.h"
 
-void UAudioHandler::Init()
+void AudioHandler::Init()
 {
    
 }
 
-void UAudioHandler::PlaySound(const FString& name)
+void AudioHandler::PlaySound(const FString& name)
 {
     ///"/Game/ResourceABs/MainScene/Audio/journeynewlevel.journeynewlevel";
     FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
@@ -23,10 +23,17 @@ void UAudioHandler::PlaySound(const FString& name)
         return;
     }
 
+    UWorld* World = GetWorld();
+    if (!World)
+    {
+        UE_LOG(LogTemp, Error, TEXT("UAudioHandler World Error: %s"), *resPath);
+        return;
+    }
+
     UGameplayStatics::PlaySound2D(GetWorld(), Sound);
 }
 
-void UAudioHandler::PlayBackMusic(const FString& name)
+void AudioHandler::PlayBackMusic(const FString& name)
 {
     if (mBGMAudioComponent == nullptr)
     {
