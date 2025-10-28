@@ -24,6 +24,11 @@
 			"SupportedTargetPlatforms": [
 				"Win64"
 			]
+		},
+		{
+			"Name": "LTween",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/efa1b6e762974e48847e029c8ac6c602"
 		}
 	]
 }

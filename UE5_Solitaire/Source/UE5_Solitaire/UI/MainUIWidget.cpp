@@ -46,8 +46,13 @@ void UMainUIWidget::Init()
     UButton* mGameNodeBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("gameNodeBtn"));
     mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
 
-    this->tranFaPaiPos = mUIRoot->GetWidgetFromName("FaPaiPos")->GetRenderTransform().Translation;
-    this->mCardNodeDraw3BeginPos = mUIRoot->GetWidgetFromName("Draw3Pos1")->GetRenderTransform().Translation;
+    this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
+
+    this->tranFaPaiPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName("FaPaiPos"));
+    this->mCardNodeDraw3BeginPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName("Draw3Pos1"));
+
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget tranFaPaiPos: %s"), *this->tranFaPaiPos.ToString());
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget mCardNodeDraw3BeginPos: %s"), *this->mCardNodeDraw3BeginPos.ToString());
     
     this->tableCardNode4APos = {};
     for (int i = 1; i <= 4; i++)
@@ -63,21 +68,21 @@ void UMainUIWidget::Init()
         FVector2D mPos = mUIRoot->GetWidgetFromName(Key)->GetRenderTransform().Translation;
         this->tableCardNodeTop7Pos.Add(mPos);
     }
-
-    this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
-
 }
 
 void UMainUIWidget::Show()
 {
     this->Init();
     this->SetVisibility(ESlateVisibility::Visible);
-    this->InitGame();
+    if (this->bInit)
+    {
+        this->InitGame();
+    }
 }
 
 void UMainUIWidget::Hide()
 {
-    this->SetVisibility(ESlateVisibility::Collapsed);
+    this->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UMainUIWidget::Refresh()
@@ -87,9 +92,16 @@ void UMainUIWidget::Refresh()
 
 void UMainUIWidget::OnScreenSizeChanged()
 {
+    UE_LOG(LogTemp, Log, TEXT("OnScreenSizeChanged  OnLayoutFinish"));
+    this->bFirstLayoutFinish = true;
+
     //BG 适配屏幕
     auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
+
+
+    this->Init();
+    this->InitGame();
 }
 
 void UMainUIWidget::OnBtnClicked_GameNodeBtn()
@@ -113,13 +125,13 @@ void UMainUIWidget::InitGame()
 
     if (PokerItemWBP == NULL)
     {
-        UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
+        UE_LOG(LogTemp, Error, TEXT("UMainUIWidget PokerItemWBP == null"));
         return;
     }
 
     for (int i = 0; i < 52; i++)
     {
-        UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(GEngine->GameViewport->GetWorld(), PokerItemWBP);
+        UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(this, PokerItemWBP);
         this->PokerItemParent->AddChild(mPokerItem);
         mPokerItem->Show();
         mSendCardListGo.Add(mPokerItem);
@@ -182,7 +194,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 mCardItem->ForceShowBackUI();
                 mCardItem->SetEventTriggerState(mCardItem->orTurnOverStateIsTrue());
                 FVector2D fromPos = this->GetCardNodeSendPokerPos();
-                UMGHelper::SetPosition(mCardItem, fromPos);
+                this->SetRelativePos(mCardItem, fromPos);
             }
         }
 
@@ -196,7 +208,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 mCardItem->Show();
                 mCardItem->SetEventTriggerState(j + 1 == this->tableCardNode4AGo[i].Num());
                 FVector2D fromPos = this->GetCardNodeSendPokerPos();
-                UMGHelper::SetPosition(mCardItem, fromPos);
+                this->SetRelativePos(mCardItem, fromPos);
             }
         }
 
@@ -217,7 +229,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             }
 
             FVector2D fromPos = this->GetCardNodeSendPokerPos();
-            UMGHelper::SetPosition(mCardItem, fromPos);
+            this->SetRelativePos(mCardItem, fromPos);
         }
 
         // ------------------ - 动画播放-------------------- -
@@ -334,6 +346,7 @@ void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)
 
 void UMainUIWidget::NewGameBegin(bool bRePlay)
 {
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin"));
     // ----------------------------------------------广告--------------------------------------------
     //if (ThemeSolitaire.Config:orTriggerBannerAds() then
     //     if not GoogleAdsHandler.bShowBannerAds then
@@ -345,7 +358,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     //             GoogleAdsHandler : Show_RewardedInterstitialAds()
     //             end
 
-                 //--------------------------------------对上把数据 记录整理--------------------------------------------
+    //--------------------------------------对上把数据 记录整理--------------------------------------------
     if (DataCenter::GetSingleton()->data->nTotalGameCount > 0)
     {
         if (RecordStepDataHandler::GetSingleton()->data->nGameMode == SolitaireGameMode::Normal)
@@ -504,12 +517,12 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 //------------------------------------ 相对位置计算 --------------------------------------------
 FVector2D UMainUIWidget::GetRelativePosByGo(UWidget* target)
 {
-    return target->GetRenderTransform().Translation;
+    return UMGHelper::GetSlotPos(target);
 }
 
 void UMainUIWidget::SetRelativePos(UWidget* target, FVector2D relativePos)
 {
-    target->SetRenderTranslation(relativePos);
+    UMGHelper::SetSlotPos(target, relativePos);
 }
 
 float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)

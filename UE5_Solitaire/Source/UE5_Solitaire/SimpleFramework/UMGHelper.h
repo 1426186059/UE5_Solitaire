@@ -80,10 +80,39 @@ public:
         }
     }
 
-    static void SetPosition(UWidget* target, FVector2D pos)
+    static void SetSlotPos(UWidget* target, FVector2D pos)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
         Slot->SetPosition(pos);
+    }
+
+    static FVector2D GetSlotPos(UWidget* target)
+    {
+        UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        return Slot->GetPosition();
+    }
+
+    static void SetRenderPos(UWidget* target, FVector2D pos)
+    {
+        target->SetRenderTranslation(pos);
+    }
+
+    static FVector2D GetRenderPos(UWidget* target)
+    {
+        return target->GetRenderTransform().Translation;
+    }
+    
+    static FVector2D GetRelativePos(UWidget* RootWidget, UWidget* target)
+    {
+        return target->GetPaintSpaceGeometry().AbsoluteToLocal(
+            RootWidget->GetPaintSpaceGeometry().GetAbsolutePosition());
+    }
+
+    static void SetRelativePos(UWidget* RootWidget, UWidget* target, FVector2D RelativePos)
+    {
+        FVector2D RootAbsPos = RootWidget->GetPaintSpaceGeometry().GetAbsolutePosition();
+        FVector2D AbsolutePos = RootAbsPos + RelativePos;
+        target->GetPaintSpaceGeometry().AbsoluteToLocal(AbsolutePos);
     }
 
     static void SetChildIndex(UWidget* target, int nIndex, UCanvasPanel* Parent = nullptr)
