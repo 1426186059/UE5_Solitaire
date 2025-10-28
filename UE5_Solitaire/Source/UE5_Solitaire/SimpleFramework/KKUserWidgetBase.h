@@ -24,8 +24,10 @@ public:
 	virtual void Refresh();
 	virtual void OnScreenSizeChanged();
 	virtual void OnFirstLayoutFinish();
-	virtual bool orFirstLayoutFinish();
 	virtual void CheckFirstLayoutOkToInit();
+
+	bool orFirstLayoutFinish();
+	bool orInit();
 private:
 	bool bInit;
 	bool bFirstLayoutFinish;

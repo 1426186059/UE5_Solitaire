@@ -5,7 +5,7 @@
 
 void UMainUIWidget::Init()
 {
-    if (this->bInit) return;
+    if (this->orInit()) return;
     Super::Init();
 
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget Init"));

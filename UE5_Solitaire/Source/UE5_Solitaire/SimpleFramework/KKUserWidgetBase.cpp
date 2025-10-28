@@ -20,6 +20,11 @@ bool UKKUserWidgetBase::orFirstLayoutFinish()
     return this->bFirstLayoutFinish;
 }
 
+bool UKKUserWidgetBase::orInit()
+{
+    return this->bInit;
+}
+
 void UKKUserWidgetBase::Init()
 {
     this->bInit = true;
