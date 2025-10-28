@@ -1,11 +1,11 @@
 #include "ResCenter.h"
 
-void ResCenter::Init()
+void AResCenter::Init()
 {
 	
 }
 
-UPaperSprite* ResCenter::GetPokerSprite(int nPokerId)
+UPaperSprite* AResCenter::GetPokerSprite(int nPokerId)
 {
     if (nPokerId > 0)
     {

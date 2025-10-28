@@ -92,7 +92,7 @@ void AGameLauncher::StartEnterGame(void* param)
     AllRecordDataHandler::GetSingleton()->Init();
 
     //资源中心初始化
-    ResCenter::GetSingleton()->Init();
+    AResCenter::GetSingleton()->Init();
     AudioHandler::GetSingleton()->Init();
 
     //加载 大厅UI

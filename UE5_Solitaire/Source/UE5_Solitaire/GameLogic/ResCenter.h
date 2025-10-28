@@ -3,16 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
+#include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 #include "PaperSprite.h"
 
 #include "CardHandler.h"
 #include "DataCenter.h"
 #include "ThemeDataHandler.h"
 
-class ResCenter : public KKSingleton<ResCenter>
+class AResCenter : public AKKActorSingleton
 {
 public:
+	static AResCenter* GetSingleton(bool bCreate = true)
+	{
+		return AKKActorSingleton::GetSingleton<AResCenter>(bCreate);
+	}
+
 	void Init();
 	UPaperSprite* GetPokerSprite(int nPokerId);
 };

@@ -36,11 +36,11 @@ void UPokerItemWidget::Refresh()
     this->Init();
     if (this->orTurnOverStateIsTrue())
     {
-        this->mIcon->SetBrushFromAtlasInterface(ResCenter::GetSingleton()->GetPokerSprite(this->nPokerId));
+        this->mIcon->SetBrushFromAtlasInterface(AResCenter::GetSingleton()->GetPokerSprite(this->nPokerId));
     }
     else
     {
-        this->mIcon->SetBrushFromAtlasInterface(ResCenter::GetSingleton()->GetPokerSprite(-1));
+        this->mIcon->SetBrushFromAtlasInterface(AResCenter::GetSingleton()->GetPokerSprite(-1));
     }
 }
 
@@ -71,7 +71,7 @@ bool UPokerItemWidget::orTurnOverStateIsTrue()
 
 void UPokerItemWidget::ForceShowBackUI()
 {
-    this->mIcon->SetBrushFromAtlasInterface(ResCenter::GetSingleton()->GetPokerSprite(-1));
+    this->mIcon->SetBrushFromAtlasInterface(AResCenter::GetSingleton()->GetPokerSprite(-1));
 }
 
 void UPokerItemWidget::SetEventTriggerState(bool bCanClick)
