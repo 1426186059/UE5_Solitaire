@@ -3,6 +3,21 @@
 
 #include "MainUIWidget.h"
 
+void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+    Super::NativeTick(MyGeometry, InDeltaTime);
+
+    //if (this->orInit())
+    //{
+    //    auto mSize = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName("FaPaiPos"));
+    //    if (mSize != this->tranFaPaiPos)
+    //    {
+    //        this->tranFaPaiPos = mSize;
+    //        UE_LOG(LogTemp, Log, TEXT("UMainUIWidget tranFaPaiPos 111: %s"), *mSize.ToString());
+    //    }
+    //}
+}
+
 void UMainUIWidget::Init()
 {
     if (this->orInit()) return;
@@ -98,7 +113,7 @@ void UMainUIWidget::InitGame()
         this->PokerItemParent->AddChild(mPokerItem);
         UMGHelper::SetSlotAnchor(mPokerItem, FAnchors(0.5));
         UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5));
-        UMGHelper::SetSlotAutoSize(mPokerItem, true);
+        UMGHelper::SetSlotSize(mPokerItem, FVector2D(0));
         UMGHelper::SetSlotPos(mPokerItem, FVector2D(0));
 
         mPokerItem->Show();
@@ -425,7 +440,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         this->mSendCardListGo[i]->SetTurnOverState(false);
         this->mSendCardListGo[i]->Refresh();
         this->mSendCardListGo[i]->SetEventTriggerState(false);
-        UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->tranFaPaiPos);
+        UMGHelper::SetSlotPos(this->mSendCardListGo[i], tranFaPaiPos);
     }
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);

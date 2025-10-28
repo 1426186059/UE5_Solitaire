@@ -34,19 +34,19 @@ public:
 		{
 			float fWidth = mScreenSize.Y * mSize.X / (float)mSize.Y;
 			mActualSize = FVector2D(fWidth, mScreenSize.Y);
-			UMGHelper::SetWidgetSize(mUImage, mActualSize);
+			UMGHelper::SetSlotSize(mUImage, mActualSize);
 		}
 		else if(ratio1 < ratio2) //фад╩╦Э©М
 		{
 			float fHeight = mScreenSize.X * mSize.Y / (float)mSize.X;
 			mActualSize = FVector2D(mScreenSize.X, fHeight);
-			UMGHelper::SetWidgetSize(mUImage, mActualSize);
+			UMGHelper::SetSlotSize(mUImage, mActualSize);
 		}
 
-		UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mResolution: %s"), *mScreenSize.ToString());
-		UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mSize: %s"), *mSize.ToString());
-		UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool FitBG: %.3f, %.3f"), ratio1, ratio2);
-		UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mActualSize: %s"), *mActualSize.ToString());
+		//UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mResolution: %s"), *mScreenSize.ToString());
+		//UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mSize: %s"), *mSize.ToString());
+		//UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool FitBG: %.3f, %.3f"), ratio1, ratio2);
+		//UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mActualSize: %s"), *mActualSize.ToString());
 	}
 private:
 	bool bInit;

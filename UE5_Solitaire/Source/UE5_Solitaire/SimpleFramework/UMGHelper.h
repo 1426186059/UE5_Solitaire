@@ -68,18 +68,6 @@ public:
         mUWidget->SetRenderScale(NewScale);
     }
 
-    static void SetWidgetSize(UWidget* Child, const FVector2D& NewSize)
-    {
-        if (UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(Child->Slot))
-        {
-            Slot->SetSize(NewSize);          // 立即生效
-        }
-        else
-        {
-            UE_LOG(LogTemp, Error, TEXT("UMGHelper SetWidgetSize: Error"));
-        }
-    }
-
     static void SetSizeBoxSize(UWidget* Child, const FVector2D& NewSize)
     {
         if (USizeBoxSlot* Slot = Cast<USizeBoxSlot>(Child->Slot))
@@ -88,7 +76,7 @@ public:
         }
     }
 
-    static void SetSlotPos(UWidget* target, FVector2D pos)
+    static void SetSlotPos(UWidget* target, const FVector2D& pos)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
         Slot->SetPosition(pos);
@@ -100,16 +88,22 @@ public:
         return Slot->GetPosition();
     }
 
-    static void SetSlotAnchor(UWidget* target, FAnchors t)
+    static void SetSlotAnchor(UWidget* target, const FAnchors& t)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
         return Slot->SetAnchors(t);
     }
 
-    static void SetSlotAlignment(UWidget* target, FVector2D t)
+    static void SetSlotAlignment(UWidget* target, const FVector2D& t)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
         return Slot->SetAlignment(t);
+    }
+
+    static void SetSlotSize(UWidget* target, const FVector2D& NewSize)
+    {
+        UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        return Slot->SetSize(NewSize);
     }
 
     static void SetSlotAutoSize(UWidget* target, bool bAutoSize)
@@ -118,7 +112,7 @@ public:
         return Slot->SetAutoSize(bAutoSize);
     }
 
-    static void SetRenderPos(UWidget* target, FVector2D pos)
+    static void SetRenderPos(UWidget* target, const FVector2D& pos)
     {
         target->SetRenderTranslation(pos);
     }
@@ -128,11 +122,12 @@ public:
         return target->GetRenderTransform().Translation;
     }
     
+    //这个返回的坐标，还是左上角的坐标
     static FVector2D GetRelativePos(UWidget* RootWidget, UWidget* target)
     {
-        FVector2D PositionInFrom = FVector2D(0, 0);
+        FVector2D PositionInFrom = target->GetPaintSpaceGeometry().GetLocalSize() / 2;
         FVector2D PositionInScreen = target->GetPaintSpaceGeometry().LocalToAbsolute(PositionInFrom);
-        FVector2D PositionInTo = RootWidget->GetPaintSpaceGeometry().AbsoluteToLocal(PositionInScreen);
+        FVector2D PositionInTo = RootWidget->GetPaintSpaceGeometry().AbsoluteToLocal(PositionInScreen) - RootWidget->GetPaintSpaceGeometry().GetLocalSize() / 2;
         return PositionInTo;
     }
 
