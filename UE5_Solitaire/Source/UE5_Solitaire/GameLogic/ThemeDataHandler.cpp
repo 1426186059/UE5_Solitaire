@@ -82,10 +82,10 @@ void ThemeDataHandler::InitDefaultTheme()
 
 void ThemeDataHandler::InitDefaultThemeElement()
 {
-	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto v : mThemeConfig)
+	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : mTable)
 	{
-		auto mConfig = v;
+		auto& mConfig = v;
 		if (this->hasThemeid(mConfig.id))
 		{
 			this->addbgid(this->GetThemeElements_internalid_byId(mConfig.table));
@@ -145,10 +145,10 @@ void ThemeDataHandler::RefreshThemePai()
 bool ThemeDataHandler::orThemeUnLockToUnLockMe(csv_themeitem::RowData mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
-	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto v : mThemeConfig)
+	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : mThemeConfig)
 	{
-		csv_theme::RowData& mConfig = v;
+		auto& mConfig = v;
 		if (mConfig.table == mTargetConfig.id)
 		{
 			return this->hasThemeid(mConfig.id);
@@ -168,10 +168,10 @@ bool ThemeDataHandler::orThemeUnLockToUnLockMe(csv_themeitem::RowData mTargetCon
 FString ThemeDataHandler::GetBgThemeName(csv_themeitem::RowData mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
-	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto v : mThemeConfig)
+	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : mThemeConfig)
 	{
-		csv_theme::RowData& mConfig = v;
+		auto& mConfig = v;
 		if (mConfig.table == mTargetConfig.id)
 		{
 			//return GameHelper:GetLanguageSwitchDes(mConfig.name)
@@ -198,10 +198,10 @@ FString ThemeDataHandler::GetBgThemeName(csv_themeitem::RowData mTargetConfig)
 int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
 {
 	int32 tableid = this->GetThemeElements_Id_byInternalidAndType(Internalid, 1);
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_table2element>()->GetTable();
-	for (auto v : mTable)
+	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_table2element>()->GetTable();
+	for (auto& v : mTable)
 	{
-		auto mConfig = v;
+		auto& mConfig = v;
 		if (mConfig.tableid == tableid)
 		{
 			return this->GetThemeElements_internalid_byId(mConfig.paiid);
@@ -214,10 +214,10 @@ int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
 
 csv_theme::RowData* ThemeDataHandler::GetUsedThemeConfig()
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto v : mTable)
+	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : mTable)
 	{
-		auto mConfig = v;
+		auto& mConfig = v;
 		if (
 			mConfig.table == this->GetThemeElements_Id_byInternalidAndType(this->data->themeBgId, 1) &&
 			mConfig.front == this->GetThemeElements_Id_byInternalidAndType(this->data->themeZhengId, 2) &&
@@ -232,10 +232,10 @@ csv_theme::RowData* ThemeDataHandler::GetUsedThemeConfig()
 
 csv_theme::RowData* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto v : mTable)
+	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : mTable)
 	{
-		auto mConfig = v;
+		auto& mConfig = v;
 		if (mConfig.id == nThemeId)
 		{
 			return &mConfig;
@@ -248,9 +248,9 @@ csv_theme::RowData* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
 int32 ThemeDataHandler::GetThemeElements_internalid_byId(int32 id)
 {
 	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
-	for (auto v : mTable)
+	for (auto& v : mTable)
 	{
-		auto mConfig = v;
+		auto& mConfig = v;
 		if (mConfig.id == id)
 		{
 			return mConfig.internalid;
@@ -264,10 +264,10 @@ int32 ThemeDataHandler::GetThemeElements_internalid_byId(int32 id)
 //--type 1:Bg 2 : front 3 : back 4 : 主题元素
 int32 ThemeDataHandler::GetThemeElements_Id_byInternalidAndType(int32 Internalid, int32 type)
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
-	for (auto v : mTable)
+	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
+	for (auto& v : mTable)
 	{
-		auto mConfig = v;
+		auto& mConfig = v;
 		if (mConfig.internalid == Internalid && mConfig.type == type)
 		{
 			return mConfig.id;
@@ -301,7 +301,7 @@ FString ThemeDataHandler::GetThemeThumbPath(int32 nId, int32 nType)
 		ensureMsgf(false, TEXT("%d"), nType);
 	}
 
-	return std::move(FString());
+	return FString();
 }
 
 FString ThemeDataHandler::GetGamePoolBg_AtlasSpriteName(int32 nPaiId)
