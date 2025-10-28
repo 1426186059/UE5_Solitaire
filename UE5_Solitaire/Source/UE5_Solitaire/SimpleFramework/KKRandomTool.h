@@ -2,29 +2,25 @@
 
 #pragma once
 
-#include "KKSingleton.h"
 #include <random>
+#include "CoreMinimal.h"
 
-class KKRandomTool:public KKSingleton<KKRandomTool>
+class KKRandomTool
 {
-    friend class KKSingleton<KKRandomTool>;
 public:
-    int RandomInt(int min, int max)
+    static int RandomInt(int min, int max)
     {
-        std::uniform_int_distribution<int> dist(min, max);
-        int random_number = dist(mRandom);
-        return random_number;
+        return FMath::RandRange(min, max);
+    }
+
+    static int RandomArrayInt(int min, int max)
+    {
+        return FMath::RandRange(min, max - 1);
     }
 
 private:
-    std::mt19937 mRandom;
-
-    KKRandomTool()
-    {
-        std::random_device rd;        // 非确定性种子
-        mRandom = std::mt19937(rd()); // Mersenne Twister 引擎
-    }
-
+    KKRandomTool() = delete;
+    ~KKRandomTool() = delete;
     KKRandomTool(const KKRandomTool&) = delete;
     KKRandomTool& operator=(const KKRandomTool&) = delete;
     KKRandomTool(KKRandomTool&&) = delete;
@@ -38,7 +34,7 @@ public:
     {
         mRandom = std::mt19937(Seed); //Mersenne Twister 引擎
     }
-
+    
     int RandomInt(int min, int max)
     {
         std::uniform_int_distribution<int> dist(min, max);

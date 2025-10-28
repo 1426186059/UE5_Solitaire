@@ -4,18 +4,17 @@
 
 #include "KKSingleton.h"
 
-class KKTimeTool : public KKSingleton<KKTimeTool>
+class KKTimeTool
 {
-    friend class KKSingleton<KKTimeTool>;
 public:
-
     static int64 GetTimeStamp()
     {
         return FDateTime::Now().ToUnixTimestamp();
     }
 
-
 private:
+    KKTimeTool() = delete;
+    ~KKTimeTool() = delete;
     KKTimeTool(const KKTimeTool&) = delete;
     KKTimeTool& operator=(const KKTimeTool&) = delete;
     KKTimeTool(KKTimeTool&&) = delete;

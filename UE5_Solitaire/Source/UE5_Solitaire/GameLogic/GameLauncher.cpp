@@ -89,6 +89,7 @@ void AGameLauncher::StartEnterGame(void* param)
     CardHandler::GetSingleton()->Init();
     RecordStepDataHandler::GetSingleton()->Init();
     ThemeDataHandler::GetSingleton()->Init();
+    AllRecordDataHandler::GetSingleton()->Init();
 
     //资源中心初始化
     ResCenter::GetSingleton()->Init();
