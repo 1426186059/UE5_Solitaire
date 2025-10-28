@@ -432,22 +432,22 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     {
         for (int j = 0; j <= i; j++)
         {
-            int32 nTopIndex = i;
-            auto mCardItem = this->mSendCardListGo.Pop();
-            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
+            //int32 nTopIndex = i;
+            //auto mCardItem = this->mSendCardListGo.Pop();
+            //this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
-            bool bTurnOverState = nHeightIndex == nTopIndex;
-            if (bTurnOverState)
-            {
-                mCardItem->SetTurnOverState(true);
-            }
+            //int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
+            //bool bTurnOverState = nHeightIndex == nTopIndex;
+            //if (bTurnOverState)
+            //{
+            //    mCardItem->SetTurnOverState(true);
+            //}
 
-            UMGHelper::SetAsLastChildIndex(mCardItem);
+            //UMGHelper::SetAsLastChildIndex(mCardItem);
 
-            FVector2D from = this->GetRelativePosByGo(mCardItem);
-            FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
-            this->SetRelativePos(mCardItem, from);
+            //FVector2D from = this->GetRelativePosByGo(mCardItem);
+            //FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
+            //this->SetRelativePos(mCardItem, from);
 
             /*  LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3) : setDelay(0.05 * (j - 1)):setOnComplete(function()
                                       GameEventHandler:Brocast(EventName.RefreshTopBottomUI)

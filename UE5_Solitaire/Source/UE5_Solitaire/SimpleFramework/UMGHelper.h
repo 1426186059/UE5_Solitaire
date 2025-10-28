@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "GameFramework/GameUserSettings.h"
 #include "Components/Widget.h"
 #include "Components/CanvasPanel.h"
@@ -110,8 +112,10 @@ public:
     
     static FVector2D GetRelativePos(UWidget* RootWidget, UWidget* target)
     {
-        return target->GetPaintSpaceGeometry().AbsoluteToLocal(
-            RootWidget->GetPaintSpaceGeometry().GetAbsolutePosition());
+        FVector2D PositionInFrom = FVector2D(0, 0);
+        FVector2D PositionInScreen = target->GetPaintSpaceGeometry().LocalToAbsolute(PositionInFrom);
+        FVector2D PositionInTo = RootWidget->GetPaintSpaceGeometry().AbsoluteToLocal(PositionInScreen);
+        return PositionInTo;
     }
 
     static void SetRelativePos(UWidget* RootWidget, UWidget* target, FVector2D RelativePos)
