@@ -34,7 +34,11 @@ void UKKUserWidgetBase::Init()
 
 void UKKUserWidgetBase::Show()
 {
-    this->AddToViewport(0);
+    if (!this->IsInViewport())
+    {
+        this->AddToViewport(0);
+    }
+
     this->SetVisibility(ESlateVisibility::Visible);
     this->bShowUI = true;
     this->CheckFirstLayoutOkToInit();
