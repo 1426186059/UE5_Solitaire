@@ -3,34 +3,10 @@
 
 #include "MainUIWidget.h"
 
-void UMainUIWidget::NativeOnInitialized()
-{
-    Super::NativeOnInitialized();
-    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NativeOnInitialized"));
-}
-
-void UMainUIWidget::NativeConstruct()
-{
-    Super::NativeConstruct();
-    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NativeConstruct"));
-}
-
-void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
-{
-    Super::NativeTick(MyGeometry, InDeltaTime);
-
-    FVector2D mSize = UMGHelper::GetUMGRootSzie(this->mUIRoot);
-    if (mSize != mOldSize)
-    {
-        mOldSize = mSize;
-        this->OnScreenSizeChanged();
-    }
-}
-
 void UMainUIWidget::Init()
 {
     if (this->bInit) return;
-    this->bInit = true;
+    Super::Init();
 
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget Init"));
 
@@ -72,12 +48,8 @@ void UMainUIWidget::Init()
 
 void UMainUIWidget::Show()
 {
-    this->Init();
-    this->SetVisibility(ESlateVisibility::Visible);
-    if (this->bInit)
-    {
-        this->InitGame();
-    }
+    Super::Show();
+    this->CheckFirstLayoutOkToInit();
 }
 
 void UMainUIWidget::Hide()
@@ -92,13 +64,21 @@ void UMainUIWidget::Refresh()
 
 void UMainUIWidget::OnScreenSizeChanged()
 {
-    UE_LOG(LogTemp, Log, TEXT("OnScreenSizeChanged  OnLayoutFinish"));
-    this->bFirstLayoutFinish = true;
-
+    Super::OnScreenSizeChanged();
     //BG   ≈‰∆¡ƒª
     auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
+}
 
+void UMainUIWidget:OnFirstLayoutFinish()
+{
+    Super::OnScreenSizeChanged();
+    this->CheckFirstLayoutOkToInit();
+}
+
+void UMainUIWidget:CheckFirstLayoutOkToInit()
+{
+    if (!this->orFirstLayoutFinish()) return;
 
     this->Init();
     this->InitGame();
@@ -108,8 +88,6 @@ void UMainUIWidget::OnBtnClicked_GameNodeBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
 }
-
-
 
 void UMainUIWidget::RecycleAndInitCardGo()
 {

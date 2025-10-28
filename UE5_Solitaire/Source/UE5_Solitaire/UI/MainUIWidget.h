@@ -3,6 +3,8 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
+#include "UE5_Solitaire/SimpleFramework/KKUserWidgetBase.h"
+
 #include "UE5_Solitaire/GameLogic/GameConst.h"
 #include "UE5_Solitaire/GameLogic/DataCenter.h"
 #include "UE5_Solitaire/GameLogic/ResCenter.h"
@@ -24,21 +26,17 @@
 #include "MainUIWidget.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API UMainUIWidget : public UUserWidget
+class UE5_SOLITAIRE_API UMainUIWidget : public UKKUserWidgetBase
 {
 	GENERATED_BODY()
-protected:
-	virtual void NativeConstruct() override;
-
-	virtual void NativeOnInitialized() override;
-	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
-
 public:
-	void Init();
-	void Show();
-	void Hide();
-	void Refresh();
-	void OnScreenSizeChanged();
+	virtual void Init() override;
+	virtual void Show() override;
+	virtual void Hide() override;
+	virtual void Refresh() override;
+	virtual void OnFirstLayoutFinish() override;
+	virtual void OnScreenSizeChanged() override;
+	virtual void CheckFirstLayoutOkToInit() override;
 
 	UFUNCTION() void OnBtnClicked_GameNodeBtn();
 	
@@ -59,12 +57,9 @@ public:
 
 	void NewGameBegin_ForNormal(bool bForceNewGame);
 private:
-	bool bInit;
 	UUserWidget* mUIRoot;
 	FVector2D mOldSize;
-
 	UCanvasPanel* PokerItemParent;
-
 	FVector2D tranFaPaiPos;
 	FVector2D mCardNodeDraw3BeginPos;
 	TArray<FVector2D> tableCardNode4APos;
