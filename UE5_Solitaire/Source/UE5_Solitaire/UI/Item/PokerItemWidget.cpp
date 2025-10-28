@@ -28,7 +28,7 @@ void UPokerItemWidget::Show()
 
 void UPokerItemWidget::Hide()
 {
-    this->SetVisibility(ESlateVisibility::Collapsed);
+    this->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UPokerItemWidget::Refresh()

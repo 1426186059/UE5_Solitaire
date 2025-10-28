@@ -96,9 +96,10 @@ void UMainUIWidget::InitGame()
     {
         UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(this, PokerItemWBP);
         this->PokerItemParent->AddChild(mPokerItem);
-        UMGHelper::SetSlotAnchor(mPokerItem, FAnchors(0.5f));
-        UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5f));
+        UMGHelper::SetSlotAnchor(mPokerItem, FAnchors(0.5));
+        UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5));
         UMGHelper::SetSlotAutoSize(mPokerItem, true);
+        UMGHelper::SetSlotPos(mPokerItem, FVector2D(0));
 
         mPokerItem->Show();
         mSendCardListGo.Add(mPokerItem);
@@ -419,13 +420,12 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     for (int i = 0; i < mSendCardList.Num(); i++)
     {
         int32 nPokerId = mSendCardList[i];
-        UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->tranFaPaiPos);
-
         this->mSendCardListGo[i]->SetPokerId(nPokerId);
         this->mSendCardListGo[i]->Show();
         this->mSendCardListGo[i]->SetTurnOverState(false);
         this->mSendCardListGo[i]->Refresh();
         this->mSendCardListGo[i]->SetEventTriggerState(false);
+        UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->tranFaPaiPos);
     }
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
