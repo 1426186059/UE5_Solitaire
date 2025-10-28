@@ -23,14 +23,7 @@ void AudioHandler::PlaySound(const FString& name)
         return;
     }
 
-    UWorld* World = GetWorld();
-    if (!World)
-    {
-        UE_LOG(LogTemp, Error, TEXT("UAudioHandler World Error: %s"), *resPath);
-        return;
-    }
-
-    UGameplayStatics::PlaySound2D(GetWorld(), Sound);
+    UGameplayStatics::PlaySound2D(this, Sound);
 }
 
 void AudioHandler::PlayBackMusic(const FString& name)
