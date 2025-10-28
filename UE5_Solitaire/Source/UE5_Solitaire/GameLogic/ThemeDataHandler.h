@@ -31,14 +31,14 @@ public:
 
 	void InitDefaultTheme();
 	void InitDefaultThemeElement();
-	void UnLockNewTheme(csv_theme::RowData mThemeConfig);
-	void UseNewTheme(csv_theme::RowData mThemeConfig);
+	void UnLockNewTheme(const csv_theme::RowData& mThemeConfig);
+	void UseNewTheme(const csv_theme::RowData& mThemeConfig);
 	void UseNewThemeBg(int32 Id);
 	void UseNewThemeFront(int32 Id);
 	void UseNewThemeBack(int32 Id);
 	void RefreshThemePai();
-	bool orThemeUnLockToUnLockMe(csv_themeitem::RowData mTargetConfig);
-	FString GetBgThemeName(csv_themeitem::RowData mTargetConfig);
+	bool orThemeUnLockToUnLockMe(const csv_themeitem::RowData& mTargetConfig);
+	FString GetBgThemeName(const csv_themeitem::RowData& mTargetConfig);
 	//int32 GetBgUnLock_ForStageRemainWinCount(csv_stagereward::RowData mTargetConfig);
 	int32 GetThemePaiId_ForBgId(int32 Internalid);
 	csv_theme::RowData* GetUsedThemeConfig();

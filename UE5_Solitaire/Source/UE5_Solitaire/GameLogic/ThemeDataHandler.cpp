@@ -73,8 +73,8 @@ void ThemeDataHandler::InitDefaultTheme()
 {
 	if (this->data->themeBgId <= 0)
 	{
-		auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-		auto mThemeConfig = mTable[4];
+		auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+		auto& mThemeConfig = mTable[4];
 		this->UnLockNewTheme(mThemeConfig);
 		this->UseNewTheme(mThemeConfig);
 	}
@@ -97,14 +97,14 @@ void ThemeDataHandler::InitDefaultThemeElement()
 	this->RefreshThemePai();
 }
 
-void ThemeDataHandler::UnLockNewTheme(csv_theme::RowData mThemeConfig)
+void ThemeDataHandler::UnLockNewTheme(const csv_theme::RowData& mThemeConfig)
 {
 	this->addThemeid(mThemeConfig.id);
 	this->InitDefaultThemeElement();
 }
 
 
-void ThemeDataHandler::UseNewTheme(csv_theme::RowData mThemeConfig)
+void ThemeDataHandler::UseNewTheme(const csv_theme::RowData& mThemeConfig)
 {
 	this->data->themeBgId = this->GetThemeElements_internalid_byId(mThemeConfig.table);
 	this->data->themeBackId = this->GetThemeElements_internalid_byId(mThemeConfig.back);
@@ -142,7 +142,7 @@ void ThemeDataHandler::RefreshThemePai()
 }
 
 //-- 是否主题中的元素，比如桌面Bg，牌面，牌背，跟随主题解锁
-bool ThemeDataHandler::orThemeUnLockToUnLockMe(csv_themeitem::RowData mTargetConfig)
+bool ThemeDataHandler::orThemeUnLockToUnLockMe(const csv_themeitem::RowData& mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
 	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
@@ -165,7 +165,7 @@ bool ThemeDataHandler::orThemeUnLockToUnLockMe(csv_themeitem::RowData mTargetCon
 	return false;
 }
 
-FString ThemeDataHandler::GetBgThemeName(csv_themeitem::RowData mTargetConfig)
+FString ThemeDataHandler::GetBgThemeName(const csv_themeitem::RowData& mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
 	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
