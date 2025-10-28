@@ -9,6 +9,7 @@ UPaperSprite* ResCenter::GetPokerSprite(int nPokerId)
 {
     if (nPokerId > 0)
     {
+        //Game/ResourceABs/MainScene/UI/AtlasGroup/poker/card1/Frames/card_1_di_10_1_png.card_1_di_10_1_png'
         int nDigetId = CardHandler::GetSingleton()->GetDigital(nPokerId);
         int nSubDigetId = CardHandler::GetSingleton()->GetSubDigital(nPokerId);
         int themeZhengId = ThemeDataHandler::GetSingleton()->data->themeZhengId;
@@ -22,6 +23,7 @@ UPaperSprite* ResCenter::GetPokerSprite(int nPokerId)
     }
     else
     {
+        //Game/ResourceABs/MainScene/UI/AtlasGroup/poker/cardback/Frames/cardback_cardback_10_png.cardback_cardback_10_png'
         int themeBackId = ThemeDataHandler::GetSingleton()->data->themeBackId;
         FString resPath = FString::Printf(
             TEXT("/Game/ResourceABs/MainScene/UI/AtlasGroup/poker/cardback/Frames/cardback_cardback_%d_png.cardback_cardback_%d_png"),

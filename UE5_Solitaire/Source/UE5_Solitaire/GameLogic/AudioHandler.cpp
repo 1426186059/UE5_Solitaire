@@ -9,8 +9,9 @@ void UAudioHandler::PlaySound(const FString& name)
 {
     ///"/Game/ResourceABs/MainScene/Audio/journeynewlevel.journeynewlevel";
     FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
-    USoundWave* Sound = LoadObject<USoundWave>(nullptr, *resPath);
+    USoundBase* Sound = LoadObject<USoundBase>(nullptr, *resPath);
 
+    UE_LOG(LogTemp, Error, TEXT("UAudioHandler Error: %s"), *resPath);
     if (!Sound)
     {
         UE_LOG(LogTemp, Error, TEXT("UAudioHandler Error: %s"), *resPath);

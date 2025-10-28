@@ -12,6 +12,9 @@ void ThemeDataHandler::Init()
 	{
 		this->data = mmmData;
 	}
+
+	this->InitDefaultTheme();
+	this->InitDefaultThemeElement();
 }
 
 bool ThemeDataHandler::hasThemeid(int32 id)
