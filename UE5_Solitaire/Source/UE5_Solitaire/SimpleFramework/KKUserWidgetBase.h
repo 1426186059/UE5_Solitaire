@@ -22,13 +22,13 @@ public:
 	virtual void Show();
 	virtual void Hide(bool bDestroy = false);
 	virtual void Refresh();
-	virtual void OnScreenSizeChanged();
+	virtual void OnLayoutChanged();
 	virtual void OnFirstLayoutFinish();
 	virtual void CheckFirstLayoutOkToInit();
 
 	bool orFirstLayoutFinish();
 	bool orInit();
-private:
+protected:
 	bool bInit;
 	bool bFirstLayoutFinish;
 	bool bShowUI;

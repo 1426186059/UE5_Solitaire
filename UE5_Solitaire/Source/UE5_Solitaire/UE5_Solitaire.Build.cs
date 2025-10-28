@@ -14,8 +14,10 @@ public class UE5_Solitaire : ModuleRules
 			"Engine", 
 			"InputCore", 
 			"UMG", 
-			"Paper2D", 
-			"Json", 
+			"Paper2D",
+            "Slate", 
+			"SlateCore",
+            "Json", 
 			"JsonUtilities" 
 		});
 

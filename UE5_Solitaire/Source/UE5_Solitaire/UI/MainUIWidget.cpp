@@ -10,7 +10,7 @@ void UMainUIWidget::Init()
 
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget Init"));
 
-    mUIRoot = Cast<UUserWidget>(GetWidgetFromName(TEXT("MainUIWBP")));
+    mUIRoot = this;
     if (!mUIRoot)
     {
         UE_LOG(LogTemp, Error, TEXT("mUIRoot == null"));
@@ -47,9 +47,9 @@ void UMainUIWidget::Init()
     }
 }
 
-void UMainUIWidget::OnScreenSizeChanged()
+void UMainUIWidget::OnLayoutChanged()
 {
-    Super::OnScreenSizeChanged();
+    Super::OnLayoutChanged();
     //BG   ≈‰∆¡ƒª
     auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);

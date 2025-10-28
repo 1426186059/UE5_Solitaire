@@ -8,10 +8,12 @@ void UKKUserWidgetBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
     Super::NativeTick(MyGeometry, InDeltaTime);
 
     FVector2D mSize = UMGHelper::GetUMGRootSzie(this);
-    if (mSize != mOldSize)
+    if (mSize != mOldSize && mSize != FVector2D::ZeroVector)
     {
         mOldSize = mSize;
-        this->OnScreenSizeChanged();
+        this->OnLayoutChanged();
+
+        UE_LOG(LogTemp, Log, TEXT("UKKUserWidgetBase GetUMGRootSzie: %s"), *mSize.ToString());
     }
 }
 
@@ -57,7 +59,7 @@ void UKKUserWidgetBase::Refresh()
     
 }
 
-void UKKUserWidgetBase::OnScreenSizeChanged()
+void UKKUserWidgetBase::OnLayoutChanged()
 {
     if (!this->bFirstLayoutFinish)
     {

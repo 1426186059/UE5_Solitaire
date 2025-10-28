@@ -31,7 +31,7 @@ class UE5_SOLITAIRE_API UMainUIWidget : public UKKUserWidgetBase
 	GENERATED_BODY()
 public:
 	virtual void Init() override;
-	virtual void OnScreenSizeChanged() override;
+	virtual void OnLayoutChanged() override;
 	virtual void CheckFirstLayoutOkToInit() override;
 
 	UFUNCTION() void OnBtnClicked_GameNodeBtn();

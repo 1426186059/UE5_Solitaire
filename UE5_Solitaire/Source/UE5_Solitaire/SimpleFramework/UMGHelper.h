@@ -45,8 +45,14 @@ public:
 
     static FVector2D GetUMGRootSzie(UUserWidget* mWidget)
     {
-        auto mCanvasPanel = Cast<UCanvasPanel>(mWidget->GetRootWidget());
-        return GetUMGRootSzie(mCanvasPanel);
+        UCanvasPanel* mCanvasPanel = Cast<UCanvasPanel>(mWidget->GetRootWidget());
+        if (mCanvasPanel)
+        {
+            return GetUMGRootSzie(mCanvasPanel);
+        }
+
+        UE_LOG(LogTemp, Error, TEXT("UMGHelper GetUMGRootSzie Error!!!  Need CanvasPanel"));
+        return FVector2D::ZeroVector;
     }
 
     static FVector2D GetUMGRootSzie(UCanvasPanel* mCanvasPanel)
@@ -137,7 +143,8 @@ public:
     }
 
 private:
-    // 禁止拷贝和移动（单例不应被复制）
+    UMGHelper() = delete;
+    ~UMGHelper() = delete;
     UMGHelper(const UMGHelper&) = delete;
     UMGHelper& operator=(const UMGHelper&) = delete;
     UMGHelper(UMGHelper&&) = delete;
