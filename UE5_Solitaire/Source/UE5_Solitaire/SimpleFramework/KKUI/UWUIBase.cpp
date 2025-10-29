@@ -3,11 +3,6 @@
 
 #include "UWUIBase.h"
 
-void UWUIBase::NativeConstruct()
-{
-    Super::NativeConstruct();
-}
-
 void UWUIBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);

@@ -17,8 +17,6 @@ class UE5_SOLITAIRE_API AKKUIMgr : public AKKActorSingleton
 {
 	GENERATED_BODY()
 public:
-	AKKUIMgr();
-
 	static AKKUIMgr* GetSingleton(bool bCreate = true)
 	{
 		return AKKActorSingleton::GetSingleton<AKKUIMgr>(bCreate);

@@ -12,7 +12,6 @@ class UE5_SOLITAIRE_API UWUIBase : public UUserWidget
 {
 	GENERATED_BODY()
 protected:
-	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
 	virtual void OnCreate();
