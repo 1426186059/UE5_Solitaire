@@ -9,9 +9,8 @@ void UKKGameInstance::Init()
     UE_LOG(LogTemp, Log, TEXT("=== MyGameInstance Init ==="));
     
     //this->GetActorSingleton<AGameLauncher>();
-
     // 任意游戏世界（PIE / Standalone）创建完成后都会回调
-    FWorldDelegates::OnPostWorldInitialization.AddUObject(this, &UKKGameInstance::OnWorldInitialized);
+    //FWorldDelegates::OnPostWorldInitialization.AddUObject(this, &UKKGameInstance::OnWorldInitialized);
 }
 
 void UKKGameInstance::Shutdown()

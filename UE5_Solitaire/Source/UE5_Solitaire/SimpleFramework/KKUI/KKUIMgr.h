@@ -17,7 +17,7 @@ class UE5_SOLITAIRE_API AKKUIMgr : public AKKActorSingleton
 public:
 	static AKKUIMgr* GetSingleton(bool bCreate = true)
 	{
-		return GetSingletonInner<AKKUIMgr>(bCreate);
+		return AKKActorSingleton::Singleton<AKKUIMgr>::GetSingleton()->GetActorSingleton(bCreate);
 	}
 
 public:

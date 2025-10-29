@@ -1,7 +1,5 @@
 #include "KKActorSingleton.h"
 
-AActor* AKKActorSingleton::mInstance = nullptr;
-
 void AKKActorSingleton::BeginPlay()
 {
 	Super::BeginPlay();

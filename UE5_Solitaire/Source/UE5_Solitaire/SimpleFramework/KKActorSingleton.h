@@ -11,24 +11,38 @@ class UE5_SOLITAIRE_API AKKActorSingleton : public AActor
 {
 	GENERATED_BODY()
 protected:
-	static AActor* mInstance; //静态变量，特殊处理，注意一下
-protected:
+
 	template<typename T>
-	static T* GetSingletonInner(bool bCreate = true)
+	class Singleton
 	{
 		static_assert(TIsDerivedFrom<T, AKKActorSingleton>::Value, "T must be an AActor derived class");
-		if (mInstance == nullptr && bCreate)
+
+		T* mActorInstance = nullptr;
+	public:
+		static Singleton<T>* GetSingleton()
 		{
-			ensureMsgf(GEngine->GetWorld() != nullptr, TEXT("GEngine->GetWorld() == null"));
-			if (GEngine->GetWorld())
-			{
-				mInstance = GEngine->GetWorld()->SpawnActor<T>(T::StaticClass());
-			}
-			ensureMsgf(mInstance != nullptr, TEXT("GetSingleton() == null"));
-			ensureMsgf(Cast<T>(mInstance) != nullptr, TEXT("GetSingleton() == null"));
+			static Singleton<T> Instance;
+			return &Instance;
 		}
-		return Cast<T>(mInstance);
-	}
+
+		T* GetActorSingleton(bool bCreate = true)
+		{
+			if (this->mActorInstance == nullptr && bCreate)
+			{
+				ensureMsgf(GEngine->GetWorld() != nullptr, TEXT("GEngine->GetWorld() == null"));
+				if (GEngine->GetWorld())
+				{
+					this->mActorInstance = GEngine->GetWorld()->SpawnActor<T>(T::StaticClass());
+				}
+			}
+
+			T* m = Cast<T, AActor>(this->mActorInstance);
+			ensureMsgf(T::mInstance, TEXT("mInstance == null"));
+			ensureMsgf(m, TEXT("Cast<T>(mInstance) == null"));
+			UE_LOG(LogTemp, Log, TEXT("GetSingletonInner: %s %s"), *T::StaticClass()->GetName(), *m->GetClass()->GetName());
+			return m;
+		}
+	};
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(EEndPlayReason::Type Reason) override;

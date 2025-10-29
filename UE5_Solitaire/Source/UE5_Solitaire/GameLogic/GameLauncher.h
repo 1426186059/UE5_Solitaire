@@ -29,7 +29,6 @@ class UE5_SOLITAIRE_API AGameLauncher : public AKKActorSingleton
 	GENERATED_BODY()
 public:	
 	AGameLauncher();
-
 	static AGameLauncher* GetSingleton(bool bCreate = true)
 	{
 		return GetSingletonInner<AGameLauncher>(bCreate);
