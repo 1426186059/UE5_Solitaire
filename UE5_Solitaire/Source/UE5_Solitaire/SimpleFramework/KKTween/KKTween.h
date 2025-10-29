@@ -53,15 +53,15 @@ namespace KKTween
             return this;
         }
 
-        KKTweenItem* SetLoop(int nLoopCount = -1)
+        KKTweenItem* SetLoop(int nCount = -1)
         {
-            this->nLoopCount = nLoopCount;
+            this->nLoopCount = nCount;
             return this;
         }
 
-        KKTweenItem* SetLoopPingPong(int nLoopCount = -1)
+        KKTweenItem* SetLoopPingPong(int nCount = -1)
         {
-            this->nLoopCount = nLoopCount;
+            this->nLoopCount = nCount;
             nLoopPingTong = 1;
             return this;
         }
