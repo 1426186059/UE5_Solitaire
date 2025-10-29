@@ -1,17 +1,17 @@
 #pragma once
 
-#include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
-
+#include "UWUIBase.h"
 #include "Blueprint/UserWidget.h"
+
 #include "CoreMinimal.h"
 #include "UWUIRoot.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API UWUIRoot : public UUserWidget
+class UE5_SOLITAIRE_API UWUIRoot : public UWUIBase
 {
 	GENERATED_BODY()
 public:
-	void Init();
+	virtual void Init() override;
 
 	UCanvasPanel* Layer_Background;
 	UCanvasPanel* Layer_Base;

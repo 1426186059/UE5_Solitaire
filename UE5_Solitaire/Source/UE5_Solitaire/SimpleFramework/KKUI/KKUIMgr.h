@@ -60,12 +60,12 @@ public:
 			if (bForceCreate)
 			{
 				FString path = FString::Printf(TEXT("/Game/ResourceABs/MainScene/BPS/UI/%s.%s_C"), *ui_path, *ui_path);
-				auto mClass = LoadClass<T>(nullptr, path);
+				auto mClass = LoadClass<T>(this, *path);
 				if (mClass != NULL)
 				{
 					TWeakObjectPtr<UWUIBase> mUI = CreateWidget<T>(this, mClass);
-					mUIDic.Add(Key, mInstance);
-					return Cast<T>(mInstance.Get());
+					mUIDic.Add(Key, mUI);
+					return Cast<T>(mUI.Get());
 				}
 				else
 				{

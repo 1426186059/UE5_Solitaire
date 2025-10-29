@@ -34,11 +34,6 @@ void UWUIBase::Init()
 
 void UWUIBase::Show()
 {
-    if (!this->IsInViewport())
-    {
-        this->AddToViewport(0);
-    }
-
     this->bShowUI = true;
     this->CheckFirstLayoutOkToShow();
 }
