@@ -90,10 +90,10 @@ public:
 		else
 		{
 			FString ui_path = TEXT("/Game/ResourceABs/MainScene/BPS/UI/UIRootCWBP.UIRootCWBP_C");
-			auto mClass = LoadClass<UWUIRoot>(this, *ui_path);
-			if (mClass != NULL)
+			auto mClass = LoadClass<UWUIRoot>(nullptr, *ui_path);
+			if (mClass != nullptr)
 			{
-				mUIRoot = CreateWidget<UWUIRoot>(mUIRoot, mClass);
+				mUIRoot = CreateWidget<UWUIRoot>(GEngine->GameViewport->GetWorld(), mClass);
 			}
 			else
 			{
@@ -105,6 +105,6 @@ public:
 	
 	void Init();
 private:
-	UWUIRoot* mUIRoot;
+	UWUIRoot* mUIRoot = nullptr;
 	TMap<TSubclassOf<UWUIBase>, TWeakObjectPtr<UWUIBase>> mUIDic;
 };
