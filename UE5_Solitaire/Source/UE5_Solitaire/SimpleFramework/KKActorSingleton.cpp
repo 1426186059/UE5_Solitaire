@@ -2,11 +2,6 @@
 
 AActor* AKKActorSingleton::mInstance = nullptr;
 
-AKKActorSingleton::AKKActorSingleton()
-{
-	PrimaryActorTick.bCanEverTick = true;
-}
-
 void AKKActorSingleton::BeginPlay()
 {
 	Super::BeginPlay();

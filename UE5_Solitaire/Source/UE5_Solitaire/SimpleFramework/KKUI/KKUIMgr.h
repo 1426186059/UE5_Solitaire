@@ -4,12 +4,10 @@
 #include "UE5_Solitaire/SimpleFramework/KKUI/UWUIBase.h"
 #include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
 #include "UE5_Solitaire/SimpleFramework/KKUI/UMGAdapterTool.h"
-
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "GameFramework/GameUserSettings.h"
 #include "KKUIMgr.generated.h"
 
 UCLASS()
@@ -83,11 +81,7 @@ public:
 	
 	UWUIRoot* GetRootWidget()
 	{
-		if (mUIRoot != nullptr)
-		{
-			return mUIRoot;
-		}
-		else
+		if (mUIRoot == nullptr)
 		{
 			FString ui_path = TEXT("/Game/ResourceABs/MainScene/BPS/UI/UIRootCWBP.UIRootCWBP_C");
 			auto mClass = LoadClass<UWUIRoot>(nullptr, *ui_path);
@@ -105,6 +99,6 @@ public:
 	
 	void Init();
 private:
-	UWUIRoot* mUIRoot = nullptr;
+	UPROPERTY() UWUIRoot* mUIRoot = nullptr;
 	TMap<TSubclassOf<UWUIBase>, TWeakObjectPtr<UWUIBase>> mUIDic;
 };

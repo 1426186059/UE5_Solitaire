@@ -101,8 +101,15 @@ void AGameLauncher::StartEnterGame(void* param)
 
 void AGameLauncher::GoToLobby()
 {   
-    AKKUIMgr::GetSingleton()->Init();
-    AKKUIMgr::GetSingleton()->Show<UMainUIWidget>("MainUICWBP");
+    if (AKKUIMgr::GetSingleton())
+    {
+        AKKUIMgr::GetSingleton()->Init();
+        AKKUIMgr::GetSingleton()->Show<UMainUIWidget>("MainUICWBP");
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("AKKUIMgr::GetSingleton() == null"));
+    }
 
     if (mUInitSceneWidget != nullptr)
     {

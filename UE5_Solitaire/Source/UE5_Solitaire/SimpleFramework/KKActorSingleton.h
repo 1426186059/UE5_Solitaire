@@ -12,9 +12,6 @@ class UE5_SOLITAIRE_API AKKActorSingleton : public AActor
 	GENERATED_BODY()
 
 	static AActor* mInstance; //静态变量，特殊处理，注意一下
-public:
-	AKKActorSingleton();
-
 protected:
 	template<typename T>
 	static T* GetSingleton(bool bCreate = true)
@@ -22,7 +19,9 @@ protected:
 		static_assert(TIsDerivedFrom<T, AKKActorSingleton>::Value, "T must be an AActor derived class");
 		if (mInstance == nullptr && bCreate)
 		{
-			mInstance = GEngine->GetWorld()->SpawnActor<T>(T::StaticClass());
+			mInstance = GEngine->GameViewport->GetWorld()->SpawnActor<T>(T::StaticClass());
+			ensureMsgf(mInstance != nullptr, TEXT("GetSingleton() == null"));
+			ensureMsgf(Cast<T>(mInstance) != nullptr, TEXT("GetSingleton() == null"));
 		}
 		return Cast<T>(mInstance);
 	}
