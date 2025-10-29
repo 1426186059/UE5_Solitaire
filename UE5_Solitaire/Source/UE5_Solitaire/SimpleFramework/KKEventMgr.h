@@ -6,12 +6,12 @@
 #include "Delegates/MulticastDelegateBase.h"
 #include "KKSingleton.h"
 
-DECLARE_MULTICAST_DELEGATE_OneParam(Action_voidPtr_Delegate, void*);
-
 class UE5_SOLITAIRE_API KKEventMgr : public KKSingleton<KKEventMgr>
 {
     friend class KKSingleton<KKEventMgr>;
 public:
+    DECLARE_MULTICAST_DELEGATE_OneParam(Action_voidPtr_Delegate, void*);
+
     Action_voidPtr_Delegate* GetEventList(int nEventId)
     {
         if (!mEventDic.Contains(nEventId))

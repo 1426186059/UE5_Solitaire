@@ -4,9 +4,6 @@
 
 #include "CoreMinimal.h"
 
-DECLARE_MULTICAST_DELEGATE(ActionDelegate);
-DECLARE_MULTICAST_DELEGATE_OneParam(Action_Float_Delegate, float);
-
 class UE5_SOLITAIRE_API GameConst
 {
 private:
@@ -19,6 +16,9 @@ public:
     static const int EventId_InitSceneDoFinishOK = 1;
     static const int EventId_UpdatePokerAtlas = 2;
     static const int EventId_RefreshTopBottomUI = 3;
+
+    DECLARE_MULTICAST_DELEGATE(ActionDelegate);
+    DECLARE_MULTICAST_DELEGATE_OneParam(Action_Float_Delegate, float);
 };
 
 enum SolitaireGameMode

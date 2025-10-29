@@ -4,6 +4,7 @@
 
 #include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
 #include "UE5_Solitaire/SimpleFramework/KKUserWidgetBase.h"
+#include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
 
 #include "UE5_Solitaire/GameLogic/GameConst.h"
 #include "UE5_Solitaire/GameLogic/DataCenter.h"

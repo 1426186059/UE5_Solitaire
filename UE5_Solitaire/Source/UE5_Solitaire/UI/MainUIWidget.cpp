@@ -368,11 +368,11 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         {
             if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 2 && DataCenter::GetSingleton()->data->bFastGame == false)
             {
-
-                /*              TweenMgr: delayedCall(1.0, function()
-                                  ThemeSolitaire.Guide_FastPlayView:Show()
-                                  end)*/
-            }
+                KKTween::delayedCall(1.0, []()
+                    {
+                        //ThemeSolitaire.Guide_FastPlayView:Show()
+                    });
+            };
 
             if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 4 and DataCenter::GetSingleton()->data->nMusicIndex == 0)
             {

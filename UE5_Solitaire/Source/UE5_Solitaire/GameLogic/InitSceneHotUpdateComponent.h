@@ -27,12 +27,11 @@ public:
 	void RequestAllPrimaryAsset();
 	void OnAssetLoadCompleted();
 	void RequestLoadAllRes();
-
-
+	
 	TSharedPtr<FStreamableHandle> mFStreamableHandle;
 	float fPercent;
-	Action_Float_Delegate* UpdateProgressFunc;
-	ActionDelegate* UpdateFinishFunc;
-	ActionDelegate* UpdateErrorFunc;
-	ActionDelegate* UpdateVersionFunc;
+	GameConst::Action_Float_Delegate* UpdateProgressFunc;
+	GameConst::ActionDelegate* UpdateFinishFunc;
+	GameConst::ActionDelegate* UpdateErrorFunc;
+	GameConst::ActionDelegate* UpdateVersionFunc;
 };

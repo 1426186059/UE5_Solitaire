@@ -26,8 +26,8 @@ public:
 	UInitSceneHotUpdateComponent* mInitSceneHotUpdateComponent;
 
 	float fPercent;
-	Action_Float_Delegate UpdateProgressFunc;
-	ActionDelegate UpdateFinishFunc;
-	ActionDelegate UpdateErrorFunc;
-	ActionDelegate UpdateVersionFunc;
+	GameConst::Action_Float_Delegate UpdateProgressFunc;
+	GameConst::ActionDelegate UpdateFinishFunc;
+	GameConst::ActionDelegate UpdateErrorFunc;
+	GameConst::ActionDelegate UpdateVersionFunc;
 };
