@@ -5,8 +5,6 @@
 
 namespace KKTween
 {
-    class AKKTweenMgr;
-
     class KKTweenByList
     {
     private:

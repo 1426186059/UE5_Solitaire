@@ -1,6 +1,6 @@
-#include "KKTweenByList.h"
+#include "KKTweenMgr.h"
 
-namespace KKTween
+namespace KKTweenAPI
 {
     KKTweenByList::KKTweenByList(AKKTweenMgr* mDefaultBindObj)
     {
@@ -111,8 +111,8 @@ namespace KKTween
 
     KKTweenItem* KKTweenByList::AddTween(
         float time,
-        Action_Float_Delegate updateFunc = nullptr,
-        ActionDelegate finishFunc = nullptr)
+        Action_Float_Delegate updateFunc,
+        ActionDelegate finishFunc)
     {
         KKTweenItem* mItem = mItemPool.Pop();
         mItem->toggle = true;
@@ -128,8 +128,8 @@ namespace KKTween
     KKTweenItem* KKTweenByList::AddTween(
         UObject* obj,
         float time,
-        Action_Float_Delegate updateFunc = nullptr,
-        ActionDelegate finishFunc = nullptr)
+        Action_Float_Delegate updateFunc,
+        ActionDelegate finishFunc)
     {
         KKTweenItem* mItem = mItemPool.Pop();
         mItem->bindObj = obj;
