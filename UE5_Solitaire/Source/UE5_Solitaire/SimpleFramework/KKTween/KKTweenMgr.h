@@ -145,7 +145,7 @@ public:
 public:
     static AKKTweenMgr* GetSingleton(bool bCreate = true)
     {
-        return AKKActorSingleton::GetSingleton<AKKTweenMgr>(bCreate);
+        return AKKActorSingleton::GetSingletonInner<AKKTweenMgr>(bCreate);
     }
 
 private:

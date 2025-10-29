@@ -32,7 +32,7 @@ public:
 
 	static AGameLauncher* GetSingleton(bool bCreate = true)
 	{
-		return AKKActorSingleton::GetSingleton<AGameLauncher>(bCreate);
+		return GetSingletonInner<AGameLauncher>(bCreate);
 	}
 
 protected:
@@ -40,6 +40,8 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 public:	
 	virtual void Tick(float DeltaTime) override;
+
+	void Init();
 	void StartEnterGame(void* param);
 	void GoToLobby();
 

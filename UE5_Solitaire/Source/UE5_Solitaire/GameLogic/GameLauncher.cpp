@@ -11,7 +11,21 @@ AGameLauncher::AGameLauncher()
 void AGameLauncher::BeginPlay()
 {
 	Super::BeginPlay();
+    this->Init();
+}
 
+void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+}
+
+void AGameLauncher::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+}
+
+void AGameLauncher::Init()
+{
     //一些测试例子
     Test::Do();
 
@@ -23,7 +37,7 @@ void AGameLauncher::BeginPlay()
         UserSettings->ApplySettings(false);
         UserSettings->SaveSettings();
     }
-    
+
     if (APlayerController* PC = GetWorld()->GetFirstPlayerController())
     {
         //隐藏手机界面 2个虚拟摇杆。
@@ -54,25 +68,15 @@ void AGameLauncher::BeginPlay()
     //}
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->AddUObject(this, &AGameLauncher::StartEnterGame);
-    
+
     //加载InitScene界面
     TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
         TEXT("/Game/ResourceABs/InitScene/BPS/IntSceneCWBP.IntSceneCWBP_C"));
     if (BPClass != NULL)
     {
-        mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GEngine->GameViewport->GetWorld(), BPClass);
+        mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GetWorld(), BPClass);
         mUInitSceneWidget->Show();
     }
-}
-
-void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-}
-
-void AGameLauncher::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 void AGameLauncher::StartEnterGame(void* param)
