@@ -3,6 +3,11 @@
 
 #include "UWUIBase.h"
 
+void UWUIBase::NativeConstruct()
+{
+    Super::NativeConstruct();
+}
+
 void UWUIBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
@@ -12,7 +17,6 @@ void UWUIBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
     {
         mOldSize = mSize;
         this->OnLayoutChanged();
-
         UE_LOG(LogTemp, Log, TEXT("UWUIBase GetUMGRootSzie: %s"), *mSize.ToString());
     }
 }
@@ -25,6 +29,11 @@ bool UWUIBase::orFirstLayoutFinish()
 bool UWUIBase::orInit()
 {
     return this->bInit;
+}
+
+void UWUIBase::OnCreate()
+{
+
 }
 
 void UWUIBase::Init()

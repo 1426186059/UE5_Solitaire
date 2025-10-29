@@ -5,7 +5,6 @@
 
 void AKKUIMgr::Init()
 {
-    Show<UWUIRoot>("UIRootCWBP");
-    Get<UWUIRoot>("UIRootCWBP")->Init();
+    GetRootWidget()->Init();
 }
 

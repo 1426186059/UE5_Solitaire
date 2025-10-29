@@ -2,6 +2,9 @@
 
 #include "UE5_Solitaire/SimpleFramework/KKUI/UWUIRoot.h"
 #include "UE5_Solitaire/SimpleFramework/KKUI/UWUIBase.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/UMGAdapterTool.h"
+
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 
 #include "CoreMinimal.h"
@@ -63,7 +66,8 @@ public:
 				auto mClass = LoadClass<T>(this, *path);
 				if (mClass != NULL)
 				{
-					TWeakObjectPtr<UWUIBase> mUI = CreateWidget<T>(this, mClass);
+					TWeakObjectPtr<UWUIBase> mUI = CreateWidget<T>(GetRootWidget(), mClass);
+					mUI.Get()->OnCreate();
 					mUIDic.Add(Key, mUI);
 					return Cast<T>(mUI.Get());
 				}
@@ -75,6 +79,28 @@ public:
 		}
 
 		return nullptr;
+	}
+	
+	UWUIRoot* GetRootWidget()
+	{
+		if (mUIRoot != nullptr)
+		{
+			return mUIRoot;
+		}
+		else
+		{
+			FString ui_path = TEXT("/Game/ResourceABs/MainScene/BPS/UI/UIRootCWBP.UIRootCWBP_C");
+			auto mClass = LoadClass<UWUIRoot>(this, *ui_path);
+			if (mClass != NULL)
+			{
+				mUIRoot = CreateWidget<UWUIRoot>(mUIRoot, mClass);
+			}
+			else
+			{
+				UE_LOG(LogTemp, Error, TEXT("AKKUIMgr Load UWUIRoot Fail: %s"), *ui_path);
+			}
+		}
+		return mUIRoot;
 	}
 	
 	void Init();

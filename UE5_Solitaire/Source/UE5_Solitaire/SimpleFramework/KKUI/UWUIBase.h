@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "UE5_Solitaire/SimpleFramework/UMGHelper.h"
+#include "UMGHelper.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
@@ -16,8 +16,10 @@ class UE5_SOLITAIRE_API UWUIBase : public UUserWidget
 {
 	GENERATED_BODY()
 protected:
+	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
+	virtual void OnCreate();
 	virtual void Init();
 	virtual void Show();
 	virtual void Hide(bool bDestroy = false);

@@ -3,24 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/GameUserSettings.h"
-#include "Components/Widget.h"
-#include "Components/Image.h"
-
-#include "KKSingleton.h"
 #include "UMGHelper.h"
-#include "UEHelper.h"
 
-class UMGAdapterTool : public KKSingleton<UMGAdapterTool>
+class UMGAdapterTool
 {
 public:
-	void Init()
-	{
-		if (bInit) return;
-		bInit = true;
-	}
-
-	void FitBG(UUserWidget* mRootWidget, UImage* mUImage) //这个的话，根据原有精灵尺寸，等比例缩放
+	static void FitBG(UUserWidget* mRootWidget, UImage* mUImage) //这个的话，根据原有精灵尺寸，等比例缩放
 	{
 		FVector2D mScreenSize = UMGHelper::GetUMGRootSzie(mRootWidget);
 		FIntPoint mSize = UMGHelper::GetImageOriginalSize(mUImage);
@@ -49,5 +37,10 @@ public:
 		//UE_LOG(LogTemp, Log, TEXT("UMGAdapterTool mActualSize: %s"), *mActualSize.ToString());
 	}
 private:
-	bool bInit;
+	UMGAdapterTool() = delete;
+	~UMGAdapterTool() = delete;
+	UMGAdapterTool(const UMGAdapterTool&) = delete;
+	UMGAdapterTool& operator=(const UMGAdapterTool&) = delete;
+	UMGAdapterTool(UMGAdapterTool&&) = delete;
+	UMGAdapterTool& operator=(UMGAdapterTool&&) = delete;
 };

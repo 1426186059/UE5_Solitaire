@@ -18,6 +18,12 @@ void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
     //}
 }
 
+void UMainUIWidget::OnCreate()
+{
+    Super::OnCreate();
+    UMGHelper::SetParent(this, AKKUIMgr::GetSingleton()->GetRootWidget()->Layer_Base);
+}
+
 void UMainUIWidget::Init()
 {
     Super::Init();
@@ -67,7 +73,7 @@ void UMainUIWidget::OnLayoutChanged()
     Super::OnLayoutChanged();
     //BG   ≈‰∆¡ƒª
     auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
-    UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
+    UMGAdapterTool::FitBG(mUIRoot, mBG);
 }
 
 void UMainUIWidget::CheckFirstLayoutOkToShow()

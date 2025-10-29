@@ -2,8 +2,7 @@
 
 #pragma once
 
-#include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
-#include "UE5_Solitaire/SimpleFramework/KKUI/UWUIBase.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/KKUIMgr.h"
 #include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
 
 #include "UE5_Solitaire/GameLogic/GameConst.h"
@@ -31,8 +30,10 @@ class UE5_SOLITAIRE_API UMainUIWidget : public UWUIBase
 {
 	GENERATED_BODY()
 protected:
+	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
+	virtual void OnCreate() override;
 	virtual void Init() override;
 	virtual void OnLayoutChanged() override;
 	virtual void CheckFirstLayoutOkToShow() override;
