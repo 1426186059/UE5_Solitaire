@@ -1,0 +1,145 @@
+#include "KKTweenByList.h"
+
+namespace KKTween
+{
+    KKTweenByList::KKTweenByList(AKKTweenMgr* mDefaultBindObj)
+    {
+        this->defaultBindObj = mDefaultBindObj;
+    }
+
+    void KKTweenByList::Update(float DeltaTime)
+    {
+        for (int i = mTweenT.Num() - 1; i >= 0; i--)
+        {
+            auto mItem = mTweenT[i];
+            if (mItem->toggle == false || mItem->bindObj.Get() == nullptr)
+            {
+                mTweenT.RemoveAt(i);
+                mItemPool.recycle(mItem);
+                continue;
+            }
+
+            if (mItem->delay > 0.0)
+            {
+                mItem->delay -= DeltaTime;
+                continue;
+            }
+
+            if (mItem->nLoopPingTong > 0)
+            {
+                if (mItem->nLoopPingTong == 2)
+                {
+                    mItem->time -= DeltaTime;
+                }
+                else
+                {
+                    mItem->time += DeltaTime;
+                }
+
+                mItem->time = FMath::Clamp(mItem->time, 0, mItem->sumTime);
+                float fTimePercent = mItem->time / mItem->sumTime;
+                if (mItem->updateFunc)
+                {
+                    mItem->updateFunc(fTimePercent);
+                }
+
+                if (mItem->nLoopPingTong == 2)
+                {
+                    if (fTimePercent <= 0)
+                    {
+                        if (mItem->finishFunc)
+                        {
+                            mItem->finishFunc();
+                        }
+                        mItem->nLoopPingTong = 1;
+                        if (mItem->nLoopCount > 0)
+                        {
+                            mItem->nLoopCount--;
+
+                            if (mItem->nLoopCount <= 0)
+                            {
+                                mTweenT.RemoveAt(i);
+                                mItemPool.recycle(mItem);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (fTimePercent >= 1.0f)
+                    {
+                        mItem->nLoopPingTong = 2;
+                    }
+                }
+
+            }
+            else
+            {
+                mItem->time += DeltaTime;
+                mItem->time = FMath::Clamp(mItem->time, 0, mItem->sumTime);
+                float fTimePercent = mItem->time / mItem->sumTime;
+                if (mItem->updateFunc)
+                {
+                    mItem->updateFunc(fTimePercent);
+                }
+
+                if (fTimePercent >= 1.0f)
+                {
+                    if (mItem->finishFunc)
+                    {
+                        mItem->finishFunc();
+                    }
+                    if (mItem->nLoopCount == -1)
+                    {
+                        mItem->time = 0;
+                    }
+                    else
+                    {
+                        mItem->nLoopCount--;
+                        mItem->time = 0;
+
+                        if (mItem->nLoopCount <= 0)
+                        {
+                            mTweenT.RemoveAt(i);
+                            mItemPool.recycle(mItem);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    KKTweenItem* KKTweenByList::AddTween(
+        float time,
+        Action_Float_Delegate updateFunc = nullptr,
+        ActionDelegate finishFunc = nullptr)
+    {
+        KKTweenItem* mItem = mItemPool.Pop();
+        mItem->toggle = true;
+        mItem->bindObj = defaultBindObj;
+        mItem->time = 0;
+        mItem->sumTime = time;
+        mItem->updateFunc = updateFunc;
+        mItem->finishFunc = finishFunc;
+        mTweenT.Add(mItem);
+        return mItem;
+    }
+
+    KKTweenItem* KKTweenByList::AddTween(
+        UObject* obj,
+        float time,
+        Action_Float_Delegate updateFunc = nullptr,
+        ActionDelegate finishFunc = nullptr)
+    {
+        KKTweenItem* mItem = mItemPool.Pop();
+        mItem->bindObj = obj;
+        mItem->toggle = true;
+        mItem->time = 0;
+        mItem->sumTime = time;
+        mItem->updateFunc = updateFunc;
+        mItem->finishFunc = finishFunc;
+        mTweenT.Add(mItem);
+        return mItem;
+    }
+
+}

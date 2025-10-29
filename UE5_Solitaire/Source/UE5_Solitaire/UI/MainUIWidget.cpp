@@ -451,32 +451,31 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     {
         for (int j = 0; j <= i; j++)
         {
-            //int32 nTopIndex = i;
-            //auto mCardItem = this->mSendCardListGo.Pop();
-            //this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
+            int32 nTopIndex = i;
+            auto mCardItem = this->mSendCardListGo.Pop();
+            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            //int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
-            //bool bTurnOverState = nHeightIndex == nTopIndex;
-            //if (bTurnOverState)
-            //{
-            //    mCardItem->SetTurnOverState(true);
-            //}
+            int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
+            bool bTurnOverState = nHeightIndex == nTopIndex;
+            if (bTurnOverState)
+            {
+                mCardItem->SetTurnOverState(true);
+            }
 
-            //UMGHelper::SetAsLastChildIndex(mCardItem);
+            UMGHelper::SetAsLastChildIndex(mCardItem);
+            FVector2D from = UMGHelper::GetSlotPos(mCardItem);
+            FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
+            UMGHelper::SetSlotPos(mCardItem, from);
 
-            //FVector2D from = this->GetRelativePosByGo(mCardItem);
-            //FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
-            //this->SetRelativePos(mCardItem, from);
+            //LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3)->setDelay(0.05 * (j - 1)):setOnComplete(function()
+            //                          GameEventHandler:Brocast(EventName.RefreshTopBottomUI)
+            //                          if bTurnOverState then
+            //                              mCardItem : PlayTurnOverAni()
+            //                              mCardItem : SetEventTriggerState(true)
+            //                              end
+            //                              end)
 
-            /*  LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3) : setDelay(0.05 * (j - 1)):setOnComplete(function()
-                                      GameEventHandler:Brocast(EventName.RefreshTopBottomUI)
-                                      if bTurnOverState then
-                                          mCardItem : PlayTurnOverAni()
-                                          mCardItem : SetEventTriggerState(true)
-                                          end
-                                          end)
-
-                                  end*/
+            //                      end
         }
     }
 
@@ -537,7 +536,7 @@ FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex)
     FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
     TArray<UPokerItemWidget*> mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     float posY = oriPos.Y;
-    for (int i = 1; i < nHeightIndex - 1; i++)
+    for (int i = 0; i < nHeightIndex; i++)
     {
         UPokerItemWidget* mCardItem = mListCardNodeTop7Go[i];
         if (mCardItem == nullptr or mCardItem->orTurnOverStateIsTrue())
@@ -562,12 +561,12 @@ FVector2D UMainUIWidget::GetCardNodeDraw3Pos(int nIndex)
 {
     if (nIndex <= 3)
     {
-        float fOffsetX = -44 * (nIndex - 1);
+        float fOffsetX = -44 * nIndex;
         return this->mCardNodeDraw3BeginPos + FVector2D(fOffsetX, 0);
     }
     else
     {
-        float fOffsetX = -1 * (nIndex - 3);
+        float fOffsetX = -1 * (nIndex - 2);
         return this->GetCardNodeDraw3Pos(3) + FVector2D(fOffsetX, 0);
     }
 }
