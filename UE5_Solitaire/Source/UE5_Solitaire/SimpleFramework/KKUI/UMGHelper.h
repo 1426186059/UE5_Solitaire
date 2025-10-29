@@ -4,13 +4,16 @@
 
 #include "CoreMinimal.h"
 
-#include "Blueprint/WidgetLayoutLibrary.h"
-#include "GameFramework/GameUserSettings.h"
 #include "Components/Widget.h"
 #include "Components/CanvasPanel.h"
-#include "Components/Image.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/SizeBoxSlot.h"
+
+#include "Components/Image.h"
+
+#include "Components/TextBlock.h"
+#include "Components/EditableText.h"
+#include "Components/EditableTextBox.h"
 
 
 class UMGHelper

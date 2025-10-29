@@ -24,6 +24,14 @@ void UMainUIWidget::OnCreate()
     UMGHelper::SetParent(this, AKKUIMgr::GetSingleton()->GetRootWidget()->Layer_Base);
 }
 
+void UMainUIWidget::OnLayoutChanged()
+{
+    Super::OnLayoutChanged();
+    //BG   ≈‰∆¡ƒª
+    auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
+    UMGAdapterTool::FitBG(mUIRoot, mBG);
+}
+
 void UMainUIWidget::Init()
 {
     Super::Init();
@@ -66,14 +74,6 @@ void UMainUIWidget::Init()
         FVector2D mPos = mUIRoot->GetWidgetFromName(Key)->GetRenderTransform().Translation;
         this->tableCardNodeTop7Pos.Add(mPos);
     }
-}
-
-void UMainUIWidget::OnLayoutChanged()
-{
-    Super::OnLayoutChanged();
-    //BG   ≈‰∆¡ƒª
-    auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
-    UMGAdapterTool::FitBG(mUIRoot, mBG);
 }
 
 void UMainUIWidget::CheckFirstLayoutOkToShow()

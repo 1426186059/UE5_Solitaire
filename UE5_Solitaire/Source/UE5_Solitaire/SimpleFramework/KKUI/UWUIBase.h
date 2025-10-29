@@ -3,11 +3,7 @@
 #pragma once
 
 #include "UMGHelper.h"
-
 #include "Blueprint/UserWidget.h"
-#include "Components/Image.h"
-#include "Components/Button.h"
-#include "Components/CanvasPanel.h"
 #include "CoreMinimal.h"
 #include "UWUIBase.generated.h"
 
