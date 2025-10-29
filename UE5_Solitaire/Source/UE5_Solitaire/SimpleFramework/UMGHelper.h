@@ -63,12 +63,12 @@ public:
         return  RootGeom.GetLocalSize();
     }
 
-    static void SetWidgetScale(UWidget* mUWidget, const FVector2D& NewScale)
+    static void SetWidgetScale(UWidget* mUWidget, FVector2D NewScale)
     {
         mUWidget->SetRenderScale(NewScale);
     }
 
-    static void SetSizeBoxSize(UWidget* Child, const FVector2D& NewSize)
+    static void SetSizeBoxSize(UWidget* Child, FVector2D NewSize)
     {
         if (USizeBoxSlot* Slot = Cast<USizeBoxSlot>(Child->Slot))
         {
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    static void SetSlotPos(UWidget* target, const FVector2D& pos)
+    static void SetSlotPos(UWidget* target, FVector2D pos)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
         Slot->SetPosition(pos);
@@ -88,19 +88,24 @@ public:
         return Slot->GetPosition();
     }
 
-    static void SetSlotAnchor(UWidget* target, const FAnchors& t)
+    static void SetSlotAnchor(UWidget* target, FAnchors t)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        if (Slot == nullptr)
+        {
+            UE_LOG(LogTemp, Error, TEXT("UMGHelper SetSlotPos Error!!!  Need UCanvasPanelSlot"));
+            return;
+        }
         return Slot->SetAnchors(t);
     }
 
-    static void SetSlotAlignment(UWidget* target, const FVector2D& t)
+    static void SetSlotAlignment(UWidget* target, FVector2D t)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
         return Slot->SetAlignment(t);
     }
 
-    static void SetSlotSize(UWidget* target, const FVector2D& NewSize)
+    static void SetSlotSize(UWidget* target, FVector2D NewSize)
     {
         UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
         return Slot->SetSize(NewSize);
@@ -112,7 +117,7 @@ public:
         return Slot->SetAutoSize(bAutoSize);
     }
 
-    static void SetRenderPos(UWidget* target, const FVector2D& pos)
+    static void SetRenderPos(UWidget* target, FVector2D pos)
     {
         target->SetRenderTranslation(pos);
     }
@@ -141,21 +146,23 @@ public:
     static void SetChildIndex(UWidget* target, int nIndex, UCanvasPanel* Parent = nullptr)
     {
         if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
-        Parent->RemoveChild(target);
         Parent->InsertChildAt(nIndex, target);
     }
 
     static void SetAsFirstChildIndex(UWidget* target, UCanvasPanel* Parent = nullptr)
     {
         if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
-        Parent->RemoveChild(target);
         Parent->InsertChildAt(0, target);
     }
 
     static void SetAsLastChildIndex(UWidget* target, UCanvasPanel* Parent = nullptr)
     {
         if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
-        Parent->RemoveChild(target);
+        Parent->AddChildToCanvas(target);
+    }
+
+    static void SetParent(UWidget* target, UCanvasPanel* Parent)
+    {
         Parent->AddChildToCanvas(target);
     }
 

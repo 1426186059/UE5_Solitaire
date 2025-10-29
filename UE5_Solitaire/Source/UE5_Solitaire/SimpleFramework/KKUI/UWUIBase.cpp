@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "KKUserWidgetBase.h"
+#include "UWUIBase.h"
 
-void UKKUserWidgetBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+void UWUIBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
 
@@ -13,38 +13,37 @@ void UKKUserWidgetBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTim
         mOldSize = mSize;
         this->OnLayoutChanged();
 
-        UE_LOG(LogTemp, Log, TEXT("UKKUserWidgetBase GetUMGRootSzie: %s"), *mSize.ToString());
+        UE_LOG(LogTemp, Log, TEXT("UWUIBase GetUMGRootSzie: %s"), *mSize.ToString());
     }
 }
 
-bool UKKUserWidgetBase::orFirstLayoutFinish()
+bool UWUIBase::orFirstLayoutFinish()
 {
     return this->bFirstLayoutFinish;
 }
 
-bool UKKUserWidgetBase::orInit()
+bool UWUIBase::orInit()
 {
     return this->bInit;
 }
 
-void UKKUserWidgetBase::Init()
+void UWUIBase::Init()
 {
-    this->bInit = true;
+    
 }
 
-void UKKUserWidgetBase::Show()
+void UWUIBase::Show()
 {
     if (!this->IsInViewport())
     {
         this->AddToViewport(0);
     }
 
-    this->SetVisibility(ESlateVisibility::Visible);
     this->bShowUI = true;
-    this->CheckFirstLayoutOkToInit();
+    this->CheckFirstLayoutOkToShow();
 }
 
-void UKKUserWidgetBase::Hide(bool bDestroy)
+void UWUIBase::Hide(bool bDestroy)
 {
     this->bShowUI = false;
     this->SetVisibility(ESlateVisibility::Hidden);
@@ -58,12 +57,12 @@ void UKKUserWidgetBase::Hide(bool bDestroy)
     }
 }
 
-void UKKUserWidgetBase::Refresh()
+void UWUIBase::Refresh()
 {
     
 }
 
-void UKKUserWidgetBase::OnLayoutChanged()
+void UWUIBase::OnLayoutChanged()
 {
     if (!this->bFirstLayoutFinish)
     {
@@ -72,12 +71,15 @@ void UKKUserWidgetBase::OnLayoutChanged()
     }
 }
 
-void UKKUserWidgetBase::OnFirstLayoutFinish()
+void UWUIBase::OnFirstLayoutFinish()
 {
-    this->CheckFirstLayoutOkToInit();
+    this->CheckFirstLayoutOkToShow();
 }
 
-void UKKUserWidgetBase::CheckFirstLayoutOkToInit()
+void UWUIBase::CheckFirstLayoutOkToShow()
 {
-
+    if (this->bShowUI)
+    {
+        this->SetVisibility(ESlateVisibility::Visible);
+    }
 }

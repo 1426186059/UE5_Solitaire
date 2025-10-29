@@ -3,6 +3,7 @@
 #include "UE5_Solitaire/Test/Test.h"
 #include "UE5_Solitaire/UI/UInitSceneWidget.h"
 #include "UE5_Solitaire/UI/MainUIWidget.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/KKUIMgr.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 #include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
 #include "UE5_Solitaire/CSV/CSVConfigMgr.h"

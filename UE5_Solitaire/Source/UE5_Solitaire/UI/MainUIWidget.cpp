@@ -20,8 +20,10 @@ void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 
 void UMainUIWidget::Init()
 {
-    if (this->orInit()) return;
     Super::Init();
+
+    if (this->bInit) return;
+    this->bInit = true;
 
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget Init"));
 
@@ -31,8 +33,6 @@ void UMainUIWidget::Init()
         UE_LOG(LogTemp, Error, TEXT("mUIRoot == null"));
         return;
     }
-
-    this->AddToViewport(0);
 
     UButton* mGameNodeBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("gameNodeBtn"));
     mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
@@ -70,17 +70,13 @@ void UMainUIWidget::OnLayoutChanged()
     UMGAdapterTool::GetSingleton()->FitBG(mUIRoot, mBG);
 }
 
-void UMainUIWidget::CheckFirstLayoutOkToInit()
+void UMainUIWidget::CheckFirstLayoutOkToShow()
 {
     if (!this->orFirstLayoutFinish()) return;
 
     this->Init();
     this->InitGame();
-    this->SetVisibility(ESlateVisibility::Visible);
 }
-
-
-
 
 //--------------------------------------------------------------------------------------------------------------------
 
@@ -98,7 +94,7 @@ void UMainUIWidget::InitGame()
 {
     //初始化播放发牌动画
     mSendCardListGo = {};
-    TSubclassOf<UPokerItemWidget> PokerItemWBP = LoadClass<UPokerItemWidget>(nullptr,
+    auto PokerItemWBP = LoadClass<UPokerItemWidget>(this,
         TEXT("/Game/ResourceABs/MainScene/BPS/PokerItemCWBP.PokerItemCWBP_C"));
 
     if (PokerItemWBP == NULL)
@@ -110,12 +106,11 @@ void UMainUIWidget::InitGame()
     for (int i = 0; i < 52; i++)
     {
         UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(this, PokerItemWBP);
-        this->PokerItemParent->AddChild(mPokerItem);
+        UMGHelper::SetParent(mPokerItem, this->PokerItemParent);
         UMGHelper::SetSlotAnchor(mPokerItem, FAnchors(0.5));
         UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5));
         UMGHelper::SetSlotSize(mPokerItem, FVector2D(0));
         UMGHelper::SetSlotPos(mPokerItem, FVector2D(0));
-
         mPokerItem->Show();
         mSendCardListGo.Add(mPokerItem);
     }
@@ -368,17 +363,18 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         {
             if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 2 && DataCenter::GetSingleton()->data->bFastGame == false)
             {
-                //KKTween::delayedCall(1.0, []()
-                //    {
-                //        //ThemeSolitaire.Guide_FastPlayView:Show()
-                //    });
+                KKTween::delayedCall(1.0, []()
+                    {
+                        //ThemeSolitaire.Guide_FastPlayView:Show()
+                    });
             };
 
             if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 4 and DataCenter::GetSingleton()->data->nMusicIndex == 0)
             {
-                //TweenMgr: delayedCall(1.0, function()
-                //    ThemeSolitaire.Guide_MusicOnView:Show()
-                //    end)
+                KKTween::delayedCall(1.0, []()
+                    {
+                        // ThemeSolitaire.Guide_MusicOnView:Show()
+                    });
             }
         }
     }
@@ -451,21 +447,21 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     {
         for (int j = 0; j <= i; j++)
         {
-            //int32 nTopIndex = i;
-            //auto mCardItem = this->mSendCardListGo.Pop();
-            //this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
+            int32 nTopIndex = i;
+            auto mCardItem = this->mSendCardListGo.Pop();
+            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            //int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
-            //bool bTurnOverState = nHeightIndex == nTopIndex;
-            //if (bTurnOverState)
-            //{
-            //    mCardItem->SetTurnOverState(true);
-            //}
+            int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
+            bool bTurnOverState = nHeightIndex == nTopIndex;
+            if (bTurnOverState)
+            {
+                mCardItem->SetTurnOverState(true);
+            }
 
-            //UMGHelper::SetAsLastChildIndex(mCardItem);
-            //FVector2D from = UMGHelper::GetSlotPos(mCardItem);
-            //FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
-            //UMGHelper::SetSlotPos(mCardItem, from);
+            UMGHelper::SetAsLastChildIndex(mCardItem);
+            FVector2D from = UMGHelper::GetSlotPos(mCardItem);
+            FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
+            UMGHelper::SetSlotPos(mCardItem, from);
 
             //LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3)->setDelay(0.05 * (j - 1)):setOnComplete(function()
             //                          GameEventHandler:Brocast(EventName.RefreshTopBottomUI)

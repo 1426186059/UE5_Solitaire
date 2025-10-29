@@ -25,8 +25,3 @@ void AKKActorSingleton::EndPlay(EEndPlayReason::Type Reason)
 	Super::EndPlay(Reason);
 	mInstance = nullptr;
 }
-
-void AKKActorSingleton::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}

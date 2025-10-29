@@ -3,8 +3,8 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/UMGAdapterTool.h"
-#include "UE5_Solitaire/SimpleFramework/KKUserWidgetBase.h"
-//#include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/UWUIBase.h"
+#include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
 
 #include "UE5_Solitaire/GameLogic/GameConst.h"
 #include "UE5_Solitaire/GameLogic/DataCenter.h"
@@ -27,7 +27,7 @@
 #include "MainUIWidget.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API UMainUIWidget : public UKKUserWidgetBase
+class UE5_SOLITAIRE_API UMainUIWidget : public UWUIBase
 {
 	GENERATED_BODY()
 protected:
@@ -35,7 +35,7 @@ protected:
 public:
 	virtual void Init() override;
 	virtual void OnLayoutChanged() override;
-	virtual void CheckFirstLayoutOkToInit() override;
+	virtual void CheckFirstLayoutOkToShow() override;
 
 	UFUNCTION() void OnBtnClicked_GameNodeBtn();
 	
@@ -55,7 +55,6 @@ public:
 	void NewGameBegin_ForNormal(bool bForceNewGame);
 private:
 	UUserWidget* mUIRoot;
-	FVector2D mOldSize;
 	UCanvasPanel* PokerItemParent;
 	FVector2D tranFaPaiPos;
 	FVector2D mCardNodeDraw3BeginPos;

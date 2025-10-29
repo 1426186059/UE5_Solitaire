@@ -76,7 +76,7 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
 
     if (tableIndex.Num() > 0)
     {
-        int nRandomIndex = tableIndex[KKRandomTool::RandomArrayInt(0, tableIndex.Num())];
+        int nRandomIndex = tableIndex[KKRandomTool::RandomArrayInt(tableIndex.Num())];
         auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mTable[nRandomIndex]);
         if (bTrue)
         {

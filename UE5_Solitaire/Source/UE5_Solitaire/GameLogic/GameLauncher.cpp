@@ -101,14 +101,8 @@ void AGameLauncher::StartEnterGame(void* param)
 
 void AGameLauncher::GoToLobby()
 {   
-    TSubclassOf<UMainUIWidget> BPClass = LoadClass<UMainUIWidget>(nullptr,
-        TEXT("/Game/ResourceABs/MainScene/BPS/MainUICWBP.MainUICWBP_C"));
-
-    if (BPClass != NULL)
-    {
-        UMainUIWidget* mUMainUIWidget = CreateWidget<UMainUIWidget>(GEngine->GameViewport->GetWorld(), BPClass);
-        mUMainUIWidget->Show();
-    }
+    AKKUIMgr::GetSingleton()->Init();
+    AKKUIMgr::GetSingleton()->Show<UMainUIWidget>("MainUICWBP");
 
     if (mUInitSceneWidget != nullptr)
     {

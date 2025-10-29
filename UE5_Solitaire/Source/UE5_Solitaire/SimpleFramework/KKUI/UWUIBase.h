@@ -9,10 +9,10 @@
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "CoreMinimal.h"
-#include "KKUserWidgetBase.generated.h"
+#include "UWUIBase.generated.h"
 
 UCLASS(Abstract)
-class UE5_SOLITAIRE_API UKKUserWidgetBase : public UUserWidget
+class UE5_SOLITAIRE_API UWUIBase : public UUserWidget
 {
 	GENERATED_BODY()
 protected:
@@ -24,7 +24,7 @@ public:
 	virtual void Refresh();
 	virtual void OnLayoutChanged();
 	virtual void OnFirstLayoutFinish();
-	virtual void CheckFirstLayoutOkToInit();
+	virtual void CheckFirstLayoutOkToShow();
 
 	bool orFirstLayoutFinish();
 	bool orInit();

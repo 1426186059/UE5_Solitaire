@@ -29,7 +29,4 @@ protected:
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(EEndPlayReason::Type Reason) override;
-
-public:
-	virtual void Tick(float DeltaTime) override;
 };

@@ -13,9 +13,9 @@ public:
         return FMath::RandRange(min, max);
     }
 
-    static int RandomArrayInt(int min, int max)
+    static int RandomArrayInt(int nArrayCount)
     {
-        return FMath::RandRange(min, max - 1);
+        return FMath::RandRange(0, nArrayCount - 1);
     }
 
 private:
