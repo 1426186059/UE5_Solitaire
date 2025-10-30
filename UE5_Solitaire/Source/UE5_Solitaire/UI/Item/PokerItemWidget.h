@@ -2,6 +2,9 @@
 
 #pragma once
 
+#include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
+
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "Components/Button.h"
@@ -27,11 +30,12 @@ public:
 	bool orTurnOverStateIsTrue();
 	void ForceShowBackUI();
 	void SetEventTriggerState(bool bCanClick);
-	
+	void PlayTurnOverAni();
+	void DoShakeAni();
 private:
 	bool bInit;
 
-	UUserWidget* mUIRoot;
+	UWidget* tranCardItemAni;
 	UImage* mIcon;
 
 	int nPokerId;
@@ -39,4 +43,8 @@ private:
 	int32 nStepIndex_ForFirstShowPokerId = -1;
 	FVector2D beginPos = {};
 	bool bInDrag = false;
+
+	KKTweenItem* mTurnOverTween1;
+	KKTweenItem* mTurnOverTween2;
+	KKTweenItem* mShakeTween;
 };

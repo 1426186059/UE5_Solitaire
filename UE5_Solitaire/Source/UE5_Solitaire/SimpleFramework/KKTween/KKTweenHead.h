@@ -28,6 +28,9 @@ namespace KKTweenAPI
         Action_Float_Delegate updateFunc;
         ActionDelegate finishFunc;
 
+        FVector From;
+        FVector To;
+
     public:
         KKTweenItem()
         {
@@ -78,6 +81,12 @@ namespace KKTweenAPI
         {
             float mTweenSumTime = this->delay + this->sumTime;
             mItem->delay += mTweenSumTime;
+            return this;
+        }
+
+        KKTweenItem* SetOnComplete(ActionDelegate func)
+        {
+            this->finishFunc = func;
             return this;
         }
     };

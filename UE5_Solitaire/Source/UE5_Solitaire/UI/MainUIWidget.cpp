@@ -38,8 +38,6 @@ void UMainUIWidget::OnLayoutChanged()
 
 void UMainUIWidget::Init()
 {
-    Super::Init();
-
     if (this->bInit) return;
     this->bInit = true;
 
@@ -105,7 +103,7 @@ void UMainUIWidget::InitGame()
     //初始化播放发牌动画
     mSendCardListGo = {};
     auto PokerItemWBP = LoadClass<UPokerItemWidget>(this,
-        TEXT("/Game/ResourceABs/MainScene/BPS/PokerItemCWBP.PokerItemCWBP_C"));
+        TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerItemCWBP.PokerItemCWBP_C"));
 
     if (PokerItemWBP == NULL)
     {
@@ -473,15 +471,15 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
             UMGHelper::SetSlotPos(mCardItem, from);
 
-            //LeanTween.moveLocal(mCardItem.transform.gameObject, to, 0.3)->setDelay(0.05 * (j - 1)):setOnComplete(function()
-            //                          GameEventHandler:Brocast(EventName.RefreshTopBottomUI)
-            //                          if bTurnOverState then
-            //                              mCardItem : PlayTurnOverAni()
-            //                              mCardItem : SetEventTriggerState(true)
-            //                              end
-            //                              end)
-
-            //                      end
+            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * (j - 1))->SetOnComplete([&]()
+                {
+                    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+                    if (bTurnOverState)
+                    {
+                        mCardItem->PlayTurnOverAni();
+                        mCardItem->SetEventTriggerState(true);
+                    }
+                });
         }
     }
 
