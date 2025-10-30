@@ -16,21 +16,20 @@ class UE5_SOLITAIRE_API UKKGameInstance : public UGameInstance
 public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
+	virtual void OnStart() override;
 
 	static UKKGameInstance* Get(const UObject* WorldContext = nullptr)
 	{
-		if (GEngine->GetWorld())
-		{
-			return Cast<UKKGameInstance>(GEngine->GetWorld()->GetGameInstance());
-		}
-		else
-		{
-			UE_LOG(LogTemp, Error, TEXT("GEngine->GetWorld() == null"));
-		}
-
-		return nullptr;
+		return mInstance;
 	}
+
+	static UKKGameInstance* GetWorld()
+	{
+		return mInstance->GetWorld();
+	}
+
 private:
+	static UKKGameInstance* mInstance;
 	void OnWorldInitialized(UWorld* World, const UWorld::InitializationValues IVS);
 	void OnWorldCreated(UWorld* World);
 };

@@ -10,7 +10,7 @@ UE5 制作 欧美 Solitaire 游戏
 
 4: 默认新工程，UE5会加载所有 beta, 实验性插件，这个得手动调整一下。（卸载所有的beta/实验性 插件，重新启动UE Project 会直接崩溃）
 
-
+5：GEngine->GetWorld() 一直是 nullptr, 奇怪！ (得用其他API)
 
 UMG问题：
 1：UMG 蓝图里 Widget 的【眼睛】设置，只在编辑模式下起作用，运行起来无效。得修改 详细面板里的 可视性 属性。

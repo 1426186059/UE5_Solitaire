@@ -15,13 +15,19 @@ void UKKGameInstance::Init()
 
 void UKKGameInstance::Shutdown()
 {
-    UE_LOG(LogTemp, Log, TEXT("=== MyGameInstance Shutdown ==="));
     Super::Shutdown();
+    UE_LOG(LogTemp, Log, TEXT("=== MyGameInstance Shutdown ==="));
+}
+
+void UKKGameInstance::OnStart()
+{
+    Super::OnStart();
+    UE_LOG(LogTemp, Log, TEXT("=== MyGameInstance OnStart ==="));
 }
 
 void UKKGameInstance::OnWorldInitialized(UWorld* World, const UWorld::InitializationValues IVS)
 {
-    UE_LOG(LogTemp, Error, TEXT("UKKGameInstance OnWorldInitialized: %s"), *UEnum::GetValueAsString(World->WorldType));
+    UE_LOG(LogTemp, Error, TEXT("UKKGameInstance OnWorldInitialized: %d"), World->WorldType.GetValue());
     if (!World || (World->WorldType != EWorldType::Game && World->WorldType != EWorldType::PIE))
     {
         return;
@@ -35,13 +41,12 @@ void UKKGameInstance::OnWorldInitialized(UWorld* World, const UWorld::Initializa
     else
     {
         UE_LOG(LogTemp, Error, TEXT("OnWorldInitialized Error"));
-        ensureMsgf(Get(), TEXT(""));
     }
 }
 
 void UKKGameInstance::OnWorldCreated(UWorld* World)
 {
-    UE_LOG(LogTemp, Error, TEXT("UKKGameInstance OnWorldCreated: %s"), *UEnum::GetValueAsString(World->WorldType));
+    UE_LOG(LogTemp, Error, TEXT("UKKGameInstance OnWorldCreated: %d"), World->WorldType.GetValue());
     if (!World || (World->WorldType != EWorldType::Game && World->WorldType != EWorldType::PIE))
     {
         return;
@@ -56,7 +61,6 @@ void UKKGameInstance::OnWorldCreated(UWorld* World)
     else
     {
         UE_LOG(LogTemp, Error, TEXT("OnWorldInitialized Error"));
-        ensureMsgf(Get(), TEXT(""));
     }
 }
 
