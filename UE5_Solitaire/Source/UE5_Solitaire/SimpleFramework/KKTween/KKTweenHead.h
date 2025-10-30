@@ -49,8 +49,8 @@ namespace KKTweenAPI
             delay = 0.0;
             time = 0.0;
             sumTime = 0.0;
-            updateFunc = nullptr;
-            finishFunc = nullptr;
+            updateFunc.Reset();
+            finishFunc.Reset();
 
             nLoopCount = 0;
             nLoopPingTong = 0;
@@ -99,7 +99,18 @@ namespace KKTweenAPI
     {
     private:
         TArray<KKTweenItem*> mObjectPool;
+        int nMaxCapacity = 1500;
     public:
+        ObjectPool(int nCapacity = 1500)
+        {
+            SetMaxCapacity(nCapacity);
+        }
+
+        void SetMaxCapacity(int nCapacity = 1500)
+        {
+            this->nMaxCapacity = nCapacity;
+        }
+
         KKTweenItem* Pop()
         {
             if (mObjectPool.Num() > 0)
@@ -114,8 +125,15 @@ namespace KKTweenAPI
 
         void recycle(KKTweenItem* t)
         {
-            t->Reset();
-            mObjectPool.Add(t);
+            if (mObjectPool.Num() > nMaxCapacity)
+            {
+                delete t;
+            }
+            else
+            {
+                t->Reset();
+                mObjectPool.Add(t);
+            }
         }
     };
 
@@ -129,6 +147,7 @@ namespace KKTweenAPI
         KKTweenByList(AKKTweenMgr* mDefaultBindObj);
 
         void Update(float DeltaTime);
+        void SetMaxTweenCount(int nCount);
         KKTweenItem* AddTween(
             float time,
             Action_Float_Delegate updateFunc = nullptr,
@@ -166,6 +185,7 @@ private:
 
 public:
     void Update(float DeltaTime);
+    void SetMaxTweenCount(int nCount);
     KKTweenAPI::KKTweenItem* AddTween(float time, KKTweenAPI::Action_Float_Delegate updateFunc = nullptr, KKTweenAPI::ActionDelegate finishFunc = nullptr);
     KKTweenAPI::KKTweenItem* AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc = nullptr, KKTweenAPI::ActionDelegate finishFunc = nullptr);
     KKTweenAPI::KKTweenItem* delayedCall(float time, KKTweenAPI::ActionDelegate finishFunc = nullptr);

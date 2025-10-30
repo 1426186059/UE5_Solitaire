@@ -38,7 +38,7 @@ namespace KKTweenAPI
 
                 mItem->time = FMath::Clamp(mItem->time, 0, mItem->sumTime);
                 float fTimePercent = mItem->time / mItem->sumTime;
-                if (mItem->updateFunc)
+                if (mItem->updateFunc.IsSet())
                 {
                     mItem->updateFunc(fTimePercent);
                 }
@@ -47,7 +47,7 @@ namespace KKTweenAPI
                 {
                     if (fTimePercent <= 0)
                     {
-                        if (mItem->finishFunc)
+                        if (mItem->finishFunc.IsSet())
                         {
                             mItem->finishFunc();
                         }
@@ -78,14 +78,14 @@ namespace KKTweenAPI
                 mItem->time += DeltaTime;
                 mItem->time = FMath::Clamp(mItem->time, 0, mItem->sumTime);
                 float fTimePercent = mItem->time / mItem->sumTime;
-                if (mItem->updateFunc)
+                if (mItem->updateFunc.IsSet())
                 {
                     mItem->updateFunc(fTimePercent);
                 }
 
                 if (fTimePercent >= 1.0f)
                 {
-                    if (mItem->finishFunc)
+                    if (mItem->finishFunc.IsSet())
                     {
                         mItem->finishFunc();
                     }
@@ -107,6 +107,11 @@ namespace KKTweenAPI
                 }
             }
         }
+    }
+
+    void KKTweenByList::SetMaxTweenCount(int nCount)
+    {
+        mItemPool.SetMaxCapacity(nCount);
     }
 
     KKTweenItem* KKTweenByList::AddTween(

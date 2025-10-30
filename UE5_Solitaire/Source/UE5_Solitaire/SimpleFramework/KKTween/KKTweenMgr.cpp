@@ -28,6 +28,11 @@ void AKKTweenMgr::Update(float DeltaTime)
     mManager->Update(DeltaTime);
 }
 
+void AKKTweenMgr::SetMaxTweenCount(int nCount)
+{
+    mManager->SetMaxTweenCount(nCount);
+}
+
 KKTweenAPI::KKTweenItem* AKKTweenMgr::AddTween(float time, KKTweenAPI::Action_Float_Delegate updateFunc, KKTweenAPI::ActionDelegate finishFunc)
 {
     return mManager->AddTween(time, updateFunc, finishFunc);

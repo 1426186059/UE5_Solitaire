@@ -37,6 +37,11 @@ public:
     };
 
 public:
+    static void SetMaxTweenCount(int nCount)
+    {
+        return AKKTweenMgr::GetSingleton()->SetMaxTweenCount(nCount);
+    }
+
     static KKTweenItem* AddTween(float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
     {
         return AKKTweenMgr::GetSingleton()->AddTween(time, updateFunc, finishFunc);
