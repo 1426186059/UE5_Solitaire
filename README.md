@@ -13,7 +13,8 @@ UE5 制作 欧美 Solitaire 游戏
 5：GEngine->GetWorld() 一直是 nullptr, 奇怪！ (得用其他API) ，换成： GEngine->GameViewport->GetWorld();这个就有值。
 
 6：Actor单例，无法使用泛型模板， 这样如何构造一个通用的单例基类，成为了一个问题。下面是我找到的解决办法:
-	template<typename T>
+	
+    template<typename T>
 	static T* GetActorSingleton(bool bForceCreate = true)
 	{
 		static_assert(TIsDerivedFrom<T, AActor>::Value, "T must be an AActor derived class");
