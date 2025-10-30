@@ -72,10 +72,13 @@ public:
         FVector InnerFrom = FVector(UMGHelper::GetRenderPos(target), 0);
         FVector InnerTo = FVector(to, 0);
         return AddTween(target, time,
-            [&](float fPercent)
+            [=](float fPercent)
             {
-                FVector targetPos = EaseFunc::easeLinear(InnerFrom, InnerTo, fPercent);
-                UMGHelper::SetRenderPos(target, FVector2D(targetPos));
+                if (target)
+                {
+                    FVector targetPos = EaseFunc::easeLinear(InnerFrom, InnerTo, fPercent);
+                    UMGHelper::SetRenderPos(target, FVector2D(targetPos));
+                }
             });
     }
 

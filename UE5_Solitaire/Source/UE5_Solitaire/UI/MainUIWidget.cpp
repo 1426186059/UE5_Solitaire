@@ -65,7 +65,7 @@ void UMainUIWidget::Init()
     for (int i = 1; i <= 4; i++)
     {
         FName Key = FName(FString::Printf(TEXT("4APos%d"), i));
-        FVector2D mPos = mUIRoot->GetWidgetFromName(Key)->GetRenderTransform().Translation;
+        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(Key));
         this->tableCardNode4APos.Add(mPos);
     }
 
@@ -73,7 +73,7 @@ void UMainUIWidget::Init()
     for (int i = 1; i <= 7; i++)
     {
         FName Key = FName(FString::Printf(TEXT("Top7Pos%d"), i));
-        FVector2D mPos = mUIRoot->GetWidgetFromName(Key)->GetRenderTransform().Translation;
+        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(Key));
         this->tableCardNodeTop7Pos.Add(mPos);
     }
 }
@@ -457,7 +457,6 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         {
             int32 nTopIndex = i;
             auto mCardItem = this->mSendCardListGo.Pop();
-            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
             int32 nHeightIndex = this->tableCardNodeTop7Go[nTopIndex].Num();
             bool bTurnOverState = nHeightIndex == nTopIndex;
@@ -469,8 +468,11 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             UMGHelper::SetAsLastChildIndex(mCardItem);
             FVector2D from = UMGHelper::GetSlotPos(mCardItem);
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
-            UMGHelper::SetSlotPos(mCardItem, from);
+            UMGHelper::SetSlotPos(mCardItem, to);
+            this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
+            /*UMGHelper::SetRenderPos(mCardItem, from - to);
+            to = FVector2D::ZeroVector;
             if (mCardItem)
             {
                 KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([&]()
@@ -486,7 +488,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             else
             {
                 UE_LOG(LogTemp, Log, TEXT("UMainUIWidget mCardItem == null"));
-            }
+            }*/
         }
     }
 
@@ -533,30 +535,37 @@ float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
 
 FVector2D UMainUIWidget::GetCardNodeTop7MaxHeightPos(int nTopIndex)
 {
-    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num() - 1);
+    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num());
 }
 
 FVector2D UMainUIWidget::GetCardNodeTop7NextMaxHeightPos(int nTopIndex)
 {
-    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num());
+    return this->GetCardNodeTop7Pos(nTopIndex, this->tableCardNodeTop7Go[nTopIndex].Num() + 1);
 }
 
-FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex)
+FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nNowCount)
 {
     float nGapZhengDis = this->GetTop7_Gap_Height(nTopIndex);
     FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
     TArray<UPokerItemWidget*> mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     float posY = oriPos.Y;
-    for (int i = 0; i <= nHeightIndex - 1; i++)
+    for (int i = 0; i < nNowCount; i++)
     {
-        UPokerItemWidget* mCardItem = mListCardNodeTop7Go[i];
-        if (mCardItem == nullptr or mCardItem->orTurnOverStateIsTrue())
+        if (i < mListCardNodeTop7Go.Num())
         {
-            posY = posY - nGapZhengDis;
+            UPokerItemWidget* mCardItem = mListCardNodeTop7Go[i];
+            if (mCardItem->orTurnOverStateIsTrue())
+            {
+                posY = posY + nGapZhengDis;
+            }
+            else
+            {
+                posY = posY + 20;
+            }
         }
         else
         {
-            posY = posY - 20;
+            posY = posY + nGapZhengDis;
         }
     }
 

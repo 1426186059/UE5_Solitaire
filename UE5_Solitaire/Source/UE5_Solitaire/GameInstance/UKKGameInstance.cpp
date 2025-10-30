@@ -30,6 +30,7 @@ void UKKGameInstance::OnStart()
 
 void UKKGameInstance::CreateGameLauncher()
 {
+    //AGameLauncher::GetSingleton()->Init();
     this->GetWorld()->SpawnActor<AGameLauncher>();
 }
 
