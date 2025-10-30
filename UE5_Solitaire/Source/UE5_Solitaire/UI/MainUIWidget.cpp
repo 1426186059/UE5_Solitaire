@@ -144,6 +144,7 @@ void UMainUIWidget::InitGame()
         UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5));
         UMGHelper::SetSlotSize(mPokerItem, FVector2D(0));
         UMGHelper::SetSlotPos(mPokerItem, FVector2D(0));
+        UMGHelper::SetRenderPos(mPokerItem, FVector2D(0));
         mPokerItem->Show();
         mSendCardListGo.Add(mPokerItem);
     }
