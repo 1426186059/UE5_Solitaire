@@ -111,8 +111,8 @@ void UPokerItemWidget::PlayTurnOverAni()
             //this->tranCardItemAni.localEulerAngles = Unity.Vector3(0, 90, 0);
         });
 
-    FVector2D from(0, 90);
-    FVector2D to(0, 0);
+    FVector2D from2(0, 90);
+    FVector2D to2(0, 0);
     auto mTween2 = KKTween::AddTween(this, 0.15,
         [&](float fTimePercent)
         {

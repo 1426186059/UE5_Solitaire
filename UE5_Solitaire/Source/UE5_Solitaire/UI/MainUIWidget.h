@@ -3,6 +3,7 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/KKUIMgr.h"
 
 #include "UE5_Solitaire/GameLogic/GameConst.h"
 #include "UE5_Solitaire/GameLogic/DataCenter.h"

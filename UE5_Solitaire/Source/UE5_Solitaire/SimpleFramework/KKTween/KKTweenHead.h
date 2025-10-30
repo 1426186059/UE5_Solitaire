@@ -8,8 +8,12 @@
 
 namespace KKTweenAPI
 {
-    typedef void (*ActionDelegate)(); //C语言定义方法指针
-    typedef void (*Action_Float_Delegate)(float); //C语言定义方法指针
+    //typedef void (*ActionDelegate)(); //C语言定义方法指针
+    //typedef void (*Action_Float_Delegate)(float); //C语言定义方法指针
+
+    // 修改你的 typedef
+    typedef TFunction<void()> ActionDelegate;
+    typedef TFunction<void(float)> Action_Float_Delegate;
 
     class KKTweenByList;
     class KKTweenItem;

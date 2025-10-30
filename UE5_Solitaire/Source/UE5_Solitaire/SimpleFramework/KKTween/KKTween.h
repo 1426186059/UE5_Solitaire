@@ -2,6 +2,9 @@
 
 #include "CoreMinimal.h"
 #include "KKTweenHead.h"
+
+#include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
+
 using namespace KKTweenAPI;
 
 class KKTween
@@ -44,6 +47,11 @@ public:
         return AKKTweenMgr::GetSingleton()->AddTween(obj, time, updateFunc, finishFunc);
     }
 
+    static KKTweenItem* AddTween(UObject* obj, float time)
+    {
+        return AKKTweenMgr::GetSingleton()->AddTween(obj, time);
+    }
+
     static KKTweenItem* delayedCall(float time, ActionDelegate finishFunc = nullptr)
     {
         return AddTween(time, nullptr, finishFunc);
@@ -54,18 +62,15 @@ public:
         return AddTween(obj, time, nullptr, finishFunc);
     }
 
-    static KKTweenItem* UMGMoveLocalRender(UWidget* go, FVector2D to, float fTime)
+    static KKTweenItem* UMGMoveLocalRender(UWidget* target, FVector2D to, float time)
     {
-        FVector InnerFrom = FVector(UMGHelper::GetRenderPos(go), 0);
+        FVector InnerFrom = FVector(UMGHelper::GetRenderPos(target), 0);
         FVector InnerTo = FVector(to, 0);
-
-        return KKTween::AddTween(
-            go,
-            time,
-            [](float fPercent)
+        return AddTween(target, time,
+            [&](float fPercent)
             {
                 FVector targetPos = EaseFunc::easeLinear(InnerFrom, InnerTo, fPercent);
-                UMGHelper::SetRenderPos(go, targetPos);
+                UMGHelper::SetRenderPos(target, FVector2D(targetPos));
             });
     }
 
