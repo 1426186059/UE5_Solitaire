@@ -3,13 +3,15 @@
 
 #include "UKKGameInstance.h"
 
+UKKGameInstance* UKKGameInstance::mInstance = nullptr;
+
 void UKKGameInstance::Init()
 {
     Super::Init();
     UE_LOG(LogTemp, Log, TEXT("=== MyGameInstance Init ==="));
     
     // 任意游戏世界（PIE / Standalone）创建完成后都会回调
-    FWorldDelegates::OnPostWorldInitialization.AddUObject(this, &UKKGameInstance::OnWorldInitialized);
+    //FWorldDelegates::OnPostWorldInitialization.AddUObject(this, &UKKGameInstance::OnWorldInitialized);
     //FWorldDelegates::OnPostWorldCreation.AddUObject(this, &UKKGameInstance::OnWorldCreated);
 }
 
@@ -23,6 +25,12 @@ void UKKGameInstance::OnStart()
 {
     Super::OnStart();
     UE_LOG(LogTemp, Log, TEXT("=== MyGameInstance OnStart ==="));
+    this->CreateGameLauncher();
+}
+
+void UKKGameInstance::CreateGameLauncher()
+{
+    this->GetWorld()->SpawnActor<AGameLauncher>();
 }
 
 void UKKGameInstance::OnWorldInitialized(UWorld* World, const UWorld::InitializationValues IVS)

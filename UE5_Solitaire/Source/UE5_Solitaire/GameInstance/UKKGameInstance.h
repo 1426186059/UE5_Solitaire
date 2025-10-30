@@ -18,18 +18,19 @@ public:
 	virtual void Shutdown() override;
 	virtual void OnStart() override;
 
-	static UKKGameInstance* Get(const UObject* WorldContext = nullptr)
+	static UKKGameInstance* Get()
 	{
 		return mInstance;
 	}
 
-	static UKKGameInstance* GetWorld()
+	static UWorld* GetKKWorld()
 	{
 		return mInstance->GetWorld();
 	}
 
 private:
 	static UKKGameInstance* mInstance;
+	void CreateGameLauncher();
 	void OnWorldInitialized(UWorld* World, const UWorld::InitializationValues IVS);
 	void OnWorldCreated(UWorld* World);
 };

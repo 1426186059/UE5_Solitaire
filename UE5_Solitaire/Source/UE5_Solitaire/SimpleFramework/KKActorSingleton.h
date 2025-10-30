@@ -32,7 +32,7 @@ protected:
 			if (bForceCreate)
 			{
 				ensureMsgf(GEngine->GetWorld(), TEXT("GetActorSingleton<%s> GEngine->GetWorld() == null"), *Key->GetName());
-				TWeakObjectPtr<AActor> mInstance = GEngine->GetFirstGamePlayer(nukkl)->SpawnActor<T>(Key);
+				TWeakObjectPtr<AActor> mInstance = GEngine->GetWorld()->SpawnActor<T>(Key);
 				mInstanceDic.Add(Key, mInstance);
 				return Cast<T>(mInstance.Get());
 			}

@@ -45,5 +45,6 @@ public:
 	void GoToLobby();
 
 private:
+	bool bInit;
 	UInitSceneWidget* mUInitSceneWidget;
 };

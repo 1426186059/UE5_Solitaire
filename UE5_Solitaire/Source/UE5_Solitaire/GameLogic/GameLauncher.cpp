@@ -11,7 +11,6 @@ AGameLauncher::AGameLauncher()
 void AGameLauncher::BeginPlay()
 {
 	Super::BeginPlay();
-    this->Init();
 }
 
 void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -22,10 +21,27 @@ void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AGameLauncher::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+    
+    if (GEngine->GetWorld())
+    {
+        UE_LOG(LogTemp, Error, TEXT("AGameLauncher GEngine->GetWorld() != null"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("AGameLauncher GEngine->GetWorld() == null"));
+    }
+
+    if (!bInit && GEngine->GetWorld())
+    {
+        Init();
+    }
 }
 
 void AGameLauncher::Init()
 {
+    if (bInit) return;
+    bInit = true;
+
     ensureMsgf(this->GetWorld(), TEXT("AGameLauncher GetWorld() == null"));
     ensureMsgf(GEngine->GetWorld(), TEXT("AGameLauncher GEngine->GetWorld() == null"));
 
