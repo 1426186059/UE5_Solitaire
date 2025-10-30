@@ -40,6 +40,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	void CheckAndInit();
 	void Init();
 	void StartEnterGame(void* param);
 	void GoToLobby();

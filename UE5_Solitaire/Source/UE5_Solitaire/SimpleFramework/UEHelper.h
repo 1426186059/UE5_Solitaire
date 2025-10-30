@@ -4,32 +4,26 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Slate/SceneViewport.h"
 
 class UEHelper
 {
 public:
-    static FVector2D GetScreenSize()
+    static UWorld* GetKKWorld()
     {
-        FVector2D mSize;
-        GEngine->GameViewport->GetViewportSize(mSize);
-        return mSize;
+        auto mWorld = GEngine->GameViewport->GetWorld();
+        if (mWorld == nullptr)
+        {
+            UE_LOG(LogTemp, Error, TEXT("UEHelper GetKKWorld == null"));
+        }
+
+        return mWorld;
     }
-
-    //static FIntPoint GetScreenSize()
-    //{
-    //    if (GEngine && GEngine->GetGameUserSettings())
-    //    {
-    //        return GEngine->GetGameUserSettings()->GetScreenResolution();
-    //    }
-    //    return FIntPoint::ZeroValue;
-    //}
-
 private:
     // 禁止拷贝和移动（单例不应被复制）
+    UEHelper() = delete;
+    ~UEHelper() = delete;
     UEHelper(const UEHelper&) = delete;
     UEHelper& operator=(const UEHelper&) = delete;
     UEHelper(UEHelper&&) = delete;
     UEHelper& operator=(UEHelper&&) = delete;
-
 };

@@ -42,13 +42,13 @@ void UKKGameInstance::OnWorldInitialized(UWorld* World, const UWorld::Initializa
     }
 
     FWorldDelegates::OnPostWorldInitialization.RemoveAll(this);
-    if (GEngine->GetWorld())
+    if (UEHelper::GetKKWorld())
     {
         AGameLauncher::GetSingleton()->Init();
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("OnWorldInitialized Error"));
+        UE_LOG(LogTemp, Error, TEXT("UEHelper::GetKKWorld() Error"));
     }
 }
 
@@ -62,13 +62,13 @@ void UKKGameInstance::OnWorldCreated(UWorld* World)
 
     FWorldDelegates::OnPostWorldCreation.RemoveAll(this);
 
-    if (GEngine->GetWorld())
+    if (UEHelper::GetKKWorld())
     {
         AGameLauncher::GetSingleton()->Init();
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("OnWorldInitialized Error"));
+        UE_LOG(LogTemp, Error, TEXT("UEHelper::GetKKWorld() Error"));
     }
 }
 

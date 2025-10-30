@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "UEHelper.h"
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "KKActorSingleton.generated.h"
@@ -32,7 +34,7 @@ protected:
 			if (bForceCreate)
 			{
 				ensureMsgf(GEngine->GetWorld(), TEXT("GetActorSingleton<%s> GEngine->GetWorld() == null"), *Key->GetName());
-				TWeakObjectPtr<AActor> mInstance = GEngine->GetWorld()->SpawnActor<T>(Key);
+				TWeakObjectPtr<AActor> mInstance = UEHelper::GetKKWorld()->SpawnActor<T>(Key);
 				mInstanceDic.Add(Key, mInstance);
 				return Cast<T>(mInstance.Get());
 			}

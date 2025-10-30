@@ -11,6 +11,7 @@ AGameLauncher::AGameLauncher()
 void AGameLauncher::BeginPlay()
 {
 	Super::BeginPlay();
+    CheckAndInit();
 }
 
 void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -21,17 +22,12 @@ void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AGameLauncher::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-    
-    if (GEngine->GetWorld())
-    {
-        UE_LOG(LogTemp, Error, TEXT("AGameLauncher GEngine->GetWorld() != null"));
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("AGameLauncher GEngine->GetWorld() == null"));
-    }
+    CheckAndInit();
+}
 
-    if (!bInit && GEngine->GetWorld())
+void AGameLauncher::CheckAndInit()
+{
+    if (!bInit && UEHelper::GetKKWorld())
     {
         Init();
     }
@@ -66,6 +62,10 @@ void AGameLauncher::Init()
         //显示鼠标
         PC->SetShowMouseCursor(true);
         PC->SetInputMode(FInputModeGameAndUI().SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Log, TEXT("AGameLauncher PC == null"));
     }
 
     //指定照相机
