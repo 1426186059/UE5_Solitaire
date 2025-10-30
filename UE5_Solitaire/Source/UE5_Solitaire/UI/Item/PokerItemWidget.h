@@ -3,7 +3,7 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
-#include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
+#include "UE5_Solitaire/SimpleFramework/KKUI/KKUIMgr.h"
 
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
@@ -26,7 +26,7 @@ public:
 	void Refresh();
 
 	void SetPokerId(int nPokerId);
-	void SetTurnOverState(bool bShow, int nStepIndex = 0);
+	void SetTurnOverState(bool bShow, int nStepIndex = -1);
 	bool orTurnOverStateIsTrue();
 	void ForceShowBackUI();
 	void SetEventTriggerState(bool bCanClick);

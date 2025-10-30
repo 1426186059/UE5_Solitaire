@@ -496,24 +496,18 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             UMGHelper::SetSlotPos(mCardItem, to);
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            /*UMGHelper::SetRenderPos(mCardItem, from - to);
+            UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
             to = FVector2D::ZeroVector;
-            if (mCardItem)
-            {
-                KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([&]()
+            
+            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([&]()
+                {
+                    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+                    if (bTurnOverState)
                     {
-                        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
-                        if (bTurnOverState)
-                        {
-                            mCardItem->PlayTurnOverAni();
-                            mCardItem->SetEventTriggerState(true);
-                        }
-                    });
-            }
-            else
-            {
-                UE_LOG(LogTemp, Log, TEXT("UMainUIWidget mCardItem == null"));
-            }*/
+                        mCardItem->PlayTurnOverAni();
+                        mCardItem->SetEventTriggerState(true);
+                    }
+                });
         }
     }
 

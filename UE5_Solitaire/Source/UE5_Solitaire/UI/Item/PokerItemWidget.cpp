@@ -52,17 +52,25 @@ void UPokerItemWidget::SetPokerId(int nPokerId1)
 
 void UPokerItemWidget::SetTurnOverState(bool bShow, int nStepIndex)
 {
-    //if this->bTurnOverState == bShow then return end
-    //this->bTurnOverState = bShow
-    //if bShow then
-    //if nStepIndex == nil then
-    //nStepIndex = GameView:GetNowRecordStepIndex()
-    //end
+    if (this->bTurnOverState == bShow)
+    {
+        return;
+    }
 
-    //this->nStepIndex_ForFirstShowPokerId = nStepIndex
-    //else
-    //this->nStepIndex_ForFirstShowPokerId = -1
-    //end
+    this->bTurnOverState = bShow;
+    if (bShow)
+    {
+        if (nStepIndex == -1)
+        {
+            //nStepIndex = AKKUIMgr::GetSingleton()->GetNowRecordStepIndex();
+        }
+
+        this->nStepIndex_ForFirstShowPokerId = nStepIndex;
+    }
+    else
+    {
+        this->nStepIndex_ForFirstShowPokerId = -1;
+    }
 }
 
 bool UPokerItemWidget::orTurnOverStateIsTrue()
