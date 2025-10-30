@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "KKTweenMgr.h"
+#include "KKTweenHead.h"
 using namespace KKTweenAPI;
 
 class KKTween

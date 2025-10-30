@@ -26,9 +26,12 @@ void AGameLauncher::Tick(float DeltaTime)
 
 void AGameLauncher::Init()
 {
+    ensureMsgf(this->GetWorld(), TEXT("AGameLauncher GetWorld() == null"));
+    ensureMsgf(GEngine->GetWorld(), TEXT("AGameLauncher GEngine->GetWorld() == null"));
+
     //一些测试例子
     Test::Do();
-
+    
     //设置目标帧率
     UGameUserSettings* UserSettings = GEngine->GetGameUserSettings();
     if (UserSettings)

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "KKTweenMgr.generated.h"
+#include "KKTweenHead.generated.h"
 
 namespace KKTweenAPI
 {
@@ -145,7 +145,7 @@ public:
 public:
     static AKKTweenMgr* GetSingleton(bool bCreate = true)
     {
-        return AKKActorSingleton::GetSingletonInner<AKKTweenMgr>(bCreate);
+        return AKKActorSingleton::GetActorSingleton<AKKTweenMgr>(bCreate);
     }
 
 private:

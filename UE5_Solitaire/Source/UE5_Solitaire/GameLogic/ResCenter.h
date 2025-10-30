@@ -15,7 +15,7 @@ class AResCenter : public AKKActorSingleton
 public:
 	static AResCenter* GetSingleton(bool bCreate = true)
 	{
-		return AKKActorSingleton::GetSingletonInner<AResCenter>(bCreate);
+		return AKKActorSingleton::GetActorSingleton<AResCenter>(bCreate);
 	}
 
 	void Init();

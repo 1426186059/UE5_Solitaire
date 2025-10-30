@@ -1,4 +1,4 @@
-#include "KKTweenMgr.h"
+#include "KKTweenHead.h"
 using namespace KKTweenAPI;
 
 AKKTweenMgr::AKKTweenMgr()
@@ -47,3 +47,5 @@ KKTweenAPI::KKTweenItem* AKKTweenMgr::delayedCall(UObject* obj, float time, KKTw
 {
     return AddTween(obj, time, nullptr, finishFunc);
 }
+
+

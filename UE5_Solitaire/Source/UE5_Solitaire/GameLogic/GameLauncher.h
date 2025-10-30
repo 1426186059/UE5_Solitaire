@@ -31,7 +31,7 @@ public:
 	AGameLauncher();
 	static AGameLauncher* GetSingleton(bool bCreate = true)
 	{
-		return GetSingletonInner<AGameLauncher>(bCreate);
+		return AKKActorSingleton::GetActorSingleton<AGameLauncher>(bCreate);
 	}
 
 protected:

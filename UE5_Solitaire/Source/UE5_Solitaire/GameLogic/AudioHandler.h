@@ -19,7 +19,7 @@ class AudioHandler : public AKKActorSingleton
 public:
 	static AudioHandler* GetSingleton(bool bCreate = true)
 	{
-		return GetSingletonInner<AudioHandler>(bCreate);
+		return AKKActorSingleton::GetActorSingleton<AudioHandler>(bCreate);
 	}
 
 public:

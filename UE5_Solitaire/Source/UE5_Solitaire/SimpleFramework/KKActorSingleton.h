@@ -10,40 +10,63 @@ UCLASS(Abstract)
 class UE5_SOLITAIRE_API AKKActorSingleton : public AActor
 {
 	GENERATED_BODY()
+
 protected:
-
-	template<typename T>
-	class Singleton
-	{
-		static_assert(TIsDerivedFrom<T, AKKActorSingleton>::Value, "T must be an AActor derived class");
-
-		T* mActorInstance = nullptr;
-	public:
-		static Singleton<T>* GetSingleton()
-		{
-			static Singleton<T> Instance;
-			return &Instance;
-		}
-
-		T* GetActorSingleton(bool bCreate = true)
-		{
-			if (this->mActorInstance == nullptr && bCreate)
-			{
-				ensureMsgf(GEngine->GetWorld() != nullptr, TEXT("GEngine->GetWorld() == null"));
-				if (GEngine->GetWorld())
-				{
-					this->mActorInstance = GEngine->GetWorld()->SpawnActor<T>(T::StaticClass());
-				}
-			}
-
-			T* m = Cast<T, AActor>(this->mActorInstance);
-			ensureMsgf(T::mInstance, TEXT("mInstance == null"));
-			ensureMsgf(m, TEXT("Cast<T>(mInstance) == null"));
-			UE_LOG(LogTemp, Log, TEXT("GetSingletonInner: %s %s"), *T::StaticClass()->GetName(), *m->GetClass()->GetName());
-			return m;
-		}
-	};
-
 	virtual void BeginPlay() override;
 	virtual void EndPlay(EEndPlayReason::Type Reason) override;
+
+protected:
+	template<typename T>
+	static T* GetActorSingleton(bool bForceCreate = true)
+	{
+		static_assert(TIsDerivedFrom<T, AActor>::Value, "T must be an AActor derived class");
+
+		TSubclassOf<AActor> Key = T::StaticClass();
+		TWeakObjectPtr<AActor>* mInstancePtr = mInstanceDic.Find(Key);
+		if (mInstancePtr)
+		{
+			return Cast<T>(mInstancePtr->Get());
+		}
+		else
+		{
+			if (bForceCreate)
+			{
+				ensureMsgf(GEngine->GetWorld(), TEXT("GetActorSingleton<%s> GEngine->GetWorld() == null"), *Key->GetName());
+				TWeakObjectPtr<AActor> mInstance = GEngine->GetWorld()->SpawnActor<T>(Key);
+				mInstanceDic.Add(Key, mInstance);
+				return Cast<T>(mInstance.Get());
+			}
+			else
+			{
+				return nullptr;
+			}
+		}
+
+	}
+
+private:
+	static TMap<TSubclassOf<AActor>, TWeakObjectPtr<AActor>> mInstanceDic;
+
+	void AddSingleton()
+	{
+		TSubclassOf<AActor> mKey = this->GetClass();
+		if (!mInstanceDic.Contains(mKey))
+		{
+			mInstanceDic.Add(mKey, this);
+		}
+		else
+		{
+			TWeakObjectPtr<AActor>* mInstance = mInstanceDic.Find(mKey);
+			if (mInstance->Get() != this)
+			{
+				UE_LOG(LogTemp, Error, TEXT("KKActorSingleton Error"));
+			}
+		}
+	}
+
+	void RemoveSingleton()
+	{
+		TSubclassOf<AActor> mKey = this->GetClass();
+		mInstanceDic.Remove(mKey);
+	}
 };
