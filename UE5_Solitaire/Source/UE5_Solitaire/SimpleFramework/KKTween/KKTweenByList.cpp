@@ -36,7 +36,7 @@ namespace KKTweenAPI
                     mItem->time += DeltaTime;
                 }
 
-                mItem->time = FMath::Clamp(mItem->time, 0, mItem->sumTime);
+                mItem->time = FMath::Clamp(mItem->time, 0.0f, mItem->sumTime);
                 float fTimePercent = mItem->time / mItem->sumTime;
                 if (mItem->updateFunc.IsSet())
                 {
@@ -76,7 +76,7 @@ namespace KKTweenAPI
             else
             {
                 mItem->time += DeltaTime;
-                mItem->time = FMath::Clamp(mItem->time, 0, mItem->sumTime);
+                mItem->time = FMath::Clamp(mItem->time, 0.0f, mItem->sumTime);
                 float fTimePercent = mItem->time / mItem->sumTime;
                 if (mItem->updateFunc.IsSet())
                 {

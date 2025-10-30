@@ -471,15 +471,22 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
             UMGHelper::SetSlotPos(mCardItem, from);
 
-            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * (j - 1))->SetOnComplete([&]()
-                {
-                    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
-                    if (bTurnOverState)
+            if (mCardItem)
+            {
+                KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([&]()
                     {
-                        mCardItem->PlayTurnOverAni();
-                        mCardItem->SetEventTriggerState(true);
-                    }
-                });
+                        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+                        if (bTurnOverState)
+                        {
+                            mCardItem->PlayTurnOverAni();
+                            mCardItem->SetEventTriggerState(true);
+                        }
+                    });
+            }
+            else
+            {
+                UE_LOG(LogTemp, Log, TEXT("UMainUIWidget mCardItem == null"));
+            }
         }
     }
 
