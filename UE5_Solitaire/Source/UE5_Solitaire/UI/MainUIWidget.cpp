@@ -497,18 +497,18 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             UMGHelper::SetSlotPos(mCardItem, to);
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
-            to = FVector2D::ZeroVector;
+            //UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
+            //to = FVector2D::ZeroVector;
             
-            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([&]()
-                {
-                    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
-                    if (bTurnOverState)
-                    {
-                        mCardItem->PlayTurnOverAni();
-                        mCardItem->SetEventTriggerState(true);
-                    }
-                });
+            //KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([&]()
+            //    {
+            //        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+            //        if (bTurnOverState)
+            //        {
+            //            mCardItem->PlayTurnOverAni();
+            //            mCardItem->SetEventTriggerState(true);
+            //        }
+            //    });
         }
     }
 
@@ -567,7 +567,7 @@ FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nNowCount)
 {
     float nGapZhengDis = this->GetTop7_Gap_Height(nTopIndex);
     FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
-    TArray<UPokerItemWidget*> mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    TArray<UPokerItemWidget*>& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     float posY = oriPos.Y;
     for (int i = 0; i < nNowCount; i++)
     {
