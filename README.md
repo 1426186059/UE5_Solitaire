@@ -14,6 +14,8 @@ UE5 制作 欧美 Solitaire 游戏
 
 6：Actor单例，无法使用泛型模板， 这样如何构造一个通用的单例基类，成为了一个问题。下面是我找到的解决办法:
 	
+	static TMap<TSubclassOf<AActor>, TWeakObjectPtr<AActor>> mInstanceDic;
+    
     template<typename T>
 	static T* GetActorSingleton(bool bForceCreate = true)
 	{
@@ -42,7 +44,28 @@ UE5 制作 欧美 Solitaire 游戏
 
 	}
 
-	static TMap<TSubclassOf<AActor>, TWeakObjectPtr<AActor>> mInstanceDic;
+    void AddSingleton()
+	{
+		TSubclassOf<AActor> mKey = this->GetClass();
+		if (!mInstanceDic.Contains(mKey))
+		{
+			mInstanceDic.Add(mKey, this);
+		}
+		else
+		{
+			TWeakObjectPtr<AActor>* mInstance = mInstanceDic.Find(mKey);
+			if (mInstance->Get() != this)
+			{
+				UE_LOG(LogTemp, Error, TEXT("KKActorSingleton Error"));
+			}
+		}
+	}
+
+	void RemoveSingleton()
+	{
+		TSubclassOf<AActor> mKey = this->GetClass();
+		mInstanceDic.Remove(mKey);
+	}
 
 UMG问题：
 1：UMG 蓝图里 Widget 的【眼睛】设置，只在编辑模式下起作用，运行起来无效。得修改 详细面板里的 可视性 属性。
