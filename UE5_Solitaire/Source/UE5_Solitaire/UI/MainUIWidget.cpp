@@ -531,10 +531,10 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 //------------------------------------ 相对位置计算 --------------------------------------------
 float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
 {
-    TArray<UPokerItemWidget*>& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     int nStartPosIndex = 5;
     int nZhengCount = 0;
-    for(auto v : mListCardNodeTop7Go)
+    for(auto& v : mListCardNodeTop7Go)
     {
         if (v->orTurnOverStateIsTrue())
         {
@@ -567,7 +567,7 @@ FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nNowCount)
 {
     float nGapZhengDis = this->GetTop7_Gap_Height(nTopIndex);
     FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
-    TArray<UPokerItemWidget*>& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     float posY = oriPos.Y;
     for (int i = 0; i < nNowCount; i++)
     {
