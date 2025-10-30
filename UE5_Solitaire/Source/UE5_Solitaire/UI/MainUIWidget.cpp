@@ -95,7 +95,32 @@ void UMainUIWidget::OnBtnClicked_GameNodeBtn()
 
 void UMainUIWidget::RecycleAndInitCardGo()
 {
-
+    //------------------------------回收资源------------------------------------
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
+        {
+            this->mSendCardListGo.Add(tableCardNodeTop7Go[i][j]);
+        }
+    }
+    
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < this->tableCardNode4AGo[i].Num(); j++)
+        {
+            this->mSendCardListGo.Add(this->tableCardNode4AGo[i][j]);
+        }
+    }
+    
+    for (auto v : this->tableCardDraw3Go)
+    {
+        this->mSendCardListGo.Add(v);
+    }
+    
+    //----------------------------------初始化资源------------------------------------
+    this->tableCardNodeTop7Go.SetNumZeroed(7);
+    this->tableCardNode4AGo.SetNumZeroed(4);
+    this->tableCardDraw3Go = {};
 }
 
 void UMainUIWidget::InitGame()
