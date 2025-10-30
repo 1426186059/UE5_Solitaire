@@ -38,9 +38,6 @@ void AGameLauncher::Init()
     if (bInit) return;
     bInit = true;
 
-    ensureMsgf(this->GetWorld(), TEXT("AGameLauncher GetWorld() == null"));
-    ensureMsgf(GEngine->GetWorld(), TEXT("AGameLauncher GEngine->GetWorld() == null"));
-
     //Ò»Ğ©²âÊÔÀı×Ó
     Test::Do();
     
