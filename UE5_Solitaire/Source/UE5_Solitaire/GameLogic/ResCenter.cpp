@@ -15,12 +15,12 @@ UPaperSprite* AResCenter::GetPokerSprite(int nPokerId)
         int themeZhengId = ThemeDataHandler::GetSingleton()->data->themeZhengId;
 
         FString resPath = FString::Printf(
-            TEXT("/Game/ResourceABs/MainScene/UI/AtlasGroup/poker/card_%d/Frames/card_%d_di_%d_%d_png.card_%d_di_%d_%d_png"),
+            TEXT("/Game/ResourceABs/MainScene/UI/AtlasGroup/poker/card%d/Frames/card_%d_di_%d_%d_png.card_%d_di_%d_%d_png"),
             themeZhengId, themeZhengId, nDigetId, nSubDigetId, themeZhengId, nDigetId, nSubDigetId);
-
-        UE_LOG(LogTemp, Log, TEXT("AResCenter GetPokerSprite£º %d %s"), nPokerId, *resPath);
         
         UPaperSprite* PokerSprite = LoadObject<UPaperSprite>(nullptr, *resPath);
+        ensureMsgf(PokerSprite, TEXT("AResCenter PokerSprite Error: %s"), *resPath);
+        ensureMsgf(PokerSprite && PokerSprite->IsValidLowLevel(), TEXT("AResCenter PokerSprite Error: %s"), *resPath);
         return PokerSprite;
     }
     else
