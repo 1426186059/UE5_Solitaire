@@ -28,16 +28,16 @@ public:
     void Start()
     {
         this->running = true;
-        AKKTimeMgr::GetSingleton()->AddListener(this->Update);
+        AKKTimeMgr::GetSingleton()->GetEventList()->AddUFunction(this, TimerWithGo::Update);
     }
 
     void Stop()
     {
         this.running = false;
-        AKKTimeMgr::GetSingleton()->RemoveListener(this->Update);
+        AKKTimeMgr::GetSingleton()->GetEventList()->RemoveAll(this);
     }
 
-    void Update()
+    void Update(float DeltaTime)
     {
         if (!this->running)
         {

@@ -1,4 +1,5 @@
 #include "UE5_Solitaire/SimpleFramework/UEHelper.h"
+#include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -8,47 +9,29 @@ UCLASS()
 class UE5_SOLITAIRE_API AKKTimeMgr : public AKKActorSingleton
 {
     GENERATED_BODY()
-
+    DECLARE_MULTICAST_DELEGATE_OneParam(UpdateDelegate, float);
+public:
+    AKKTimeMgr();
 protected:
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
     virtual void Tick(float DeltaTime) override;
 
 private:
-    TArray<TFunction<void()>> mapUpdateFunc;
+    UpdateDelegate mUpdateDelegate;
+    void Update(float DeltaTime)
+    {
+        this->mUpdateDelegate.Broadcast(DeltaTime);
+    }
 public:
-    static KKTimeMgr* GetSingleton(bool bCreate = true)
+    static AKKTimeMgr* GetSingleton(bool bCreate = true)
     {
-        return AKKActorSingleton::GetActorSingleton<KKTimeMgr>(bCreate);
+        return AKKActorSingleton::GetActorSingleton<AKKTimeMgr>(bCreate);
     }
 
-    void Update()
+    UpdateDelegate* GetEventList()
     {
-        int nUpdateCount = mapUpdateFunc.Num();
-        for (int i = 0; i < nUpdateCount; i++)
-        {
-            if (i < mapUpdateFunc.Count)
-            {
-                mapUpdateFunc[i]();
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
-    void AddListener(TFunction<void()> func)
-    {
-        if (mapUpdateFunc.IndexOf(func) == -1)
-        {
-            mapUpdateFunc.Add(func);
-        }
-    }
-
-    void RemoveListener(TFunction<void()> func)
-    {
-        this.mapUpdateFunc.Remove(func);
+        return &this->mUpdateDelegate;
     }
 };
 
@@ -65,20 +48,20 @@ public:
         return temp;
     }
 
-    void Init(float fInternalTime = 1.0f)
+    void Init(float paramInternalTime = 1.0f)
     {
-        this->fInternalTime = fInternalTime;
+        this->fInternalTime = paramInternalTime;
         this->Reset();
     }
 
     void Reset()
     {
-        this->fLastUpdateTime = UGameplayStatics::GetTimeSeconds(UEHelper::GetKKWorld());
+        this->fLastUpdateTime = UEHelper::GetTime_Time();
     }
 
     bool orTimeOut()
     {
-        float fNowTime = UGameplayStatics::GetTimeSeconds(UEHelper::GetKKWorld());
+        float fNowTime = UEHelper::GetTime_Time();
         if ((fNowTime - fLastUpdateTime) > fInternalTime)
         {
             this->Reset();
@@ -88,10 +71,10 @@ public:
         return false;
     }
 
-    bool orTimeOutWithSpecialTime(float fInternalTime)
+    bool orTimeOutWithSpecialTime(float paramInternalTime)
     {
-        float fNowTime = UGameplayStatics::GetTimeSeconds(UEHelper::GetKKWorld());
-        if (fNowTime - fLastUpdateTime > fInternalTime)
+        float fNowTime = UEHelper::GetTime_Time();
+        if (fNowTime - fLastUpdateTime > paramInternalTime)
         {
             this->Reset();
             return true;

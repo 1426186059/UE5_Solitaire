@@ -25,11 +25,11 @@ public:
 
 	void Start()
 	{
-		this.running = true;
-		KKTimeMgr::GetSingleton()->AddListener(this.Update);
+		this->running = true;
+		AKKTimeMgr::GetSingleton()->AddListener(KKTimer::Update);
 	}
 
-	void Reset(Action func, float duration, int loop = 1, bool unscaled = false)
+	void Reset(TFunction<void()> func, float duration, int loop = 1, bool unscaled = false)
 	{
 		this->duration = duration;
 		this->loop = loop;
@@ -41,10 +41,10 @@ public:
 	void Stop()
 	{
 		this.running = false;
-		KKTimeMgr::GetSingleton()->RemoveListener(this.Update);
+		AKKTimeMgr::GetSingleton()->RemoveListener(KKTimer::Update);
 	}
 
-	void Update()
+	void Update(float DeltaTime)
 	{
 		if (!this->running)
 		{

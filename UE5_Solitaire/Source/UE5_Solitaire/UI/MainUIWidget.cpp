@@ -81,7 +81,7 @@ void UMainUIWidget::Init()
 
     GetWorld()->GetTimerManager().SetTimer(
         this->mTimer, 
-        [=]()
+        [=,this]()
         {
             if (!this->orHavePopView())
             {
