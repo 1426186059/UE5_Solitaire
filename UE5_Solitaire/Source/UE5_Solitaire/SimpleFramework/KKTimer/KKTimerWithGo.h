@@ -1,5 +1,7 @@
-#include "CoreMinimal.h"
+#pragma once
+
 #include "KKTimeMgr.h"
+#include "CoreMinimal.h"
 
 class TimerWithGo
 {

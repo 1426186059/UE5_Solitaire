@@ -1,3 +1,5 @@
+#pragma once
+
 //#include "CoreMinimal.h"
 //
 //public class FixedTimer

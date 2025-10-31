@@ -1,5 +1,11 @@
+#pragma once
+
 #include "CoreMinimal.h"
 #include "KKTimeMgr.h"
+#include "KKTimerWithGo.h"
+#include "KKFrameTimer.h"
+#include "KKFixedTimer.h"
+#include "KKFixedTimeMgr.h"
 
 class KKTimer
 {

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "UE5_Solitaire/SimpleFramework/UEHelper.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 
