@@ -9,22 +9,22 @@
 
 class KKTimer
 {
-	bool unscaled = false;
-	int loop = 0;
-	float duration = 0.0f;
+	bool bUnScaled = false;
+	int nLoopCount = 0;
+	float fDuration = 0.0f;
 	float time = 0.0f;
 	bool running = false;
-	TFunction<void()> func;
-
+	TFunction<void()> mDoFunc;
+	FDelegateHandle mTimerHandle;
 public:
 	static KKTimer* New(TFunction<void()> func, float duration, int loop = 1, bool unscaled = false)
 	{
 		auto o = new KKTimer();
-		o->func = func;
-		o->duration = duration;
+		o->mDoFunc = func;
+		o->fDuration = duration;
 		o->time = duration;
-		o->loop = loop;
-		o->unscaled = unscaled;
+		o->nLoopCount = loop;
+		o->bUnScaled = unscaled;
 		o->running = false;
 		return o;
 	}
@@ -32,22 +32,24 @@ public:
 	void Start()
 	{
 		this->running = true;
-		AKKTimeMgr::GetSingleton()->AddListener(KKTimer::Update);
+		mTimerHandle = AKKTimeMgr::GetSingleton()->GetEventList()->AddLambda([this](float DeltaTime) {
+			this->Update(DeltaTime);
+			});
 	}
 
 	void Reset(TFunction<void()> func, float duration, int loop = 1, bool unscaled = false)
 	{
-		this->duration = duration;
-		this->loop = loop;
-		this->unscaled = unscaled;
-		this->func = func;
+		this->fDuration = duration;
+		this->nLoopCount = loop;
+		this->bUnScaled = unscaled;
+		this->mDoFunc = func;
 		this->time = duration;
 	}
 
 	void Stop()
 	{
-		this.running = false;
-		AKKTimeMgr::GetSingleton()->RemoveListener(KKTimer::Update);
+		this->running = false;
+		AKKTimeMgr::GetSingleton()->GetEventList()->Remove(mTimerHandle);
 	}
 
 	void Update(float DeltaTime)
@@ -57,26 +59,29 @@ public:
 			return;
 		}
 
-		float delta = UEHelper::GetTime_DeltaTime(this->unscaled);
+		float delta = UEHelper::GetTime_DeltaTime(this->bUnScaled);
 		this->time -= delta;
 
 		if (this->time <= 0)
 		{
-			this->func();
-
-			if (this->loop > 0)
+			if (this->mDoFunc.IsSet())
 			{
-				this->loop--;
-				this->time += this->duration;
+				this->mDoFunc();
 			}
 
-			if (this->loop == 0)
+			if (this->nLoopCount > 0)
+			{
+				this->nLoopCount--;
+				this->time += this->fDuration;
+			}
+
+			if (this->nLoopCount == 0)
 			{
 				this->Stop();
 			}
-			else if (this->loop < 0)
+			else if (this->nLoopCount < 0)
 			{
-				this->time += this->duration;
+				this->time += this->fDuration;
 			}
 		}
 	}
