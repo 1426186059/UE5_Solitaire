@@ -15,8 +15,13 @@ public:
     }
 
     template<typename T>
-    static T Remove(TArray<T>& mList, int nIndex)
+    static T Remove(TArray<T>& mList, int nIndex = -1)
     {
+        if (nIndex == -1)
+        {
+            nIndex = mList.Num() - 1;
+        }
+
         T t = mList[nIndex];
         mList.RemoveAt(nIndex);
         return t;

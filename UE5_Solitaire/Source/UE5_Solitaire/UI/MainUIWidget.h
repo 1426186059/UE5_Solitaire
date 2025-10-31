@@ -70,6 +70,12 @@ public:
 	void Set_AutoHinted();
 	void TimerPerSecondUpdate();
 	void TellRobot_PlayerAlive();
+	void OnClickChuPai();
+	void RefreshDrawZone();
+
+	void OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr);
+	void OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc);
+	void DoTop7ReSizeHeightAni(int nTop7Index);
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
@@ -91,6 +97,8 @@ private:
 	float fRobotThinkingTime = 0;
 	float fIQTime = 0;
 	int nGetScore_nLastTop7HideCardCount = 0;
+	int nRemainHintCount_InDraw3AndSendCardList = 0;
+	TMap<UPokerItemWidget*, KKTweenItem*> mapCardItemTween;
 
 	GameWinAniMgr GameWinAniMgr;
 	FTimerHandle mTimer;

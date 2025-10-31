@@ -16,6 +16,9 @@ public:
     DECLARE_MULTICAST_DELEGATE(ActionDelegate);
     DECLARE_MULTICAST_DELEGATE_OneParam(Action_Float_Delegate, float);
 
+public:
+    static const int bRobotTest = false;
+
 private:
     // 禁止拷贝和移动（单例不应被复制）
     GameConst() = delete;
