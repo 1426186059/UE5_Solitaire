@@ -61,6 +61,13 @@ public:
 	int GetTop7HideCardCount();
 	void onAddScore_InitParam();
 	void onAddScore();
+
+	void UpdateLeftHandState();
+	bool orHavePopView();
+	void UpdateGameTimeState(bool bPause);
+	void Set_FastGame();
+	void Set_AutoHinted();
+
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
@@ -84,4 +91,5 @@ private:
 	int nGetScore_nLastTop7HideCardCount = 0;
 
 	GameWinAniMgr GameWinAniMgr;
+	FTimerHandle mTimer;
 };

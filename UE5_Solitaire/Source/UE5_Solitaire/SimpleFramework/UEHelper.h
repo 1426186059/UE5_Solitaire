@@ -18,6 +18,31 @@ public:
 
         return mWorld;
     }
+
+    static double GetTime_Time(bool realTime = false)
+    {
+        if (realTime)
+        {
+            return FApp::GetCurrentTime();
+        }
+        else
+        {
+            return GetKKWorld()->GetTimeSeconds();
+        }
+    }
+
+    static double GetTime_DeltaTime(bool realTime = false)
+    {
+        if (realTime)
+        {
+            return FApp::GetDeltaTime();
+        }
+        else
+        {
+            return GetKKWorld()->GetDeltaSeconds();
+        }
+    }
+
 private:
     // 禁止拷贝和移动（单例不应被复制）
     UEHelper() = delete;

@@ -78,6 +78,37 @@ void UMainUIWidget::Init()
 
         UE_LOG(LogTemp, Log, TEXT("UMainUIWidget tableCardNodeTop7Pos: %s"), *mPos.ToString());
     }
+
+    GetWorld()->GetTimerManager().SetTimer(
+        this->mTimer, 
+        [=]()
+        {
+            if (!this->orHavePopView())
+            {
+                RecordStepDataHandler::GetSingleton()->AddTime(1);
+                KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+
+                if (DataCenter::GetSingleton()->data->bAutoHint)
+                {
+                    this->fRobotThinkingTime = this->fRobotThinkingTime + 1;
+                    if (this->fRobotThinkingTime > 10.0)
+                    {
+                        this->fRobotThinkingTime = 0;
+                       // this->PlayHintAni();
+                    }
+                }
+
+                this->fIQTime = this->fIQTime + 1;
+                if (this->fIQTime > 10)
+                {
+                    this->fIQTime = 0;
+                    DataCenter::GetSingleton()->AddIQValue(-4);
+                }
+            }
+        },
+        1.0f, 
+        true
+    );
 }
 
 void UMainUIWidget::CheckFirstLayoutOkToShow()
@@ -737,4 +768,50 @@ FVector2D UMainUIWidget::GetCardNodeDraw3Pos(int nIndex)
 FVector2D UMainUIWidget::GetCardNodeSendPokerPos()
 {
     return this->tranFaPaiPos;
+}
+
+//-------------------------------------------ÁãËéµÄ·½·¨---------------------------------
+
+void UMainUIWidget::UpdateLeftHandState()
+{
+    //this->RefresPos();
+    //this->RefreshAllPokerState();
+}
+
+bool UMainUIWidget::orHavePopView()
+{
+    UCanvasPanel* popCanvas = AKKUIMgr::GetSingleton()->GetRootWidget()->Layer_Popup;
+    for (int i = 0; i < popCanvas->GetChildrenCount(); i++)
+    {
+        if (popCanvas->GetChildAt(i)->IsVisibleInDesigner())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void UMainUIWidget::UpdateGameTimeState(bool bPause)
+{
+   /* if (bPause)
+    {
+        this->mTimer.Stop();
+    }
+    else
+    {
+        this->mTimer.Start();
+    }*/
+}
+
+void UMainUIWidget::Set_FastGame()
+{
+    //this->DoWhenSet_FastGame();
+}
+
+void UMainUIWidget::Set_AutoHinted()
+{
+    if (DataCenter::GetSingleton()->data->bAutoHint)
+    {
+       // this->PlayHintAni();
+    }
 }
