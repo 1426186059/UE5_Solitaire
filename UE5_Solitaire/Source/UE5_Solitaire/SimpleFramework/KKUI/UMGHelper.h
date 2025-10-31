@@ -146,27 +146,33 @@ public:
         UMGHelper::SetSlotPos(target, targetPos);
     }
 
-    static void SetChildIndex(UWidget* target, int nIndex, UCanvasPanel* Parent = nullptr)
+    static void SetChildIndex(UWidget* target, int nIndex)
     {
-        if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
-        Parent->InsertChildAt(nIndex, target);
+        auto Parent = Cast<UCanvasPanel>(target->GetParent());
+        Parent->ShiftChild(nIndex, target);
     }
 
-    static void SetAsFirstChildIndex(UWidget* target, UCanvasPanel* Parent = nullptr)
+    static void SetAsFirstChildIndex(UWidget* target)
     {
-        if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
-        Parent->InsertChildAt(0, target);
+        auto Parent = Cast<UCanvasPanel>(target->GetParent());
+        Parent->ShiftChild(0, target);
     }
 
-    static void SetAsLastChildIndex(UWidget* target, UCanvasPanel* Parent = nullptr)
+    static void SetAsLastChildIndex(UWidget* target)
     {
-        if (Parent == nullptr) Parent = Cast<UCanvasPanel>(target->GetParent());
-        Parent->AddChildToCanvas(target);
+        auto Parent = Cast<UCanvasPanel>(target->GetParent());
+        Parent->ShiftChild(Parent->GetChildrenCount(), target);
     }
 
     static void SetParent(UWidget* target, UCanvasPanel* Parent)
     {
         Parent->AddChildToCanvas(target);
+    }
+
+    static void SetZOrder(UWidget* target, int nOrder)
+    {
+        UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(target->Slot);
+        return Slot->SetZOrder(nOrder);
     }
 
 private:

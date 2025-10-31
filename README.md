@@ -68,7 +68,13 @@ UE5 制作 欧美 Solitaire 游戏
 
 7: 不要对 FVector2D 等类似class 使用左值引用，一用C++就崩。 匿名函数，捕获变量，遇到FVector, 直接用[=,this]，而不能使用[&]
 
+8： UE C++ for循环，加上break 直接报错。
+
 UMG问题：
+
 1：UMG 蓝图里 Widget 的【眼睛】设置，只在编辑模式下起作用，运行起来无效。得修改 详细面板里的 可视性 属性。
 
+2: UMG 通过ZOrder 控制显示层级。
+
+3: AddChildToCanvas/AddChild 方法 都会导致 孩子节点的锚点/对其/位置 不准，得重新设置。
 

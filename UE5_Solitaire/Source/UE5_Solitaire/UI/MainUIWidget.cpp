@@ -142,9 +142,9 @@ void UMainUIWidget::InitGame()
     {
         UPokerItemWidget* mPokerItem = CreateWidget<UPokerItemWidget>(this, PokerItemWBP);
         UMGHelper::SetParent(mPokerItem, this->PokerItemParent);
-        UMGHelper::SetSlotAnchor(mPokerItem, FAnchors(0.5));
-        UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5));
-        UMGHelper::SetSlotSize(mPokerItem, FVector2D(0));
+        UMGHelper::SetSlotAnchor(mPokerItem, FAnchors(0.5, 0.5, 0.5, 0.5));
+        UMGHelper::SetSlotAlignment(mPokerItem, FVector2D(0.5, 0.5));
+        UMGHelper::SetSlotSize(mPokerItem, FVector2D(0, 0));
         UMGHelper::SetSlotPos(mPokerItem, FVector2D(0));
         UMGHelper::SetRenderPos(mPokerItem, FVector2D(0));
         mPokerItem->Show();
@@ -472,7 +472,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         this->mSendCardListGo[i]->SetTurnOverState(false);
         this->mSendCardListGo[i]->Refresh();
         this->mSendCardListGo[i]->SetEventTriggerState(false);
-        UMGHelper::SetSlotPos(this->mSendCardListGo[i], tranFaPaiPos);
+        UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->tranFaPaiPos);
     }
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
@@ -493,7 +493,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
                 mCardItem->SetTurnOverState(true);
             }
 
-            UMGHelper::SetAsLastChildIndex(mCardItem);
+            UMGHelper::SetZOrder(mCardItem, j);
             FVector2D from = UMGHelper::GetSlotPos(mCardItem);
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
             UMGHelper::SetSlotPos(mCardItem, to);
@@ -501,8 +501,8 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
             UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
             to = FVector2D::ZeroVector;
-            
-            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=,this]()
+
+            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=, this]()
                 {
                     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                     if (bTurnOverState)
