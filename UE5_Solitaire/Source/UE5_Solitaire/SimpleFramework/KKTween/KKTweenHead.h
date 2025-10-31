@@ -1,7 +1,6 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "KKTweenHead.generated.h"
@@ -12,7 +11,7 @@ namespace KKTweenAPI
     //typedef void (*Action_Float_Delegate)(float); //C语言定义方法指针
 
     // 修改你的 typedef
-    typedef TFunction<void()> ActionDelegate;
+    typedef TFunction<void(void)> ActionDelegate;
     typedef TFunction<void(float)> Action_Float_Delegate;
 
     class KKTweenByList;

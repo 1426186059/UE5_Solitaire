@@ -537,7 +537,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
             to = FVector2D::ZeroVector;
 
-            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=, this]()
+            KKTween::UMG_MoveLocal_Render(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=, this]()
                 {
                     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                     if (bTurnOverState)
@@ -556,11 +556,10 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
     this->TellRobot_PlayerAlive();
     //this->ResetRemainHintCount()
-    // 
     KKTween::delayedCall(this, 1.0, [this]()
         {
-            /* self:DoWhenSet_FastGame()
-             if (ThemeSolitaire.Config.bRobotTest)
+            this->DoWhenSet_FastGame();
+            /*if (ThemeSolitaire.Config.bRobotTest)
              {
                  this->StartRobotPlay();
              }*/
@@ -889,7 +888,7 @@ FVector2D UMainUIWidget::GetCardNodeSendPokerPos()
 }
 
 //-------------------------------------------------- 通用移动------------------------------------------------------------ -
-void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr)
+void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc)
 {
     if (this->mapCardItemTween[mCardItem])
     {
@@ -906,7 +905,7 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
             },
             [=]()
             {
-                if (finishFunc)
+                if (finishFunc.IsSet())
                 {
                     finishFunc();
                 }
@@ -923,7 +922,7 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
             },
             [=]()
             {
-                if (finishFunc)
+                if (finishFunc.IsSet())
                 {
                     finishFunc();
                 }
@@ -949,7 +948,7 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
             },
             [=]()
             {
-                if (finishFunc)
+                if (finishFunc.IsSet())
                 {
                     finishFunc();
                 }
@@ -959,14 +958,14 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
     }
     else
     {
-        auto mTween = KKTween::AddTween(self, 0.35,
+        auto mTween = KKTween::AddTween(this, 0.35,
             [=](float fTimePercent)
             {
-                UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent))
+                UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
             },
             [=]()
             {
-                if (finishFunc)
+                if (finishFunc.IsSet())
                 {
                     finishFunc();
                 }
@@ -978,21 +977,20 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
 
 void UMainUIWidget::DoTop7ReSizeHeightAni(int nTop7Index)
 {
-    auto& tableCardNodeTop7Go = self.tableCardNodeTop7Go[nTop7Index];
-    for (int i = 0; i < this->tableCardNodeTop7Go.Num(); i++)
+    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
+    for (int i = 0; i < mListCardNodeTop7Go.Num(); i++)
     {
-        auto mCardItem = tableCardNodeTop7Go[i];
-
+        auto mCardItem = mListCardNodeTop7Go[i];
         if (this->mapCardItemTween[mCardItem])
         {
-            self.mapCardItemTween[mCardItem]->cancel();
-            self.mapCardItemTween[mCardItem] = nullptr;
+            this->mapCardItemTween[mCardItem]->cancel();
+            this->mapCardItemTween[mCardItem] = nullptr;
         }
 
-        FVector2D fromPos = this->GetRelativePosByGo(mCardItem);
+        FVector2D fromPos = UMGHelper::GetSlotPos(mCardItem);
         FVector2D toPos = this->GetCardNodeTop7Pos(nTop7Index, i);
-        auto mTween = KKTween::AddTween(self.transform, 0.2,
-            [](float fTimePercent)
+        auto mTween = KKTween::AddTween(this, 0.2,
+            [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
             });
@@ -1035,13 +1033,25 @@ void UMainUIWidget::UpdateGameTimeState(bool bPause)
 
 void UMainUIWidget::Set_FastGame()
 {
-    //this->DoWhenSet_FastGame();
+    this->DoWhenSet_FastGame();
 }
 
 void UMainUIWidget::Set_AutoHinted()
 {
     if (DataCenter::GetSingleton()->data->bAutoHint)
     {
-       // this->PlayHintAni();
+       //this->PlayHintAni();
+    }
+}
+
+//---------------------------------------------------------- - 设置里的通用方法--------------------------------------------------------------------------
+void UMainUIWidget::DoWhenSet_FastGame()
+{
+    if (DataCenter::GetSingleton()->data->bFastGame)
+    {
+        if (this->tableCardDraw3Go.Num() == 0)
+        {
+            this->OnClickChuPai();
+        }
     }
 }

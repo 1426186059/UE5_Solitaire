@@ -40,8 +40,10 @@ public:
 	virtual void OnLayoutChanged() override;
 	virtual void CheckFirstLayoutOkToShow() override;
 
+public:
+
 	UFUNCTION() void OnBtnClicked_GameNodeBtn();
-	
+
 	void InitGame();
 	void RecoverGame(bool bPlayAni = false);
 	void RecycleAndInitCardGo();
@@ -76,6 +78,8 @@ public:
 	void OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr);
 	void OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc);
 	void DoTop7ReSizeHeightAni(int nTop7Index);
+
+	void DoWhenSet_FastGame();
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
