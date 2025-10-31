@@ -514,12 +514,13 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         }
     }
 
-   // this->GameWinAniMgr:DestroyAniNode()
+    this->GameWinAniMgr.DestroyAniNode();
     //this->UpdateGameMode()
     //this->onAddScore_InitParam()
-    //this->mTimer : Start()
+    //this->mTimer:Start()
     //this->TellRobot_PlayerAlive()
     //this->ResetRemainHintCount()
+    // 
     //LeanTween.delayedCall(this->transform.gameObject, 1.0, function()
     //    self:DoWhenSet_FastGame()
 

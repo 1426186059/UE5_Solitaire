@@ -15,6 +15,8 @@
 #include "UE5_Solitaire/GameLogic/AllRecordDataHandler.h"
 #include "UE5_Solitaire/GameLogic/StatisticDataHandler.h"
 
+#include "GameWinAniMgr.h"
+
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "Components/Button.h"
@@ -73,4 +75,6 @@ private:
 	bool bGameEnd = false;
 	float fRobotThinkingTime = 0;
 	float fIQTime = 0;
+
+	GameWinAniMgr GameWinAniMgr;
 };
