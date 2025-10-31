@@ -496,8 +496,6 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             UMGHelper::SetAsLastChildIndex(mCardItem);
             FVector2D from = UMGHelper::GetSlotPos(mCardItem);
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
-
-            UE_LOG(LogTemp, Log, TEXT("UMainUIWidget GetCardNodeTop7MaxHeightPos£º %s"), *to.ToString());
             UMGHelper::SetSlotPos(mCardItem, to);
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 

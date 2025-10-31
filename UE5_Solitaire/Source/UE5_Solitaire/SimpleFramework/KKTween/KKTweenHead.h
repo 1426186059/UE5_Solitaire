@@ -125,7 +125,7 @@ namespace KKTweenAPI
 
         void recycle(KKTweenItem* t)
         {
-            if (mObjectPool.Num() > nMaxCapacity)
+            if (mObjectPool.Num() >= nMaxCapacity)
             {
                 delete t;
             }

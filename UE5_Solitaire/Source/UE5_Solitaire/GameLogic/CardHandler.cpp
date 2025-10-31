@@ -182,7 +182,7 @@ int CardHandler::GetExcelToLocalPokerId(int nExcelNum)
     }
 
     int nDigial = (cardNum - 1) % 13 + 1;
-    int nPokerId = nDigial * 10 + (int32)nColorType;
+    int nPokerId = this->GetPokerId(nDigial, nColorType);
     return nPokerId;
 }
 

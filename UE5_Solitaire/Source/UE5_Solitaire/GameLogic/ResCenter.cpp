@@ -17,6 +17,8 @@ UPaperSprite* AResCenter::GetPokerSprite(int nPokerId)
         FString resPath = FString::Printf(
             TEXT("/Game/ResourceABs/MainScene/UI/AtlasGroup/poker/card_%d/Frames/card_%d_di_%d_%d_png.card_%d_di_%d_%d_png"),
             themeZhengId, themeZhengId, nDigetId, nSubDigetId, themeZhengId, nDigetId, nSubDigetId);
+
+        UE_LOG(LogTemp, Log, TEXT("AResCenter GetPokerSprite£º %d %s"), nPokerId, *resPath);
         
         UPaperSprite* PokerSprite = LoadObject<UPaperSprite>(nullptr, *resPath);
         return PokerSprite;

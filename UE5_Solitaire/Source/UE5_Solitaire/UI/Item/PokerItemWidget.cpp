@@ -106,8 +106,8 @@ void UPokerItemWidget::PlayTurnOverAni()
         this->mTurnOverTween2 = nullptr;
     }
 
-    FVector2D from(1, 0);
-    FVector2D to(0, 0);
+    FVector2D from(1, 1);
+    FVector2D to(0, 1);
     auto mTween1 = KKTween::AddTween(this, 0.15,
         [=,this](float fTimePercent)
         {
@@ -119,12 +119,12 @@ void UPokerItemWidget::PlayTurnOverAni()
             this->tranCardItemAni->SetRenderScale(to);
         });
 
-    FVector2D from2(0, 0);
-    FVector2D to2(1, 0);
+    FVector2D from2(0, 1);
+    FVector2D to2(1, 1);
     auto mTween2 = KKTween::AddTween(this, 0.15,
         [=,this](float fTimePercent)
         {
-            this->tranCardItemAni->SetRenderScale(KKTween::EaseFunc::easeLinear(from, to, fTimePercent));
+            this->tranCardItemAni->SetRenderScale(KKTween::EaseFunc::easeLinear(from2, to2, fTimePercent));
         });
 
     mTween1->AppendTween(mTween2);
