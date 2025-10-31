@@ -1,6 +1,6 @@
 #include "KKFrameUpdateMgr.h"
 
-AKKFrameUpdateMgr::AKKTimeMgr()
+AKKFrameUpdateMgr::AKKFrameUpdateMgr()
 {
 	PrimaryActorTick.bCanEverTick = true;
 }

@@ -13,7 +13,7 @@ class UE5_SOLITAIRE_API AKKFrameUpdateMgr : public AKKActorSingleton
     GENERATED_BODY()
     DECLARE_MULTICAST_DELEGATE_OneParam(UpdateDelegate, float);
 public:
-    AKKTimeMgr();
+    AKKFrameUpdateMgr();
 protected:
     virtual void BeginPlay() override;
     virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
@@ -26,9 +26,9 @@ private:
         this->mUpdateDelegate.Broadcast(DeltaTime);
     }
 public:
-    static AKKTimeMgr* GetSingleton(bool bCreate = true)
+    static AKKFrameUpdateMgr* GetSingleton(bool bCreate = true)
     {
-        return AKKActorSingleton::GetActorSingleton<AKKTimeMgr>(bCreate);
+        return AKKActorSingleton::GetActorSingleton<AKKFrameUpdateMgr>(bCreate);
     }
 
     UpdateDelegate* GetEventList()

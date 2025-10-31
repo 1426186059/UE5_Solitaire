@@ -81,34 +81,38 @@ void UMainUIWidget::Init()
 
     GetWorld()->GetTimerManager().SetTimer(
         this->mTimer, 
-        [=,this]()
-        {
-            if (!this->orHavePopView())
-            {
-                RecordStepDataHandler::GetSingleton()->AddTime(1);
-                KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
-
-                if (DataCenter::GetSingleton()->data->bAutoHint)
-                {
-                    this->fRobotThinkingTime = this->fRobotThinkingTime + 1;
-                    if (this->fRobotThinkingTime > 10.0)
-                    {
-                        this->fRobotThinkingTime = 0;
-                       // this->PlayHintAni();
-                    }
-                }
-
-                this->fIQTime = this->fIQTime + 1;
-                if (this->fIQTime > 10)
-                {
-                    this->fIQTime = 0;
-                    DataCenter::GetSingleton()->AddIQValue(-4);
-                }
-            }
-        },
+        this,
+        &UMainUIWidget::TimerPerSecondUpdate,
         1.0f, 
         true
     );
+    UEHelper::PauseTimer(this, this->mTimer);
+}
+
+void UMainUIWidget::TimerPerSecondUpdate()
+{
+    if (!this->orHavePopView())
+    {
+        RecordStepDataHandler::GetSingleton()->AddTime(1);
+        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+
+        if (DataCenter::GetSingleton()->data->bAutoHint)
+        {
+            this->fRobotThinkingTime = this->fRobotThinkingTime + 1;
+            if (this->fRobotThinkingTime > 10.0)
+            {
+                this->fRobotThinkingTime = 0;
+                // this->PlayHintAni();
+            }
+        }
+
+        this->fIQTime = this->fIQTime + 1;
+        if (this->fIQTime > 10)
+        {
+            this->fIQTime = 0;
+            DataCenter::GetSingleton()->AddIQValue(-4);
+        }
+    }
 }
 
 void UMainUIWidget::CheckFirstLayoutOkToShow()
@@ -548,7 +552,8 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     this->GameWinAniMgr.DestroyAniNode();
     this->UpdateGameMode();
     this->onAddScore_InitParam();
-    //this->mTimer:Start()
+    UEHelper::StartTimer(this, this->mTimer);
+
     //this->TellRobot_PlayerAlive()
     //this->ResetRemainHintCount()
     // 
@@ -793,14 +798,14 @@ bool UMainUIWidget::orHavePopView()
 
 void UMainUIWidget::UpdateGameTimeState(bool bPause)
 {
-   /* if (bPause)
+    if (bPause)
     {
-        this->mTimer.Stop();
+        UEHelper::PauseTimer(this, this->mTimer);
     }
     else
     {
-        this->mTimer.Start();
-    }*/
+        UEHelper::StartTimer(this, this->mTimer);
+    }
 }
 
 void UMainUIWidget::Set_FastGame()

@@ -8,15 +8,21 @@
 class UEHelper
 {
 public:
-    static UWorld* GetKKWorld()
+    static UWorld* GetKKWorld(UObject* obj = nullptr)
     {
-        auto mWorld = GEngine->GameViewport->GetWorld();
-        if (mWorld == nullptr)
+        if (obj)
         {
-            UE_LOG(LogTemp, Error, TEXT("UEHelper GetKKWorld == null"));
+            return obj->GetWorld();
         }
-
-        return mWorld;
+        else
+        {
+            auto mWorld = GEngine->GameViewport->GetWorld();
+            if (mWorld == nullptr)
+            {
+                UE_LOG(LogTemp, Error, TEXT("UEHelper GetKKWorld == null"));
+            }
+            return mWorld;
+        }
     }
 
     static double GetTime_Time(bool realTime = false)
@@ -54,6 +60,16 @@ public:
     {
         FTimerHandle Temp;
         GetKKWorld()->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateLambda(MoveTemp(Func)));
+    }
+
+    static void StartTimer(UObject* obj, FTimerHandle mHandle)
+    {
+        GetKKWorld(obj)->GetTimerManager().UnPauseTimer(mHandle);
+    }
+
+    static void PauseTimer(UObject* obj, FTimerHandle mHandle)
+    {
+        GetKKWorld(obj)->GetTimerManager().PauseTimer(mHandle);
     }
     
 private:

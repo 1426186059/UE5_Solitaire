@@ -68,7 +68,7 @@ public:
 	void UpdateGameTimeState(bool bPause);
 	void Set_FastGame();
 	void Set_AutoHinted();
-
+	void TimerPerSecondUpdate();
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
