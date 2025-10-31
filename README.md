@@ -31,7 +31,6 @@ UE5 制作 欧美 Solitaire 游戏
 		{
 			if (bForceCreate)
 			{
-				ensureMsgf(GEngine->GetWorld(), TEXT("GetActorSingleton<%s> GEngine->GetWorld() == null"), *Key->GetName());
 				TWeakObjectPtr<AActor> mInstance = UEHelper::GetKKWorld()->SpawnActor<T>(Key);
 				mInstanceDic.Add(Key, mInstance);
 				return Cast<T>(mInstance.Get());
@@ -66,6 +65,8 @@ UE5 制作 欧美 Solitaire 游戏
 		TSubclassOf<AActor> mKey = this->GetClass();
 		mInstanceDic.Remove(mKey);
 	}
+
+7: 不要对 FVector2D 等类似class 使用左值引用，一用C++就崩。 匿名函数，捕获变量，遇到FVector, 直接用[=,this]，而不能使用[&]
 
 UMG问题：
 1：UMG 蓝图里 Widget 的【眼睛】设置，只在编辑模式下起作用，运行起来无效。得修改 详细面板里的 可视性 属性。

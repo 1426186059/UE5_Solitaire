@@ -44,7 +44,7 @@ private:
 	FVector2D beginPos = {};
 	bool bInDrag = false;
 
-	KKTweenItem* mTurnOverTween1;
-	KKTweenItem* mTurnOverTween2;
-	KKTweenItem* mShakeTween;
+	KKTweenItem* mTurnOverTween1 = nullptr;
+	KKTweenItem* mTurnOverTween2 = nullptr;
+	KKTweenItem* mShakeTween = nullptr;
 };

@@ -106,25 +106,25 @@ void UPokerItemWidget::PlayTurnOverAni()
         this->mTurnOverTween2 = nullptr;
     }
 
-    FVector2D from(0, 0);
-    FVector2D to(0, -90);
+    FVector2D from(1, 0);
+    FVector2D to(0, 0);
     auto mTween1 = KKTween::AddTween(this, 0.15,
-        [&](float fTimePercent)
+        [=,this](float fTimePercent)
         {
-           // this->tranCardItemAni.localEulerAngles = KKTween::EaseFunc::easeLinear(from, to, fTimePercent)
+            this->tranCardItemAni->SetRenderScale(KKTween::EaseFunc::easeLinear(from, to, fTimePercent));
         },
-        [&]()
+        [=,this]()
         {
             this->Refresh();
-            //this->tranCardItemAni.localEulerAngles = Unity.Vector3(0, 90, 0);
+            this->tranCardItemAni->SetRenderScale(to);
         });
 
-    FVector2D from2(0, 90);
-    FVector2D to2(0, 0);
+    FVector2D from2(0, 0);
+    FVector2D to2(1, 0);
     auto mTween2 = KKTween::AddTween(this, 0.15,
-        [&](float fTimePercent)
+        [=,this](float fTimePercent)
         {
-           // this->tranCardItemAni->RenderTransform.(KKTween::EaseFunc::easeLinear(from, to, fTimePercent));
+            this->tranCardItemAni->SetRenderScale(KKTween::EaseFunc::easeLinear(from, to, fTimePercent));
         });
 
     mTween1->AppendTween(mTween2);
@@ -148,11 +148,11 @@ void UPokerItemWidget::DoShakeAni()
     FVector2D from(FromRandPosX, FromRandPosY);
     FVector2D to(ToRandPosX, ToRandPosY);
     this->mShakeTween = KKTween::AddTween(this, 0.04, 
-        [&](float fTimePercent)
+        [=,this](float fTimePercent)
         {
             UMGHelper::SetRenderPos(this->tranCardItemAni, KKTween::EaseFunc::easeLinear(from, to, fTimePercent));
         },
-        [&]()
+        [=,this]()
         {
             UMGHelper::SetRenderPos(this->tranCardItemAni, FVector2D::ZeroVector);
         })->SetLoopPingPong(4);

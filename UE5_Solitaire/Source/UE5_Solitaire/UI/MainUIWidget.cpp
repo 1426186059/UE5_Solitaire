@@ -64,17 +64,19 @@ void UMainUIWidget::Init()
     this->tableCardNode4APos = {};
     for (int i = 1; i <= 4; i++)
     {
-        FName Key = FName(FString::Printf(TEXT("4APos%d"), i));
-        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(Key));
+        FString Key = FString::Printf(TEXT("4APos%d"), i);
+        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(*Key));
         this->tableCardNode4APos.Add(mPos);
     }
 
     this->tableCardNodeTop7Pos = {};
     for (int i = 1; i <= 7; i++)
     {
-        FName Key = FName(FString::Printf(TEXT("Top7Pos%d"), i));
-        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(Key));
+        FString Key = FString::Printf(TEXT("Top7Pos%d"), i);
+        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(*Key));
         this->tableCardNodeTop7Pos.Add(mPos);
+
+        UE_LOG(LogTemp, Log, TEXT("UMainUIWidget tableCardNodeTop7Pos: %s"), *mPos.ToString());
     }
 }
 
@@ -494,21 +496,23 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             UMGHelper::SetAsLastChildIndex(mCardItem);
             FVector2D from = UMGHelper::GetSlotPos(mCardItem);
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
+
+            UE_LOG(LogTemp, Log, TEXT("UMainUIWidget GetCardNodeTop7MaxHeightPos£º %s"), *to.ToString());
             UMGHelper::SetSlotPos(mCardItem, to);
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            //UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
-            //to = FVector2D::ZeroVector;
+            UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
+            to = FVector2D::ZeroVector;
             
-            //KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([&]()
-            //    {
-            //        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
-            //        if (bTurnOverState)
-            //        {
-            //            mCardItem->PlayTurnOverAni();
-            //            mCardItem->SetEventTriggerState(true);
-            //        }
-            //    });
+            KKTween::UMGMoveLocalRender(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=,this]()
+                {
+                    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+                    if (bTurnOverState)
+                    {
+                        mCardItem->PlayTurnOverAni();
+                        mCardItem->SetEventTriggerState(true);
+                    }
+                });
         }
     }
 

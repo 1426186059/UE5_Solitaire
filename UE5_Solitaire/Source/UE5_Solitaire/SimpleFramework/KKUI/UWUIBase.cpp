@@ -11,8 +11,8 @@ void UWUIBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
     if (mSize != mOldSize && mSize != FVector2D::ZeroVector)
     {
         mOldSize = mSize;
-        this->OnLayoutChanged();
         UE_LOG(LogTemp, Log, TEXT("UWUIBase GetUMGRootSzie: %s"), *mSize.ToString());
+        this->OnLayoutChanged();
     }
 }
 

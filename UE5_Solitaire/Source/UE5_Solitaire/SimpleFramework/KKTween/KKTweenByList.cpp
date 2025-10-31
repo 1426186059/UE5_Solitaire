@@ -37,7 +37,16 @@ namespace KKTweenAPI
                 }
 
                 mItem->time = FMath::Clamp(mItem->time, 0.0f, mItem->sumTime);
-                float fTimePercent = mItem->time / mItem->sumTime;
+                float fTimePercent = 0;
+                if (mItem->sumTime > 0)
+                {
+                    fTimePercent = mItem->time / mItem->sumTime;
+                }
+                else
+                {
+                    fTimePercent = 1.0;
+                }
+
                 if (mItem->updateFunc.IsSet())
                 {
                     mItem->updateFunc(fTimePercent);
@@ -77,7 +86,16 @@ namespace KKTweenAPI
             {
                 mItem->time += DeltaTime;
                 mItem->time = FMath::Clamp(mItem->time, 0.0f, mItem->sumTime);
-                float fTimePercent = mItem->time / mItem->sumTime;
+                float fTimePercent = 0;
+                if (mItem->sumTime > 0)
+                {
+                    fTimePercent = mItem->time / mItem->sumTime;
+                }
+                else
+                {
+                    fTimePercent = 1.0;
+                }
+
                 if (mItem->updateFunc.IsSet())
                 {
                     mItem->updateFunc(fTimePercent);
@@ -119,6 +137,8 @@ namespace KKTweenAPI
         Action_Float_Delegate updateFunc,
         ActionDelegate finishFunc)
     {
+        check(time >= 0);
+
         KKTweenItem* mItem = mItemPool.Pop();
         mItem->toggle = true;
         mItem->bindObj = defaultBindObj;
@@ -136,6 +156,9 @@ namespace KKTweenAPI
         Action_Float_Delegate updateFunc,
         ActionDelegate finishFunc)
     {
+        check(obj);
+        check(time >= 0);
+
         KKTweenItem* mItem = mItemPool.Pop();
         mItem->bindObj = obj;
         mItem->toggle = true;
