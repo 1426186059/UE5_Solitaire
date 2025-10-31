@@ -4,21 +4,26 @@
 
 #include "CoreMinimal.h"
 
-class UE5_SOLITAIRE_API GameConst
+class GameConst
 {
-private:
-    // 1. 私有构造函数：禁止实例化
-    GameConst() = delete;
-    // 2. 禁止拷贝
-    GameConst(const GameConst&) = delete;
-    GameConst& operator=(const GameConst&) = delete;
 public:
     static const int EventId_InitSceneDoFinishOK = 1;
     static const int EventId_UpdatePokerAtlas = 2;
     static const int EventId_RefreshTopBottomUI = 3;
+    static const int EventId_UpdateGameModeState = 4;
+    static const int EventId_UpdateTripState = 5;
 
     DECLARE_MULTICAST_DELEGATE(ActionDelegate);
     DECLARE_MULTICAST_DELEGATE_OneParam(Action_Float_Delegate, float);
+
+private:
+    // 禁止拷贝和移动（单例不应被复制）
+    GameConst() = delete;
+    ~GameConst() = delete;
+    GameConst(const GameConst&) = delete;
+    GameConst& operator=(const GameConst&) = delete;
+    GameConst(GameConst&&) = delete;
+    GameConst& operator=(GameConst&&) = delete;
 };
 
 enum SolitaireGameMode

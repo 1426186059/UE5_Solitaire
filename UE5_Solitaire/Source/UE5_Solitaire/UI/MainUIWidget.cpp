@@ -515,8 +515,8 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     }
 
     this->GameWinAniMgr.DestroyAniNode();
-    //this->UpdateGameMode()
-    //this->onAddScore_InitParam()
+    this->UpdateGameMode();
+    this->onAddScore_InitParam();
     //this->mTimer:Start()
     //this->TellRobot_PlayerAlive()
     //this->ResetRemainHintCount()
@@ -529,6 +529,126 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     //        this->StartRobotPlay();
     //    }
     //        );
+}
+
+//------------------------------------------------------游戏模式相关--------------------------------------------------------------------
+void UMainUIWidget::UpdateGameMode()
+{
+    UE_LOG(LogTemp, Log, TEXT("self.nGameMode: %d"), this->nGameMode);
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateGameModeState)->Broadcast(nullptr);
+    if (this->nGameMode == SolitaireGameMode::Trip)
+    {
+        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateTripState)->Broadcast(nullptr);
+    }
+}
+
+//----------------------------------------------------------- 增加分数--------------------------------------------------------------------------
+std::tuple<bool, UPokerItemWidget*> UMainUIWidget::orThisStepTurnOverPokerIsTrue(int nStepIndex)
+{
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
+        {
+            auto mCardItem = this->tableCardNodeTop7Go[i][j];
+            if (mCardItem->nStepIndex_ForFirstShowPokerId == nStepIndex - 1)
+            {
+                return {true, mCardItem};
+            }
+        }
+    }
+    return { false, nullptr };
+}
+
+int UMainUIWidget::GetTop7HideCardCount()
+{
+    int nCount = 0;
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
+        {
+            auto mCardItem = this->tableCardNodeTop7Go[i][j];
+            if (!mCardItem->orTurnOverStateIsTrue())
+            {
+                nCount = nCount + 1;
+            }
+        }
+    }
+    return nCount;
+}
+
+void UMainUIWidget::onAddScore_InitParam()
+{
+    this->nGetScore_nLastTop7HideCardCount = this->GetTop7HideCardCount();
+}
+
+void UMainUIWidget::onAddScore()
+{
+    int baseScore = 0;
+    int addScore = 0;
+
+    auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+    auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
+    auto& fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
+    auto& toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
+
+    int nAddSumScore = 0;
+    if (toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
+    {
+        nAddSumScore = nAddSumScore + 5;
+        int nLastIndex = tableOpStepItem.Num() - 1;
+        int nContinueToA4StepCount = 0;
+        while (nLastIndex >= 0)
+        {
+            auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
+            nLastIndex = nLastIndex - 1;
+            if (nTempLastOpInfo->toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
+            {
+                nContinueToA4StepCount = nContinueToA4StepCount + 1;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        nAddSumScore = nAddSumScore + 5 * nContinueToA4StepCount;
+    }
+    else if (toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
+    {
+        if (fromPosTypeInfo[0] == SolitairePokerPosType::Draw3Pos)
+        {
+            nAddSumScore = nAddSumScore + 5;
+        }
+
+        int nLastIndex = tableOpStepItem.Num() - 1;
+        int nContinueCount = 0;
+        while (nLastIndex >= 0)
+        {
+            auto nTempLastOpInfo = tableOpStepItem[nLastIndex];
+            nLastIndex = nLastIndex - 1;
+            if (nTempLastOpInfo->toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos and nTempLastOpInfo->nTureOverPokerId == nLastOpInfo->nTureOverPokerId)
+            {
+                nContinueCount = nContinueCount + 1;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        nAddSumScore = nAddSumScore + 5 * nContinueCount;
+    }
+
+    int nAddNewPokerCount = this->nGetScore_nLastTop7HideCardCount - this->GetTop7HideCardCount();
+    if (nAddNewPokerCount > 0)
+    {
+        this->nGetScore_nLastTop7HideCardCount = this->GetTop7HideCardCount();
+        nAddSumScore = nAddSumScore + nAddNewPokerCount * 5;
+    }
+
+    nLastOpInfo->nScore = nAddSumScore;
+    RecordStepDataHandler::GetSingleton()->AddScore(nAddSumScore);
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
 }
 
 //------------------------------------ 相对位置计算 --------------------------------------------

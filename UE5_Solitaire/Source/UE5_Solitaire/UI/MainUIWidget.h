@@ -55,6 +55,12 @@ public:
 	FVector2D GetCardNodeSendPokerPos();
 
 	void NewGameBegin_ForNormal(bool bForceNewGame);
+	void UpdateGameMode();
+
+	std::tuple<bool, UPokerItemWidget*> orThisStepTurnOverPokerIsTrue(int nStepIndex);
+	int GetTop7HideCardCount();
+	void onAddScore_InitParam();
+	void onAddScore();
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
@@ -75,6 +81,7 @@ private:
 	bool bGameEnd = false;
 	float fRobotThinkingTime = 0;
 	float fIQTime = 0;
+	int nGetScore_nLastTop7HideCardCount = 0;
 
 	GameWinAniMgr GameWinAniMgr;
 };

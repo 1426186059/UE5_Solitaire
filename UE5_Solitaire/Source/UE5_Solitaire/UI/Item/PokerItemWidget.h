@@ -32,18 +32,17 @@ public:
 	void SetEventTriggerState(bool bCanClick);
 	void PlayTurnOverAni();
 	void DoShakeAni();
-private:
-	bool bInit;
 
-	UWidget* tranCardItemAni;
-	UImage* mIcon;
-
+public:
 	int nPokerId;
 	bool bTurnOverState = false;
 	int32 nStepIndex_ForFirstShowPokerId = -1;
 	FVector2D beginPos = {};
 	bool bInDrag = false;
-
+private:
+	bool bInit;
+	UWidget* tranCardItemAni;
+	UImage* mIcon;
 	KKTweenItem* mTurnOverTween1 = nullptr;
 	KKTweenItem* mTurnOverTween2 = nullptr;
 	KKTweenItem* mShakeTween = nullptr;
