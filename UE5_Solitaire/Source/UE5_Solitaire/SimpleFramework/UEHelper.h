@@ -43,12 +43,19 @@ public:
         }
     }
 
-    static void SetTimerForNextTick(UObject* obj, TFunction<void(void)> MyFunc)
+    template<typename T, typename FuncType>
+    static void RunNextFrame(T* Obj, FuncType&& Func)
     {
-        FTimerHandle TempHandle;
-        GetKKWorld()->GetTimerManager().SetTimerForNextTick(MyFunc);
+        FTimerHandle Temp;
+        GetKKWorld()->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(Obj, Forward<FuncType>(Func)));
     }
-
+    
+    static void RunNextFrame(TFunction<void()> Func)
+    {
+        FTimerHandle Temp;
+        GetKKWorld()->GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateLambda(MoveTemp(Func)));
+    }
+    
 private:
     // 禁止拷贝和移动（单例不应被复制）
     UEHelper() = delete;

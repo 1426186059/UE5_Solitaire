@@ -5,10 +5,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "KKTimeMgr.generated.h"
+#include "KKFrameUpdateMgr.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API AKKTimeMgr : public AKKActorSingleton
+class UE5_SOLITAIRE_API AKKFrameUpdateMgr : public AKKActorSingleton
 {
     GENERATED_BODY()
     DECLARE_MULTICAST_DELEGATE_OneParam(UpdateDelegate, float);
