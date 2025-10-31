@@ -69,6 +69,7 @@ public:
 	void Set_FastGame();
 	void Set_AutoHinted();
 	void TimerPerSecondUpdate();
+	void TellRobot_PlayerAlive();
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;

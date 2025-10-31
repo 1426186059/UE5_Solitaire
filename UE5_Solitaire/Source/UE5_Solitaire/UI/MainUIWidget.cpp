@@ -554,17 +554,23 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     this->onAddScore_InitParam();
     UEHelper::StartTimer(this, this->mTimer);
 
-    //this->TellRobot_PlayerAlive()
+    this->TellRobot_PlayerAlive();
     //this->ResetRemainHintCount()
     // 
-    //LeanTween.delayedCall(this->transform.gameObject, 1.0, function()
-    //    self:DoWhenSet_FastGame()
+    KKTween::delayedCall(this, 1.0, [this]()
+        {
+            /* self:DoWhenSet_FastGame()
+             if (ThemeSolitaire.Config.bRobotTest)
+             {
+                 this->StartRobotPlay();
+             }*/
+        });
+}
 
-    //    if (ThemeSolitaire.Config.bRobotTest)
-    //    {
-    //        this->StartRobotPlay();
-    //    }
-    //        );
+//--------------------------------玩家操作-------------------------------------------- -
+void UMainUIWidget::TellRobot_PlayerAlive()
+{
+    this->fRobotThinkingTime = 0.0;
 }
 
 //------------------------------------------------------游戏模式相关--------------------------------------------------------------------
