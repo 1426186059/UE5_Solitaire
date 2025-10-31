@@ -43,6 +43,12 @@ public:
         }
     }
 
+    static void SetTimerForNextTick(UObject* obj, TFunction<void(void)> MyFunc)
+    {
+        FTimerHandle TempHandle;
+        GetKKWorld()->GetTimerManager().SetTimerForNextTick(MyFunc);
+    }
+
 private:
     // 禁止拷贝和移动（单例不应被复制）
     UEHelper() = delete;
