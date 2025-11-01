@@ -4,7 +4,8 @@ using namespace KKTweenAPI;
 AKKTweenMgr::AKKTweenMgr()
 {
     PrimaryActorTick.bCanEverTick = true;
-    this->mManager = new KKTweenAPI::KKTweenByList(this);
+   // this->mManager = new KKTweenAPI::KKTweenByList(this);
+    this->mManager = new KKTweenAPI::KKTweenByLinkedList(this);
 }
 
 void AKKTweenMgr::BeginPlay()

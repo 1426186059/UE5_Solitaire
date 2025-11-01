@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "KKTweenHead.generated.h"
@@ -37,9 +38,16 @@ namespace KKTweenAPI
         FVector From;
         FVector To;
 
+        TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* mEntry;
+
         ~KKTweenItem()
         {
             UE_LOG(LogTemp, Log, TEXT("~KKTweenItem Destroy"));
+            if (mEntry)
+            {
+                delete mEntry;
+                mEntry = nullptr;
+            }
         }
     private:
         void OnPoolPop()
@@ -79,6 +87,15 @@ namespace KKTweenAPI
             return MakeShareable(new KKTweenItem);
         }
     public:
+        TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* GetEntry()
+        {
+            if (this->mEntry == nullptr)
+            {
+                mEntry = new TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode(this->GetTSharedPtr());
+            }
+            return mEntry;
+        }
+
         TSharedPtr<KKTweenItem> GetTSharedPtr()
         {
             return AsShared();
@@ -190,6 +207,25 @@ namespace KKTweenAPI
             ActionDelegate finishFunc = nullptr);
 
     };
+
+    class KKTweenByLinkedList
+    {
+    private:
+        ObjectPool mItemPool;
+        TDoubleLinkedList<TSharedPtr<KKTweenItem>> mTweenT;
+        AKKTweenMgr* defaultBindObj;
+    public:
+        KKTweenByLinkedList(AKKTweenMgr* mDefaultBindObj);
+
+        void Update(float DeltaTime);
+        void SetMaxTweenCount(int nCount);
+        TSharedPtr<KKTweenAPI::KKTweenItem> AddTween(
+            UObject* obj,
+            float time,
+            Action_Float_Delegate updateFunc = nullptr,
+            ActionDelegate finishFunc = nullptr);
+
+    };
 };
 
 
@@ -211,7 +247,8 @@ public:
     }
 
 private:
-    KKTweenAPI::KKTweenByList* mManager;
+    KKTweenAPI::KKTweenByLinkedList* mManager;
+    //KKTweenAPI::KKTweenByList* mManager;
 public:
     void Update(float DeltaTime);
     void SetMaxTweenCount(int nCount);
