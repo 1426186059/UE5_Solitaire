@@ -133,24 +133,6 @@ namespace KKTweenAPI
     }
 
     KKTweenItem* KKTweenByList::AddTween(
-        float time,
-        Action_Float_Delegate updateFunc,
-        ActionDelegate finishFunc)
-    {
-        check(time >= 0);
-
-        KKTweenItem* mItem = mItemPool.Pop();
-        mItem->toggle = true;
-        mItem->bindObj = defaultBindObj;
-        mItem->time = 0;
-        mItem->sumTime = time;
-        mItem->updateFunc = updateFunc;
-        mItem->finishFunc = finishFunc;
-        mTweenT.Add(mItem);
-        return mItem;
-    }
-
-    KKTweenItem* KKTweenByList::AddTween(
         UObject* obj,
         float time,
         Action_Float_Delegate updateFunc,
@@ -158,6 +140,11 @@ namespace KKTweenAPI
     {
         check(obj);
         check(time >= 0);
+
+        if (obj == nullptr)
+        {
+            obj = defaultBindObj;
+        }
 
         KKTweenItem* mItem = mItemPool.Pop();
         mItem->bindObj = obj;

@@ -33,19 +33,9 @@ void AKKTweenMgr::SetMaxTweenCount(int nCount)
     mManager->SetMaxTweenCount(nCount);
 }
 
-KKTweenAPI::KKTweenItem* AKKTweenMgr::AddTween(float time, KKTweenAPI::Action_Float_Delegate updateFunc, KKTweenAPI::ActionDelegate finishFunc)
-{
-    return mManager->AddTween(time, updateFunc, finishFunc);
-}
-
 KKTweenAPI::KKTweenItem* AKKTweenMgr::AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc, KKTweenAPI::ActionDelegate finishFunc)
 {
     return mManager->AddTween(obj, time, updateFunc, finishFunc);
-}
-
-KKTweenAPI::KKTweenItem* AKKTweenMgr::delayedCall(float time, KKTweenAPI::ActionDelegate finishFunc)
-{
-    return AddTween(time, nullptr, finishFunc);
 }
 
 KKTweenAPI::KKTweenItem* AKKTweenMgr::delayedCall(UObject* obj, float time, KKTweenAPI::ActionDelegate finishFunc)

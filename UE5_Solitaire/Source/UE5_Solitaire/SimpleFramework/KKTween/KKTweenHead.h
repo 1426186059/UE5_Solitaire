@@ -148,11 +148,6 @@ namespace KKTweenAPI
         void Update(float DeltaTime);
         void SetMaxTweenCount(int nCount);
         KKTweenItem* AddTween(
-            float time,
-            Action_Float_Delegate updateFunc = nullptr,
-            ActionDelegate finishFunc = nullptr);
-
-        KKTweenItem* AddTween(
             UObject* obj,
             float time,
             Action_Float_Delegate updateFunc = nullptr,
@@ -185,9 +180,7 @@ private:
 public:
     void Update(float DeltaTime);
     void SetMaxTweenCount(int nCount);
-    KKTweenAPI::KKTweenItem* AddTween(float time, KKTweenAPI::Action_Float_Delegate updateFunc = nullptr, KKTweenAPI::ActionDelegate finishFunc = nullptr);
     KKTweenAPI::KKTweenItem* AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc = nullptr, KKTweenAPI::ActionDelegate finishFunc = nullptr);
-    KKTweenAPI::KKTweenItem* delayedCall(float time, KKTweenAPI::ActionDelegate finishFunc = nullptr);
     KKTweenAPI::KKTweenItem* delayedCall(UObject* obj, float time, KKTweenAPI::ActionDelegate finishFunc = nullptr);
 public:
     //DECLARE_MULTICAST_DELEGATE(ActionDelegate);
