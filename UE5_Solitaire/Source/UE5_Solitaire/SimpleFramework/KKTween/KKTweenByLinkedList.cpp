@@ -1,5 +1,7 @@
+
 #include "KKTweenHead.h"
 
+#ifdef USE_LinkedList
 namespace KKTweenAPI
 {
     KKTweenByLinkedList::KKTweenByLinkedList(AKKTweenMgr* mDefaultBindObj)
@@ -9,14 +11,13 @@ namespace KKTweenAPI
 
     void KKTweenByLinkedList::Update(float DeltaTime)
     {
-        auto mNode = mTweenT.GetHead();
+        auto mNode = this->mTweenT.GetHead();
         while (mNode != nullptr)
         {
-            auto mItem = mNode->GetValue();
+           TSharedPtr<KKTweenItem> mItem = mNode->GetValue();
             if (mItem->toggle == false || mItem->bindObj == nullptr)
             {
-                mTweenT.RemoveNode(mItem->mEntry, false);
-                mItemPool.recycle(mItem);
+                mNode = DoRemove(mItem);
                 continue;
             }
 
@@ -39,7 +40,17 @@ namespace KKTweenAPI
                 }
 
                 mItem->time = FMath::Clamp(mItem->time, 0.0, mItem->sumTime);
-                float fTimePercent = mItem->time / mItem->sumTime;
+
+                float fTimePercent = 0;
+                if (mItem->sumTime > 0)
+                {
+                    fTimePercent = mItem->time / mItem->sumTime;
+                }
+                else
+                {
+                    fTimePercent = 1.0;
+                }
+
                 if (mItem->updateFunc.IsSet())
                 {
                     mItem->updateFunc(fTimePercent);
@@ -61,8 +72,7 @@ namespace KKTweenAPI
 
                             if (mItem->nLoopCount <= 0)
                             {
-                                mTweenT.RemoveNode(mItem->mEntry, false);
-                                mItemPool.recycle(mItem);
+                                mNode = DoRemove(mItem);
                                 continue;
                             }
                         }
@@ -81,7 +91,16 @@ namespace KKTweenAPI
             {
                 mItem->time += DeltaTime;
                 mItem->time = FMath::Clamp(mItem->time, 0, mItem->sumTime);
-                float fTimePercent = mItem->time / mItem->sumTime;
+
+                float fTimePercent = 0;
+                if (mItem->sumTime > 0)
+                {
+                    fTimePercent = mItem->time / mItem->sumTime;
+                }
+                else
+                {
+                    fTimePercent = 1.0;
+                }
 
                 if (mItem->updateFunc.IsSet())
                 {
@@ -106,8 +125,7 @@ namespace KKTweenAPI
 
                         if (mItem->nLoopCount <= 0)
                         {
-                            mTweenT.RemoveNode(mItem->mEntry, false);
-                            mItemPool.recycle(mItem);
+                            mNode = DoRemove(mItem);
                             continue;
                         }
                     }
@@ -116,6 +134,15 @@ namespace KKTweenAPI
 
             mNode = mNode->GetNextNode();
         }
+    }
+
+    TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* KKTweenByLinkedList::DoRemove(
+        TSharedPtr<KKTweenItem> mItem)
+    {
+        auto mNextNode = mItem->GetNodeEntry()->GetNextNode();
+        mTweenT.RemoveNode(mItem->GetNodeEntry(), false);
+        mItemPool.recycle(mItem);
+        return mNextNode;
     }
 
     void KKTweenByLinkedList::SetMaxTweenCount(int nCount)
@@ -144,7 +171,8 @@ namespace KKTweenAPI
         mItem->sumTime = time;
         mItem->updateFunc = updateFunc;
         mItem->finishFunc = finishFunc;
-        mTweenT.AddTail(mItem->GetEntry());
+        mTweenT.AddTail(mItem->GetNodeEntry());
         return mItem;
     }
 }
+#endif

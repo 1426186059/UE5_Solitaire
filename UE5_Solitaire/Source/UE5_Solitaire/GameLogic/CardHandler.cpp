@@ -163,7 +163,7 @@ int CardHandler::GetExcelToLocalPokerId(int nExcelNum)
     int cardNum = this->ConfusingDic[nExcelNum];
     ensureMsgf(cardNum >= 1 && cardNum <= 52, TEXT("Error: %d %d"), nExcelNum, cardNum);
 
-    SolitaireColorType nColorType;
+    SolitaireColorType nColorType = SolitaireColorType::Club;
     if (cardNum >= 1 and cardNum <= 13)
     {
         nColorType = SolitaireColorType::Club;

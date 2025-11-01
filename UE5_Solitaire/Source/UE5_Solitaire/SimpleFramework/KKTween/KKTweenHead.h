@@ -1,7 +1,9 @@
 #pragma once
 
-#include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
+#define DEFAULT_TWEEN_MAX_COUNT 1500
+#define USE_LinkedList
 
+#include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "KKTweenHead.generated.h"
@@ -38,16 +40,29 @@ namespace KKTweenAPI
         FVector From;
         FVector To;
 
-        TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* mEntry;
+#ifdef USE_LinkedList
+        TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* mNodeEntry = nullptr;
+        TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* GetNodeEntry()
+        {
+            if (this->mNodeEntry == nullptr)
+            {
+                this->mNodeEntry = new TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode(this->GetTSharedPtr());
+            }
+            return this->mNodeEntry;
+        }
+#endif
 
         ~KKTweenItem()
         {
             UE_LOG(LogTemp, Log, TEXT("~KKTweenItem Destroy"));
-            if (mEntry)
+
+#ifdef USE_LinkedList
+            if (mNodeEntry)
             {
-                delete mEntry;
-                mEntry = nullptr;
+                delete mNodeEntry;
+                mNodeEntry = nullptr;
             }
+#endif
         }
     private:
         void OnPoolPop()
@@ -60,6 +75,17 @@ namespace KKTweenAPI
             nId++;
             ensureMsgf(nId <= MAX_int32, TEXT("KKTweenItem Error"));
             Reset();
+        }
+
+        void OnPoolDestory()
+        {
+#ifdef USE_LinkedList
+            if (mNodeEntry)
+            {
+                delete mNodeEntry;
+                mNodeEntry = nullptr;
+            }
+#endif
         }
 
         KKTweenItem()
@@ -84,18 +110,9 @@ namespace KKTweenAPI
 
         static TSharedPtr<KKTweenItem> Create()
         {
-            return MakeShareable(new KKTweenItem);
+            return MakeShareable(new KKTweenItem());
         }
     public:
-        TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* GetEntry()
-        {
-            if (this->mEntry == nullptr)
-            {
-                mEntry = new TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode(this->GetTSharedPtr());
-            }
-            return mEntry;
-        }
-
         TSharedPtr<KKTweenItem> GetTSharedPtr()
         {
             return AsShared();
@@ -153,7 +170,7 @@ namespace KKTweenAPI
     public:
         ObjectPool()
         {
-            SetMaxCapacity(1500);
+            SetMaxCapacity(DEFAULT_TWEEN_MAX_COUNT);
         }
 
         void SetMaxCapacity(int nCapacity = 1)
@@ -179,6 +196,7 @@ namespace KKTweenAPI
         {
             if (mObjectPool.Num() >= nMaxCapacity)
             {
+                t->OnPoolDestory();
                 t.Reset();
             }
             else
@@ -225,6 +243,9 @@ namespace KKTweenAPI
             Action_Float_Delegate updateFunc = nullptr,
             ActionDelegate finishFunc = nullptr);
 
+        TDoubleLinkedList<TSharedPtr<KKTweenItem>>::TDoubleLinkedListNode* DoRemove(
+            TSharedPtr<KKTweenItem> mItem);
+
     };
 };
 
@@ -247,8 +268,13 @@ public:
     }
 
 private:
+
+#ifdef USE_LinkedList
     KKTweenAPI::KKTweenByLinkedList* mManager;
-    //KKTweenAPI::KKTweenByList* mManager;
+#else
+    KKTweenAPI::KKTweenByList* mManager;
+#endif
+
 public:
     void Update(float DeltaTime);
     void SetMaxTweenCount(int nCount);

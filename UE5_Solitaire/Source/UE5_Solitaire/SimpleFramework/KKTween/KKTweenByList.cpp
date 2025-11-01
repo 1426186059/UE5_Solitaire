@@ -1,5 +1,6 @@
 #include "KKTweenHead.h"
 
+#ifndef USE_LinkedList
 namespace KKTweenAPI
 {
     KKTweenByList::KKTweenByList(AKKTweenMgr* mDefaultBindObj)
@@ -156,5 +157,5 @@ namespace KKTweenAPI
         mTweenT.Add(mItem);
         return mItem;
     }
-
 }
+#endif
