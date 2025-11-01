@@ -35,6 +35,11 @@ void AKKTweenMgr::SetMaxTweenCount(int nCount)
 
 KKTweenAPI::KKTweenItem* AKKTweenMgr::AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc, KKTweenAPI::ActionDelegate finishFunc)
 {
+    if (obj == nullptr)
+    {
+        obj = this;
+    }
+
     return mManager->AddTween(obj, time, updateFunc, finishFunc);
 }
 
