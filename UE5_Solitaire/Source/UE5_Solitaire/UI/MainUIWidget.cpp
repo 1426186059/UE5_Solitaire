@@ -505,7 +505,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
     DataCenter::GetSingleton()->data->nIQValue = 100;
     DataCenter::GetSingleton()->AddTotalGameCount();
-    //this->TellRobot_PlayerAlive();
+    this->TellRobot_PlayerAlive();
     this->RecycleAndInitCardGo();
     this->bGameEnd = false;
     this->PokerItemParent->SetVisibility(ESlateVisibility::Visible);
