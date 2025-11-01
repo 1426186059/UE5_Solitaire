@@ -36,6 +36,11 @@ namespace KKTweenAPI
 
         FVector From;
         FVector To;
+
+        ~KKTweenItem()
+        {
+            UE_LOG(LogTemp, Log, TEXT("~KKTweenItem Destroy"));
+        }
     private:
         void OnPoolPop()
         {
