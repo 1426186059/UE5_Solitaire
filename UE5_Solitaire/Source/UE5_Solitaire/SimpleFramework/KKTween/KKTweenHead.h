@@ -98,14 +98,14 @@ namespace KKTweenAPI
     {
     private:
         TArray<KKTweenItem*> mObjectPool;
-        int nMaxCapacity = 1500;
+        int nMaxCapacity = 0;
     public:
-        ObjectPool(int nCapacity = 1500)
+        ObjectPool()
         {
-            SetMaxCapacity(nCapacity);
+            SetMaxCapacity(1500);
         }
 
-        void SetMaxCapacity(int nCapacity = 1500)
+        void SetMaxCapacity(int nCapacity = 1)
         {
             this->nMaxCapacity = nCapacity;
         }
