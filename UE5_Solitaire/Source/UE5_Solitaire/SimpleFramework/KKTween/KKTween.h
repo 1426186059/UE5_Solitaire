@@ -110,27 +110,27 @@ public:
         return AKKTweenMgr::GetSingleton()->SetMaxTweenCount(nCount);
     }
 
-    static KKTweenItem* AddTween(float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
+    static TWeakPtr<KKTweenItem> AddTween(float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
     {
         return AKKTweenMgr::GetSingleton()->AddTween(nullptr, time, updateFunc, finishFunc);
     }
 
-    static KKTweenItem* AddTween(UObject* obj, float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
+    static TWeakPtr<KKTweenItem> AddTween(UObject* obj, float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
     {
         return AKKTweenMgr::GetSingleton()->AddTween(obj, time, updateFunc, finishFunc);
     }
     
-    static KKTweenItem* delayedCall(float time, ActionDelegate finishFunc = nullptr)
+    static TWeakPtr<KKTweenItem> delayedCall(float time, ActionDelegate finishFunc = nullptr)
     {
         return AddTween(nullptr, time, nullptr, finishFunc);
     }
 
-    static KKTweenItem* delayedCall(UObject* obj, float time, ActionDelegate finishFunc = nullptr)
+    static TWeakPtr<KKTweenItem> delayedCall(UObject* obj, float time, ActionDelegate finishFunc = nullptr)
     {
         return AddTween(obj, time, nullptr, finishFunc);
     }
 
-    static KKTweenItem* UMG_MoveLocal_Render(UWidget* target, FVector2D to, float time)
+    static TWeakPtr<KKTweenItem> UMG_MoveLocal_Render(UWidget* target, FVector2D to, float time)
     {
         FVector2D InnerFrom = UMGHelper::GetRenderPos(target);
         FVector2D InnerTo = to;
@@ -142,7 +142,7 @@ public:
             });
     }
 
-    static KKTweenItem* UMG_MoveLocal_Slot(UWidget* target, FVector2D to, float time)
+    static TWeakPtr<KKTweenItem> UMG_MoveLocal_Slot(UWidget* target, FVector2D to, float time)
     {
         FVector2D InnerFrom = UMGHelper::GetSlotPos(target);
         FVector2D InnerTo = to;

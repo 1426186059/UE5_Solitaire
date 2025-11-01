@@ -20,21 +20,95 @@ namespace KKTweenAPI
 
     class KKTweenItem
     {
+        friend class ObjectPool;
     public:
+        struct Handle
+        {
+            friend class KKTweenItem;
+        private:
+            int nId = -1;
+            TWeakPtr<KKTweenItem> mInnerPtr;
+
+            Handle(KKTweenItem* mItem)
+            {
+                this->mInnerPtr = TSharedPtr<KKTweenItem>(mItem);
+                this->nId = mItem->nId;
+            }
+        public:
+            Handle()
+            {
+               
+            }
+
+            bool IsValid()
+            {
+                return mInnerPtr.IsValid() && mInnerPtr.Pin()->nId == nId;
+            }
+
+            TWeakPtr<KKTweenItem> Get()
+            {
+                if (IsValid())
+                {
+                    return mInnerPtr;
+                }
+                return nullptr;
+            }
+
+            void AppendTween(Handle mOtherTween)
+            {
+                if (IsValid() && mOtherTween.IsValid())
+                {
+                    Get().Pin()->AppendTween(mOtherTween.Get().Pin().Get());
+                }
+            }
+
+            void AppendTween(TWeakPtr<KKTweenItem> mOtherTween)
+            {
+                if (IsValid() && mOtherTween.IsValid())
+                {
+                    Get().Pin()->AppendTween(mOtherTween.Pin().Get());
+                }
+            }
+
+            void Cancel()
+            {
+                if (IsValid())
+                {
+                    Get().Pin()->cancel();
+                }
+
+                mInnerPtr.Reset();
+                nId = -1;
+            }
+        };
+
         TWeakObjectPtr<UObject> bindObj;
         bool toggle;
         float delay;
         float time;
         float sumTime;
-        int nLoopCount;
-        int nLoopPingTong;
+        int32 nLoopCount;
+        int32 nLoopPingTong;
+        int32 nId;
         Action_Float_Delegate updateFunc;
         ActionDelegate finishFunc;
 
         FVector From;
         FVector To;
 
-    public:
+    private:
+        void OnPoolPop()
+        {
+            
+        }
+
+        void OnPoolRecycle()
+        {
+            nId++;
+            ensureMsgf(nId <= MAX_int32, TEXT("KKTweenItem Error"));
+            Reset();
+        }
+
         KKTweenItem()
         {
             Reset();
@@ -53,6 +127,12 @@ namespace KKTweenAPI
 
             nLoopCount = 0;
             nLoopPingTong = 0;
+        }
+
+    public:
+        Handle Build()
+        {
+            return Handle(this);
         }
 
         KKTweenItem* cancel()
@@ -80,14 +160,19 @@ namespace KKTweenAPI
             return this;
         }
 
-        KKTweenItem* AppendTween(KKTweenItem* mItem)
+        void AppendTween(KKTweenItem* mItem)
         {
             float mTweenSumTime = this->delay + this->sumTime;
             mItem->delay += mTweenSumTime;
+        }
+
+        KKTweenItem* SetOnUpdateFunc(Action_Float_Delegate func)
+        {
+            this->updateFunc = func;
             return this;
         }
 
-        KKTweenItem* SetOnComplete(ActionDelegate func)
+        KKTweenItem* SetOnCompleteFunc(ActionDelegate func)
         {
             this->finishFunc = func;
             return this;
@@ -97,7 +182,7 @@ namespace KKTweenAPI
     class ObjectPool
     {
     private:
-        TArray<KKTweenItem*> mObjectPool;
+        TArray<TSharedPtr<KKTweenItem>> mObjectPool;
         int nMaxCapacity = 0;
     public:
         ObjectPool()
@@ -110,27 +195,29 @@ namespace KKTweenAPI
             this->nMaxCapacity = nCapacity;
         }
 
-        KKTweenItem* Pop()
+        TSharedPtr<KKTweenItem> Pop()
         {
             if (mObjectPool.Num() > 0)
             {
-                return mObjectPool.Pop();
+                auto mItem = mObjectPool.Pop();
+                mItem->OnPoolPop();
+                return TSharedPtr<KKTweenItem>(mItem);
             }
             else
             {
-                return new KKTweenItem();
+                return TSharedPtr<KKTweenItem>(new KKTweenItem());
             }
         }
 
-        void recycle(KKTweenItem* t)
+        void recycle(TSharedPtr<KKTweenItem> t)
         {
             if (mObjectPool.Num() >= nMaxCapacity)
             {
-                delete t;
+                t.Reset();
             }
             else
             {
-                t->Reset();
+                t->OnPoolRecycle();
                 mObjectPool.Add(t);
             }
         }
@@ -140,14 +227,14 @@ namespace KKTweenAPI
     {
     private:
         ObjectPool mItemPool;
-        TArray<KKTweenItem*> mTweenT;
+        TArray<TSharedPtr<KKTweenItem>> mTweenT;
         AKKTweenMgr* defaultBindObj;
     public:
         KKTweenByList(AKKTweenMgr* mDefaultBindObj);
 
         void Update(float DeltaTime);
         void SetMaxTweenCount(int nCount);
-        KKTweenItem* AddTween(
+        TWeakPtr<KKTweenItem> AddTween(
             UObject* obj,
             float time,
             Action_Float_Delegate updateFunc = nullptr,
@@ -180,8 +267,8 @@ private:
 public:
     void Update(float DeltaTime);
     void SetMaxTweenCount(int nCount);
-    KKTweenAPI::KKTweenItem* AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc = nullptr, KKTweenAPI::ActionDelegate finishFunc = nullptr);
-    KKTweenAPI::KKTweenItem* delayedCall(UObject* obj, float time, KKTweenAPI::ActionDelegate finishFunc = nullptr);
+    TWeakPtr<KKTweenAPI::KKTweenItem> AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc = nullptr, KKTweenAPI::ActionDelegate finishFunc = nullptr);
+    TWeakPtr<KKTweenAPI::KKTweenItem> delayedCall(UObject* obj, float time, KKTweenAPI::ActionDelegate finishFunc = nullptr);
 public:
     //DECLARE_MULTICAST_DELEGATE(ActionDelegate);
     //DECLARE_MULTICAST_DELEGATE_OneParam(Action_Float_Delegate, float);

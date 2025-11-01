@@ -132,7 +132,7 @@ namespace KKTweenAPI
         mItemPool.SetMaxCapacity(nCount);
     }
 
-    KKTweenItem* KKTweenByList::AddTween(
+    TWeakPtr<KKTweenItem> KKTweenByList::AddTween(
         UObject* obj,
         float time,
         Action_Float_Delegate updateFunc,
@@ -146,7 +146,7 @@ namespace KKTweenAPI
             obj = defaultBindObj;
         }
 
-        KKTweenItem* mItem = mItemPool.Pop();
+        TSharedPtr<KKTweenItem> mItem = mItemPool.Pop();
         mItem->bindObj = obj;
         mItem->toggle = true;
         mItem->time = 0;

@@ -94,17 +94,8 @@ void UPokerItemWidget::SetEventTriggerState(bool bCanClick)
 //--²¥·Å·­ÅÆ¶¯»­
 void UPokerItemWidget::PlayTurnOverAni()
 {
-    if (this->mTurnOverTween1)
-    {
-        this->mTurnOverTween1->cancel();
-        this->mTurnOverTween1 = nullptr;
-    }
-
-    if (this->mTurnOverTween2)
-    {
-        this->mTurnOverTween2->cancel();
-        this->mTurnOverTween2 = nullptr;
-    }
+    this->mTurnOverTween1.Cancel();
+    this->mTurnOverTween2.Cancel();
 
     FVector2D from(1, 1);
     FVector2D to(0, 1);
@@ -117,7 +108,7 @@ void UPokerItemWidget::PlayTurnOverAni()
         {
             this->Refresh();
             this->tranCardItemAni->SetRenderScale(to);
-        });
+        }).Pin()->Build();
 
     FVector2D from2(0, 1);
     FVector2D to2(1, 1);
@@ -125,19 +116,18 @@ void UPokerItemWidget::PlayTurnOverAni()
         [=,this](float fTimePercent)
         {
             this->tranCardItemAni->SetRenderScale(KKTween::EaseFunc::easeLinear(from2, to2, fTimePercent));
-        });
+        }).Pin()->Build();
 
-    mTween1->AppendTween(mTween2);
+    mTween1.AppendTween(mTween2);
     this->mTurnOverTween1 = mTween1;
     this->mTurnOverTween2 = mTween2;
 }
 
 void UPokerItemWidget::DoShakeAni()
 {
-    if (this->mShakeTween)
+    if (this->mShakeTween.IsValid())
     {
-        this->mShakeTween->cancel();
-        this->mShakeTween = nullptr;
+        this->mShakeTween.Cancel();
     }
 
     float FromRandPosX = 2 + FMath::FRand() * 3 - 1.5;
@@ -155,5 +145,5 @@ void UPokerItemWidget::DoShakeAni()
         [=,this]()
         {
             UMGHelper::SetRenderPos(this->tranCardItemAni, FVector2D::ZeroVector);
-        })->SetLoopPingPong(4);
+        }).Pin()->SetLoopPingPong(4)->Build();
 }

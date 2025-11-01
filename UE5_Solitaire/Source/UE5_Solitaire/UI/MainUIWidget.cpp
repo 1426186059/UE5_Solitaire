@@ -584,7 +584,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             //UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
             //to = FVector2D::ZeroVector;
 
-            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=, this]()
+            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3).Pin()->SetDelay(0.05 * j)->SetOnCompleteFunc([=, this]()
                 {
                     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                     if (bTurnOverState)
@@ -658,6 +658,7 @@ void UMainUIWidget::OnClickChuPai()
         mOpStepItemData->fromPosTypeInfo = { SolitairePokerPosType::Draw3Pos, 0, 0 };
         mOpStepItemData->toPosTypeInfo = { SolitairePokerPosType::SendPokerPos, 0, 0 };
         RecordStepDataHandler::GetSingleton()->AddStepRecord(mOpStepItemData);
+
         AudioHandler::GetSingleton()->PlaySound("P4");
         KKTween::delayedCall(this, 0.5, [this]()
             {
@@ -670,9 +671,6 @@ void UMainUIWidget::OnClickChuPai()
         for (int i = 0; i < nMaxDrawCount; i++)
         {
             auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
-
-            UE_LOG(LogTemp, Log, TEXT("%d"), mCardItem->nPokerId);
-
             this->tableCardDraw3Go.Insert(mCardItem, 0);
             UMGHelper::SetZOrder(mCardItem, 100 + i);
             mCardItem->SetTurnOverState(true);
@@ -707,7 +705,7 @@ void UMainUIWidget::RefreshDrawZone()
     int nMaxCount = FMath::Min(3, this->tableCardDraw3Go.Num());
     for (int i = 0; i < nMaxCount; i++)
     {
-        auto mCardItem = this->tableCardDraw3Go[i];
+        UPokerItemWidget* mCardItem = this->tableCardDraw3Go[i];
         mCardItem->Show();
 
         FVector2D from = UMGHelper::GetSlotPos(mCardItem);
@@ -944,13 +942,13 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
 {
     if (this->mapCardItemTween.Contains(mCardItem))
     {
-        this->mapCardItemTween[mCardItem]->cancel();
+        this->mapCardItemTween[mCardItem].Cancel();
         this->mapCardItemTween.Remove(mCardItem);
     }
 
     if (bUndo)
     {
-        auto mTween = KKTween::AddTween(this, 0.25,
+        auto mTweenHandle = KKTween::AddTween(this, 0.25,
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeInQuad(toPos, fromPos, fTimePercent));
@@ -961,13 +959,13 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
                 {
                     finishFunc();
                 }
-            });
+            }).Pin()->Build();
 
-        this->mapCardItemTween.Add(mCardItem, mTween);
+        this->mapCardItemTween.Add(mCardItem, mTweenHandle);
     }
     else
     {
-        auto mTween = KKTween::AddTween(this, 0.25,
+        auto mTweenHandle = KKTween::AddTween(this, 0.25,
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
@@ -978,8 +976,9 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
                 {
                     finishFunc();
                 }
-            });
-        this->mapCardItemTween.Add(mCardItem, mTween);
+            }).Pin()->Build();
+        
+        this->mapCardItemTween.Add(mCardItem, mTweenHandle);
     }
 }
 
@@ -987,7 +986,7 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
 {
     if (this->mapCardItemTween.Contains(mCardItem))
     {
-        this->mapCardItemTween[mCardItem]->cancel();
+        this->mapCardItemTween[mCardItem].Cancel();
         this->mapCardItemTween.Remove(mCardItem);
     }
 
@@ -1004,7 +1003,7 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
                 {
                     finishFunc();
                 }
-            });
+            }).Pin()->Build();
 
         this->mapCardItemTween.Add(mCardItem, mTween);
     }
@@ -1021,7 +1020,7 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
                 {
                     finishFunc();
                 }
-            });
+            }).Pin()->Build();
 
         this->mapCardItemTween.Add(mCardItem, mTween);
     }
@@ -1035,7 +1034,7 @@ void UMainUIWidget::DoTop7ReSizeHeightAni(int nTop7Index)
         auto mCardItem = mListCardNodeTop7Go[i];
         if (this->mapCardItemTween.Contains(mCardItem))
         {
-            this->mapCardItemTween[mCardItem]->cancel();
+            this->mapCardItemTween[mCardItem].Cancel();
             this->mapCardItemTween.Remove(mCardItem);
         }
 
@@ -1045,7 +1044,7 @@ void UMainUIWidget::DoTop7ReSizeHeightAni(int nTop7Index)
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
-            });
+            }).Pin()->Build();
         this->mapCardItemTween[mCardItem] = mTween;
     }
 }
