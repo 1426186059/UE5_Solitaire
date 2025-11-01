@@ -553,6 +553,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         this->mSendCardListGo[i]->SetTurnOverState(false);
         this->mSendCardListGo[i]->Refresh();
         this->mSendCardListGo[i]->SetEventTriggerState(false);
+        UMGHelper::SetZOrder(this->mSendCardListGo[i], i);
         UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->tranFaPaiPos);
     }
 
@@ -700,13 +701,12 @@ void UMainUIWidget::RefreshDrawZone()
     int nMaxCount = FMath::Min(3, this->tableCardDraw3Go.Num());
     for (int i = 0; i < nMaxCount; i++)
     {
-        int nIndex = i;
         auto mCardItem = this->tableCardDraw3Go[i];
         mCardItem->Show();
 
         FVector2D from = UMGHelper::GetSlotPos(mCardItem);
         FVector2D to = this->GetCardNodeDraw3Pos(i);
-        mCardItem->SetEventTriggerState(nIndex == 1);
+        mCardItem->SetEventTriggerState(i == 0);
         this->OnClickDraw3Move(mCardItem, from, to, false);
     }
 
@@ -916,7 +916,7 @@ FVector2D UMainUIWidget::GetCardNode4APos(int nTopIndex)
 
 FVector2D UMainUIWidget::GetCardNodeDraw3Pos(int nIndex)
 {
-    if (nIndex <= 3)
+    if (nIndex <= 2)
     {
         float fOffsetX = -44 * nIndex;
         return this->mCardNodeDraw3BeginPos + FVector2D(fOffsetX, 0);
@@ -924,7 +924,7 @@ FVector2D UMainUIWidget::GetCardNodeDraw3Pos(int nIndex)
     else
     {
         float fOffsetX = -1 * (nIndex - 2);
-        return this->GetCardNodeDraw3Pos(3) + FVector2D(fOffsetX, 0);
+        return this->GetCardNodeDraw3Pos(2) + FVector2D(fOffsetX, 0);
     }
 }
 
