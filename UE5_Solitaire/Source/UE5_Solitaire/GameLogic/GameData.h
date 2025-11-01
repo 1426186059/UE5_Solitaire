@@ -18,9 +18,9 @@ public:
     UPROPERTY() int32 nTotalGameCount = 0;
     UPROPERTY() int32 nTotalWinGameCount = 0;
 
-    UPROPERTY() URecordStepData* tableOpRecord = {};
-    UPROPERTY() UStatisticData* StatisticData = {};
-    UPROPERTY() UThemeData* ThemeData = {};
+    UPROPERTY() URecordStepData* tableOpRecord = nullptr;
+    UPROPERTY() UStatisticData* StatisticData = nullptr;
+    UPROPERTY() UThemeData* ThemeData = nullptr;
 
     //data.DailyChallengeData = {}
     //    data.DailyTaskData = {}

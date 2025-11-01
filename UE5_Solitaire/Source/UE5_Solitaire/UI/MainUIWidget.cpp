@@ -641,7 +641,7 @@ void UMainUIWidget::OnClickChuPai()
         while (this->tableCardDraw3Go.Num() > 0)
         {
             nAniIndex = nAniIndex + 1;
-            auto mCardItem = TArrayExtentions::RemoveLast(this->tableCardDraw3Go);
+            auto mCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go);
             this->mSendCardListGo.Insert(mCardItem, 0);
 
             mCardItem->SetEventTriggerState(false);
@@ -671,27 +671,31 @@ void UMainUIWidget::OnClickChuPai()
         {
             auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
             this->tableCardDraw3Go.Insert(mCardItem, 0);
-            //UMGHelper::SetZOrder(mCardItem, 0); 使用原有Order 就行
+            UMGHelper::SetZOrder(mCardItem, 100 + i);
             mCardItem->SetTurnOverState(true);
-            mCardItem->PlayTurnOverAni();
-            auto mOpStepItemData = RecordStepDataHandler::GetSingleton()->GetOpStepItemDefaultData();
-            mOpStepItemData->fromPosTypeInfo = { SolitairePokerPosType::SendPokerPos, nMaxDrawCount, 0 };
-            mOpStepItemData->toPosTypeInfo = { SolitairePokerPosType::Draw3Pos, 0, 0 };
-            RecordStepDataHandler::GetSingleton()->AddStepRecord(mOpStepItemData);
-            this->nRemainHintCount_InDraw3AndSendCardList -= nMaxDrawCount;
-            this->RefreshDrawZone();
-            if (DataCenter::GetSingleton()->data->nDrawCount == 1)
-            {
-                AudioHandler::GetSingleton()->PlaySound("P1");
-            }
-            else if (DataCenter::GetSingleton()->data->nDrawCount == 2)
-            {
-                AudioHandler::GetSingleton()->PlaySound("P2");
-            }
-            else if (DataCenter::GetSingleton()->data->nDrawCount == 3)
-            {
-                AudioHandler::GetSingleton()->PlaySound("P3");
-            }
+            //mCardItem->PlayTurnOverAni();
+            mCardItem->Refresh();
+        }
+
+        auto mOpStepItemData = RecordStepDataHandler::GetSingleton()->GetOpStepItemDefaultData();
+        mOpStepItemData->fromPosTypeInfo = { SolitairePokerPosType::SendPokerPos, nMaxDrawCount, 0 };
+        mOpStepItemData->toPosTypeInfo = { SolitairePokerPosType::Draw3Pos, 0, 0 };
+        RecordStepDataHandler::GetSingleton()->AddStepRecord(mOpStepItemData);
+
+        this->nRemainHintCount_InDraw3AndSendCardList -= nMaxDrawCount;
+        this->RefreshDrawZone();
+
+        if (DataCenter::GetSingleton()->data->nDrawCount == 1)
+        {
+            AudioHandler::GetSingleton()->PlaySound("P1");
+        }
+        else if (DataCenter::GetSingleton()->data->nDrawCount == 2)
+        {
+            AudioHandler::GetSingleton()->PlaySound("P2");
+        }
+        else if (DataCenter::GetSingleton()->data->nDrawCount == 3)
+        {
+            AudioHandler::GetSingleton()->PlaySound("P3");
         }
     }
 }
