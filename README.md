@@ -78,3 +78,5 @@ UMG问题：
 
 3: AddChildToCanvas/AddChild 方法 都会导致 孩子节点的锚点/对其/位置 不准，得重新设置。
 
+4：通过 UButton->OnClicked 第一次添加蓝图点击方法，某些时候，得重启UE5 才能起作用。
+
