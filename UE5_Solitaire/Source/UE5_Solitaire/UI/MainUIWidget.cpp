@@ -18,6 +18,21 @@ void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
     //}
 }
 
+FReply UMainUIWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+    {
+        UE_LOG(LogTemp, Log, TEXT("×ó¼ü"));
+    }
+    else if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
+    {
+        UE_LOG(LogTemp, Log, TEXT("ÓÒ¼ü"));
+    }
+
+    //return FReply::Handled();
+    return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+}
+
 void UMainUIWidget::OnCreate()
 {
     Super::OnCreate();
@@ -32,8 +47,11 @@ void UMainUIWidget::OnLayoutChanged()
 {
     Super::OnLayoutChanged();
     //BG ÊÊÅäÆÁÄ»
-    auto mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
-    UMGAdapterTool::FitBG(mUIRoot, mBG);
+    if (this->mBG == nullptr)
+    {
+        this->mBG = Cast<UImage>(mUIRoot->GetWidgetFromName(TEXT("BG")));
+    }
+    UMGAdapterTool::FitBG(mUIRoot, this->mBG);
 }
 
 void UMainUIWidget::Init()
@@ -78,6 +96,20 @@ void UMainUIWidget::Init()
 
         UE_LOG(LogTemp, Log, TEXT("UMainUIWidget tableCardNodeTop7Pos: %s"), *mPos.ToString());
     }
+    
+    UButton* SendPokerBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("SendPokerBtn"));
+    SendPokerBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_SendPokerBtn);
+
+    this->mBG = Cast<UImage>(mUIRoot->GetWidgetFromName("BG"));
+
+    UButton* BGBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("BGBtn"));
+    BGBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_BGBtn);
+
+    //this->TopBottomView:UpdateShowHideAni(false);  
+    //if (LuaGameConfig.PLATFORM_EDITOR)
+    //{
+    //    TestView->Show();
+    //}
 
     GetWorld()->GetTimerManager().SetTimer(
         this->mTimer, 
@@ -123,11 +155,25 @@ void UMainUIWidget::CheckFirstLayoutOkToShow()
     this->InitGame();
 }
 
-//--------------------------------------------------------------------------------------------------------------------
-
+//-----------------------------------------Button µã»÷ÊÂ¼þ---------------------------------------------------------------------------
 void UMainUIWidget::OnBtnClicked_GameNodeBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
+}
+
+void UMainUIWidget::OnBtnClicked_SendPokerBtn()
+{
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_SendPokerBtn"));
+    this->OnClickChuPai();
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+    this->TellRobot_PlayerAlive();
+}
+
+void UMainUIWidget::OnBtnClicked_BGBtn()
+{
+    this->TellRobot_PlayerAlive();
+    //this->CardHintEffectPool->Reset();
+    //this->TopBottomView->UpdateShowHideAni();
 }
 
 void UMainUIWidget::RecycleAndInitCardGo()

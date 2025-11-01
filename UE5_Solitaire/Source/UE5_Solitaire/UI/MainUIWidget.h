@@ -34,6 +34,7 @@ class UE5_SOLITAIRE_API UMainUIWidget : public UWUIBase
 	GENERATED_BODY()
 protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& InMouseEvent) override;
 public:
 	virtual void OnCreate() override;
 	virtual void Init() override;
@@ -43,6 +44,8 @@ public:
 public:
 
 	UFUNCTION() void OnBtnClicked_GameNodeBtn();
+	UFUNCTION() void OnBtnClicked_SendPokerBtn();
+	UFUNCTION() void OnBtnClicked_BGBtn();
 
 	void InitGame();
 	void RecoverGame(bool bPlayAni = false);
@@ -103,6 +106,8 @@ private:
 	int nGetScore_nLastTop7HideCardCount = 0;
 	int nRemainHintCount_InDraw3AndSendCardList = 0;
 	TMap<UPokerItemWidget*, KKTweenItem*> mapCardItemTween;
+
+	UImage* mBG;
 
 	GameWinAniMgr GameWinAniMgr;
 	FTimerHandle mTimer;
