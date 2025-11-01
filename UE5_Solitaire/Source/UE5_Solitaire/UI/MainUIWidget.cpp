@@ -99,9 +99,7 @@ void UMainUIWidget::Init()
     
     UButton* SendPokerBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("SendPokerBtn"));
     SendPokerBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_SendPokerBtn);
-
     this->mBG = Cast<UImage>(mUIRoot->GetWidgetFromName("BG"));
-
     UButton* BGBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("BGBtn"));
     BGBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_BGBtn);
 
@@ -171,6 +169,7 @@ void UMainUIWidget::OnBtnClicked_SendPokerBtn()
 
 void UMainUIWidget::OnBtnClicked_BGBtn()
 {
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_BGBtn"));
     this->TellRobot_PlayerAlive();
     //this->CardHintEffectPool->Reset();
     //this->TopBottomView->UpdateShowHideAni();
