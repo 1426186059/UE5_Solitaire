@@ -578,13 +578,13 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             UMGHelper::SetZOrder(mCardItem, j);
             FVector2D from = UMGHelper::GetSlotPos(mCardItem);
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);
-            UMGHelper::SetSlotPos(mCardItem, to);
+            //UMGHelper::SetSlotPos(mCardItem, to);
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
-            to = FVector2D::ZeroVector;
+            //UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
+            //to = FVector2D::ZeroVector;
 
-            KKTween::UMG_MoveLocal_Render(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=, this]()
+            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnComplete([=, this]()
                 {
                     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                     if (bTurnOverState)
@@ -670,11 +670,13 @@ void UMainUIWidget::OnClickChuPai()
         for (int i = 0; i < nMaxDrawCount; i++)
         {
             auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
+
+            UE_LOG(LogTemp, Log, TEXT("%d"), mCardItem->nPokerId);
+
             this->tableCardDraw3Go.Insert(mCardItem, 0);
             UMGHelper::SetZOrder(mCardItem, 100 + i);
             mCardItem->SetTurnOverState(true);
-            //mCardItem->PlayTurnOverAni();
-            mCardItem->Refresh();
+            mCardItem->PlayTurnOverAni();
         }
 
         auto mOpStepItemData = RecordStepDataHandler::GetSingleton()->GetOpStepItemDefaultData();

@@ -9,12 +9,6 @@ class TArrayExtentions
 {
 public:
     template<typename T>
-    static T RemoveLast(TArray<T>& mList)
-    {
-        return mList.Pop();
-    }
-
-    template<typename T>
     static T Remove(TArray<T>& mList, int nIndex = -1)
     {
         if (nIndex == -1)

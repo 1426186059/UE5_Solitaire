@@ -150,7 +150,7 @@ public:
             [=](float fPercent)
             {
                 FVector2D targetPos = EaseFunc::easeLinear(InnerFrom, InnerTo, fPercent);
-                UMGHelper::SetRenderPos(target, targetPos);
+                UMGHelper::SetSlotPos(target, targetPos);
             });
     }
 };

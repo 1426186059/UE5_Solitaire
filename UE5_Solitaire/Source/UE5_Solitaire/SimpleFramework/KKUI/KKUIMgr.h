@@ -6,6 +6,8 @@
 #include "UE5_Solitaire/SimpleFramework/KKUI/UMGAdapterTool.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 
+#include "Components/WidgetComponent.h"
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "KKUIMgr.generated.h"
@@ -100,5 +102,6 @@ public:
 	void Init();
 private:
 	UPROPERTY() UWUIRoot* mUIRoot = nullptr;
+	UWidgetComponent* mWidgetComponent = nullptr;
 	TMap<TSubclassOf<UWUIBase>, TWeakObjectPtr<UWUIBase>> mUIDic;
 };
