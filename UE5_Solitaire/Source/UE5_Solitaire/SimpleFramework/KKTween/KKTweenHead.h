@@ -131,7 +131,7 @@ namespace KKTweenAPI
     public:
         ObjectPool()
         {
-            SetMaxCapacity(0);
+            SetMaxCapacity(1500);
         }
 
         void SetMaxCapacity(int nCapacity = 1)
