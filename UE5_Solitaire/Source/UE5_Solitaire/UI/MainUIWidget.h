@@ -105,7 +105,7 @@ private:
 	float fIQTime = 0;
 	int nGetScore_nLastTop7HideCardCount = 0;
 	int nRemainHintCount_InDraw3AndSendCardList = 0;
-	TMap<UPokerItemWidget*, KKTweenItem::Handle> mapCardItemTween;
+	TMap<UPokerItemWidget*, KKTween::Handle> mapCardItemTween;
 
 	UImage* mBG;
 

@@ -132,7 +132,7 @@ namespace KKTweenAPI
         mItemPool.SetMaxCapacity(nCount);
     }
 
-    TWeakPtr<KKTweenItem> KKTweenByList::AddTween(
+    TSharedPtr<KKTweenAPI::KKTweenItem> KKTweenByList::AddTween(
         UObject* obj,
         float time,
         Action_Float_Delegate updateFunc,

@@ -99,7 +99,7 @@ void UPokerItemWidget::PlayTurnOverAni()
 
     FVector2D from(1, 1);
     FVector2D to(0, 1);
-    auto mTween1 = KKTween::AddTween(this, 0.15,
+    auto mTween1 = KKTween::GetHandle(KKTween::AddTween(this, 0.15,
         [=,this](float fTimePercent)
         {
             this->tranCardItemAni->SetRenderScale(KKTween::EaseFunc::easeLinear(from, to, fTimePercent));
@@ -108,15 +108,15 @@ void UPokerItemWidget::PlayTurnOverAni()
         {
             this->Refresh();
             this->tranCardItemAni->SetRenderScale(to);
-        }).Pin()->Build();
+        }));
 
     FVector2D from2(0, 1);
     FVector2D to2(1, 1);
-    auto mTween2 = KKTween::AddTween(this, 0.15,
+    auto mTween2 = KKTween::GetHandle(KKTween::AddTween(this, 0.15,
         [=,this](float fTimePercent)
         {
             this->tranCardItemAni->SetRenderScale(KKTween::EaseFunc::easeLinear(from2, to2, fTimePercent));
-        }).Pin()->Build();
+        }));
 
     mTween1.AppendTween(mTween2);
     this->mTurnOverTween1 = mTween1;
@@ -137,7 +137,7 @@ void UPokerItemWidget::DoShakeAni()
 
     FVector2D from(FromRandPosX, FromRandPosY);
     FVector2D to(ToRandPosX, ToRandPosY);
-    this->mShakeTween = KKTween::AddTween(this, 0.04, 
+    this->mShakeTween = KKTween::GetHandle(KKTween::AddTween(this, 0.04,
         [=,this](float fTimePercent)
         {
             UMGHelper::SetRenderPos(this->tranCardItemAni, KKTween::EaseFunc::easeLinear(from, to, fTimePercent));
@@ -145,5 +145,5 @@ void UPokerItemWidget::DoShakeAni()
         [=,this]()
         {
             UMGHelper::SetRenderPos(this->tranCardItemAni, FVector2D::ZeroVector);
-        }).Pin()->SetLoopPingPong(4)->Build();
+        })->SetLoopPingPong(4));
 }

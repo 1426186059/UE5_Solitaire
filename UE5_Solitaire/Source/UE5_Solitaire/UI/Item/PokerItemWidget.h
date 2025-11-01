@@ -43,7 +43,7 @@ private:
 	bool bInit;
 	UWidget* tranCardItemAni;
 	UImage* mIcon;
-	KKTweenItem::Handle mTurnOverTween1;
-	KKTweenItem::Handle mTurnOverTween2;
-	KKTweenItem::Handle mShakeTween;
+	KKTween::Handle mTurnOverTween1;
+	KKTween::Handle mTurnOverTween2;
+	KKTween::Handle mShakeTween;
 };

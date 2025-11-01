@@ -25,27 +25,22 @@ void AKKTweenMgr::Tick(float DeltaTime)
 
 void AKKTweenMgr::Update(float DeltaTime)
 {
-    mManager->Update(DeltaTime);
+    this->mManager->Update(DeltaTime);
 }
 
 void AKKTweenMgr::SetMaxTweenCount(int nCount)
 {
-    mManager->SetMaxTweenCount(nCount);
+    this->mManager->SetMaxTweenCount(nCount);
 }
 
-TWeakPtr<KKTweenAPI::KKTweenItem> AKKTweenMgr::AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc, KKTweenAPI::ActionDelegate finishFunc)
+TSharedPtr<KKTweenAPI::KKTweenItem> AKKTweenMgr::AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc, KKTweenAPI::ActionDelegate finishFunc)
 {
     if (obj == nullptr)
     {
         obj = this;
     }
 
-    return mManager->AddTween(obj, time, updateFunc, finishFunc);
-}
-
-TWeakPtr<KKTweenAPI::KKTweenItem> AKKTweenMgr::delayedCall(UObject* obj, float time, KKTweenAPI::ActionDelegate finishFunc)
-{
-    return AddTween(obj, time, nullptr, finishFunc);
+    return this->mManager->AddTween(obj, time, updateFunc, finishFunc);
 }
 
 

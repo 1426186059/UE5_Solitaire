@@ -9,6 +9,54 @@ using namespace KKTweenAPI;
 class KKTween
 {
 public:
+    struct Handle
+    {
+    private:
+        int nId = -1;
+        TWeakPtr<KKTweenItem> mInnerPtr;
+
+        friend class KKTween;
+        Handle(TSharedPtr<KKTweenItem> mItem)
+        {
+            this->mInnerPtr = mItem;
+            this->nId = mItem->nId;
+        }
+    public:
+        Handle()
+        {
+
+        }
+
+        bool IsValid()
+        {
+            return mInnerPtr.IsValid() && mInnerPtr.Pin()->nId == nId;
+        }
+
+        void AppendTween(Handle mOtherTween)
+        {
+            if (IsValid() && mOtherTween.IsValid())
+            {
+                mInnerPtr.Pin()->AppendTween(mOtherTween.mInnerPtr.Pin().Get());
+            }
+        }
+
+        void Cancel()
+        {
+            if (IsValid())
+            {
+                mInnerPtr.Pin()->cancel();
+            }
+
+            mInnerPtr.Reset();
+            nId = -1;
+        }
+
+        void Reset()
+        {
+            Cancel();
+        }
+    };
+
     class EaseFunc
     {
     public:
@@ -110,27 +158,32 @@ public:
         return AKKTweenMgr::GetSingleton()->SetMaxTweenCount(nCount);
     }
 
-    static TWeakPtr<KKTweenItem> AddTween(float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
+    static Handle GetHandle(TSharedPtr<KKTweenItem> mTSharePtr)
+    {
+        return KKTween::Handle(mTSharePtr);
+    }
+
+    static TSharedPtr<KKTweenItem> AddTween(float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
     {
         return AKKTweenMgr::GetSingleton()->AddTween(nullptr, time, updateFunc, finishFunc);
     }
 
-    static TWeakPtr<KKTweenItem> AddTween(UObject* obj, float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
+    static TSharedPtr<KKTweenItem> AddTween(UObject* obj, float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
     {
         return AKKTweenMgr::GetSingleton()->AddTween(obj, time, updateFunc, finishFunc);
     }
     
-    static TWeakPtr<KKTweenItem> delayedCall(float time, ActionDelegate finishFunc = nullptr)
+    static TSharedPtr<KKTweenItem> delayedCall(float time, ActionDelegate finishFunc = nullptr)
     {
         return AddTween(nullptr, time, nullptr, finishFunc);
     }
 
-    static TWeakPtr<KKTweenItem> delayedCall(UObject* obj, float time, ActionDelegate finishFunc = nullptr)
+    static TSharedPtr<KKTweenItem> delayedCall(UObject* obj, float time, ActionDelegate finishFunc = nullptr)
     {
         return AddTween(obj, time, nullptr, finishFunc);
     }
 
-    static TWeakPtr<KKTweenItem> UMG_MoveLocal_Render(UWidget* target, FVector2D to, float time)
+    static TSharedPtr<KKTweenItem> UMG_MoveLocal_Render(UWidget* target, FVector2D to, float time)
     {
         FVector2D InnerFrom = UMGHelper::GetRenderPos(target);
         FVector2D InnerTo = to;
@@ -142,7 +195,7 @@ public:
             });
     }
 
-    static TWeakPtr<KKTweenItem> UMG_MoveLocal_Slot(UWidget* target, FVector2D to, float time)
+    static TSharedPtr<KKTweenItem> UMG_MoveLocal_Slot(UWidget* target, FVector2D to, float time)
     {
         FVector2D InnerFrom = UMGHelper::GetSlotPos(target);
         FVector2D InnerTo = to;

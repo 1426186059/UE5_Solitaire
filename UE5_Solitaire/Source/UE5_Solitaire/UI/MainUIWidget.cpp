@@ -584,7 +584,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             //UMGHelper::SetRenderPos(mCardItem, this->tranFaPaiPos - to);
             //to = FVector2D::ZeroVector;
 
-            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3).Pin()->SetDelay(0.05 * j)->SetOnCompleteFunc([=, this]()
+            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnCompleteFunc([=, this]()
                 {
                     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                     if (bTurnOverState)
@@ -948,7 +948,7 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
 
     if (bUndo)
     {
-        auto mTweenHandle = KKTween::AddTween(this, 0.25,
+        auto mTweenHandle = KKTween::GetHandle(KKTween::AddTween(this, 0.25,
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeInQuad(toPos, fromPos, fTimePercent));
@@ -959,13 +959,13 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
                 {
                     finishFunc();
                 }
-            }).Pin()->Build();
+            }));
 
         this->mapCardItemTween.Add(mCardItem, mTweenHandle);
     }
     else
     {
-        auto mTweenHandle = KKTween::AddTween(this, 0.25,
+        auto mTweenHandle = KKTween::GetHandle(KKTween::AddTween(this, 0.25,
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
@@ -976,7 +976,7 @@ void UMainUIWidget::OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D from
                 {
                     finishFunc();
                 }
-            }).Pin()->Build();
+            }));
         
         this->mapCardItemTween.Add(mCardItem, mTweenHandle);
     }
@@ -992,7 +992,7 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
 
     if (bUndo)
     {
-        auto mTween = KKTween::AddTween(this, 0.35,
+        auto mTween = KKTween::GetHandle(KKTween::AddTween(this, 0.35,
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeInQuad(toPos, fromPos, fTimePercent));
@@ -1003,13 +1003,13 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
                 {
                     finishFunc();
                 }
-            }).Pin()->Build();
+            }));
 
         this->mapCardItemTween.Add(mCardItem, mTween);
     }
     else
     {
-        auto mTween = KKTween::AddTween(this, 0.35,
+        auto mTween = KKTween::GetHandle(KKTween::AddTween(this, 0.35,
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
@@ -1020,7 +1020,7 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
                 {
                     finishFunc();
                 }
-            }).Pin()->Build();
+            }));
 
         this->mapCardItemTween.Add(mCardItem, mTween);
     }
@@ -1040,11 +1040,11 @@ void UMainUIWidget::DoTop7ReSizeHeightAni(int nTop7Index)
 
         FVector2D fromPos = UMGHelper::GetSlotPos(mCardItem);
         FVector2D toPos = this->GetCardNodeTop7Pos(nTop7Index, i);
-        auto mTween = KKTween::AddTween(this, 0.2,
+        auto mTween = KKTween::GetHandle(KKTween::AddTween(this, 0.2,
             [=](float fTimePercent)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
-            }).Pin()->Build();
+            }));
         this->mapCardItemTween[mCardItem] = mTween;
     }
 }
