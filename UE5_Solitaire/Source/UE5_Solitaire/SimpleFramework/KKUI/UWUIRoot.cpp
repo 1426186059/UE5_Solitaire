@@ -15,6 +15,7 @@ void UWUIRoot::Init()
     this->Layer_Loading = Cast<UCanvasPanel>(this->GetWidgetFromName("Layer_Loading"));
     this->Layer_Popup = Cast<UCanvasPanel>(this->GetWidgetFromName("Layer_Popup"));
     this->Layer_Tip = Cast<UCanvasPanel>(this->GetWidgetFromName("Layer_Tip"));
+    this->Layer_Debug = Cast<UCanvasPanel>(this->GetWidgetFromName("Layer_Debug"));
 
     this->AddToViewport(0);
     Cast<UCanvasPanelSlot>(this->Layer_Background->Slot)->SetZOrder(0);
@@ -22,4 +23,5 @@ void UWUIRoot::Init()
     Cast<UCanvasPanelSlot>(this->Layer_Loading->Slot)->SetZOrder(2);
     Cast<UCanvasPanelSlot>(this->Layer_Popup->Slot)->SetZOrder(3);
     Cast<UCanvasPanelSlot>(this->Layer_Tip->Slot)->SetZOrder(4);
+    Cast<UCanvasPanelSlot>(this->Layer_Debug->Slot)->SetZOrder(5);
 }

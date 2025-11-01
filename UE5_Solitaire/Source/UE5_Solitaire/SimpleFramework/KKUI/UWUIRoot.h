@@ -17,6 +17,7 @@ public:
 	UCanvasPanel* Layer_Loading;
 	UCanvasPanel* Layer_Popup;
 	UCanvasPanel* Layer_Tip;
+	UCanvasPanel* Layer_Debug;
 private:
 	bool bInit;
 };

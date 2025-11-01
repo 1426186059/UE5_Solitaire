@@ -22,11 +22,11 @@ FReply UMainUIWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
 {
     if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
     {
-        UE_LOG(LogTemp, Log, TEXT("×ó¼ü"));
+        UE_LOG(LogTemp, Log, TEXT("Left Mouse Click"));
     }
     else if (InMouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
     {
-        UE_LOG(LogTemp, Log, TEXT("ÓÒ¼ü"));
+        UE_LOG(LogTemp, Log, TEXT("Right Mouse Click"));
     }
 
     //return FReply::Handled();
