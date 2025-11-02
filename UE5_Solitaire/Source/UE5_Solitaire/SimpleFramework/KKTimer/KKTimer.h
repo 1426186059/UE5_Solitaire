@@ -7,9 +7,17 @@
 #include "KKFixedTimer.h"
 #include "KKFixedTimeMgr.h"
 
-class KKTimer
+class KKTimer:public TSharedFromThis<KKTimer>
 {
+private:
+	static TMap<uint64, TSharedPtr<KKTimer>> mKeepAliveDic;
+	KKTimer() = default;
 public:
+	~KKTimer()
+	{
+		UE_LOG(LogTemp, Log, TEXT("~KKTimer Destroy"));
+	}
+
 	bool bUnScaled = false;
 	int nLoopCount = 0;
 	float fDuration = 0.0f;
@@ -19,14 +27,14 @@ public:
 	TWeakObjectPtr<UObject> mBindObj;
 	FDelegateHandle mTimerHandle;
 
-	static KKTimer* New(UObject* bindObj, TFunction<void()> func, float duration, int loop = 1, bool unscaled = false)
+	static TSharedPtr<KKTimer> New(UObject* bindObj, TFunction<void()> func, float duration, int loop = 1, bool unscaled = false)
 	{
 		if (bindObj == nullptr)
 		{
 			bindObj = AKKFrameUpdateMgr::GetSingleton();
 		}
 
-		auto o = new KKTimer();
+		TSharedPtr<KKTimer> o = MakeShareable(new KKTimer());
 		o->mBindObj = bindObj;
 		o->mDoFunc = func;
 		o->fDuration = duration;
@@ -43,12 +51,15 @@ public:
 		mTimerHandle = AKKFrameUpdateMgr::GetSingleton()->GetEventList()->AddLambda([this](float DeltaTime) {
 			this->Update(DeltaTime);
 			});
+
+		mKeepAliveDic.Add((uint64)this, this->AsShared());
 	}
 
 	void Stop()
 	{
 		this->running = false;
 		AKKFrameUpdateMgr::GetSingleton()->GetEventList()->Remove(mTimerHandle);
+		mKeepAliveDic.Remove((uint64)this);
 	}
 
 	void Update(float DeltaTime)

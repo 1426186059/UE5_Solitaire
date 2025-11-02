@@ -45,7 +45,7 @@ public:
         int nIndex = this->usedArray.IndexOf(mItem);
         ensureMsgf(nIndex >= 0, TEXT("recyleObj 000 Error: %d"), nIndex);
         this->usedArray.RemoveAt(nIndex);
-        nIndex = this.usedArray.IndexOf(mItem);
+        nIndex = this->usedArray.IndexOf(mItem);
         ensureMsgf(nIndex == -1, TEXT("recyleObj 111 Error"));
 
         mItem->SetVisibility(ESlateVisibility::Hidden);
@@ -55,7 +55,7 @@ public:
     T* popObj()
     {
         T* mItem = nullptr;
-        if (this->mPool.length > 0)
+        if (this->mPool.Num() > 0)
         {
             mItem = this->mPool.Pop();
         }
@@ -65,7 +65,7 @@ public:
         }
 
         mItem->SetVisibility(ESlateVisibility::Visible);
-        this.usedArray.Add(mItem);
+        this->usedArray.Add(mItem);
 
         if (this->nMaxCapicity > 0 && this->usedArray.Num() + this->mPool.Num() > this->nMaxCapicity)
         {
@@ -81,7 +81,7 @@ public:
 
     int GetSumCount()
     {
-        return this->usedArray.Num() + this->mPool.Count;
+        return this->usedArray.Num() + this->mPool.Num();
     }
 
     void SetItemParent(UWidget* ItemParent)
@@ -122,11 +122,11 @@ public:
     //    }
     //}
 
-    void preLoadObj(int nFrameCount, int nCount, TFunction<void()> mFinishFunc = null)
+    void preLoadObj(int nFrameCount, int nCount, TFunction<void()> mFinishFunc = nullptr)
     {
         int nCreateCountSingle = FMath::CeilToInt(nCount / (float)nFrameCount);
-        Timer mTimer = Timer.New(
-            []()
+        auto mTimer = KKTimer::New(nullptr,
+            [=]()
             {
                 for (int j = 0; j < nCreateCountSingle; j++)
                 {
@@ -141,10 +141,11 @@ public:
                     }
                     else
                     {
-                        this.this->mPool.push(this.InnerCreateItem());
+                        this->mPool.Add(this->InnerCreateItem());
                     }
                 }
-            }, 1 / 60f, nFrameCount);
-        mTimer.Start();
+            }, 1 / 60.0f, nFrameCount);
+        mTimer->Start();
     }
+
 };
