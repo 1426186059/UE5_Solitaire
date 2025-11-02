@@ -207,25 +207,7 @@ namespace KKTweenAPI
         }
     };
 
-    class KKTweenByList
-    {
-    private:
-        ObjectPool mItemPool;
-        TArray<TSharedPtr<KKTweenItem>> mTweenT;
-        AKKTweenMgr* defaultBindObj;
-    public:
-        KKTweenByList(AKKTweenMgr* mDefaultBindObj);
-
-        void Update(float DeltaTime);
-        void SetMaxTweenCount(int nCount);
-        TSharedPtr<KKTweenAPI::KKTweenItem> AddTween(
-            UObject* obj,
-            float time,
-            Action_Float_Delegate updateFunc = nullptr,
-            ActionDelegate finishFunc = nullptr);
-
-    };
-
+#ifdef USE_LinkedList
     class KKTweenByLinkedList
     {
     private:
@@ -247,6 +229,27 @@ namespace KKTweenAPI
             TSharedPtr<KKTweenItem> mItem);
 
     };
+
+#else
+    class KKTweenByList
+    {
+    private:
+        ObjectPool mItemPool;
+        TArray<TSharedPtr<KKTweenItem>> mTweenT;
+        AKKTweenMgr* defaultBindObj;
+    public:
+        KKTweenByList(AKKTweenMgr* mDefaultBindObj);
+
+        void Update(float DeltaTime);
+        void SetMaxTweenCount(int nCount);
+        TSharedPtr<KKTweenAPI::KKTweenItem> AddTween(
+            UObject* obj,
+            float time,
+            Action_Float_Delegate updateFunc = nullptr,
+            ActionDelegate finishFunc = nullptr);
+    };
+#endif
+
 };
 
 
