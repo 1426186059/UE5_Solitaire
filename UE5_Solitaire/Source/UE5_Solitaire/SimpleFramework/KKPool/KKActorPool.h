@@ -1,18 +1,18 @@
-//using System;
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-//using UnityEngine.UI;
+//#pragma once
 //
-//public class NodePool
+//#include "CoreMinimal.h"
+//
+//class KKActorPool
 //{
-//    public readonly TSArray<GameObject> pool = new TSArray<GameObject>();
-//    public readonly TSArray<GameObject> usedArray = new TSArray<GameObject>();
+//private:
+//    readonly TSArray<GameObject> pool = new TSArray<GameObject>();
+//    readonly TSArray<GameObject> usedArray = new TSArray<GameObject>();
 //
-//    private GameObject mItemPrefab;
-//    private Transform ItemParent;
-//    private int nMaxCapicity = -1;
+//    GameObject mItemPrefab;
+//    Transform ItemParent;
+//    int nMaxCapicity = -1;
 //    
+//public:
 //    public void Init(GameObject mItemPrefab, int nInitCount = 0)
 //    {
 //        this.mItemPrefab = mItemPrefab;

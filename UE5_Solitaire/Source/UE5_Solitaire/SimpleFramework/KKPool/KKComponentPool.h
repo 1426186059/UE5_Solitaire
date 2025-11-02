@@ -1,10 +1,9 @@
-//using System;
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
-//using UnityEngine.UI;
+//#pragma once
 //
-//public class NodeComponentPool<T> where T : Component
+//#include "CoreMinimal.h"
+//#define N_DEFAULT_MAX_CAPACITY 1024
+//
+//class KKComponentPool
 //{
 //    public readonly TSArray<T> pool = new TSArray<T>();
 //    public readonly TSArray<T> usedArray = new TSArray<T>();

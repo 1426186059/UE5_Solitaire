@@ -166,7 +166,10 @@ public:
 
     static void SetParent(UWidget* target, UCanvasPanel* Parent)
     {
-        Parent->AddChildToCanvas(target);
+        if (target->GetParent() != Parent)
+        {
+            Parent->AddChild(target);
+        }
     }
 
     static void SetZOrder(UWidget* target, int nOrder)
