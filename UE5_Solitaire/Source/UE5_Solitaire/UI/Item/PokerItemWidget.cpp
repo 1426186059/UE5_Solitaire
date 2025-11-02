@@ -2,6 +2,70 @@
 
 #include "PokerItemWidget.h"
 
+FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseButtonDown "));
+    if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+    {
+        //return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton).NativeReply;
+        return FReply::Handled().DetectDrag(TakeWidget(), EKeys::LeftMouseButton);
+    }
+    return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+}
+
+void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
+{
+    Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragDetected "));
+
+    UPokerItemDragDropOperation* DragOp = NewObject<UPokerItemDragDropOperation>();
+    DragOp->WidgetSource = this;
+    DragOp->DragOffset = InMouseEvent.GetScreenSpacePosition() - InGeometry.GetAbsolutePosition();
+
+    //DragOp->DefaultDragVisual = CreateDragVisual();
+    DragOp->Pivot = EDragPivot::MouseDown;
+
+    OutOperation = DragOp;
+}
+
+void UPokerItemWidget::NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    Super::NativeOnDragEnter(InGeometry, InDragDropEvent, InOperation);
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragEnter "));
+
+    this->bInDrag = true;
+    this->beginPos = UMGHelper::GetSlotPos(this);
+/*    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this)*/;
+}
+
+void UPokerItemWidget::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    Super::NativeOnDragLeave(InDragDropEvent, InOperation);
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragLeave "));
+}
+
+bool UPokerItemWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragOver "));
+    return Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
+}
+
+bool UPokerItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDrop "));
+
+    //UInventoryDragDropOp* DragOp = Cast<UInventoryDragDropOp>(InOperation);
+    //if (!DragOp) return false;
+    //UInventorySlotWidget* From = Cast<UInventorySlotWidget>(DragOp->WidgetSource);
+    //if (!From || From == this) return false;
+    //// 广播给外部做真正的交换/堆叠
+    //OnItemDropped.Broadcast(From, this);
+
+    return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+}
+
 void UPokerItemWidget::Init()
 {
     if (this->bInit) return;

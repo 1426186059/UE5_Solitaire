@@ -338,7 +338,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 auto toPos = this->GetCardNodeTop7Pos(i, j);
 
                 /*local mTween = TweenMgr:AddGoTween(this->transform, 0.3, function(fTimePercent)
-                    self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
+                    this->SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
                     end, function()
                     if mCardItem : orTurnOverStateIsTrue() then
                         mCardItem : PlayTurnOverAni()
@@ -354,10 +354,10 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                                     n4ACount = n4ACount + 1
 
                                     local mCardItem = this->tableCardNode4AGo[i][j]
-                                    local fromPos = self:GetCardNodeSendPokerPos()
+                                    local fromPos = this->GetCardNodeSendPokerPos()
                                     local toPos = this-> GetCardNode4APos(i)
                                     local mTween = TweenMgr : AddGoTween(this->transform, 0.3, function(fTimePercent)
-                                        self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
+                                        this->SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
                                         end, function()
                                         if mCardItem : orTurnOverStateIsTrue() then
                                             mCardItem : PlayTurnOverAni()
@@ -377,10 +377,10 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                                 nDraw3Count = nDraw3Count + 1
 
                                 local mCardItem = this->tableCardDraw3Go[i]
-                                local fromPos = self:GetCardNodeSendPokerPos()
+                                local fromPos = this->GetCardNodeSendPokerPos()
                                 local toPos = this-> GetCardNodeDraw3Pos(i)
                                 local mTween = TweenMgr : AddGoTween(this->transform, 0.3, function(fTimePercent)
-                                    self:SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
+                                    this->SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
                                     end, function()
                                     if mCardItem : orTurnOverStateIsTrue() then
                                         mCardItem : PlayTurnOverAni()
@@ -393,7 +393,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                                     end
                                     end)
                                 else
-                                    self:RefreshAllPokerState()
+                                    this->RefreshAllPokerState()
                                     end
 
                                     GameEventHandler : Brocast(EventName.RefreshTopBottomUI)
@@ -727,6 +727,270 @@ void UMainUIWidget::RefreshDrawZone()
             });
     }
 }
+
+void UMainUIWidget::OnClickToMovePokerPos(UPokerItemWidget* mCardItem)
+{
+    auto& posTypeInfo = this->GetPokerPosType(mCardItem);
+    if (posTypeInfo[1] == SolitairePokerPosType::Draw3Pos)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (this->orCanIn4A(i, mCardItem))
+            {
+                this->OnDragBegin(mCardItem);
+                this->LockTargetToMove(mCardItem, SolitairePokerPosType::A4Pos, i);
+                return;
+            }
+        }
+        for (int i = 0; i < 7; i++)
+        {
+            if (this->orCanInNode7(i, mCardItem))
+            {
+                this->OnDragBegin(mCardItem);
+                this->LockTargetToMove(mCardItem, SolitairePokerPosType::Top7Pos, i);
+                return;
+            }
+        }
+    }
+    else if (posTypeInfo[1] == SolitairePokerPosType::A4Pos)
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            if (this->orCanInNode7(i, mCardItem))
+            {
+                this->OnDragBegin(mCardItem);
+                this->LockTargetToMove(mCardItem, SolitairePokerPosType::Top7Pos, i);
+                return;
+            }
+        }
+    }
+    else if (posTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (this->orCanIn4A(i, mCardItem))
+            {
+                this->OnDragBegin(mCardItem);
+                this->LockTargetToMove(mCardItem, SolitairePokerPosType::A4Pos, i);
+                return;
+            }
+        }
+
+        for (int i = 0; i < 7; i++)
+        {
+            if (this->orCanInNode7(i, mCardItem))
+            {
+                this->OnDragBegin(mCardItem);
+                this->LockTargetToMove(mCardItem, SolitairePokerPosType::Top7Pos, i);
+                return;
+            }
+        }
+    }
+    else
+    {
+        check(false);
+    }
+
+    AudioHandler::GetSingleton()->PlaySound("CardShake");
+    auto mSelectCardItem = this->GetSelectCardItemList(mCardItem);
+    for (auto v : mSelectCardItem)
+    {
+        v->DoShakeAni();
+    }
+}
+
+void UMainUIWidget::OnDragBegin(UPokerItemWidget* mDragCardItem)
+{
+    auto& mCardItemList = this->GetSelectCardItemList(mDragCardItem);
+    for (auto v : mCardItemList)
+    {
+        auto mCardItem = v;
+        if (this->mapCardItemTween.Contain(mCardItem))
+        {
+            this->mapCardItemTween[mCardItem].Cancel();
+            this->mapCardItemTween.Remove(mCardItem);
+        }
+        //v.transform : SetAsLastSibling();
+    }
+}
+
+void UMainUIWidget::OnDrag(UPokerItemWidget* mDragCardItem)
+{
+    auto& mCardItemList = this->GetSelectCardItemList(mDragCardItem);
+    auto& oriPosTypeInfo = this->GetPokerPosType(mDragCardItem);
+    if (oriPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+    {
+        int32 nTop7Index = oriPosTypeInfo[2];
+        int32 nIndex = oriPosTypeInfo[3];
+        FVector2D oriPos = UMGHelper::GetSlotPos(mDragCardItem);
+        for (int i = 0; i < mCardItemList.Num(); i++)
+        {
+            auto& mCardItem = mCardItemList[i];
+            if (i > 0)
+            {
+                FVector2D Pos = oriPos - FVector2D(0, i * N_TOP7_GAP_HEIGHT);
+                UMGHelper::SetSlotPos(mCardItem, Pos);
+            }
+        }
+    }
+}
+
+void UMainUIWidget::OnDragEndToMovePokerPos(UPokerItemWidget* mCardItem)
+{
+    auto& mCardItemPos = this->GetRelativePosByGo(mCardItem);
+    float mCardItemPosY = mCardItemPos.y;
+    float orInZone = [=](FVector2D middlePos)
+        {
+            if (mCardItemPos.x >= middlePos.x - 80 && mCardItemPos.x <= middlePos.x + 80 &&
+                mCardItemPos.y >= middlePos.y - 80 && mCardItemPos.y <= middlePos.y + 80)
+            {
+                return true;
+            }
+
+            return false;
+        };
+
+    bool bIn4APos = mCardItemPosY > this->tableCardNode4APos[1].y - 75;
+    if (bIn4APos)
+    {
+        int n4AIndex = -1;
+        for (int i = 0; i < 4; i++)
+        {
+            FVector2D middlePos = this->GetCardNode4APos(i);
+            if (orInZone(middlePos))
+            {
+                if (this->orCanIn4A(i, mCardItem))
+                {
+                    this->LockTargetToMove(mCardItem, SolitairePokerPosType::A4Pos, i);
+                    return;
+                }
+                break;
+            }
+        }
+    }
+    else
+    {
+        int nTop7Index = -1;
+        for (int i = 0; i < 7; i++)
+        {
+            FVector2D middlePos = this->GetCardNodeTop7NextMaxHeightPos(i);
+            if (orInZone(middlePos))
+            {
+                if (this->orCanInNode7(i, mCardItem))
+                {
+                    this->LockTargetToMove(mCardItem, SolitairePokerPosType::Top7Pos, i);
+                    return;
+                }
+                break;
+            }
+        }
+    }
+
+    this->LockTargetToMove(mCardItem, -1);
+}
+
+void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, int nIndex)
+{
+    auto& oriPosTypeInfo = this->GetPokerPosType(mCardItem);
+    auto& mCardItemList = this->GetSelectCardItemList(mCardItem);
+
+    bool bToOtherPos = false;
+    if (nPosType == SolitairePokerPosType::A4Pos)
+    {
+        int n4AIndex = nIndex;
+        auto& tableCardNode4AGo = this->tableCardNode4AGo[n4AIndex];
+        if (tableCardNode4AGo.Num() > 0)
+        {
+            tableCardNode4AGo[tableCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
+        }
+
+        this->SetDragEndRemoveSelfFromArray(mCardItem);
+        tableCardNode4AGo.Add(mCardItem);
+        bToOtherPos = true;
+
+        if (tableCardNode4AGo.Num() < 8)
+        {
+        AudioHandler: PlaySound("receive_card_"..#tableCardNode4AGo);
+        }
+        else
+        {
+        AudioHandler:PlaySound("receive_card_8");
+        }
+    }
+    else if (nPosType == SolitairePokerPosType::Top7Pos)
+    {
+        int nTop7Index = nIndex;
+        auto& tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
+        int nNowHeight = #tableCardNodeTop7Go;
+        bToOtherPos = true;
+
+        local tableArray = this->SetDragEndRemoveSelfFromArray(mCardItem);
+        this->InsertArrayToTop7Go(nTop7Index, tableArray);
+        AudioHandler: PlaySound("P2");
+    }
+
+    auto targetPosTypeInfo;
+    if (bToOtherPos)
+    {
+        ThemeSolitaire.RecordStepDataHandler : AddMoveCount();
+        targetPosTypeInfo = this->GetPokerPosType(mCardItem);
+
+        auto mOpStepItemData = RecordStepDataHandler::GetSingleton()->GetOpStepItemDefaultData();
+        mOpStepItemData.fromPosTypeInfo = oriPosTypeInfo;
+        mOpStepItemData.toPosTypeInfo = targetPosTypeInfo;
+        RecordStepDataHandler: AddStepRecord(mOpStepItemData);
+
+        this->onAddScore();
+        this->onAddIQ();
+        this->DoWhenSet_FastGame();
+
+        if (oriPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+        {
+            this->DoTop7ReSizeHeightAni(oriPosTypeInfo[2]);
+        }
+
+        if (targetPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+        {
+            this->DoTop7ReSizeHeightAni(targetPosTypeInfo[2]);
+        }
+    }
+
+    for (auto v : mCardItemList)
+    {
+        auto mTempCardItem = v;
+        auto cardPosTypeInfo = this->GetPokerPosType(v);
+        FVector2D from = this->GetRelativePosByGo(v);
+        FVector2D to = this->GetPosByPosTypeInfo(cardPosTypeInfo);
+
+        this->OnDragEndMove(mTempCardItem, from, to, false, [=]()
+            {
+                if (targetPosTypeInfo)
+                {
+                    if (targetPosTypeInfo[1] == SolitairePokerPosType::A4Pos)
+                    {
+                        this->PlayToA4EffectAni(targetPosTypeInfo[2], mTempCardItem);
+                    }
+                }
+            });
+    }
+
+    if ((not this->bGameEnd) && oriPosTypeInfo[1] != SolitairePokerPosType::A4Pos)
+    {
+        if (this->tween_OnFastGameToResultA4)
+        {
+            this->tween_OnFastGameToResultA4:cancel();
+            this->tween_OnFastGameToResultA4 = nil;
+        }
+
+        this->tween_OnFastGameToResultA4 = KKTween::delayedCallWithGo(this->transform, 0.35, []()
+            {
+                this->OnFastGameToResultA4();
+            });
+    }
+
+    this->DoActionEnd();
+}
+
 
 
 //------------------------------------------------------游戏模式相关--------------------------------------------------------------------

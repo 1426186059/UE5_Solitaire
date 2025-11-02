@@ -5,6 +5,8 @@
 #include "UE5_Solitaire/SimpleFramework/KKTween/KKTween.h"
 #include "UE5_Solitaire/SimpleFramework/KKUI/KKUIMgr.h"
 
+#include "Blueprint/DragDropOperation.h"
+
 #include "Blueprint/UserWidget.h"
 #include "Components/Image.h"
 #include "Components/Button.h"
@@ -15,10 +17,21 @@
 #include "CoreMinimal.h"
 #include "PokerItemWidget.generated.h"
 
+class UMainUIWidget;
+
 UCLASS()
 class UE5_SOLITAIRE_API UPokerItemWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
+	void NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation);
+	void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation);
+	bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation);
+	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+
 public:
 	void Init();
 	void Show();
@@ -32,7 +45,6 @@ public:
 	void SetEventTriggerState(bool bCanClick);
 	void PlayTurnOverAni();
 	void DoShakeAni();
-
 public:
 	int nPokerId;
 	bool bTurnOverState = false;
@@ -46,4 +58,20 @@ private:
 	KKTween::Handle mTurnOverTween1;
 	KKTween::Handle mTurnOverTween2;
 	KKTween::Handle mShakeTween;
+};
+
+UCLASS()
+class UE5_SOLITAIRE_API UPokerItemDragDropOperation : public UDragDropOperation
+{
+	GENERATED_BODY()
+
+public:
+	UPokerItemWidget* WidgetSource;
+	FVector2D DragOffset;
+
+	UPROPERTY()
+	int32 ItemID = 0;
+
+	UPROPERTY()
+	int32 Quantity = 0;
 };
