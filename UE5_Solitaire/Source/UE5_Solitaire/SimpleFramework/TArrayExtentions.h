@@ -36,10 +36,15 @@ public:
         return TArrayExtentions::Remove(mList, nRemoveIndex);
     }
 
-    template<typename T, typename FuncType>
+    template<typename T>
     static void PrintTArray(TArray<T> mArray, FString Tag)
     {
-        UE_LOG(LogTemp, Log, TEXT("%s: %s"), *Tag, *FString::Join(mArray, TEXT(", ")));
+        TArray<FString> mList = {};
+        for(auto v : mArray)
+        {
+            mList.Add(FString::Format(TEXT("{0}"), { v }));
+        }
+        UE_LOG(LogTemp, Log, TEXT("%s: %s"), *Tag, *FString::Join(mList, TEXT(", ")));
     }
 
 private:

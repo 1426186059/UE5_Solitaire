@@ -328,7 +328,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
         }
 
         // ------------------ - 动画播放-------------------- -
-        AudioHandler::GetSingleton()->:GetSingleton()->PlaySound(TEXT("start_new"));
+        AudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
         for (int i = 0; i < 7; i++)
         {
             for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
@@ -559,7 +559,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
     //--------------------------- 做发牌动画---------------------------------
-    AudioHandler::GetSingleton()->:GetSingleton()->PlaySound(TEXT("start_new"));
+    AudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
 
     for (int i = 0; i < 7; i++)
     {
@@ -592,7 +592,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         }
     }
 
-    this->GameWinAniMgr.DestroyAniNode();
+    this->GameWinAniMgr->DestroyAniNode();
     this->UpdateGameMode();
     this->onAddScore_InitParam();
     UEHelper::StartTimer(this, this->mTimer);
@@ -655,7 +655,7 @@ void UMainUIWidget::OnClickChuPai()
         mOpStepItemData->toPosTypeInfo = { SolitairePokerPosType::SendPokerPos, 0, 0 };
         RecordStepDataHandler::GetSingleton()->AddStepRecord(mOpStepItemData);
 
-        AudioHandler::GetSingleton()->:GetSingleton()->PlaySound("P4");
+        AudioHandler::GetSingleton()->PlaySound("P4");
         KKTween::delayedCall(this, 0.5, [this]()
             {
                 this->DoWhenSet_FastGame();
@@ -683,15 +683,15 @@ void UMainUIWidget::OnClickChuPai()
 
         if (DataCenter::GetSingleton()->data->nDrawCount == 1)
         {
-            AudioHandler::GetSingleton()->:GetSingleton()->PlaySound("P1");
+            AudioHandler::GetSingleton()->PlaySound("P1");
         }
         else if (DataCenter::GetSingleton()->data->nDrawCount == 2)
         {
-            AudioHandler::GetSingleton()->:GetSingleton()->PlaySound("P2");
+            AudioHandler::GetSingleton()->PlaySound("P2");
         }
         else if (DataCenter::GetSingleton()->data->nDrawCount == 3)
         {
-            AudioHandler::GetSingleton()->:GetSingleton()->PlaySound("P3");
+            AudioHandler::GetSingleton()->PlaySound("P3");
         }
     }
 }
@@ -726,7 +726,7 @@ void UMainUIWidget::RefreshDrawZone()
 
 void UMainUIWidget::OnClickToMovePokerPos(UPokerItemWidget* mCardItem)
 {
-    auto& posTypeInfo = this->GetPokerPosType(mCardItem);
+    auto posTypeInfo = this->GetPokerPosType(mCardItem);
     if (posTypeInfo[1] == SolitairePokerPosType::Draw3Pos)
     {
         for (int i = 0; i < 4; i++)
@@ -787,7 +787,7 @@ void UMainUIWidget::OnClickToMovePokerPos(UPokerItemWidget* mCardItem)
         check(false);
     }
 
-    AudioHandler::GetSingleton()->:GetSingleton()->PlaySound("CardShake");
+    AudioHandler::GetSingleton()->PlaySound("CardShake");
     auto mSelectCardItem = this->GetSelectCardItemList(mCardItem);
     for (auto v : mSelectCardItem)
     {
@@ -801,7 +801,7 @@ void UMainUIWidget::OnDragBegin(UPokerItemWidget* mDragCardItem)
     for (auto v : mCardItemList)
     {
         auto mCardItem = v;
-        if (this->mapCardItemTween.Contain(mCardItem))
+        if (this->mapCardItemTween.Contains(mCardItem))
         {
             this->mapCardItemTween[mCardItem].Cancel();
             this->mapCardItemTween.Remove(mCardItem);
@@ -847,7 +847,7 @@ void UMainUIWidget::OnDragEndToMovePokerPos(UPokerItemWidget* mCardItem)
             return false;
         };
 
-    bool bIn4APos = mCardItemPosY > this->tableCardNode4APos[1].y - 75;
+    bool bIn4APos = mCardItemPosY > this->tableCardNode4APos[1].Y - 75;
     if (bIn4APos)
     {
         int n4AIndex = -1;
@@ -895,19 +895,19 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, 
     if (nPosType == SolitairePokerPosType::A4Pos)
     {
         int n4AIndex = nIndex;
-        auto& tableCardNode4AGo = this->tableCardNode4AGo[n4AIndex];
-        if (tableCardNode4AGo.Num() > 0)
+        auto& mListCardNode4AGo = this->tableCardNode4AGo[n4AIndex];
+        if (mListCardNode4AGo.Num() > 0)
         {
-            tableCardNode4AGo[tableCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
+            mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
         }
 
         this->SetDragEndRemoveSelfFromArray(mCardItem);
-        tableCardNode4AGo.Add(mCardItem);
+        mListCardNode4AGo.Add(mCardItem);
         bToOtherPos = true;
 
-        if (tableCardNode4AGo.Num() < 8)
+        if (mListCardNode4AGo.Num() < 8)
         {
-            AudioHandler::GetSingleton()->PlaySound(FString::Format(TEXT("receive_card_{0}"), { tableCardNode4AGo.Num() }));
+            AudioHandler::GetSingleton()->PlaySound(FString::Format(TEXT("receive_card_{0}"), { mListCardNode4AGo.Num() }));
         }
         else
         {
@@ -917,8 +917,8 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, 
     else if (nPosType == SolitairePokerPosType::Top7Pos)
     {
         int nTop7Index = nIndex;
-        auto& tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
-        int nNowHeight = tableCardNodeTop7Go.Num();
+        auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
+        int nNowHeight = mListCardNodeTop7Go.Num();
         bToOtherPos = true;
 
         auto tableArray = this->SetDragEndRemoveSelfFromArray(mCardItem);
@@ -959,7 +959,7 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, 
         FVector2D from = UMGHelper::GetSlotPos(v);
         FVector2D to = this->GetPosByPosTypeInfo(cardPosTypeInfo);
 
-        this->OnDragEndMove(mTempCardItem, from, to, false, [=]()
+        this->OnDragEndMove(mTempCardItem, from, to, false, [=,this]()
             {
                 if (targetPosTypeInfo.Num() > 0)
                 {
@@ -987,6 +987,39 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, 
     this->DoActionEnd();
 }
 
+//------------------------------------------------判断输赢------------------------------------------------------------ -
+bool UMainUIWidget::JudgeWin()
+{
+    bool bWin = true;
+    if (DataCenter::GetSingleton()->data->bAutoComplete)
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            for (auto v : this->tableCardNodeTop7Go[i])
+            {
+                if (!v->orTurnOverStateIsTrue())
+                {
+                    bWin = false;
+                    break;
+                }
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (this->tableCardNode4AGo[i].Num() != 13)
+            {
+                bWin = false;
+                break;
+            }
+        }
+    }
+
+    return bWin;
+}
+
 //---------------------------------------------------------- - 播放胜利动画--------------------------------------------------------------------------
 void UMainUIWidget::DoActionEnd()
 {
@@ -1010,7 +1043,7 @@ void UMainUIWidget::CheckGameEnd()
         {
             this->bGameEnd = true;
             this->DoA4AllDataOp();
-            this->StopTimer();
+            UEHelper::PauseTimer(this, this->mTimer);
             this->TellRobot_PlayerAlive();
 
             //ThemeSolitaire.StageRewardHandler:AddWin();
@@ -1049,7 +1082,7 @@ void UMainUIWidget::CheckGameEnd()
         {
             this->bGameEnd = true;
             this->DoA4AllDataOp();
-            this->StopTimer();
+            UEHelper::PauseTimer(this, this->mTimer);
             this->TellRobot_PlayerAlive();
 
             //ThemeSolitaire.StageRewardHandler : AddWin();
@@ -1068,7 +1101,7 @@ void UMainUIWidget::CheckGameEnd()
         {
             this->bGameEnd = true;
             this->DoA4AllDataOp();
-            this->StopTimer();
+            UEHelper::PauseTimer(this, this->mTimer);
             this->TellRobot_PlayerAlive();
 
             //ThemeSolitaire.StageRewardHandler : AddWin();
@@ -1076,9 +1109,10 @@ void UMainUIWidget::CheckGameEnd()
             RecordStepDataHandler::GetSingleton()->SetLoseWin(true);
 
             this->GameWinAniMgr->Show();
-            KKTween::delayedCall(this, 0.5, [this]()
+            KKTween::delayedCall(this, 0.5,
+                [this]()
                 {
-                    this->PlayWinAni()
+                    this->PlayWinAni();
                 });
         }
     }
@@ -1162,21 +1196,23 @@ void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
     for (int i = 0; i < this->tableFinalA4AniCardItem.Num(); i++)
     {
         auto mCardItem = this->tableFinalA4AniCardItem[i];
-        auto fromPos = this->GetRelativePosByGo(mCardItem);
+        auto fromPos = UMGHelper::GetSlotPos(mCardItem);
         auto toPos = this->GetPosByCardItem(mCardItem);
         int nAniIndex = i;
-        KKTween::delayedCall(this, 0.03 * i, []()
+        KKTween::delayedCall(this, 0.03 * i, 
+            [=,this]()
             {
                 mCardItem->SetTurnOverState(true);
                 mCardItem->PlayTurnOverAni();
                 //mCardItem.transform : SetAsLastSibling()
-                KKTween::AddTween(this, 0.15, [=](float fTimePercent)
+                KKTween::AddTween(this, 0.15,
+                    [=](float fTimePercent)
                     {
                         UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeLinear(fromPos, toPos, fTimePercent));
                     },
-                    [=]()
+                    [=,this]()
                     {
-                        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Brocast(nullptr);
+                        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                         if (nAniIndex == this->tableFinalA4AniCardItem.Num())
                         {
                             AudioHandler::GetSingleton()->StopSound("win_animation");
@@ -1185,16 +1221,16 @@ void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
                                 finishFunc();
                             }
                         }
-                    })
+                    });
             });
     }
 }
 
 void UMainUIWidget::DoWinAnimation()
 {
-    this->PokerItemParent->SetVisiable(false);
-    auto mAudio = AudioHandler::GetSingleton()->PlaySound("blast_bgm");
-    this->GameWinAniMgr->PlayAni([=]()
+    this->PokerItemParent->SetVisibility(ESlateVisibility::Hidden);
+    auto mAudio = AudioHandler::GetSingleton()->PlaySound2("blast_bgm");
+    this->GameWinAniMgr->PlayAni([=,this]()
         {
             mAudio->Stop();
             /*   if ThemeSolitaire.StageRewardHandler : CheckOrHaveReward() then
@@ -1237,16 +1273,16 @@ TArray<FVector2D> UMainUIWidget::GetTableA4WorldPos()
     return tableWorldPos;
 }
 
-TArray<int> UMainUIWidget::GetTableA4Color()
+TArray<int32> UMainUIWidget::GetTableA4Color()
 {
-    TArray<int> tableNowColor = { 1, 2, 3, 4 };
-    TArray<int> table4AColor = {};
+    TArray<int32> tableNowColor = { 1, 2, 3, 4 };
+    TArray<int32> table4AColor = {};
     for (int i = 0; i < 4; i++)
     {
         ensureMsgf(this->tableCardNode4AGo[i].Num() == 13, TEXT("%d"), this->tableCardNode4AGo[i].Num());
         if (this->tableCardNode4AGo[i].Num() > 0)
         {
-            int nColor = CardHandler::GetSingleton()->GetSubDigital(this->tableCardNode4AGo[i][1].nPokerId);
+            int nColor = CardHandler::GetSingleton()->GetSubDigital(this->tableCardNode4AGo[i][1]->nPokerId);
             table4AColor[i] = nColor;
             int nRemoveIndex = tableNowColor.IndexOfByKey(nColor);
             TArrayExtentions::Remove(tableNowColor, nRemoveIndex);
@@ -1273,22 +1309,22 @@ TArray<int> UMainUIWidget::GetTableA4Color()
 //---------------------------------------------------------- - 移除插入操作--------------------------------------------------------------------------
 TArray<UPokerItemWidget*> UMainUIWidget::RemoveArrayFromTop7Go(int nTopIndex, int nRemoveIndex)
 {
-    auto& tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     TArray<UPokerItemWidget*> tableResult = {};
-    while (#tableCardNodeTop7Go >= nRemoveIndex)
+    while (mListCardNodeTop7Go.Num() > nRemoveIndex)
     {
-        auto mCardItem = TArrayExtentions::Remove(tableCardNodeTop7Go, nRemoveIndex);
+        auto mCardItem = TArrayExtentions::Remove(mListCardNodeTop7Go, nRemoveIndex);
         tableResult.Add(mCardItem);
     }
     return tableResult;
 }
 
-TArray<UPokerItemWidget*> UMainUIWidget::InsertArrayToTop7Go(int nTopIndex, const TArray<UPokerItemWidget*>& tableArray)
+void UMainUIWidget::InsertArrayToTop7Go(int nTopIndex, const TArray<UPokerItemWidget*>& tableArray)
 {
-    auto& tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     for (int i = 0; i < tableArray.Num(); i++)
     {
-        tableCardNodeTop7Go.Add(tableArray[i]);
+        mListCardNodeTop7Go.Add(tableArray[i]);
     }
 }
 
@@ -1296,7 +1332,7 @@ TArray<UPokerItemWidget*> UMainUIWidget::SetDragEndRemoveSelfFromArray(UPokerIte
 {
     auto posTypeInfo = this->GetPokerPosType(mDragCardItem);
 
-    TArray<UPokerItemWidget*>  tableResult = {};
+    TArray<UPokerItemWidget*> tableResult = {};
     if (posTypeInfo[0] == SolitairePokerPosType::Draw3Pos)
     {
         auto mCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go, 0);
@@ -1305,23 +1341,23 @@ TArray<UPokerItemWidget*> UMainUIWidget::SetDragEndRemoveSelfFromArray(UPokerIte
     }
     else if (posTypeInfo[0] == SolitairePokerPosType::A4Pos)
     {
-        auto& tableCardNode4AGo = this->tableCardNode4AGo[posTypeInfo[2]];
-        auto mCardItem = TArrayExtentions::Remove(tableCardNode4AGo);
+        auto& mListCardNode4AGo = this->tableCardNode4AGo[posTypeInfo[2]];
+        auto mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
         tableResult.Insert(mCardItem, 0);
 
-        if (tableCardNode4AGo.Num() > 0)
+        if (mListCardNode4AGo.Num() > 0)
         {
-            tableCardNode4AGo[tableCardNode4AGo.Num() - 1]->SetEventTriggerState(true);
+            mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(true);
         }
     }
     else if (posTypeInfo[1] == SolitairePokerPosType::Top7Pos)
     {
         tableResult = this->RemoveArrayFromTop7Go(posTypeInfo[1], posTypeInfo[2]);
 
-        auto& tableCardNodeTop7Go = this->tableCardNodeTop7Go[posTypeInfo[1]];
-        if (tableCardNodeTop7Go.Num() > 0)
+        auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[posTypeInfo[1]];
+        if (mListCardNodeTop7Go.Num() > 0)
         {
-            auto mCardItem = tableCardNodeTop7Go[tableCardNodeTop7Go.Num() - 1];
+            auto mCardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
             if (!mCardItem->orTurnOverStateIsTrue())
             {
                 mCardItem->SetTurnOverState(true);
@@ -1376,8 +1412,6 @@ void UMainUIWidget::UpdateAllPokerEventTriggerState()
         }
     }
 }
-
-
 
 
 //------------------------------------------------------游戏模式相关--------------------------------------------------------------------
@@ -1498,6 +1532,120 @@ void UMainUIWidget::onAddScore()
     nLastOpInfo->nScore = nAddSumScore;
     RecordStepDataHandler::GetSingleton()->AddScore(nAddSumScore);
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+}
+
+//------------------------------------------------增加IQ----------------------------------------------------------
+bool UMainUIWidget::orPosTypeInfoEqual(TArray<int32> info1, TArray<int32> info2)
+{
+    return info1[0] == info2[0] && info1[1] == info2[1] && info1[2] == info2[2];
+}
+
+bool UMainUIWidget::onIsLoopOp()
+{
+    auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+    auto nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
+
+    int nBeginIndex = FMath::Max(0, tableOpStepItem.Num() - 10);
+    for (int i = nBeginIndex; i < tableOpStepItem.Num() - 1; i++)
+    {
+        bool bSameOp = true;
+        if (this->orPosTypeInfoEqual(nLastOpInfo->fromPosTypeInfo, tableOpStepItem[i]->fromPosTypeInfo) == false ||
+            this->orPosTypeInfoEqual(nLastOpInfo->toPosTypeInfo, tableOpStepItem[i]->toPosTypeInfo) == false)
+        {
+            bSameOp = false;
+            break;
+        }
+
+        if (bSameOp)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void UMainUIWidget::onAddIQ()
+{
+    this->fIQTime = 0;
+    if (this->onIsLoopOp())
+    {
+        DataCenter::GetSingleton()->AddIQValue(-1);
+    }
+    else
+    {
+        int nNowStepIndex = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem.Num();
+        auto tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+        auto nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
+        auto fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
+        auto toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
+
+        if (fromPosTypeInfo[0] != SolitairePokerPosType::A4Pos && toPosTypeInfo[1] == SolitairePokerPosType::A4Pos)
+        {
+            DataCenter::GetSingleton()->AddIQValue(5);
+        }
+        else if (fromPosTypeInfo[0] != SolitairePokerPosType::A4Pos && toPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+        {
+            auto [bTure, mCardItem] = this->orThisStepTurnOverPokerIsTrue(nNowStepIndex);
+            if (bTure)
+            {
+                DataCenter::GetSingleton()->AddIQValue(5);
+            }
+        }
+        else
+        {
+            DataCenter::GetSingleton()->AddIQValue(1);
+        }
+    }
+}
+
+//-------------------------------------------------- - 快速游戏 以及 A4Effect------------------------------------------------------------ -
+void UMainUIWidget::PlayToA4EffectAni(int32 nIndex, UPokerItemWidget* mCardItem)
+{
+    if (!this->bInitA4Effect)
+    {
+        this->bInitA4Effect = true;
+       // this->tableToA4EffectPool = {};
+        for (int i = 0; i < 4; i++)
+        {
+            //auto goEffect = this->GetWidget("A4Effect/Color"..i).gameObject;
+           /* local ItemPoolGenerator = require "Lua/SimpleFramework/ObjectPool/ItemPool"
+                local SpineEffect = require "Lua.Effect.SpineEffect"
+                this->tableToA4EffectPool[i] = ItemPoolGenerator : New(goEffect, SpineEffect, 0)
+                end
+            end
+
+            local nPokerColor = CardHandler : GetSubDigital(mCardItem.nPokerId)
+            local mSkeletonAnimation = this->tableToA4EffectPool[nPokerColor] : GetItem()
+            self : SetRelativePos(mSkeletonAnimation, self:GetCardNode4APos(nIndex))
+            mSkeletonAnimation : PlayOnce("animation", function()
+                this->tableToA4EffectPool[nPokerColor]:RecycleItem(mSkeletonAnimation)
+                end)*/
+        }
+    }
+}
+
+void UMainUIWidget::OnFastGameToResultA4()
+{
+    if (!DataCenter::GetSingleton()->data->bFastGame)
+    {
+        return;
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[j];
+            auto mCardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
+            if (mCardItem && mCardItem->bInDrag == false && this->orCanIn4A(i, mCardItem))
+            {
+                this->OnDragBegin(mCardItem);
+                this->LockTargetToMove(mCardItem, SolitairePokerPosType::A4Pos, i);
+                return;
+            }
+        }
+    }
 }
 
 //------------------------------------ 相对位置计算 --------------------------------------------
@@ -1763,23 +1911,23 @@ bool UMainUIWidget::orCanIn4A(int n4AIndex, UPokerItemWidget* mCardItem)
     auto targetPosTypeInfo = this->GetPokerPosType(mCardItem);
     if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
-        auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
-        if (tableCardNodeTop7Go[tableCardNodeTop7Go.Num() - 1] != mCardItem)
+        auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
+        if (mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1] != mCardItem)
         {
             return false;
         }
     }
 
-    auto tableCardNode4A = this->tableCardNode4AGo[n4AIndex];
-    if (tableCardNode4A.Num() == 0)
+    auto mListCardNode4A = this->tableCardNode4AGo[n4AIndex];
+    if (mListCardNode4A.Num() == 0)
     {
         return CardHandler::GetSingleton()->GetDigital(mCardItem->nPokerId) == 1;
     }
     else
     {
-        int32 nLastPokerId = tableCardNode4A[#tableCardNode4A].nPokerId;
+        int32 nLastPokerId = mListCardNode4A[mListCardNode4A.Num() - 1]->nPokerId;
         auto [nLastNumber1, nLastNumber2] = CardHandler::GetSingleton()->GetTwoDigital(nLastPokerId);
-        auto [nNumber1, nNumber2] = CardHandler::GetSingleton()->GetTwoDigital(mCardItem.nPokerId);
+        auto [nNumber1, nNumber2] = CardHandler::GetSingleton()->GetTwoDigital(mCardItem->nPokerId);
         if (nLastNumber1 + 1 == nNumber1 && nLastNumber2 == nNumber2)
         {
             return true;
@@ -1854,8 +2002,8 @@ TArray<UPokerItemWidget*> UMainUIWidget::GetSelectCardItemList(UPokerItemWidget*
         int nIndex = oriPosTypeInfo[3];
         for (int i = nIndex; i < this->tableCardNodeTop7Go[nTop7Index].Num(); i++)
         {
-            auto mCardItem = this->tableCardNodeTop7Go[nTop7Index][i];
-            tableCardItemList.Add(mCardItem);
+            auto mItem = this->tableCardNodeTop7Go[nTop7Index][i];
+            tableCardItemList.Add(mItem);
         }
     }
     else
@@ -1884,8 +2032,8 @@ TArray<int> UMainUIWidget::GetPokerPosType(UPokerItemWidget* mDragCardItem)
 
     for (int i = 0; i < 7; i++)
     {
-        auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[i];
-        nIndex = tableCardNodeTop7Go.IndexOfByKey(mDragCardItem);
+        auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[i];
+        nIndex = mListCardNodeTop7Go.IndexOfByKey(mDragCardItem);
         if (nIndex != INDEX_NONE)
         {
             return { SolitairePokerPosType::Top7Pos, i, nIndex };

@@ -19,7 +19,7 @@ public:
 
 public:
     static const int bRobotTest = false;
-
+    static const int nFightResultWinGetCoinsCount = 100;
 private:
     // 禁止拷贝和移动（单例不应被复制）
     GameConst() = delete;

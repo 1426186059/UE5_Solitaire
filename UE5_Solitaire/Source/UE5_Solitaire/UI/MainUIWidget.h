@@ -67,6 +67,11 @@ public:
 	int GetTop7HideCardCount();
 	void onAddScore_InitParam();
 	void onAddScore();
+	bool JudgeWin();
+
+	bool orPosTypeInfoEqual(TArray<int32> info1, TArray<int32> info2);
+	bool onIsLoopOp();
+	void onAddIQ();
 
 	void UpdateLeftHandState();
 	bool orHavePopView();
@@ -89,7 +94,7 @@ public:
 	TArray<int> GetPokerPosType(UPokerItemWidget* mDragCardItem);
 
 	TArray<UPokerItemWidget*> RemoveArrayFromTop7Go(int nTopIndex, int nRemoveIndex);
-	TArray<UPokerItemWidget*> InsertArrayToTop7Go(int nTopIndex, const TArray<UPokerItemWidget*>& tableArray);
+	void InsertArrayToTop7Go(int nTopIndex, const TArray<UPokerItemWidget*>& tableArray);
 	TArray<UPokerItemWidget*> SetDragEndRemoveSelfFromArray(UPokerItemWidget* mDragCardItem);
 	void UpdateAllPokerEventTriggerState();
 
@@ -98,19 +103,21 @@ public:
 
 	void DoActionEnd();
 	void CheckGameEnd();
-	void DoA4AllDataOp(TFunction<void()> finishFunc);
+	void DoA4AllDataOp(TFunction<void()> finishFunc = nullptr);
 	void PlayWinAni();
-	void AutoShouPai(TFunction<void()> finishFunc);
+	void AutoShouPai(TFunction<void()> finishFunc = nullptr);
 	void DoWinAnimation();
 	void ShowGameEndView();
 	TArray<FVector2D> GetTableA4WorldPos();
-	TArray<int> GetTableA4Color();
+	TArray<int32> GetTableA4Color();
 
 	void OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr);
 	void OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc);
 	void DoTop7ReSizeHeightAni(int nTop7Index);
 
 	void DoWhenSet_FastGame();
+	void PlayToA4EffectAni(int32 nIndex, UPokerItemWidget* mCardItem);
+	void OnFastGameToResultA4();
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
@@ -130,6 +137,7 @@ private:
 	const float N_TOP7_GAP_HEIGHT = 50.0f;
 	int32 nGameMode;
 	bool bGameEnd = false;
+	bool bInitA4Effect;
 	float fRobotThinkingTime = 0;
 	float fIQTime = 0;
 	int nGetScore_nLastTop7HideCardCount = 0;
@@ -139,6 +147,6 @@ private:
 
 	UImage* mBG;
 
-	GameWinAniMgr GameWinAniMgr;
+	GameWinAniMgr* GameWinAniMgr;
 	FTimerHandle mTimer;
 };
