@@ -36,6 +36,12 @@ public:
         return TArrayExtentions::Remove(mList, nRemoveIndex);
     }
 
+    template<typename T, typename FuncType>
+    static void PrintTArray(TArray<T> mArray, FString Tag)
+    {
+        UE_LOG(LogTemp, Log, TEXT("%s: %s"), *Tag, *FString::Join(mArray, TEXT(", ")));
+    }
+
 private:
     // 禁止拷贝和移动（单例不应被复制）
     TArrayExtentions() = delete;

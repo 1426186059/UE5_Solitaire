@@ -25,6 +25,7 @@ public:
 public:
 	void Init();
 	void PlaySound(const FString& name);
+	void StopSound(const FString& name);
 	void PlayBackMusic(const FString& name);
 
 private:

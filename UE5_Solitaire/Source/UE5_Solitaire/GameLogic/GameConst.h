@@ -12,6 +12,7 @@ public:
     static const int EventId_RefreshTopBottomUI = 3;
     static const int EventId_UpdateGameModeState = 4;
     static const int EventId_UpdateTripState = 5;
+    static const int EventId_UpdateCollectState = 6;
 
     DECLARE_MULTICAST_DELEGATE(ActionDelegate);
     DECLARE_MULTICAST_DELEGATE_OneParam(Action_Float_Delegate, float);

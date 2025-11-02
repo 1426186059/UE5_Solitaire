@@ -77,6 +77,34 @@ public:
 	void TellRobot_PlayerAlive();
 	void OnClickChuPai();
 	void RefreshDrawZone();
+	void OnClickToMovePokerPos(UPokerItemWidget* mCardItem);
+	void OnDragBegin(UPokerItemWidget* mDragCardItem);
+	void OnDrag(UPokerItemWidget* mDragCardItem);
+	void OnDragEndToMovePokerPos(UPokerItemWidget* mCardItem);
+	void LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, int nIndex);
+
+	FVector2D GetPosByCardItem(UPokerItemWidget* mCardItem);
+	FVector2D GetPosByPosTypeInfo(const TArray<int>& nPosTypeInfo);
+	TArray<UPokerItemWidget*> GetSelectCardItemList(UPokerItemWidget* mCardItem);
+	TArray<int> GetPokerPosType(UPokerItemWidget* mDragCardItem);
+
+	TArray<UPokerItemWidget*> RemoveArrayFromTop7Go(int nTopIndex, int nRemoveIndex);
+	TArray<UPokerItemWidget*> InsertArrayToTop7Go(int nTopIndex, const TArray<UPokerItemWidget*>& tableArray);
+	TArray<UPokerItemWidget*> SetDragEndRemoveSelfFromArray(UPokerItemWidget* mDragCardItem);
+	void UpdateAllPokerEventTriggerState();
+
+	bool orCanIn4A(int n4AIndex, UPokerItemWidget* mCardItem);
+	bool orCanInNode7(int n7Index, UPokerItemWidget* mCardItem);
+
+	void DoActionEnd();
+	void CheckGameEnd();
+	void DoA4AllDataOp(TFunction<void()> finishFunc);
+	void PlayWinAni();
+	void AutoShouPai(TFunction<void()> finishFunc);
+	void DoWinAnimation();
+	void ShowGameEndView();
+	TArray<FVector2D> GetTableA4WorldPos();
+	TArray<int> GetTableA4Color();
 
 	void OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr);
 	void OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc);
@@ -97,6 +125,7 @@ private:
 	TArray<UPokerItemWidget*> tableCardDraw3Go;
 
 	TArray<int> mLastSendCardList;
+	TArray<UPokerItemWidget*> tableFinalA4AniCardItem;
 
 	const float N_TOP7_GAP_HEIGHT = 50.0f;
 	int32 nGameMode;

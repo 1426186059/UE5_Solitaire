@@ -26,6 +26,11 @@ void AudioHandler::PlaySound(const FString& name)
     UGameplayStatics::PlaySound2D(this, Sound);
 }
 
+void StopSound(const FString& name)
+{
+
+}
+
 void AudioHandler::PlayBackMusic(const FString& name)
 {
     if (mBGMAudioComponent == nullptr)
