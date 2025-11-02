@@ -106,6 +106,7 @@ private:
 	int nGetScore_nLastTop7HideCardCount = 0;
 	int nRemainHintCount_InDraw3AndSendCardList = 0;
 	TMap<UPokerItemWidget*, KKTween::Handle> mapCardItemTween;
+	KKTween::Handle tween_OnFastGameToResultA4;
 
 	UImage* mBG;
 

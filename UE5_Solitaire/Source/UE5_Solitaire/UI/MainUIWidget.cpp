@@ -974,7 +974,7 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, 
             });
     }
 
-    if ((not this->bGameEnd) && oriPosTypeInfo[1] != SolitairePokerPosType::A4Pos)
+    if ((!this->bGameEnd) && oriPosTypeInfo[1] != SolitairePokerPosType::A4Pos)
     {
         if (this->tween_OnFastGameToResultA4)
         {
