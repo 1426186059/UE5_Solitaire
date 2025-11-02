@@ -44,18 +44,14 @@ public:
 
 	TSharedPtr<T> Pop()
 	{
-		T mItem = null;
-		if (mObjectPool.Count > 0)
+		if (mObjectPool.Num() > 0)
 		{
-			mItem = mObjectPool.pop();
+			return mObjectPool.pop();
 		}
 		else
 		{
-			mItem = InnerCreateItem();
+			return InnerCreateItem();
 		}
-
-		mUsedObjectPool.push(mItem);
-		return mItem;
 	}
 
 	void Recycle(TSharedPtr<T> t)
@@ -93,8 +89,8 @@ public:
 
 	void Release()
 	{
-		mObjectPool.Clear();
-		mUsedDic.Clear();
+		mObjectPool.Empty();
+		mAllDic.Empty();
 	}
 
 	int Count()
