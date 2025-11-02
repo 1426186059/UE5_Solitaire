@@ -3,6 +3,7 @@
 
 #include "MainUIWidget.h"
 #include "Item/PokerItemWidget.h"
+#include "Item/PokerAnimationItemW.h"
 
 void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -73,6 +74,7 @@ void UMainUIWidget::Init()
     mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
 
     this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
+    this->GameWinAniParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("GameWinAniParent"));
 
     this->tranFaPaiPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName("FaPaiPos"));
     this->mCardNodeDraw3BeginPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName("Draw3Pos1"));
@@ -236,6 +238,12 @@ void UMainUIWidget::InitGame()
     this->tableCardNodeTop7Go.SetNumZeroed(7);
     this->tableCardNode4AGo.SetNumZeroed(4);
     this->RecoverGame(true);
+
+    TSubclassOf<UWidget> PokerAnimationItemCWBP = LoadClass<UPokerAnimationItemW>(this,
+        TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerAnimationItemCWBP.PokerAnimationItemCWBP_C"));
+    mCardAnimationItemPool = new KKWidgetPool<UPokerAnimationItemW>();
+    mCardAnimationItemPool->Init(PokerAnimationItemCWBP, this->GameWinAniParent);
+    mCardAnimationItemPool->preLoadObj(200, 1000);
 }
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)

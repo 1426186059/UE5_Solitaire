@@ -25,6 +25,7 @@
 #include "Components/CanvasPanel.h"
 
 class UPokerItemWidget;
+class UPokerAnimationItemW;
 
 #include "CoreMinimal.h"
 #include "MainUIWidget.generated.h"
@@ -122,6 +123,7 @@ public:
 private:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
+	UCanvasPanel* GameWinAniParent;
 	FVector2D tranFaPaiPos;
 	FVector2D mCardNodeDraw3BeginPos;
 	TArray<FVector2D> tableCardNode4APos;
@@ -150,4 +152,5 @@ private:
 
 	GameWinAniMgr* GameWinAniMgr;
 	FTimerHandle mTimer;
+	KKWidgetPool<UPokerAnimationItemW>* mCardAnimationItemPool;
 };

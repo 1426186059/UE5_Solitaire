@@ -1,8 +1,9 @@
 #include "ResCenter.h"
+#include "UE5_Solitaire/UI/Item/PokerAnimationItemW.h"
 
 void AResCenter::Init()
 {
-	
+    
 }
 
 UPaperSprite* AResCenter::GetPokerSprite(int nPokerId)

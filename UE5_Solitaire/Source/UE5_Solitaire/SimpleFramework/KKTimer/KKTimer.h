@@ -23,11 +23,11 @@ public:
 	float fDuration = 0.0f;
 	float time = 0.0f;
 	bool running = false;
-	TFunction<void()> mDoFunc;
+	TFunction<bool()> mDoFunc;
 	TWeakObjectPtr<UObject> mBindObj;
 	FDelegateHandle mTimerHandle;
 
-	static TSharedPtr<KKTimer> New(UObject* bindObj, TFunction<void()> func, float duration, int loop = 1, bool unscaled = false)
+	static TSharedPtr<KKTimer> New(UObject* bindObj, TFunction<bool()> func, float duration, int loop = 1, bool unscaled = false)
 	{
 		if (bindObj == nullptr)
 		{
@@ -80,9 +80,13 @@ public:
 
 		if (this->time <= 0)
 		{
-			if (this->mDoFunc)
+			if (this->mDoFunc.IsSet())
 			{
-				this->mDoFunc();
+				if (!this->mDoFunc())
+				{
+					this->Stop();
+					return;
+				}
 			}
 
 			if (this->nLoopCount > 0)

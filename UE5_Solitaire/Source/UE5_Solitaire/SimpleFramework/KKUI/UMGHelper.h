@@ -8,13 +8,11 @@
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"
 #include "Components/SizeBoxSlot.h"
-
 #include "Components/Image.h"
-
 #include "Components/TextBlock.h"
 #include "Components/EditableText.h"
 #include "Components/EditableTextBox.h"
-
+#include "PaperSprite.h"
 
 class UMGHelper
 {

@@ -4,17 +4,22 @@
 
 #include "CoreMinimal.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
-#include "PaperSprite.h"
+#include "UE5_Solitaire/SimpleFramework/KKPool/KKWidgetPool.h"
 
 #include "CardHandler.h"
 #include "DataCenter.h"
 #include "ThemeDataHandler.h"
 #include "ResCenter.generated.h"
 
+class UPokerAnimationItemW;
+
 UCLASS()
 class AResCenter : public AKKActorSingleton
 {
 	GENERATED_BODY()
+public:
+
+
 public:
 	static AResCenter* GetSingleton(bool bCreate = true)
 	{

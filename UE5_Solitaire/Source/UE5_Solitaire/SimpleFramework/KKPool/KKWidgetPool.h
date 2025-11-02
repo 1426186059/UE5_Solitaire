@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../KKUI/UMGHelper.h"
+#include "../KKUI/KKUIMgr.h"
 #include "../KKTimer/KKTimer.h"
 
 template<typename T>
@@ -12,14 +12,14 @@ private:
     TArray<T*> usedArray = {};
 
     TSubclassOf<UWidget> mWidgetClass;
-    UWidget* ItemParent;
+    UWidget* mItemParent;
     int nMaxCapicity = -1;
 
 private:
     T* InnerCreateItem()
     {
-        T* mItem = CreateWidget<T>(this, this->mWidgetClass);
-        UMGHelper::SetParent(mItem, this->ItemParent);
+        T* mItem = AKKUIMgr::GetSingleton()->CreateWidget<T>(this->mWidgetClass);
+        UMGHelper::SetParent(mItem, this->mItemParent);
         UMGHelper::SetSlotAnchor(mItem, FAnchors(0.5));
         UMGHelper::SetSlotAlignment(mItem, FVector2D(0.5));
         UMGHelper::SetSlotSize(mItem, FVector2D(0, 0));
@@ -29,18 +29,21 @@ private:
     }
     
 public:
-    void Init(TSubclassOf<UWidget> mClass, UWidget* ItemParent = nullptr, int nInitCount = 0)
+    KKWidgetPool()
     {
         static_assert(TIsDerivedFrom<T, UWidget>::Value, "T must be an UWidget derived class");
+    }
 
+    void Init(TSubclassOf<UWidget> mClass, UWidget* ItemParent = nullptr, int nInitCount = 0)
+    {
         this->mWidgetClass = mClass;
-        this->ItemParent = ItemParent;
+        this->mItemParent = ItemParent;
         this->preLoadObj(nInitCount);
     }
     
     void recycleObj(T* mItem)
     {
-        UMGHelper::SetParent(mItem, this->ItemParent);
+        UMGHelper::SetParent(mItem, this->mItemParent);
 
         int nIndex = this->usedArray.IndexOf(mItem);
         ensureMsgf(nIndex >= 0, TEXT("recyleObj 000 Error: %d"), nIndex);
@@ -86,7 +89,7 @@ public:
 
     void SetItemParent(UWidget* ItemParent)
     {
-        this->ItemParent = ItemParent;
+        this->mItemParent = ItemParent;
     }
 
     void preLoadObj(int nMaxCount)
@@ -125,8 +128,10 @@ public:
     void preLoadObj(int nFrameCount, int nCount, TFunction<void()> mFinishFunc = nullptr)
     {
         int nCreateCountSingle = FMath::CeilToInt(nCount / (float)nFrameCount);
-        auto mTimer = KKTimer::New(nullptr,
-            [=]()
+
+        TSharedPtr<KKTimer> mTimer;
+        mTimer = KKTimer::New(nullptr,
+            [=, this]()
             {
                 for (int j = 0; j < nCreateCountSingle; j++)
                 {
@@ -135,15 +140,22 @@ public:
                         if (mFinishFunc.IsSet())
                         {
                             mFinishFunc();
-                            mFinishFunc = nullptr;
+                            mFinishFunc;
                         }
-                        break;
+
+                        if (mTimer.IsValid())
+                        {
+                            mTimer->Stop();
+                        }
+                        return false;
                     }
                     else
                     {
                         this->mPool.Add(this->InnerCreateItem());
                     }
                 }
+
+                return true;
             }, 1 / 60.0f, nFrameCount);
         mTimer->Start();
     }
