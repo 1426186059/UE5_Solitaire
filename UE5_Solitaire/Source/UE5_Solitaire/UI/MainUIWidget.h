@@ -24,7 +24,7 @@
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 
-#include "Item/PokerItemWidget.h"
+class UPokerItemWidget;
 
 #include "CoreMinimal.h"
 #include "MainUIWidget.generated.h"

@@ -17,8 +17,6 @@
 #include "CoreMinimal.h"
 #include "PokerItemWidget.generated.h"
 
-class UMainUIWidget;
-
 UCLASS()
 class UE5_SOLITAIRE_API UPokerItemWidget : public UUserWidget
 {

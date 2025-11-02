@@ -47,7 +47,7 @@ public:
 	}
 
 	template<typename T>
-	T* Get(FString ui_path = nullptr)
+	T* Get(FString ui_path = TEXT(""))
 	{
 		static_assert(TIsDerivedFrom<T, UWUIBase>::Value, "T must be an UUserWidget derived class");
 

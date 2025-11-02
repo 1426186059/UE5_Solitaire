@@ -2,6 +2,7 @@
 
 
 #include "MainUIWidget.h"
+#include "Item/PokerItemWidget.h"
 
 void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -814,17 +815,17 @@ void UMainUIWidget::OnDrag(UPokerItemWidget* mDragCardItem)
 {
     auto mCardItemList = this->GetSelectCardItemList(mDragCardItem);
     auto oriPosTypeInfo = this->GetPokerPosType(mDragCardItem);
-    if (oriPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+    if (oriPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
-        int32 nTop7Index = oriPosTypeInfo[2];
-        int32 nIndex = oriPosTypeInfo[3];
+        int32 nTop7Index = oriPosTypeInfo[1];
+        int32 nIndex = oriPosTypeInfo[2];
         FVector2D oriPos = UMGHelper::GetSlotPos(mDragCardItem);
         for (int i = 0; i < mCardItemList.Num(); i++)
         {
-            auto& mCardItem = mCardItemList[i];
+            auto mCardItem = mCardItemList[i];
             if (i > 0)
             {
-                FVector2D Pos = oriPos - FVector2D(0, i * N_TOP7_GAP_HEIGHT);
+                FVector2D Pos = oriPos + FVector2D(0, i * N_TOP7_GAP_HEIGHT);
                 UMGHelper::SetSlotPos(mCardItem, Pos);
             }
         }
@@ -847,10 +848,9 @@ void UMainUIWidget::OnDragEndToMovePokerPos(UPokerItemWidget* mCardItem)
             return false;
         };
 
-    bool bIn4APos = mCardItemPosY > this->tableCardNode4APos[1].Y - 75;
+    bool bIn4APos = mCardItemPosY < this->tableCardNode4APos[0].Y - 75;
     if (bIn4APos)
     {
-        int n4AIndex = -1;
         for (int i = 0; i < 4; i++)
         {
             FVector2D middlePos = this->GetCardNode4APos(i);
@@ -886,7 +886,7 @@ void UMainUIWidget::OnDragEndToMovePokerPos(UPokerItemWidget* mCardItem)
     this->LockTargetToMove(mCardItem, -1, 0);
 }
 
-void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, int nIndex)
+void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, int nIndex = 0)
 {
     auto oriPosTypeInfo = this->GetPokerPosType(mCardItem);
     auto mCardItemList = this->GetSelectCardItemList(mCardItem);
@@ -1911,7 +1911,7 @@ bool UMainUIWidget::orCanIn4A(int n4AIndex, UPokerItemWidget* mCardItem)
     auto targetPosTypeInfo = this->GetPokerPosType(mCardItem);
     if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
-        auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
+        auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
         if (mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1] != mCardItem)
         {
             return false;
@@ -1996,10 +1996,10 @@ TArray<UPokerItemWidget*> UMainUIWidget::GetSelectCardItemList(UPokerItemWidget*
 {
     TArray<UPokerItemWidget*> tableCardItemList = {};
     TArray<int> oriPosTypeInfo = this->GetPokerPosType(mCardItem);
-    if (oriPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+    if (oriPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
-        int nTop7Index = oriPosTypeInfo[2];
-        int nIndex = oriPosTypeInfo[3];
+        int nTop7Index = oriPosTypeInfo[1];
+        int nIndex = oriPosTypeInfo[2];
         for (int i = nIndex; i < this->tableCardNodeTop7Go[nTop7Index].Num(); i++)
         {
             auto mItem = this->tableCardNodeTop7Go[nTop7Index][i];

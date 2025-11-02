@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PokerItemWidget.h"
+#include "../MainUIWidget.h"
 
 FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
@@ -20,10 +21,10 @@ void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const F
 
     UPokerItemDragDropOperation* DragOp = NewObject<UPokerItemDragDropOperation>();
     DragOp->WidgetSource = this;
-    DragOp->DragOffset = InMouseEvent.GetScreenSpacePosition() - InGeometry.GetAbsolutePosition();
+    DragOp->DragOffset = InGeometry.GetAbsolutePosition() - InMouseEvent.GetScreenSpacePosition();
 
     //DragOp->DefaultDragVisual = CreateDragVisual();
-    DragOp->Pivot = EDragPivot::MouseDown;
+    //DragOp->Pivot = EDragPivot::MouseDown;
 
     OutOperation = DragOp;
 }
@@ -35,20 +36,32 @@ void UPokerItemWidget::NativeOnDragEnter(const FGeometry& InGeometry, const FDra
 
     this->bInDrag = true;
     this->beginPos = UMGHelper::GetSlotPos(this);
-/*    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
+    //AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
     AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
-    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this)*/;
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this);
 }
 
 void UPokerItemWidget::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragLeave(InDragDropEvent, InOperation);
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragLeave "));
+
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragEndToMovePokerPos(this);
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
 }
 
 bool UPokerItemWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragOver "));
+
+    UPokerItemDragDropOperation* DragOp = Cast<UPokerItemDragDropOperation>(InOperation);
+
+    FVector2D nNowPos = InDragDropEvent.GetScreenSpacePosition();
+    UMGHelper::SetSlotPos(this, nNowPos + DragOp->DragOffset);
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDrag(this);
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+
     return Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
 }
 
