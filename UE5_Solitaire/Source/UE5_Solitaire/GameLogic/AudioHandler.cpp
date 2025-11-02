@@ -80,7 +80,7 @@ UAudioComponent* AudioHandler::PlaySound2(const FString& name)
     return nullptr;
 }
 
-void StopSound(const FString& name)
+void AudioHandler::StopSound(const FString& name)
 {
 
 }
