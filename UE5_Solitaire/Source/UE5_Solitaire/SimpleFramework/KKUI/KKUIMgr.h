@@ -2,8 +2,6 @@
 
 #include "UE5_Solitaire/SimpleFramework/KKUI/UWUIRoot.h"
 #include "UE5_Solitaire/SimpleFramework/KKUI/UWUIBase.h"
-#include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
-#include "UE5_Solitaire/SimpleFramework/KKUI/UMGAdapterTool.h"
 #include "UE5_Solitaire/SimpleFramework/KKActorSingleton.h"
 
 #include "Components/WidgetComponent.h"
@@ -100,7 +98,7 @@ public:
 	}
 
 	template<typename WidgetT = UUserWidget>
-	WidgetT* CreateKKWidget(TSubclassOf<UUserWidget> mClass)
+	WidgetT* KKCreateWidget(TSubclassOf<UUserWidget> mClass)
 	{
 		static_assert(TIsDerivedFrom<WidgetT, UUserWidget>::Value, "T must be an UWidget derived class");
 		return CreateWidget<WidgetT>(GetRootWidget(), mClass);

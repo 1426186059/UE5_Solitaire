@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "../KKUI/KKUIMgr.h"
+#include "../KKUI/KKUI.h"
 #include "../KKTimer/KKTimer.h"
 
 template<typename T = UUserWidget>
@@ -18,7 +18,7 @@ private:
 private:
     T* InnerCreateItem()
     {
-        T* mItem = AKKUIMgr::GetSingleton()->CreateKKWidget<T>(this->mWidgetClass);
+        T* mItem = AKKUIMgr::GetSingleton()->KKCreateWidget<T>(this->mWidgetClass);
         UMGHelper::SetParent(mItem, this->mItemParent);
         UMGHelper::SetSlotAnchor(mItem, FAnchors(0.5));
         UMGHelper::SetSlotAlignment(mItem, FVector2D(0.5));
@@ -40,22 +40,8 @@ public:
         this->mItemParent = ItemParent;
         this->preLoadObj(nInitCount);
     }
-    
-    void recycleObj(T* mItem)
-    {
-        UMGHelper::SetParent(mItem, this->mItemParent);
 
-        int nIndex = this->usedArray.IndexOfByKey(mItem);
-        ensureMsgf(nIndex >= 0, TEXT("recyleObj 000 Error: %d"), nIndex);
-        this->usedArray.RemoveAt(nIndex);
-        nIndex = this->usedArray.IndexOfByKey(mItem);
-        ensureMsgf(nIndex == -1, TEXT("recyleObj 111 Error"));
-
-        mItem->SetVisibility(ESlateVisibility::Hidden);
-        this->mPool.Add(mItem);
-    }
-
-    T* popObj()
+    T* Pop()
     {
         T* mItem = nullptr;
         if (this->mPool.Num() > 0)
@@ -75,6 +61,21 @@ public:
             UE_LOG(LogTemp, Error, TEXT("Capicity Error: %d"), this.nMaxCapicity);
         }
         return mItem;
+    }
+
+
+    void Recycle(T* mItem)
+    {
+        UMGHelper::SetParent(mItem, this->mItemParent);
+
+        int nIndex = this->usedArray.IndexOfByKey(mItem);
+        ensureMsgf(nIndex >= 0, TEXT("recyleObj 000 Error: %d"), nIndex);
+        this->usedArray.RemoveAt(nIndex);
+        nIndex = this->usedArray.IndexOfByKey(mItem);
+        ensureMsgf(nIndex == -1, TEXT("recyleObj 111 Error"));
+
+        mItem->SetVisibility(ESlateVisibility::Hidden);
+        this->mPool.Add(mItem);
     }
 
     void SetMaxCapacity(int nMaxCapacity)
