@@ -4,21 +4,21 @@
 #include "../KKUI/KKUIMgr.h"
 #include "../KKTimer/KKTimer.h"
 
-template<typename T>
+template<typename T = UUserWidget>
 class KKWidgetPool
 {
 private:
     TArray<T*> mPool = {};
     TArray<T*> usedArray = {};
 
-    TSubclassOf<UWidget> mWidgetClass;
-    UWidget* mItemParent;
+    TSubclassOf<UUserWidget> mWidgetClass;
+    UPanelWidget* mItemParent;
     int nMaxCapicity = -1;
 
 private:
     T* InnerCreateItem()
     {
-        T* mItem = AKKUIMgr::GetSingleton()->CreateWidget<T>(this->mWidgetClass);
+        T* mItem = AKKUIMgr::GetSingleton()->CreateKKWidget<T>(this->mWidgetClass);
         UMGHelper::SetParent(mItem, this->mItemParent);
         UMGHelper::SetSlotAnchor(mItem, FAnchors(0.5));
         UMGHelper::SetSlotAlignment(mItem, FVector2D(0.5));
@@ -31,10 +31,10 @@ private:
 public:
     KKWidgetPool()
     {
-        static_assert(TIsDerivedFrom<T, UWidget>::Value, "T must be an UWidget derived class");
+        static_assert(TIsDerivedFrom<T, UUserWidget>::Value, "T must be an UWidget derived class");
     }
 
-    void Init(TSubclassOf<UWidget> mClass, UWidget* ItemParent = nullptr, int nInitCount = 0)
+    void Init(TSubclassOf<UUserWidget> mClass, UPanelWidget* ItemParent = nullptr, int nInitCount = 0)
     {
         this->mWidgetClass = mClass;
         this->mItemParent = ItemParent;
@@ -45,10 +45,10 @@ public:
     {
         UMGHelper::SetParent(mItem, this->mItemParent);
 
-        int nIndex = this->usedArray.IndexOf(mItem);
+        int nIndex = this->usedArray.IndexOfByKey(mItem);
         ensureMsgf(nIndex >= 0, TEXT("recyleObj 000 Error: %d"), nIndex);
         this->usedArray.RemoveAt(nIndex);
-        nIndex = this->usedArray.IndexOf(mItem);
+        nIndex = this->usedArray.IndexOfByKey(mItem);
         ensureMsgf(nIndex == -1, TEXT("recyleObj 111 Error"));
 
         mItem->SetVisibility(ESlateVisibility::Hidden);
@@ -87,7 +87,7 @@ public:
         return this->usedArray.Num() + this->mPool.Num();
     }
 
-    void SetItemParent(UWidget* ItemParent)
+    void SetItemParent(UPanelWidget* ItemParent)
     {
         this->mItemParent = ItemParent;
     }

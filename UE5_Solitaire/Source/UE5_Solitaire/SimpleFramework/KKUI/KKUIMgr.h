@@ -89,7 +89,7 @@ public:
 			auto mClass = LoadClass<UWUIRoot>(nullptr, *ui_path);
 			if (mClass != nullptr)
 			{
-				mUIRoot = CreateWidget<UWUIRoot>(GEngine->GameViewport->GetWorld(), mClass);
+				mUIRoot = CreateWidget<UWUIRoot>(UEHelper::GetKKWorld(), mClass);
 			}
 			else
 			{
@@ -97,6 +97,13 @@ public:
 			}
 		}
 		return mUIRoot;
+	}
+
+	template<typename WidgetT = UUserWidget>
+	WidgetT* CreateKKWidget(TSubclassOf<UUserWidget> mClass)
+	{
+		static_assert(TIsDerivedFrom<WidgetT, UUserWidget>::Value, "T must be an UWidget derived class");
+		return CreateWidget<WidgetT>(GetRootWidget(), mClass);
 	}
 	
 	void Init();

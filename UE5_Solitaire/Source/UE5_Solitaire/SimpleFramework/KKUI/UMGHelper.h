@@ -162,7 +162,7 @@ public:
         Parent->ShiftChild(Parent->GetChildrenCount(), target);
     }
 
-    static void SetParent(UWidget* target, UCanvasPanel* Parent)
+    static void SetParent(UWidget* target, UPanelWidget* Parent)
     {
         if (target->GetParent() != Parent)
         {
