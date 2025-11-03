@@ -217,7 +217,7 @@ void UPokerItemWidget::UpdateVisibaleState()
         }
         else
         {
-            this->SetVisibility(ESlateVisibility::HitTestInvisible);
+            this->SetVisibility(ESlateVisibility::HitTestInvisible); //不可点击和拖拽。
         }
     }
     else
