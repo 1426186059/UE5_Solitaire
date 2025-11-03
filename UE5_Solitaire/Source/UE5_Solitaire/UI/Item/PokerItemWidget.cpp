@@ -14,6 +14,11 @@ FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, co
     return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 }
 
+FReply UPokerItemWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+    return Super::NativeOnMouseMove(InGeometry, InMouseEvent);
+}
+
 void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
@@ -22,7 +27,8 @@ void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const F
     UPokerItemDragDropOperation* DragOp = NewObject<UPokerItemDragDropOperation>();
     DragOp->WidgetSource = this;
     DragOp->DragOffset = InGeometry.GetAbsolutePosition() - InMouseEvent.GetScreenSpacePosition();
-
+    DragOp->BeginScreenSpacePos = InMouseEvent.GetScreenSpacePosition();
+    DragOp->DragStartSlotPos = UMGHelper::GetSlotPos(this);
     //DragOp->DefaultDragVisual = CreateDragVisual();
     //DragOp->Pivot = EDragPivot::MouseDown;
 
@@ -54,10 +60,10 @@ bool UPokerItemWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
     UPokerItemDragDropOperation* DragOp = Cast<UPokerItemDragDropOperation>(InOperation);
 
     FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition());
-    FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(InDragDropEvent.GetLastScreenSpacePosition());
+    FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(DragOp->BeginScreenSpacePos);
     FVector2D OffsetPos = localPos1 - localPos2;
 
-    UMGHelper::SetSlotPos(this, UMGHelper::GetSlotPos(this) + OffsetPos);
+    UMGHelper::SetSlotPos(this, DragOp->DragStartSlotPos + OffsetPos);
     AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDrag(this);
     AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
 
