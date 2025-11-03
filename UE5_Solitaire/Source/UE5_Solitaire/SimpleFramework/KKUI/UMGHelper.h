@@ -159,7 +159,7 @@ public:
     static void SetAsLastChildIndex(UWidget* target)
     {
         auto Parent = Cast<UCanvasPanel>(target->GetParent());
-        Parent->ShiftChild(Parent->GetChildrenCount() - 1, target);
+        Parent->ShiftChild(Parent->GetChildrenCount(), target);
     }
 
     static void SetParent(UWidget* target, UPanelWidget* Parent)
