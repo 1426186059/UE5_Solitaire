@@ -54,19 +54,19 @@ public:
 	void RecycleAndInitCardGo();
 	void NewGameBegin(bool bRePlay = false);
 	
-	float GetTop7_Gap_Height(int nTopIndex);
-	FVector2D GetCardNodeTop7MaxHeightPos(int nTopIndex);
-	FVector2D GetCardNodeTop7NextMaxHeightPos(int nTopIndex);
-	FVector2D GetCardNodeTop7Pos(int nTopIndex, int nHeightIndex);
-	FVector2D GetCardNode4APos(int nTopIndex);
-	FVector2D GetCardNodeDraw3Pos(int nIndex);
+	float GetTop7_Gap_Height(int32 nTopIndex);
+	FVector2D GetCardNodeTop7MaxHeightPos(int32 nTopIndex);
+	FVector2D GetCardNodeTop7NextMaxHeightPos(int32 nTopIndex);
+	FVector2D GetCardNodeTop7Pos(int32 nTopIndex, int32 nHeightIndex);
+	FVector2D GetCardNode4APos(int32 nTopIndex);
+	FVector2D GetCardNodeDraw3Pos(int32 nIndex);
 	FVector2D GetCardNodeSendPokerPos();
 
 	void NewGameBegin_ForNormal(bool bForceNewGame);
 	void UpdateGameMode();
 
-	std::tuple<bool, UPokerItemWidget*> orThisStepTurnOverPokerIsTrue(int nStepIndex);
-	int GetTop7HideCardCount();
+	std::tuple<bool, UPokerItemWidget*> orThisStepTurnOverPokerIsTrue(int32 nStepIndex);
+	int32 GetTop7HideCardCount();
 	void onAddScore_InitParam();
 	void onAddScore();
 	bool JudgeWin();
@@ -88,20 +88,20 @@ public:
 	void OnDragBegin(UPokerItemWidget* mDragCardItem);
 	void OnDrag(UPokerItemWidget* mDragCardItem);
 	void OnDragEndToMovePokerPos(UPokerItemWidget* mCardItem);
-	void LockTargetToMove(UPokerItemWidget* mCardItem, int nPosType, int nIndex);
+	void LockTargetToMove(UPokerItemWidget* mCardItem, int32 nPosType, int32 nIndex);
 
 	FVector2D GetPosByCardItem(UPokerItemWidget* mCardItem);
-	FVector2D GetPosByPosTypeInfo(const TArray<int>& nPosTypeInfo);
+	FVector2D GetPosByPosTypeInfo(const TArray<int32>& nPosTypeInfo);
 	TArray<UPokerItemWidget*> GetSelectCardItemList(UPokerItemWidget* mCardItem);
-	TArray<int> GetPokerPosType(UPokerItemWidget* mDragCardItem);
+	TArray<int32> GetPokerPosType(UPokerItemWidget* mDragCardItem);
 
-	TArray<UPokerItemWidget*> RemoveArrayFromTop7Go(int nTopIndex, int nRemoveIndex);
-	void InsertArrayToTop7Go(int nTopIndex, const TArray<UPokerItemWidget*>& tableArray);
+	TArray<UPokerItemWidget*> RemoveArrayFromTop7Go(int32 nTopIndex, int32 nRemoveIndex);
+	void InsertArrayToTop7Go(int32 nTopIndex, const TArray<UPokerItemWidget*>& tableArray);
 	TArray<UPokerItemWidget*> SetDragEndRemoveSelfFromArray(UPokerItemWidget* mDragCardItem);
 	void UpdateAllPokerEventTriggerState();
 
-	bool orCanIn4A(int n4AIndex, UPokerItemWidget* mCardItem);
-	bool orCanInNode7(int n7Index, UPokerItemWidget* mCardItem);
+	bool orCanIn4A(int32 n4AIndex, UPokerItemWidget* mCardItem);
+	bool orCanInNode7(int32 n7Index, UPokerItemWidget* mCardItem);
 
 	void DoActionEnd();
 	void CheckGameEnd();
@@ -115,7 +115,7 @@ public:
 
 	void OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr);
 	void OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc);
-	void DoTop7ReSizeHeightAni(int nTop7Index);
+	void DoTop7ReSizeHeightAni(int32 nTop7Index);
 
 	void DoWhenSet_FastGame();
 	void PlayToA4EffectAni(int32 nIndex, UPokerItemWidget* mCardItem);
@@ -134,7 +134,7 @@ private:
 	TArray<UPokerItemWidget*> mSendCardListGo;
 	TArray<UPokerItemWidget*> tableCardDraw3Go;
 
-	TArray<int> mLastSendCardList;
+	TArray<int32> mLastSendCardList;
 	TArray<UPokerItemWidget*> tableFinalA4AniCardItem;
 
 	const float N_TOP7_GAP_HEIGHT = 50.0f;
@@ -143,8 +143,8 @@ private:
 	bool bInitA4Effect;
 	float fRobotThinkingTime = 0;
 	float fIQTime = 0;
-	int nGetScore_nLastTop7HideCardCount = 0;
-	int nRemainHintCount_InDraw3AndSendCardList = 0;
+	int32 nGetScore_nLastTop7HideCardCount = 0;
+	int32 nRemainHintCount_InDraw3AndSendCardList = 0;
 	TMap<UPokerItemWidget*, KKTween::Handle> mapCardItemTween;
 	KKTween::Handle tween_OnFastGameToResultA4;
 
