@@ -4,7 +4,6 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
-#include "GameData.h"
 #include "DataCenter.h"
 #include "GameConst.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
@@ -13,14 +12,13 @@
 
 class StatisticDataHandler :public KKSingleton<StatisticDataHandler>
 {
-	
-public:
-	UStatisticData* data;
-
 public:
 	void Init();
 
-	UStatisticData* GetDefaultData();
+	FStatisticData GetDefaultData();
+	void InitData();
+	FStatisticData* GetData();
+
 	void SetDbDataWithMeta();
 	void ResetData();
 	void onGameStatistic(bool bWin, int32 nMove, int32 nTime, int32 nScore);

@@ -9,6 +9,11 @@ void DataCenter::Init(InitFinishFunc func)
 	this->LoadData();
 }
 
+UGameData* DataCenter::GetData()
+{
+	return this->data;
+}
+
 void DataCenter::LoadData(bool bSync)
 {
 	if (bSync)

@@ -4,7 +4,6 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
-#include "GameData.h"
 #include "DataCenter.h"
 #include "GameConst.h"
 #include "RecordStepDataHandler.h"
@@ -26,10 +25,10 @@ public:
 	void Init();
 	void SaveDb();
 	void SaveGameRecordToDirectory();
-	URecordStepData* GetDataByFileItem(UAllRecordData_fileNameItem* fileNameItem);
-	URecordStepData* RemoveAndGetDataByFileItem(UAllRecordData_fileNameItem* fileNameItem);
-	URecordStepData* RemoveAndGetLastDifferentGameModeRecordTable(int32 nNowGameMode);
+	FRecordStepData* GetDataByFileItem(FAllRecordData_fileNameItem* fileNameItem);
+	FRecordStepData* RemoveAndGetDataByFileItem(FAllRecordData_fileNameItem* fileNameItem);
+	FRecordStepData* RemoveAndGetLastDifferentGameModeRecordTable(int32 nNowGameMode);
 	void ClearAllTripGame();
-	URecordStepData* RemoveAndGetTripHalfGame(); //²Ð¾Ö;
+	FRecordStepData* RemoveAndGetTripHalfGame(); //²Ð¾Ö;
 
 };

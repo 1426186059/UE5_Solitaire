@@ -4,7 +4,6 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
-#include "GameData.h"
 #include "DataCenter.h"
 #include "GameConst.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
@@ -13,25 +12,22 @@
 
 class RecordStepDataHandler :public KKSingleton<RecordStepDataHandler>
 {
-	
-public:
-	URecordStepData* data;
-
 public:
 	void Init();
-	URecordStepData* GetDefaultData();
-	URecordStepData_OpStepItem* GetOpStepItemDefaultData();
+	void InitData();
+	FRecordStepData* GetData();
+	FRecordStepData_OpStepItem GetOpStepItemDefaultData();
 	void SetDbDataWithMeta();
-	void InitStepRecordFromOther(URecordStepData* mmmData);
-	void InitStepRecord(int32 nGameMode, TArray<int> mInitSendCardList);
+	void InitStepRecordFromOther(const FRecordStepData& mmmData);
+	void InitStepRecord(int32 nGameMode, const TArray<int>& mInitSendCardList);
 	void AddUndoCount(int nCount);
 	void ResetUndoCountTo0();
-	void AddStepRecord(URecordStepData_OpStepItem* mOpStepItemData);
-	std::tuple<int32, URecordStepData_OpStepItem*> GetNowStepRecord();
+	void AddStepRecord(const FRecordStepData_OpStepItem& mOpStepItemData);
+	std::tuple<int32, FRecordStepData_OpStepItem*> GetNowStepRecord();
 	bool orCanUndo();
 	bool orCanForward();
 	FString GetPosTypeName(SolitairePokerPosType nPosType);
-	void PrintOp(URecordStepData_OpStepItem* mOpStepItemData);
+	void PrintOp(const FRecordStepData_OpStepItem& mOpStepItemData);
 	void PrintAllOp();
 
 	void AddMoveCount();

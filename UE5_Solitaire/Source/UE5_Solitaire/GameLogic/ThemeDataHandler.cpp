@@ -2,46 +2,45 @@
 
 void ThemeDataHandler::Init()
 {
-	UThemeData* mmmData = DataCenter::GetSingleton()->data->ThemeData;
-	if (mmmData == nullptr)
-	{
-		this->data = NewObject<UThemeData>(DataCenter::GetSingleton()->data);
-		DataCenter::GetSingleton()->data->ThemeData = this->data;
-	}
-	else
-	{
-		this->data = mmmData;
-	}
-
 	this->InitDefaultTheme();
 	this->InitDefaultThemeElement();
 }
 
+void InitData()
+{
+	DataCenter::GetSingleton()->GetData()->ThemeData = {};
+}
+
+FThemeData* GetData()
+{
+	return &DataCenter::GetSingleton()->GetData()->ThemeData;
+}
+
 bool ThemeDataHandler::hasThemeid(int32 id)
 {
-	return this->data->array_themeids.Contains(id);
+	return this->GetData()->array_themeids.Contains(id);
 }
 
 bool ThemeDataHandler::hasBgid(int32 id)
 {
-	return this->data->array_bgids.Contains(id);
+	return this->GetData()->array_bgids.Contains(id);
 }
 
 bool ThemeDataHandler::hasFrontid(int32 id)
 {
-	return this->data->array_frontids.Contains(id);
+	return this->GetData()->array_frontids.Contains(id);
 }
 
 bool ThemeDataHandler::hasBackid(int32 id)
 {
-	return this->data->array_backids.Contains(id);
+	return this->GetData()->array_backids.Contains(id);
 }
 
 void ThemeDataHandler::addThemeid(int32 id)
 {
 	if (!this->hasThemeid(id))
 	{
-		this->data->array_themeids.Add(id);
+		this->GetData()->array_themeids.Add(id);
 	}
 }
 
@@ -49,7 +48,7 @@ void ThemeDataHandler::addbgid(int32 id)
 {
 	if (!this->hasBgid(id))
 	{
-		this->data->array_bgids.Add(id);
+		this->GetData()->array_bgids.Add(id);
 	}
 }
 
@@ -57,7 +56,7 @@ void ThemeDataHandler::addfrontid(int32 id)
 {
 	if (!this->hasFrontid(id))
 	{
-		this->data->array_frontids.Add(id);
+		this->GetData()->array_frontids.Add(id);
 	}
 }
 
@@ -65,13 +64,13 @@ void ThemeDataHandler::addbackid(int32 id)
 {
 	if (!this->hasBackid(id))
 	{
-		this->data->array_backids.Add(id);
+		this->GetData()->array_backids.Add(id);
 	}
 }
 
 void ThemeDataHandler::InitDefaultTheme()
 {
-	if (this->data->themeBgId <= 0)
+	if (this->GetData()->themeBgId <= 0)
 	{
 		auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
 		auto& mThemeConfig = mTable[4];
@@ -106,38 +105,38 @@ void ThemeDataHandler::UnLockNewTheme(const csv_theme::RowData& mThemeConfig)
 
 void ThemeDataHandler::UseNewTheme(const csv_theme::RowData& mThemeConfig)
 {
-	this->data->themeBgId = this->GetThemeElements_internalid_byId(mThemeConfig.table);
-	this->data->themeBackId = this->GetThemeElements_internalid_byId(mThemeConfig.back);
-	this->data->themeZhengId = this->GetThemeElements_internalid_byId(mThemeConfig.front);
+	this->GetData()->themeBgId = this->GetThemeElements_internalid_byId(mThemeConfig.table);
+	this->GetData()->themeBackId = this->GetThemeElements_internalid_byId(mThemeConfig.back);
+	this->GetData()->themeZhengId = this->GetThemeElements_internalid_byId(mThemeConfig.front);
 	this->RefreshThemePai();
 	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
 }
 
 void ThemeDataHandler::UseNewThemeBg(int32 Id)
 {
-	this->data->themeBgId = Id;
+	this->GetData()->themeBgId = Id;
 	this->RefreshThemePai();
 	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
 }
 
 void ThemeDataHandler::UseNewThemeFront(int32 Id)
 {
-	this->data->themeZhengId = Id;
+	this->GetData()->themeZhengId = Id;
 	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
 }
 
 void ThemeDataHandler::UseNewThemeBack(int32 Id)
 {
-	this->data->themeBackId = Id;
+	this->GetData()->themeBackId = Id;
 	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
 }
 
 void ThemeDataHandler::RefreshThemePai()
 {
-	int32 themeBgId = this->data->themeBgId;
+	int32 themeBgId = this->GetData()->themeBgId;
 	if (themeBgId > 0)
 	{
-		this->data->themePaiId = this->GetThemePaiId_ForBgId(themeBgId);
+		this->GetData()->themePaiId = this->GetThemePaiId_ForBgId(themeBgId);
 	}
 }
 
@@ -219,9 +218,9 @@ csv_theme::RowData* ThemeDataHandler::GetUsedThemeConfig()
 	{
 		auto& mConfig = v;
 		if (
-			mConfig.table == this->GetThemeElements_Id_byInternalidAndType(this->data->themeBgId, 1) &&
-			mConfig.front == this->GetThemeElements_Id_byInternalidAndType(this->data->themeZhengId, 2) &&
-			mConfig.back == this->GetThemeElements_Id_byInternalidAndType(this->data->themeBackId, 3)
+			mConfig.table == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeBgId, 1) &&
+			mConfig.front == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeZhengId, 2) &&
+			mConfig.back == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeBackId, 3)
 			)
 		{
 			return &mConfig;

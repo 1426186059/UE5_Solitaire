@@ -16,7 +16,7 @@ FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, co
 
 FReply UPokerItemWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseMove "));
+    //UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseMove "));
     //if (this->bInDrag)
     //{
     //    //UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseMove "));

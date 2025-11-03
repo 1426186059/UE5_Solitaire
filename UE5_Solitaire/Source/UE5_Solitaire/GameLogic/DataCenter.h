@@ -4,7 +4,7 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
-#include "GameData.h"
+#include "UE5_Solitaire/SaveGame/GameSaveGame.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
 
 typedef void (*InitFinishFunc)();
@@ -19,6 +19,7 @@ public:
 	InitFinishFunc mInitFinishFunc;
 	void Init(InitFinishFunc func = NULL);
 
+	UGameData* GetData();
 	void LoadData(bool bSync = true);
 	void SaveData(bool bSync = true);
 

@@ -2,100 +2,86 @@
 
 void RecordStepDataHandler::Init()
 {
-	URecordStepData* mmmData = DataCenter::GetSingleton()->data->tableOpRecord;
-	if (mmmData == nullptr)
-	{
-		this->data = NewObject<URecordStepData>(DataCenter::GetSingleton()->data);
-		DataCenter::GetSingleton()->data->tableOpRecord = this->data;
-	}
-	else
-	{
-		this->data = mmmData;
-	}
+	
 }
 
-URecordStepData* RecordStepDataHandler::GetDefaultData()
+void RecordStepDataHandler::InitData()
 {
-	auto tt = NewObject<URecordStepData>();
-	tt->nGameMode = 0;
-	tt->nMoveCount = 0;
-	tt->nTime = 0;
-	tt->nScore = 0;
-	tt->bWin = false;
-	tt->mInitSendCardList = {};
-	tt->tableOpStepItem = {};
-	tt->nUndoCount = 0;
+	DataCenter::GetSingleton()->data->tableOpRecord = {};
+}
+
+FRecordStepData* RecordStepDataHandler::GetData()
+{
+	return &DataCenter::GetSingleton()->data->tableOpRecord;
+}
+
+FRecordStepData_OpStepItem RecordStepDataHandler::GetOpStepItemDefaultData()
+{
+	FRecordStepData_OpStepItem tt = {};
+	tt.fromPosTypeInfo = {};
+	tt.toPosTypeInfo = {};
+	tt.mSelectCardList = {};
+	tt.nScore = 0;
+	tt.nTureOverPokerId = 0;
 	return tt;
 }
-
-URecordStepData_OpStepItem* RecordStepDataHandler::GetOpStepItemDefaultData()
-{
-	auto tt = NewObject<URecordStepData_OpStepItem>();
-	tt->fromPosTypeInfo = {};
-	tt->toPosTypeInfo = {};
-	tt->mSelectCardList = {};
-	tt->nScore = 0;
-	tt->nTureOverPokerId = 0;
-	return tt;
-}
-
 
 void RecordStepDataHandler::SetDbDataWithMeta()
 {
-	DataCenter::GetSingleton()->data->tableOpRecord = this->data;
+	//DataCenter::GetSingleton()->data->tableOpRecord = this->GetData();
 }
 
-void RecordStepDataHandler::InitStepRecordFromOther(URecordStepData* mmmData)
+void RecordStepDataHandler::InitStepRecordFromOther(const FRecordStepData& mmmData)
 {
 	//ThemeSolitaire.AllRecordDataHandler : SaveGameRecordToDirectory()
-	this->data = mmmData;
+	DataCenter::GetSingleton()->data->tableOpRecord = mmmData;
 }
 
-void RecordStepDataHandler::InitStepRecord(int32 nGameMode, TArray<int> mInitSendCardList)
+void RecordStepDataHandler::InitStepRecord(int32 nGameMode, const TArray<int>& mInitSendCardList)
 {
 	//ThemeSolitaire.AllRecordDataHandler : SaveGameRecordToDirectory()
-	this->data = this->GetDefaultData();
-	this->data->mInitSendCardList = mInitSendCardList;
-	this->data->nGameMode = nGameMode;
+	this->InitData();
+	this->GetData()->mInitSendCardList = mInitSendCardList;
+	this->GetData()->nGameMode = nGameMode;
 }
 
 void RecordStepDataHandler::AddUndoCount(int nCount)
 {
-	this->data->nUndoCount = this->data->nUndoCount + nCount;
-	this->data->nUndoCount = FMath::Clamp(this->data->nUndoCount, 0, this->data->tableOpStepItem.Num());
-	UE_LOG(LogTemp, Log, TEXT("nUndoCount: %d"), this->data->nUndoCount);
+	this->GetData()->nUndoCount += nCount;
+	this->GetData()->nUndoCount = FMath::Clamp(this->GetData()->nUndoCount, 0, this->GetData()->tableOpStepItem.Num());
+	UE_LOG(LogTemp, Log, TEXT("nUndoCount: %d"), this->GetData()->nUndoCount);
 }
 
 void RecordStepDataHandler::ResetUndoCountTo0()
 {
-	while (this->data->nUndoCount > 0)
+	while (this->GetData()->nUndoCount > 0)
 	{
-		this->data->tableOpStepItem.Pop();
-		this->data->nUndoCount = this->data->nUndoCount - 1;
+		this->GetData()->tableOpStepItem.Pop();
+		this->GetData()->nUndoCount = this->GetData()->nUndoCount - 1;
 	}
 }
 
-void RecordStepDataHandler::AddStepRecord(URecordStepData_OpStepItem* mOpStepItemData)
+void RecordStepDataHandler::AddStepRecord(const FRecordStepData_OpStepItem& mOpStepItemData)
 {
 	this->ResetUndoCountTo0();
-	this->data->tableOpStepItem.Add(mOpStepItemData);
+	this->GetData()->tableOpStepItem.Add(mOpStepItemData);
 	this->PrintOp(mOpStepItemData);
 }
 
-std::tuple<int32, URecordStepData_OpStepItem*> RecordStepDataHandler::GetNowStepRecord()
+std::tuple<int32, FRecordStepData_OpStepItem*> RecordStepDataHandler::GetNowStepRecord()
 {
-	int32 nStepIndex = this->data->tableOpStepItem.Num() - this->data->nUndoCount;
-	return { nStepIndex, this->data->tableOpStepItem[nStepIndex] };
+	int32 nStepIndex = this->GetData()->tableOpStepItem.Num() - this->GetData()->nUndoCount;
+	return { nStepIndex, &this->GetData()->tableOpStepItem[nStepIndex] };
 }
 
 bool RecordStepDataHandler::orCanUndo()
 {
-	return this->data->tableOpStepItem.Num() > 0 && this->data->tableOpStepItem.Num() > this->data->nUndoCount;
+	return this->GetData()->tableOpStepItem.Num() > 0 && this->GetData()->tableOpStepItem.Num() > this->GetData()->nUndoCount;
 }
 
 bool RecordStepDataHandler::orCanForward()
 {
-	return this->data->nUndoCount > 0;
+	return this->GetData()->nUndoCount > 0;
 }
 
 FString RecordStepDataHandler::GetPosTypeName(SolitairePokerPosType nPosType)
@@ -124,20 +110,20 @@ FString RecordStepDataHandler::GetPosTypeName(SolitairePokerPosType nPosType)
 	return strOriName;
 }
 
-void RecordStepDataHandler::PrintOp(URecordStepData_OpStepItem* mOpStepItemData)
+void RecordStepDataHandler::PrintOp(const FRecordStepData_OpStepItem& mOpStepItemData)
 {
 	//if LuaGameConfig.isMobilePlatform then return end
 
-	int nIndex = this->data->tableOpStepItem.IndexOfByKey(mOpStepItemData);
+	int nIndex = this->GetData()->tableOpStepItem.IndexOfByKey(mOpStepItemData);
 	FString info = FString::Printf(TEXT("操作步骤：%d: %s(%d, %d) => %s(%d, %d) Score: %d"),
 		nIndex,
-		*this->GetPosTypeName((SolitairePokerPosType)mOpStepItemData->fromPosTypeInfo[0]),
-		mOpStepItemData->fromPosTypeInfo[1],
-		mOpStepItemData->fromPosTypeInfo[2],
-		*this->GetPosTypeName((SolitairePokerPosType)mOpStepItemData->toPosTypeInfo[0]),
-		mOpStepItemData->toPosTypeInfo[1],
-		mOpStepItemData->toPosTypeInfo[2],
-		mOpStepItemData->nScore
+		*this->GetPosTypeName((SolitairePokerPosType)mOpStepItemData.fromPosTypeInfo[0]),
+		mOpStepItemData.fromPosTypeInfo[1],
+		mOpStepItemData.fromPosTypeInfo[2],
+		*this->GetPosTypeName((SolitairePokerPosType)mOpStepItemData.toPosTypeInfo[0]),
+		mOpStepItemData.toPosTypeInfo[1],
+		mOpStepItemData.toPosTypeInfo[2],
+		mOpStepItemData.nScore
 	);
 	UE_LOG(LogTemp, Log, TEXT("%s"), *info);
 }
@@ -145,7 +131,7 @@ void RecordStepDataHandler::PrintOp(URecordStepData_OpStepItem* mOpStepItemData)
 void RecordStepDataHandler::PrintAllOp()
 {
 	//if LuaGameConfig.isMobilePlatform then return end
-	for (auto v : this->data->tableOpStepItem)
+	for (const auto& v : this->GetData()->tableOpStepItem)
 	{
 		this->PrintOp(v);
 	}
@@ -153,25 +139,25 @@ void RecordStepDataHandler::PrintAllOp()
 
 void RecordStepDataHandler::AddMoveCount()
 {
-	this->data->nMoveCount = this->data->nMoveCount + 1;
+	this->GetData()->nMoveCount = this->GetData()->nMoveCount + 1;
 }
 
 void RecordStepDataHandler::AddScore(int32 nCount)
 {
-	this->data->nScore = this->data->nScore + nCount;
+	this->GetData()->nScore = this->GetData()->nScore + nCount;
 }
 
 void RecordStepDataHandler::AddTime(int32 nCount)
 {
-	this->data->nTime = this->data->nTime + nCount;
+	this->GetData()->nTime = this->GetData()->nTime + nCount;
 }
 
 void RecordStepDataHandler::SetLoseWin(bool bWin)
 {
-	this->data->bWin = bWin;
+	this->GetData()->bWin = bWin;
 }
 
 bool RecordStepDataHandler::orGameEnd()
 {
-	return this->data->mInitSendCardList.Num() == 0 || this->data->bWin == true;
+	return this->GetData()->mInitSendCardList.Num() == 0 || this->GetData()->bWin == true;
 }

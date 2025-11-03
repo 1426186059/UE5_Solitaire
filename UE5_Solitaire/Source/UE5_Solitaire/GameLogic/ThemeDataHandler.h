@@ -4,21 +4,19 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
-#include "GameData.h"
 #include "DataCenter.h"
 #include "GameConst.h"
 #include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
 #include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
 #include "UE5_Solitaire/CSV/CSVConfigMgr.h"
 
-class ThemeDataHandler :public KKSingleton<ThemeDataHandler>
+class ThemeDataHandler : public KKSingleton<ThemeDataHandler>
 {
-	
-public:
-	UThemeData* data;
-
 public:
 	void Init();
+
+	void InitData();
+	FThemeData* GetData();
 	
 	bool hasThemeid(int32 id);
 	bool hasBgid(int32 id);

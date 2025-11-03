@@ -248,8 +248,8 @@ void UMainUIWidget::InitGame()
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
 {
-    auto tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
-    auto mInitSendCardList = RecordStepDataHandler::GetSingleton()->data->mInitSendCardList;
+    auto tableOpStepItem = RecordStepDataHandler::GetSingleton()->GetData()->tableOpStepItem;
+    auto mInitSendCardList = RecordStepDataHandler::GetSingleton()->GetData()->mInitSendCardList;
     if (RecordStepDataHandler::GetSingleton()->orGameEnd())
     {
         this->NewGameBegin_ForNormal(true);
@@ -261,7 +261,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
 
     this->RecycleAndInitCardGo();
     this->bGameEnd = false;
-    this->nGameMode = (SolitaireGameMode)RecordStepDataHandler::GetSingleton()->data->nGameMode;
+    this->nGameMode = (SolitaireGameMode)RecordStepDataHandler::GetSingleton()->GetData()->nGameMode;
     this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
 
     ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
@@ -427,7 +427,7 @@ void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)
     }
     else
     {
-        if (RecordStepDataHandler::GetSingleton()->data->nGameMode == this->nGameMode &&
+        if (RecordStepDataHandler::GetSingleton()->GetData()->nGameMode == this->nGameMode &&
             RecordStepDataHandler::GetSingleton()->orGameEnd() == false)
         {
             //--牌局未改变
@@ -437,7 +437,7 @@ void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)
             auto nLastRecordData = AllRecordDataHandler::GetSingleton()->RemoveAndGetLastDifferentGameModeRecordTable(this->nGameMode);
             if (nLastRecordData)
             {
-                RecordStepDataHandler::GetSingleton()->InitStepRecordFromOther(nLastRecordData);
+                RecordStepDataHandler::GetSingleton()->InitStepRecordFromOther(*nLastRecordData);
                 this->RecoverGame();
             }
             else
@@ -465,27 +465,27 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     //--------------------------------------对上把数据 记录整理--------------------------------------------
     if (DataCenter::GetSingleton()->data->nTotalGameCount > 0)
     {
-        if (RecordStepDataHandler::GetSingleton()->data->nGameMode == SolitaireGameMode::Normal)
+        if (RecordStepDataHandler::GetSingleton()->GetData()->nGameMode == SolitaireGameMode::Normal)
         {
-            if (RecordStepDataHandler::GetSingleton()->data->bWin)
+            if (RecordStepDataHandler::GetSingleton()->GetData()->bWin)
             {
                 DataCenter::GetSingleton()->AddNomalModeTotalWinCount();
             }
-            DataCenter::GetSingleton()->AddDifficultLayerWinResult(RecordStepDataHandler::GetSingleton()->data->bWin);
+            DataCenter::GetSingleton()->AddDifficultLayerWinResult(RecordStepDataHandler::GetSingleton()->GetData()->bWin);
         }
 
-        if (RecordStepDataHandler::GetSingleton()->data->bWin)
+        if (RecordStepDataHandler::GetSingleton()->GetData()->bWin)
         {
             DataCenter::GetSingleton()->AddTotalWinGameCount();
         }
 
         StatisticDataHandler::GetSingleton()->onGameStatistic(
-            RecordStepDataHandler::GetSingleton()->data->bWin,
-            RecordStepDataHandler::GetSingleton()->data->nMoveCount,
-            RecordStepDataHandler::GetSingleton()->data->nTime,
-            RecordStepDataHandler::GetSingleton()->data->nScore);
+            RecordStepDataHandler::GetSingleton()->GetData()->bWin,
+            RecordStepDataHandler::GetSingleton()->GetData()->nMoveCount,
+            RecordStepDataHandler::GetSingleton()->GetData()->nTime,
+            RecordStepDataHandler::GetSingleton()->GetData()->nScore);
 
-        if (RecordStepDataHandler::GetSingleton()->data->bWin)
+        if (RecordStepDataHandler::GetSingleton()->GetData()->bWin)
         {
             if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 2 && DataCenter::GetSingleton()->data->bFastGame == false)
             {
@@ -663,8 +663,8 @@ void UMainUIWidget::OnClickChuPai()
         }
 
         auto mOpStepItemData = RecordStepDataHandler::GetSingleton()->GetOpStepItemDefaultData();
-        mOpStepItemData->fromPosTypeInfo = { SolitairePokerPosType::Draw3Pos, 0, 0 };
-        mOpStepItemData->toPosTypeInfo = { SolitairePokerPosType::SendPokerPos, 0, 0 };
+        mOpStepItemData.fromPosTypeInfo = { SolitairePokerPosType::Draw3Pos, 0, 0 };
+        mOpStepItemData.toPosTypeInfo = { SolitairePokerPosType::SendPokerPos, 0, 0 };
         RecordStepDataHandler::GetSingleton()->AddStepRecord(mOpStepItemData);
 
         AudioHandler::GetSingleton()->PlaySound("P4");
@@ -686,8 +686,8 @@ void UMainUIWidget::OnClickChuPai()
         }
 
         auto mOpStepItemData = RecordStepDataHandler::GetSingleton()->GetOpStepItemDefaultData();
-        mOpStepItemData->fromPosTypeInfo = { SolitairePokerPosType::SendPokerPos, nMaxDrawCount, 0 };
-        mOpStepItemData->toPosTypeInfo = { SolitairePokerPosType::Draw3Pos, 0, 0 };
+        mOpStepItemData.fromPosTypeInfo = { SolitairePokerPosType::SendPokerPos, nMaxDrawCount, 0 };
+        mOpStepItemData.toPosTypeInfo = { SolitairePokerPosType::Draw3Pos, 0, 0 };
         RecordStepDataHandler::GetSingleton()->AddStepRecord(mOpStepItemData);
 
         this->nRemainHintCount_InDraw3AndSendCardList -= nMaxDrawCount;
@@ -947,8 +947,8 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int32 nPosType
         ensureMsgf(targetPosTypeInfo.Num() == 3, TEXT("targetPosTypeInfo.Num() : %d"), targetPosTypeInfo.Num());
 
         auto mOpStepItemData = RecordStepDataHandler::GetSingleton()->GetOpStepItemDefaultData();
-        mOpStepItemData->fromPosTypeInfo = oriPosTypeInfo;
-        mOpStepItemData->toPosTypeInfo = targetPosTypeInfo;
+        mOpStepItemData.fromPosTypeInfo = oriPosTypeInfo;
+        mOpStepItemData.toPosTypeInfo = targetPosTypeInfo;
         RecordStepDataHandler::GetSingleton()->AddStepRecord(mOpStepItemData);
 
         this->onAddScore();
@@ -1483,22 +1483,22 @@ void UMainUIWidget::onAddScore()
     int32 baseScore = 0;
     int32 addScore = 0;
 
-    const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
-    const auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
-    const auto& fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
-    const auto& toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
+    auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->GetData()->tableOpStepItem;
+    auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
+    auto& fromPosTypeInfo = nLastOpInfo.fromPosTypeInfo;
+    auto& toPosTypeInfo = nLastOpInfo.toPosTypeInfo;
 
     int32 nAddSumScore = 0;
     if (toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
     {
-        nAddSumScore = nAddSumScore + 5;
+        nAddSumScore += 5;
         int32 nLastIndex = tableOpStepItem.Num() - 2;
         int32 nContinueToA4StepCount = 0;
         while (nLastIndex >= 0)
         {
-            auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
+            const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
-            if (nTempLastOpInfo->toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
+            if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
             {
                 nContinueToA4StepCount = nContinueToA4StepCount + 1;
             }
@@ -1508,7 +1508,7 @@ void UMainUIWidget::onAddScore()
             }
         }
 
-        nAddSumScore = nAddSumScore + 5 * nContinueToA4StepCount;
+        nAddSumScore += 5 * nContinueToA4StepCount;
     }
     else if (toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
@@ -1523,8 +1523,8 @@ void UMainUIWidget::onAddScore()
         {
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
-            if (nTempLastOpInfo->toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos && 
-                nTempLastOpInfo->nTureOverPokerId == nLastOpInfo->nTureOverPokerId)
+            if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos && 
+                nTempLastOpInfo.nTureOverPokerId == nLastOpInfo.nTureOverPokerId)
             {
                 nContinueCount++;
             }
@@ -1544,7 +1544,7 @@ void UMainUIWidget::onAddScore()
         nAddSumScore += nAddNewPokerCount * 5;
     }
 
-    nLastOpInfo->nScore = nAddSumScore;
+    nLastOpInfo.nScore = nAddSumScore;
     RecordStepDataHandler::GetSingleton()->AddScore(nAddSumScore);
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
 }
@@ -1557,15 +1557,15 @@ bool UMainUIWidget::orPosTypeInfoEqual(const TArray<int32>& info1, const TArray<
 
 bool UMainUIWidget::onIsLoopOp()
 {
-    const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+    const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->GetData()->tableOpStepItem;
     const auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
 
     int32 nBeginIndex = FMath::Max(0, tableOpStepItem.Num() - 10);
     for (int32 i = nBeginIndex; i < tableOpStepItem.Num() - 1; i++)
     {
         bool bSameOp = true;
-        if (this->orPosTypeInfoEqual(nLastOpInfo->fromPosTypeInfo, tableOpStepItem[i]->fromPosTypeInfo) == false ||
-            this->orPosTypeInfoEqual(nLastOpInfo->toPosTypeInfo, tableOpStepItem[i]->toPosTypeInfo) == false)
+        if (this->orPosTypeInfoEqual(nLastOpInfo.fromPosTypeInfo, tableOpStepItem[i].fromPosTypeInfo) == false ||
+            this->orPosTypeInfoEqual(nLastOpInfo.toPosTypeInfo, tableOpStepItem[i].toPosTypeInfo) == false)
         {
             bSameOp = false;
             break;
@@ -1589,11 +1589,11 @@ void UMainUIWidget::onAddIQ()
     }
     else
     {
-        int32 nNowStepIndex = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem.Num() - 1;
-        const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+        int32 nNowStepIndex = RecordStepDataHandler::GetSingleton()->GetData()->tableOpStepItem.Num() - 1;
+        const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->GetData()->tableOpStepItem;
         const auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
-        const auto& fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
-        const auto& toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
+        const auto& fromPosTypeInfo = nLastOpInfo.fromPosTypeInfo;
+        const auto& toPosTypeInfo = nLastOpInfo.toPosTypeInfo;
 
         if (fromPosTypeInfo[0] != SolitairePokerPosType::A4Pos && toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
