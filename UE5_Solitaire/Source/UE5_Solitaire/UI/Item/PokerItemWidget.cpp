@@ -140,12 +140,14 @@ void UPokerItemWidget::Init()
 void UPokerItemWidget::Show()
 {
     this->Init();
-    this->SetVisibility(ESlateVisibility::Visible);
+    this->bShow = true;
+    this->UpdateVisibaleState();
 }
 
 void UPokerItemWidget::Hide()
 {
-    this->SetVisibility(ESlateVisibility::Hidden);
+    this->bShow = false;
+    this->UpdateVisibaleState();
 }
 
 void UPokerItemWidget::Refresh()
@@ -166,15 +168,15 @@ void UPokerItemWidget::SetPokerId(int nPokerId1)
     this->nPokerId = nPokerId1;
 }
 
-void UPokerItemWidget::SetTurnOverState(bool bShow, int nStepIndex)
+void UPokerItemWidget::SetTurnOverState(bool orShow, int nStepIndex)
 {
-    if (this->bTurnOverState == bShow)
+    if (this->bTurnOverState == orShow)
     {
         return;
     }
 
-    this->bTurnOverState = bShow;
-    if (bShow)
+    this->bTurnOverState = orShow;
+    if (orShow)
     {
         if (nStepIndex == -1)
         {
@@ -199,11 +201,28 @@ void UPokerItemWidget::ForceShowBackUI()
     this->mIcon->SetBrushFromAtlasInterface(AResCenter::GetSingleton()->GetPokerSprite(-1));
 }
 
-void UPokerItemWidget::SetEventTriggerState(bool bCanClick)
+void UPokerItemWidget::SetEventTriggerState(bool canClick)
 {
-    if (this->IsFocusable() != bCanClick)
+    this->bCanClick = canClick;
+    this->UpdateVisibaleState();
+}
+
+void UPokerItemWidget::UpdateVisibaleState()
+{
+    if (this->bShow)
     {
-        this->SetIsFocusable(bCanClick);
+        if (this->bCanClick)
+        {
+            this->SetVisibility(ESlateVisibility::Visible);
+        }
+        else
+        {
+            this->SetVisibility(ESlateVisibility::HitTestInvisible);
+        }
+    }
+    else
+    {
+        this->SetVisibility(ESlateVisibility::Hidden);
     }
 }
 

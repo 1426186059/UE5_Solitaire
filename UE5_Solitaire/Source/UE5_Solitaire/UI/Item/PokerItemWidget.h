@@ -45,6 +45,7 @@ public:
 	void SetEventTriggerState(bool bCanClick);
 	void PlayTurnOverAni();
 	void DoShakeAni();
+	void UpdateVisibaleState();
 public:
 	int nPokerId;
 	bool bTurnOverState = false;
@@ -54,6 +55,8 @@ public:
 	bool bInDrag = false;
 private:
 	bool bInit;
+	bool bShow;
+	bool bCanClick;
 	UWidget* tranCardItemAni;
 	UImage* mIcon;
 	KKTween::Handle mTurnOverTween1;
