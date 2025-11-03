@@ -26,6 +26,12 @@ namespace KKTweenAPI
                 continue;
             }
 
+            if (mItem->startFunc.IsSet())
+            {
+                mItem->startFunc();
+                mItem->startFunc.Reset();
+            }
+
             if (mItem->nLoopPingTong > 0)
             {
                 if (mItem->nLoopPingTong == 2)

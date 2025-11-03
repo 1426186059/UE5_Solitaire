@@ -293,7 +293,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
             {
                 auto mCardItem = this->tableCardNodeTop7Go[i][j];
-                UMGHelper::SetAsLastChildIndex(mCardItem);
+                UMGHelper::SetChildLastZOrder(mCardItem);
                 mCardItem->Show();
                 mCardItem->ForceShowBackUI();
                 mCardItem->SetEventTriggerState(mCardItem->orTurnOverStateIsTrue());
@@ -307,7 +307,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             for (int j = 0; j < this->tableCardNode4AGo[i].Num(); j++)
             {
                 auto mCardItem = this->tableCardNode4AGo[i][j];
-                UMGHelper::SetAsLastChildIndex(mCardItem);
+                UMGHelper::SetChildLastZOrder(mCardItem);
                 mCardItem->ForceShowBackUI();
                 mCardItem->Show();
                 mCardItem->SetEventTriggerState(j + 1 == this->tableCardNode4AGo[i].Num());
@@ -319,7 +319,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
         for (int i = 0; i < this->tableCardDraw3Go.Num(); i++)
         {
             auto mCardItem = this->tableCardDraw3Go[i];
-            UMGHelper::SetAsLastChildIndex(mCardItem);
+            UMGHelper::SetChildLastZOrder(mCardItem);
             mCardItem->ForceShowBackUI();
             mCardItem->SetEventTriggerState(i == 1);
 
@@ -562,14 +562,14 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
         this->mSendCardListGo[i]->SetTurnOverState(false);
         this->mSendCardListGo[i]->Refresh();
         this->mSendCardListGo[i]->SetEventTriggerState(false);
-        UMGHelper::SetZOrder(this->mSendCardListGo[i], i);
         UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->tranFaPaiPos);
+        UMGHelper::SetZOrder(this->mSendCardListGo[i], 0);
     }
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
     //--------------------------- ×ö·¢ÅÆ¶¯»­---------------------------------
     AudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
-
+    
     for (int i = 0; i < 7; i++)
     {
         for (int j = 0; j <= i; j++)
@@ -584,12 +584,15 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
                 mCardItem->SetTurnOverState(true);
             }
 
-            UMGHelper::SetZOrder(mCardItem, j);
             FVector2D from = UMGHelper::GetSlotPos(mCardItem);
             FVector2D to = this->GetCardNodeTop7MaxHeightPos(nTopIndex);;
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
-            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnCompleteFunc([=, this]()
+            UMGHelper::SetChildLastZOrder(mCardItem);
+            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnStartFunc([=,this]()
+            {
+                
+            })->SetOnCompleteFunc([=, this]()
                 {
                     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                     if (bTurnOverState)
@@ -677,7 +680,7 @@ void UMainUIWidget::OnClickChuPai()
         {
             auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
             this->tableCardDraw3Go.Insert(mCardItem, 0);
-            UMGHelper::SetZOrder(mCardItem, 100 + i);
+            UMGHelper::SetChildLastZOrder(mCardItem);
             mCardItem->SetTurnOverState(true);
             mCardItem->PlayTurnOverAni();
         }
@@ -807,15 +810,15 @@ void UMainUIWidget::OnClickToMovePokerPos(UPokerItemWidget* mCardItem)
 void UMainUIWidget::OnDragBegin(UPokerItemWidget* mDragCardItem)
 {
     auto mCardItemList = this->GetSelectCardItemList(mDragCardItem);
-    for (auto v : mCardItemList)
+    for (int i = 0; i < mCardItemList.Num(); i++)
     {
-        auto mCardItem = v;
+        auto mCardItem = mCardItemList[i];
         if (this->mapCardItemTween.Contains(mCardItem))
         {
             this->mapCardItemTween[mCardItem].Cancel();
             this->mapCardItemTween.Remove(mCardItem);
         }
-        //v.transform : SetAsLastSibling();
+        UMGHelper::SetChildLastZOrder(mCardItem);
     }
 }
 
@@ -2047,6 +2050,6 @@ TArray<int> UMainUIWidget::GetPokerPosType(UPokerItemWidget* mDragCardItem)
             return { SolitairePokerPosType::Top7Pos, i, nIndex };
         }
     }
-
+    
     return { SolitairePokerPosType::SendPokerPos, 0, 0 };
 }

@@ -36,6 +36,7 @@ namespace KKTweenAPI
         int32 nId;
         Action_Float_Delegate updateFunc;
         ActionDelegate finishFunc;
+        ActionDelegate startFunc;
 
         FVector From;
         FVector To;
@@ -103,7 +104,7 @@ namespace KKTweenAPI
             sumTime = 0.0;
             updateFunc.Reset();
             finishFunc.Reset();
-
+            startFunc.Reset();
             nLoopCount = 0;
             nLoopPingTong = 0;
         }
@@ -152,6 +153,12 @@ namespace KKTweenAPI
         TSharedPtr<KKTweenItem> SetOnUpdateFunc(Action_Float_Delegate func)
         {
             this->updateFunc = func;
+            return GetTSharedPtr();
+        }
+
+        TSharedPtr<KKTweenItem> SetOnStartFunc(ActionDelegate func)
+        {
+            this->startFunc = func;
             return GetTSharedPtr();
         }
 

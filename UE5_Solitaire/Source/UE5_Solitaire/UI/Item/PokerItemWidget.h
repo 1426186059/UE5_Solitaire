@@ -29,6 +29,7 @@ protected:
 	virtual void NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual void NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
+	virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 
 public:
@@ -48,7 +49,8 @@ public:
 	int nPokerId;
 	bool bTurnOverState = false;
 	int32 nStepIndex_ForFirstShowPokerId = -1;
-	FVector2D beginPos = {};
+	FVector2D beginPos;
+	FVector2D beginScreenSpacePos;
 	bool bInDrag = false;
 private:
 	bool bInit;

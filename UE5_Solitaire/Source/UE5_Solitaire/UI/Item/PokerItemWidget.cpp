@@ -16,6 +16,20 @@ FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, co
 
 FReply UPokerItemWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseMove "));
+    //if (this->bInDrag)
+    //{
+    //    //UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseMove "));
+
+    //    FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(InMouseEvent.GetScreenSpacePosition());
+    //    FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(this->beginScreenSpacePos);
+    //    FVector2D OffsetPos = localPos1 - localPos2;
+
+    //    UMGHelper::SetSlotPos(this, this->beginPos + OffsetPos);
+    //    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDrag(this);
+    //    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+    //}
+
     return Super::NativeOnMouseMove(InGeometry, InMouseEvent);
 }
 
@@ -23,8 +37,12 @@ void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const F
 {
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragDetected "));
-    
+
+    this->beginPos = UMGHelper::GetSlotPos(this);
+    this->beginScreenSpacePos = InMouseEvent.GetScreenSpacePosition();
+
     UPokerItemDragDropOperation* DragOp = NewObject<UPokerItemDragDropOperation>();
+
     DragOp->WidgetSource = this;
     DragOp->DragOffset = InGeometry.GetAbsolutePosition() - InMouseEvent.GetScreenSpacePosition();
     DragOp->BeginScreenSpacePos = InMouseEvent.GetScreenSpacePosition();
@@ -36,6 +54,7 @@ void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const F
 
     this->bInDrag = true;
     this->beginPos = UMGHelper::GetSlotPos(this);
+
     //AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
     AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
     AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this);
@@ -58,26 +77,44 @@ bool UPokerItemWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragOver "));
 
     UPokerItemDragDropOperation* DragOp = Cast<UPokerItemDragDropOperation>(InOperation);
-
-    FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition());
-    FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(DragOp->BeginScreenSpacePos);
-    FVector2D OffsetPos = localPos1 - localPos2;
-
-    UMGHelper::SetSlotPos(this, DragOp->DragStartSlotPos + OffsetPos);
-    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDrag(this);
-    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+    if (DragOp)
+    {
+        FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition());
+        FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(DragOp->BeginScreenSpacePos);
+        FVector2D OffsetPos = localPos1 - localPos2;
+        UMGHelper::SetSlotPos(this, DragOp->DragStartSlotPos + OffsetPos);
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDrag(this);
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+    }
 
     return Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
+}
+
+void UPokerItemWidget::NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
+{
+    Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
+
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragCancelled "));
+    if (this->bInDrag)
+    {
+        this->bInDrag = false;
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragEndToMovePokerPos(this);
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+    }
 }
 
 bool UPokerItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDrop "));
 
-    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragEndToMovePokerPos(this);
-    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
-
+    if (this->bInDrag)
+    {
+        this->bInDrag = false;
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragEndToMovePokerPos(this);
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+    }
     return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
 }
 
