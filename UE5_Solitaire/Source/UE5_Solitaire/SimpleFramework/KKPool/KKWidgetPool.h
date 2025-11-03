@@ -128,9 +128,7 @@ public:
     void preLoadObj(int nFrameCount, int nCount, TFunction<void()> mFinishFunc = nullptr)
     {
         int nCreateCountSingle = FMath::CeilToInt(nCount / (float)nFrameCount);
-
-        TSharedPtr<KKTimer> mTimer;
-        mTimer = KKTimer::New(nullptr,
+        auto mTimer = KKTimer::New(nullptr,
             [=, this]()
             {
                 for (int j = 0; j < nCreateCountSingle; j++)
@@ -141,11 +139,6 @@ public:
                         {
                             mFinishFunc();
                             mFinishFunc;
-                        }
-
-                        if (mTimer.IsValid())
-                        {
-                            mTimer->Stop();
                         }
                         return false;
                     }

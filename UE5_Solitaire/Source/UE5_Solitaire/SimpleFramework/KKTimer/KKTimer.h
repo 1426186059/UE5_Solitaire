@@ -45,6 +45,11 @@ public:
 		return o;
 	}
 
+	static TWeakPtr<KKTimer> GetHandle(TSharedPtr<KKTimer> mTimer)
+	{
+		return TWeakPtr<KKTimer>(mTimer);
+	}
+
 	void Start()
 	{
 		this->running = true;
