@@ -495,7 +495,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
                     });
             };
 
-            if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 4 and DataCenter::GetSingleton()->data->nMusicIndex == 0)
+            if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 4 && DataCenter::GetSingleton()->data->nMusicIndex == 0)
             {
                 KKTween::delayedCall(1.0, []()
                     {
@@ -739,7 +739,7 @@ void UMainUIWidget::RefreshDrawZone()
 void UMainUIWidget::OnClickToMovePokerPos(UPokerItemWidget* mCardItem)
 {
     auto posTypeInfo = this->GetPokerPosType(mCardItem);
-    if (posTypeInfo[1] == SolitairePokerPosType::Draw3Pos)
+    if (posTypeInfo[0] == SolitairePokerPosType::Draw3Pos)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -760,7 +760,7 @@ void UMainUIWidget::OnClickToMovePokerPos(UPokerItemWidget* mCardItem)
             }
         }
     }
-    else if (posTypeInfo[1] == SolitairePokerPosType::A4Pos)
+    else if (posTypeInfo[0] == SolitairePokerPosType::A4Pos)
     {
         for (int i = 0; i < 7; i++)
         {
@@ -772,7 +772,7 @@ void UMainUIWidget::OnClickToMovePokerPos(UPokerItemWidget* mCardItem)
             }
         }
     }
-    else if (posTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+    else if (posTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
         for (int i = 0; i < 4; i++)
         {
@@ -859,7 +859,7 @@ void UMainUIWidget::OnDragEndToMovePokerPos(UPokerItemWidget* mCardItem)
             return false;
         };
 
-    bool bIn4APos = mCardItemPosY < this->tableCardNode4APos[0].Y - 75;
+    bool bIn4APos = mCardItemPosY < this->tableCardNode4APos[0].Y + 75;
     if (bIn4APos)
     {
         for (int i = 0; i < 4; i++)
@@ -1350,9 +1350,9 @@ TArray<UPokerItemWidget*> UMainUIWidget::SetDragEndRemoveSelfFromArray(UPokerIte
         tableResult.Insert(mCardItem, 0);
         this->RefreshDrawZone();
     }
-    else if (posTypeInfo[0] == SolitairePokerPosType::A4Pos)
+    else if (posTypeInfo[0] == SolitairePokerPosType::A4Pos) //A4 -> A4
     {
-        auto& mListCardNode4AGo = this->tableCardNode4AGo[posTypeInfo[2]];
+        auto& mListCardNode4AGo = this->tableCardNode4AGo[posTypeInfo[1]];
         auto mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
         tableResult.Insert(mCardItem, 0);
 
@@ -1361,7 +1361,7 @@ TArray<UPokerItemWidget*> UMainUIWidget::SetDragEndRemoveSelfFromArray(UPokerIte
             mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(true);
         }
     }
-    else if (posTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+    else if (posTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
         tableResult = this->RemoveArrayFromTop7Go(posTypeInfo[1], posTypeInfo[2]);
 
@@ -1380,13 +1380,13 @@ TArray<UPokerItemWidget*> UMainUIWidget::SetDragEndRemoveSelfFromArray(UPokerIte
         }
         else
         {
-            check(false);
+            ensure(false);
         }
     }
 
     if (tableResult.Num() > 0)
     {
-        ensureMsgf(tableResult[1] == mDragCardItem, TEXT("Error Remove Poker"));
+        ensureMsgf(tableResult[0] == mDragCardItem, TEXT("Error Remove Poker"));
     }
     return tableResult;
 }
@@ -1402,7 +1402,7 @@ void UMainUIWidget::UpdateAllPokerEventTriggerState()
     for (int i = 0; i < this->tableCardDraw3Go.Num(); i++)
     {
         auto mCardItem = this->tableCardDraw3Go[i];
-        mCardItem->SetEventTriggerState(i == 1);
+        mCardItem->SetEventTriggerState(i == 0);
     }
 
     for (int i = 0; i < 4; i++)
@@ -1410,7 +1410,7 @@ void UMainUIWidget::UpdateAllPokerEventTriggerState()
         for (int j = 0; j < this->tableCardNode4AGo[i].Num(); j++)
         {
             auto mCardItem = this->tableCardNode4AGo[i][j];
-            mCardItem->SetEventTriggerState(j == this->tableCardNode4AGo[i].Num());
+            mCardItem->SetEventTriggerState(j == this->tableCardNode4AGo[i].Num() - 1);
         }
     }
 
@@ -1480,21 +1480,21 @@ void UMainUIWidget::onAddScore()
     int baseScore = 0;
     int addScore = 0;
 
-    auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
-    auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
-    auto& fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
-    auto& toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
+    const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+    const auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
+    const auto& fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
+    const auto& toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
 
     int nAddSumScore = 0;
     if (toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
     {
         nAddSumScore = nAddSumScore + 5;
-        int nLastIndex = tableOpStepItem.Num() - 1;
+        int nLastIndex = tableOpStepItem.Num() - 2;
         int nContinueToA4StepCount = 0;
         while (nLastIndex >= 0)
         {
             auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
-            nLastIndex = nLastIndex - 1;
+            nLastIndex--;
             if (nTempLastOpInfo->toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
             {
                 nContinueToA4StepCount = nContinueToA4StepCount + 1;
@@ -1511,18 +1511,19 @@ void UMainUIWidget::onAddScore()
     {
         if (fromPosTypeInfo[0] == SolitairePokerPosType::Draw3Pos)
         {
-            nAddSumScore = nAddSumScore + 5;
+            nAddSumScore += 5;
         }
 
-        int nLastIndex = tableOpStepItem.Num() - 1;
+        int nLastIndex = tableOpStepItem.Num() - 2;
         int nContinueCount = 0;
         while (nLastIndex >= 0)
         {
-            auto nTempLastOpInfo = tableOpStepItem[nLastIndex];
-            nLastIndex = nLastIndex - 1;
-            if (nTempLastOpInfo->toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos and nTempLastOpInfo->nTureOverPokerId == nLastOpInfo->nTureOverPokerId)
+            const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
+            nLastIndex--;
+            if (nTempLastOpInfo->toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos && 
+                nTempLastOpInfo->nTureOverPokerId == nLastOpInfo->nTureOverPokerId)
             {
-                nContinueCount = nContinueCount + 1;
+                nContinueCount++;
             }
             else
             {
@@ -1530,14 +1531,14 @@ void UMainUIWidget::onAddScore()
             }
         }
 
-        nAddSumScore = nAddSumScore + 5 * nContinueCount;
+        nAddSumScore += 5 * nContinueCount;
     }
 
     int nAddNewPokerCount = this->nGetScore_nLastTop7HideCardCount - this->GetTop7HideCardCount();
     if (nAddNewPokerCount > 0)
     {
         this->nGetScore_nLastTop7HideCardCount = this->GetTop7HideCardCount();
-        nAddSumScore = nAddSumScore + nAddNewPokerCount * 5;
+        nAddSumScore += nAddNewPokerCount * 5;
     }
 
     nLastOpInfo->nScore = nAddSumScore;
@@ -1546,15 +1547,15 @@ void UMainUIWidget::onAddScore()
 }
 
 //------------------------------------------------增加IQ----------------------------------------------------------
-bool UMainUIWidget::orPosTypeInfoEqual(TArray<int32> info1, TArray<int32> info2)
+bool UMainUIWidget::orPosTypeInfoEqual(const TArray<int32>& info1, const TArray<int32>& info2)
 {
     return info1[0] == info2[0] && info1[1] == info2[1] && info1[2] == info2[2];
 }
 
 bool UMainUIWidget::onIsLoopOp()
 {
-    auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
-    auto nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
+    const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+    const auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
 
     int nBeginIndex = FMath::Max(0, tableOpStepItem.Num() - 10);
     for (int i = nBeginIndex; i < tableOpStepItem.Num() - 1; i++)
@@ -1585,17 +1586,17 @@ void UMainUIWidget::onAddIQ()
     }
     else
     {
-        int nNowStepIndex = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem.Num();
-        auto tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
-        auto nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
-        auto fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
-        auto toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
+        int nNowStepIndex = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem.Num() - 1;
+        const auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->data->tableOpStepItem;
+        const auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
+        const auto& fromPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
+        const auto& toPosTypeInfo = nLastOpInfo->toPosTypeInfo;
 
-        if (fromPosTypeInfo[0] != SolitairePokerPosType::A4Pos && toPosTypeInfo[1] == SolitairePokerPosType::A4Pos)
+        if (fromPosTypeInfo[0] != SolitairePokerPosType::A4Pos && toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
             DataCenter::GetSingleton()->AddIQValue(5);
         }
-        else if (fromPosTypeInfo[0] != SolitairePokerPosType::A4Pos && toPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+        else if (fromPosTypeInfo[0] != SolitairePokerPosType::A4Pos && toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
             auto [bTure, mCardItem] = this->orThisStepTurnOverPokerIsTrue(nNowStepIndex);
             if (bTure)
@@ -1647,13 +1648,16 @@ void UMainUIWidget::OnFastGameToResultA4()
     {
         for (int j = 0; j < 7; j++)
         {
-            auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[j];
-            auto mCardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
-            if (mCardItem && mCardItem->bInDrag == false && this->orCanIn4A(i, mCardItem))
+            const auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[j];
+            if (mListCardNodeTop7Go.Num() > 0)
             {
-                this->OnDragBegin(mCardItem);
-                this->LockTargetToMove(mCardItem, SolitairePokerPosType::A4Pos, i);
-                return;
+                auto mCardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
+                if (mCardItem->bInDrag == false && this->orCanIn4A(i, mCardItem))
+                {
+                    this->OnDragBegin(mCardItem);
+                    this->LockTargetToMove(mCardItem, SolitairePokerPosType::A4Pos, i);
+                    return;
+                }
             }
         }
     }
@@ -1662,10 +1666,10 @@ void UMainUIWidget::OnFastGameToResultA4()
 //------------------------------------ 相对位置计算 --------------------------------------------
 float UMainUIWidget::GetTop7_Gap_Height(int nTopIndex)
 {
-    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    const auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     int nStartPosIndex = 5;
     int nZhengCount = 0;
-    for(auto& v : mListCardNodeTop7Go)
+    for(const auto& v : mListCardNodeTop7Go)
     {
         if (v->orTurnOverStateIsTrue())
         {
@@ -1698,7 +1702,7 @@ FVector2D UMainUIWidget::GetCardNodeTop7Pos(int nTopIndex, int nNowCount)
 {
     float nGapZhengDis = this->GetTop7_Gap_Height(nTopIndex);
     FVector2D oriPos = this->tableCardNodeTop7Pos[nTopIndex];
-    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
+    const auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTopIndex];
     float posY = oriPos.Y;
     for (int i = 0; i < nNowCount; i++)
     {
@@ -1855,7 +1859,7 @@ void UMainUIWidget::DoTop7ReSizeHeightAni(int nTop7Index)
             {
                 UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeOutQuad(fromPos, toPos, fTimePercent));
             }));
-        this->mapCardItemTween[mCardItem] = mTween;
+        this->mapCardItemTween.Add(mCardItem, mTween);
     }
 }
 
@@ -1922,14 +1926,14 @@ bool UMainUIWidget::orCanIn4A(int n4AIndex, UPokerItemWidget* mCardItem)
     auto targetPosTypeInfo = this->GetPokerPosType(mCardItem);
     if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
-        auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
+        const auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
         if (mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1] != mCardItem)
         {
             return false;
         }
     }
 
-    auto mListCardNode4A = this->tableCardNode4AGo[n4AIndex];
+    const auto& mListCardNode4A = this->tableCardNode4AGo[n4AIndex];
     if (mListCardNode4A.Num() == 0)
     {
         return CardHandler::GetSingleton()->GetDigital(mCardItem->nPokerId) == 1;
@@ -1949,7 +1953,7 @@ bool UMainUIWidget::orCanIn4A(int n4AIndex, UPokerItemWidget* mCardItem)
 
 bool UMainUIWidget::orCanInNode7(int n7Index, UPokerItemWidget* mCardItem)
 {
-    auto& tableCardNode7 = this->tableCardNodeTop7Go[n7Index];
+    const auto& tableCardNode7 = this->tableCardNodeTop7Go[n7Index];
     if (tableCardNode7.Num() == 0)
     {
         return CardHandler::GetSingleton()->GetDigital(mCardItem->nPokerId) == 13;
@@ -2034,7 +2038,8 @@ TArray<int> UMainUIWidget::GetPokerPosType(UPokerItemWidget* mDragCardItem)
 
     for (int i = 0; i < 4; i++)
     {
-        nIndex = this->tableCardNode4AGo[i].IndexOfByKey(mDragCardItem);
+        const auto& mListCardNode4AGo = this->tableCardNode4AGo[i];
+        nIndex = mListCardNode4AGo.IndexOfByKey(mDragCardItem);
         if (nIndex != INDEX_NONE)
         {
             return { SolitairePokerPosType::A4Pos, i, nIndex };
@@ -2043,7 +2048,7 @@ TArray<int> UMainUIWidget::GetPokerPosType(UPokerItemWidget* mDragCardItem)
 
     for (int i = 0; i < 7; i++)
     {
-        auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[i];
+        const auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[i];
         nIndex = mListCardNodeTop7Go.IndexOfByKey(mDragCardItem);
         if (nIndex != INDEX_NONE)
         {

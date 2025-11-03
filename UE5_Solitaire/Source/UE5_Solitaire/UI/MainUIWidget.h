@@ -71,7 +71,7 @@ public:
 	void onAddScore();
 	bool JudgeWin();
 
-	bool orPosTypeInfoEqual(TArray<int32> info1, TArray<int32> info2);
+	bool orPosTypeInfoEqual(const TArray<int32>& info1, const TArray<int32>& info2);
 	bool onIsLoopOp();
 	void onAddIQ();
 
