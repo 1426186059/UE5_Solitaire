@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "GameWinAniMgr.h"
 #include "MainUIWidget.h"
 
@@ -31,25 +28,32 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
     this->DestroyAniNode();
     this->Show();
 
-    // -- 1：自己写的垃圾动画  2 : 上下跳动的动画 3 : Fly To Pool 4 : 心形动画 5 : 铺满屏幕 6 : 菱形动画 7 : 5星动画
     int nWinType = 2;
-    //if (DataCenter::GetSingleton()->data->nTotalWinGameCount <= 8)
-    //{
-    //    nWinType = DataCenter::GetSingleton()->data->nTotalWinGameCount + 1;
-    //}
-    //else
-    //{
-    //    nWinType = FMath::random(1, 9);
-    //}
+    if (DataCenter::GetSingleton()->data->nTotalWinGameCount <= 8)
+    {
+        nWinType = DataCenter::GetSingleton()->data->nTotalWinGameCount + 1;
+    }
+    else
+    {
+        nWinType = KKRandomTool::RandomInt(1, 9);
+    }
 
     //--nWinType = 9
     if (nWinType == 1)
     {
-        /*self.mAni = require "Lua.MainLogic.view.GameWinAni_1_Curve"
-            self.mAni:PlayAni(finishFunc)
-            elseif nWinType == 2 then
-            self.mAni = require "Lua.MainLogic.view.GameWinAni_2_TiaoDong"
-            self.mAni : PlayAni(finishFunc)
+        var prefab = ResCenter.Instance.mBundleGameAllRes.FindPrefab("gameanimation2");
+        GameObject node = Instantiate(prefab) as GameObject;
+        node.transform.SetParent(GameLauncher.readOnlyInstance.mUIRoot.mCanvas_WinAnimation, false);
+        var mAnimationView = node.GetComponent<AnimationView2_Default>();
+        mAnimationView.gameObject.SetActive(true);
+        mAnimationView.Show(colors, startPt_w, offsetX, callback);
+        this.animationNode = mAnimationView.gameObject;
+    }
+    else if (nWinType == 2)
+    {
+       // self.mAni = require "Lua.MainLogic.view.GameWinAni_2_TiaoDong"
+         //   self.mAni : PlayAni(finishFunc)
+    }
             elseif nWinType == 3 then
             self.mAni = require "Lua.MainLogic.view.GameWinAni_3_FlyToPool"
             self.mAni : PlayAni(finishFunc)
@@ -70,11 +74,11 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
             self.mAni : PlayAni(finishFunc)
             elseif nWinType == 9 then
             self.mAni = require "Lua.MainLogic.view.GameWinAni_9_smileface"
-            self.mAni : PlayAni(finishFunc)*/
+            self.mAni : PlayAni(finishFunc)
     }
     else
     {
-        //ensume(false, nWinType);
+        ensureMsgf(false, TEXT("nWinType: %d"), nWinType);
     }
 }
 
