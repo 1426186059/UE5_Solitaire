@@ -31,7 +31,9 @@ protected:
 	virtual bool NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
-
+	
+	void OnDrag(UDragDropOperation* InOperation, FVector2D nowScreenPos);
+	void OnDragEnd();
 public:
 	void Init();
 	void Show();
