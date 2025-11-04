@@ -13,5 +13,7 @@ public class UE5_SolitaireTarget : TargetRules
 		ExtraModuleNames.AddRange(new string[] { 
 			"UE5_Solitaire",
         });
+
+		
 	}
 }

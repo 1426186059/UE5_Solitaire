@@ -18,8 +18,9 @@ public class UE5_Solitaire : ModuleRules
             "Slate", 
 			"SlateCore",
             "Json", 
-			"JsonUtilities" 
-		});
+			"JsonUtilities",
+            "UnrealEd",
+        });
 
         PrivateDependencyModuleNames.AddRange(new string[] {
            // "ChunkDownloader"

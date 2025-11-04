@@ -104,6 +104,7 @@ void AGameLauncher::StartEnterGame(void* param)
     CSVConfigMgr::GetSingleton()->Init();
     DTMgr::GetSingleton()->Init();
 
+    AKKDBSaveMgr::GetSingleton()->Init();
     //加载游戏数据
     DataCenter::GetSingleton()->Init(); //改为同步调用了
     CardHandler::GetSingleton()->Init();
