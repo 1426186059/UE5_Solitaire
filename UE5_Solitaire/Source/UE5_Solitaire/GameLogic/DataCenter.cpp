@@ -63,6 +63,7 @@ void DataCenter::SaveData(bool bSync)
 	if (bSync)
 	{
 		UGameplayStatics::SaveGameToSlot(this->data, DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX);
+		UE_LOG(LogTemp, Log, TEXT("SaveData completed"));
 	}
 	else
 	{
@@ -76,11 +77,11 @@ void DataCenter::OnSaveDataComplete(const FString& SlotName, const int32 UserInd
 {
 	if (bSuccess)
 	{
-		UE_LOG(LogTemp, Log, TEXT("SaveGameAsync completed successfully."));
+		UE_LOG(LogTemp, Log, TEXT("SaveData Async completed"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("SaveGameAsync failed."));
+		UE_LOG(LogTemp, Log, TEXT("SaveData Async failed."));
 	}
 }
 

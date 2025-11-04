@@ -34,6 +34,10 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override
 	{
 		Super::EndPlay(EndPlayReason);
+
+#if WITH_EDITOR
+		this->Fire();
+#endif
 	}
 
 	virtual void Tick(float DeltaTime) override
@@ -43,21 +47,14 @@ protected:
 public:
 	void Init()
 	{
-
-#if WITH_EDITOR
-		FEditorDelegates::EndPIE.AddLambda([this](bool bIsSimulating)
-			{
-				UE_LOG(LogTemp, Log, TEXT("AKKDBSaveMgr PIE »á»°½áÊø Sim=%d"), bIsSimulating);
-				this->Fire();
-			});
-#else
-		FCoreDelegates::ApplicationWillEnterBackgroundDelegate.AddLambda([]()
+#if !WITH_EDITOR
+		FCoreDelegates::ApplicationWillEnterBackgroundDelegate.AddLambda([this]()
 			{
 				UE_LOG(LogTemp, Log, TEXT("==>AKKDBSaveMgr OnApplicationPause true"));
 				this->Fire();
 			});
 
-		FCoreDelegates::ApplicationHasEnteredForegroundDelegate.AddLambda([]()
+		FCoreDelegates::ApplicationHasEnteredForegroundDelegate.AddLambda([this]()
 			{
 				UE_LOG(LogTemp, Log, TEXT("==>AKKDBSaveMgr OnApplicationPause false"));
 			});
