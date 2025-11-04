@@ -958,12 +958,12 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int32 nPosType
 
         if (oriPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
-            this->DoTop7ReSizeHeightAni(oriPosTypeInfo[2]);
+            this->DoTop7ReSizeHeightAni(oriPosTypeInfo[1]);
         }
 
         if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
-            this->DoTop7ReSizeHeightAni(targetPosTypeInfo[2]);
+            this->DoTop7ReSizeHeightAni(targetPosTypeInfo[1]);
         }
     }
 
@@ -1382,10 +1382,10 @@ TArray<UPokerItemWidget*> UMainUIWidget::SetDragEndRemoveSelfFromArray(UPokerIte
                 KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateCollectState)->Broadcast(nullptr);
             }
         }
-        else
-        {
-            ensure(false);
-        }
+    }
+    else
+    {
+        ensure(false);
     }
 
     if (tableResult.Num() > 0)
@@ -1501,7 +1501,7 @@ void UMainUIWidget::onAddScore()
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
 
-            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("toPosTypeInfo.Num: %d"), nTempLastOpInfo.toPosTypeInfo.Num());
+            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("%d [%d] %d"), tableOpStepItem.Num(), nLastIndex, nTempLastOpInfo.toPosTypeInfo.Num());
             if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
             {
                 nContinueToA4StepCount = nContinueToA4StepCount + 1;
@@ -1529,7 +1529,7 @@ void UMainUIWidget::onAddScore()
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
 
-            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("toPosTypeInfo.Num: %d"), nTempLastOpInfo.toPosTypeInfo.Num());
+            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("%d [%d] %d"), tableOpStepItem.Num(), nLastIndex, nTempLastOpInfo.toPosTypeInfo.Num());
             if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos && 
                 nTempLastOpInfo.nTureOverPokerId == nLastOpInfo.nTureOverPokerId)
             {
@@ -1852,7 +1852,7 @@ void UMainUIWidget::OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos
 
 void UMainUIWidget::DoTop7ReSizeHeightAni(int32 nTop7Index)
 {
-    auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
+    const auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
     for (int32 i = 0; i < mListCardNodeTop7Go.Num(); i++)
     {
         auto mCardItem = mListCardNodeTop7Go[i];

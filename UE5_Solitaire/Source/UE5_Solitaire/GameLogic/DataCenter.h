@@ -13,7 +13,11 @@ typedef void (*InitFinishFunc)();
 
 class DataCenter:public KKSingleton<DataCenter>
 {
+private:
+	FDelegateHandle mSaveDataHandle;
 public:
+	~DataCenter();
+
 	static const FString DATA_SLOT_NAME;
 	static const int32 DATA_USER_INDEX;
 

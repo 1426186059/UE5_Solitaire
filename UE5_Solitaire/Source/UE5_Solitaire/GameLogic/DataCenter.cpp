@@ -3,14 +3,21 @@
 const FString DataCenter::DATA_SLOT_NAME = "SolitaireData";
 const int32 DataCenter::DATA_USER_INDEX = 0;
 
+DataCenter::~DataCenter()
+{
+	if (mSaveDataHandle.IsValid())
+	{
+		mSaveDataHandle.Reset();
+	}
+}
+
 void DataCenter::Init(InitFinishFunc func)
 {
 	this->mInitFinishFunc = func;
 	this->LoadData();
 
-	AKKDBSaveMgr::GetSingleton()->GetEventList()->AddLambda([this]()
+	mSaveDataHandle = AKKDBSaveMgr::GetSingleton()->GetEventList()->AddLambda([this]()
 		{
-			check(this->data);
 			this->SaveData();
 		});
 }
