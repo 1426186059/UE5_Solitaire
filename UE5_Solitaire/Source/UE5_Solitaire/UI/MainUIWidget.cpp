@@ -1523,6 +1523,8 @@ void UMainUIWidget::onAddScore()
         {
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
+
+            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("MainUIWidget Error: %d"), nTempLastOpInfo.toPosTypeInfo.Num());
             if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos && 
                 nTempLastOpInfo.nTureOverPokerId == nLastOpInfo.nTureOverPokerId)
             {
