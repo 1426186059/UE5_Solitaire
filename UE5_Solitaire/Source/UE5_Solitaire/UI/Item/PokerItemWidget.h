@@ -8,6 +8,7 @@
 #include "Blueprint/DragDropOperation.h"
 
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Components/Image.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
@@ -23,7 +24,10 @@ class UE5_SOLITAIRE_API UPokerItemWidget : public UUserWidget
 	GENERATED_BODY()
 
 protected:
+	void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
+
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual FReply NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 	virtual void NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation) override;
 	virtual void NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
@@ -32,7 +36,7 @@ protected:
 	virtual void NativeOnDragCancelled(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	virtual bool NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation) override;
 	
-	void OnDrag(UDragDropOperation* InOperation, FVector2D nowScreenPos);
+	void OnDrag();
 	void OnDragEnd();
 public:
 	void Init();
@@ -66,8 +70,17 @@ private:
 	KKTween::Handle mShakeTween;
 };
 
+class FPokerItemDragDropOperation : public FDragDropOperation
+{
+public:
+	UPokerItemWidget* WidgetSource;
+	FVector2D BeginScreenSpacePos;
+	FVector2D DragStartSlotPos;
+	FVector2D DragOffset;
+};
+
 UCLASS()
-class UE5_SOLITAIRE_API UPokerItemDragDropOperation : public UDragDropOperation
+class UPokerItemDragDropOperation : public UDragDropOperation
 {
 	GENERATED_BODY()
 
