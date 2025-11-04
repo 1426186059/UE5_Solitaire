@@ -20,6 +20,9 @@ public:
 	UGameData* data;
 	InitFinishFunc mInitFinishFunc;
 	void Init(InitFinishFunc func = NULL);
+	void OnApplicationPause();
+	void OnApplicationResume();
+	void OnApplicationQuit();
 
 	UGameData* GetData();
 	void LoadData(bool bSync = true);

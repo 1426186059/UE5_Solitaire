@@ -2,17 +2,33 @@
 
 void RecordStepDataHandler::Init()
 {
-	
+	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler nTime: %d"), this->GetData()->nTime);
+	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler tableOpStepItem Count: %d"), this->GetData()->tableOpStepItem.Num());
+	this->InitData();
 }
 
 void RecordStepDataHandler::InitData()
 {
-	DataCenter::GetSingleton()->data->tableOpRecord = {};
+	DataCenter::GetSingleton()->data->tableOpRecord = this->GetDefaultData();
 }
 
 FRecordStepData* RecordStepDataHandler::GetData()
 {
 	return &DataCenter::GetSingleton()->data->tableOpRecord;
+}
+
+FRecordStepData RecordStepDataHandler::GetDefaultData()
+{
+	FRecordStepData tt = {};
+	tt.nGameMode = 0;
+	tt.nMoveCount = 0;
+	tt.nTime = 0;
+	tt.nScore = 0;
+	tt.bWin = false;
+	tt.mInitSendCardList = {};
+	tt.tableOpStepItem = {};
+	tt.nUndoCount = 0;
+	return tt;
 }
 
 FRecordStepData_OpStepItem RecordStepDataHandler::GetOpStepItemDefaultData()

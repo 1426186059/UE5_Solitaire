@@ -7,6 +7,35 @@ void DataCenter::Init(InitFinishFunc func)
 {
 	this->mInitFinishFunc = func;
 	this->LoadData();
+
+	FCoreDelegates::ApplicationWillDeactivateDelegate.AddLambda([=, this]()
+		{
+			this->OnApplicationPause();
+		});
+
+	FCoreDelegates::ApplicationHasReactivatedDelegate.AddLambda([=, this]()
+		{
+			this->OnApplicationResume();
+		});
+
+	FCoreDelegates::OnPreExit.AddRaw(
+		this, &DataCenter::OnApplicationQuit);
+}
+
+void DataCenter::OnApplicationPause()
+{
+	UE_LOG(LogTemp, Log, TEXT("==> DataCenter OnApplicationPause"));
+	SaveData();
+}
+
+void DataCenter::OnApplicationResume()
+{
+	UE_LOG(LogTemp, Log, TEXT("==> DataCenter OnApplicationResume"));
+}
+
+void DataCenter::OnApplicationQuit()
+{
+	UE_LOG(LogTemp, Log, TEXT("==> DataCenter OnApplicationQuit"));
 }
 
 UGameData* DataCenter::GetData()

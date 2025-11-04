@@ -16,6 +16,7 @@ public:
 	void Init();
 	void InitData();
 	FRecordStepData* GetData();
+	FRecordStepData GetDefaultData();
 	FRecordStepData_OpStepItem GetOpStepItemDefaultData();
 	void SetDbDataWithMeta();
 	void InitStepRecordFromOther(const FRecordStepData& mmmData);
