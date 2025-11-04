@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 
+#include "Blueprint/UserWidget.h"
 #include "Components/Widget.h"
 #include "Components/CanvasPanel.h"
 #include "Components/CanvasPanelSlot.h"

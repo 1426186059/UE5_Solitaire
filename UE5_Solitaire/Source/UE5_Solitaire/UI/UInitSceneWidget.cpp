@@ -38,7 +38,7 @@ void UInitSceneWidget::Show()
     this->Init();
     this->SetVisibility(ESlateVisibility::Visible);
 
-    mUProgressBar->SetPercent(0);
+    this->mUProgressBar->SetPercent(0);
 
     //创建热更Actor
     mInitSceneHotUpdateMgr = GetWorld()->SpawnActor<AInitSceneHotUpdateMgr>(AInitSceneHotUpdateMgr::StaticClass());

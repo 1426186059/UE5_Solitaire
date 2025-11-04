@@ -149,8 +149,6 @@ private:
 	KKTween::Handle tween_OnFastGameToResultA4;
 
 	UImage* mBG;
-
-	GameWinAniMgr* GameWinAniMgr;
+	UGameWinAniMgr* GameWinAniMgr;
 	FTimerHandle mTimer;
-	KKWidgetPool<UPokerAnimationItemW>* mCardAnimationItemPool;
 };

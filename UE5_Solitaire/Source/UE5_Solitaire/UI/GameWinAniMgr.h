@@ -1,16 +1,20 @@
 #pragma once
 
-#include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
-#include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
+#include "Item/PokerAnimationItemW.h"
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "GameWinAniMgr.generated.h"
 
-class GameWinAniMgr
+UCLASS()
+class UGameWinAniMgr :public UObject
 {
+    GENERATED_BODY()
+
 private:
-    UWidget* go;
+    UCanvasPanel* go;
+    KKWidgetPool<UPokerAnimationItemW>* mCardItemPool;
 public:
-    void Init(UWidget* go);
+    void Init(UCanvasPanel* t);
     void Show();
     void Hide();
     void PlayAni(TFunction<void()> finishFunc);

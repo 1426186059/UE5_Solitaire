@@ -2,32 +2,31 @@
 
 
 #include "GameWinAniMgr.h"
+#include "MainUIWidget.h"
 
-void GameWinAniMgr::Init(UWidget* t)
+void UGameWinAniMgr::Init(UCanvasPanel* t)
 {
-    /*self.transform = go.transform : GetComponent(typeof(Unity.RectTransform))
-    self.transform.gameObject:SetActive(false)
+    this->go = t;
+    this->go->SetVisibility(ESlateVisibility::Visible);
     
-    local cardItemPrefab = ThemeSolitaire.mCommonResSerialization : FindPrefab("CardAniItem")
-    local CardItemGen = require "Lua.MainLogic.view.GameWinAniItem"
-    local ItemPoolGen = require "Lua.SimpleFramework.ObjectPool.ItemPool"
-
-    self.mCardItemPool = ItemPoolGen : New(cardItemPrefab, CardItemGen, 0)
-    self.mCardItemPool : SetItemParent(self.transform)
-    self.mCardItemPool : preLoadByFrame(60, 500)*/
+    TSubclassOf<UUserWidget> PokerAnimationItemCWBP = LoadClass<UPokerAnimationItemW>(this,
+            TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerAnimationItemCWBP.PokerAnimationItemCWBP_C"));
+    this->mCardItemPool = new KKWidgetPool<UPokerAnimationItemW>();
+    this->mCardItemPool->Init(PokerAnimationItemCWBP, this->go);
+    this->mCardItemPool->preLoadObj(200, 1000);
 }
 
-void GameWinAniMgr::Show()
+void UGameWinAniMgr::Show()
 {
-    //self.transform.gameObject : SetActive(true)
+    this->go->SetVisibility(ESlateVisibility::Visible);
 }
 
-void GameWinAniMgr::Hide()
+void UGameWinAniMgr::Hide()
 {
-    // self.transform.gameObject : SetActive(false)
+    this->go->SetVisibility(ESlateVisibility::Hidden);
 }
 
-void GameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
+void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
 {
     this->DestroyAniNode();
     this->Show();
@@ -79,7 +78,7 @@ void GameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
     }
 }
 
-void GameWinAniMgr::DestroyAniNode()
+void UGameWinAniMgr::DestroyAniNode()
 {
     this->Hide();
     //if (this->mAni)

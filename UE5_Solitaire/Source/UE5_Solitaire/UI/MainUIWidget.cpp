@@ -238,13 +238,10 @@ void UMainUIWidget::InitGame()
 
     this->tableCardNodeTop7Go.SetNumZeroed(7);
     this->tableCardNode4AGo.SetNumZeroed(4);
+    
+    this->GameWinAniMgr = NewObject<UGameWinAniMgr>(this);
+    this->GameWinAniMgr->Init(this->GameWinAniParent);
     this->RecoverGame(true);
-
-    TSubclassOf<UUserWidget> PokerAnimationItemCWBP = LoadClass<UPokerAnimationItemW>(this,
-        TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerAnimationItemCWBP.PokerAnimationItemCWBP_C"));
-    mCardAnimationItemPool = new KKWidgetPool<UPokerAnimationItemW>();
-    mCardAnimationItemPool->Init(PokerAnimationItemCWBP, this->GameWinAniParent);
-    mCardAnimationItemPool->preLoadObj(200, 1000);
 }
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
