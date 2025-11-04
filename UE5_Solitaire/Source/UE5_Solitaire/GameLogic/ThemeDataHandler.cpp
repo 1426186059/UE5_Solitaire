@@ -6,12 +6,12 @@ void ThemeDataHandler::Init()
 	this->InitDefaultThemeElement();
 }
 
-void InitData()
+void ThemeDataHandler::InitData()
 {
 	DataCenter::GetSingleton()->GetData()->ThemeData = {};
 }
 
-FThemeData* GetData()
+FThemeData* ThemeDataHandler::GetData()
 {
 	return &DataCenter::GetSingleton()->GetData()->ThemeData;
 }

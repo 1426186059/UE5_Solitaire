@@ -4,6 +4,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "KKRandomTool.h"
 
 class TArrayExtentions
 {
@@ -45,6 +46,24 @@ public:
             mList.Add(FString::Format(TEXT("{0}"), { v }));
         }
         UE_LOG(LogTemp, Log, TEXT("%s: %s"), *Tag, *FString::Join(mList, TEXT(", ")));
+    }
+
+    template<typename T>
+    static bool orTArrayEqual(TArray<T> mArray1, TArray<T> mArray2)
+    {
+        if (mArray1.Num() != mArray2.Num())
+        {
+            return false;
+        }
+        
+        for (int i = 0; i < mArray1.Num(); i++)
+        {
+            if (mArray1[i] != mArray2[i])
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 private:

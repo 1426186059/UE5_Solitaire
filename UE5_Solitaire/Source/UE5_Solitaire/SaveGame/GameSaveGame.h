@@ -1,9 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "GameData.h"
-
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
 #include "GameSaveGame.generated.h"

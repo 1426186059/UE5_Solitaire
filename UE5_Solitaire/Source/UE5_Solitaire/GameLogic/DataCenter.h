@@ -5,7 +5,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/SaveGame.h"
 #include "UE5_Solitaire/SaveGame/GameSaveGame.h"
-#include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
+#include "GameConst.h"
+#include "UE5_Solitaire/CSV/CSVConfigMgr.h"
 
 typedef void (*InitFinishFunc)();
 

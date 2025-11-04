@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "CoreMinimal.h"
 #include "GameData.generated.h"
 
@@ -16,6 +17,16 @@ public:
     UPROPERTY() TArray<int32> mSelectCardList = {};
     UPROPERTY() int32 nScore = 0;
     UPROPERTY() int32 nTureOverPokerId = 0;
+
+    bool operator==(const FRecordStepData_OpStepItem& Rhs) const
+    {
+        return 
+            TArrayExtentions::orTArrayEqual(fromPosTypeInfo, Rhs.fromPosTypeInfo) &&
+            TArrayExtentions::orTArrayEqual(toPosTypeInfo, Rhs.toPosTypeInfo) &&
+            TArrayExtentions::orTArrayEqual(mSelectCardList, Rhs.mSelectCardList) &&
+            nScore == Rhs.nScore && 
+            nTureOverPokerId == Rhs.nTureOverPokerId;
+    }
 };
 
 USTRUCT()

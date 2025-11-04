@@ -110,6 +110,7 @@ void AGameLauncher::StartEnterGame(void* param)
     RecordStepDataHandler::GetSingleton()->Init();
     ThemeDataHandler::GetSingleton()->Init();
     AllRecordDataHandler::GetSingleton()->Init();
+    StatisticDataHandler::GetSingleton()->Init();
 
     //资源中心初始化
     AResCenter::GetSingleton()->Init();

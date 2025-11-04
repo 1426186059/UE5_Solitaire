@@ -3,12 +3,7 @@
 #pragma once
 
 #include "Kismet/GameplayStatics.h"
-#include "GameFramework/SaveGame.h"
 #include "DataCenter.h"
-#include "GameConst.h"
-#include "UE5_Solitaire/SimpleFramework/KKSingleton.h"
-#include "UE5_Solitaire/SimpleFramework/KKEventMgr.h"
-#include "UE5_Solitaire/CSV/CSVConfigMgr.h"
 
 class ThemeDataHandler : public KKSingleton<ThemeDataHandler>
 {
