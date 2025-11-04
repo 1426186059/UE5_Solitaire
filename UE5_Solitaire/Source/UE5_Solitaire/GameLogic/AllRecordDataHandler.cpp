@@ -1,7 +1,7 @@
 ﻿#include "AllRecordDataHandler.h"
 
-const FString AllRecordDataHandler::GameRecordDirPath = "ThemeSolitaire/";
-const FString AllRecordDataHandler::GameRecordFileIndexName = "ThemeSolitaire/index.txt";
+const FString AllRecordDataHandler::GameRecordDirPath = "SolitaireData_GameRecord_DIR";
+const FString AllRecordDataHandler::GameRecordFileIndexName = "SolitaireData_GameRecord_index";
 
 void AllRecordDataHandler::Init()
 {
