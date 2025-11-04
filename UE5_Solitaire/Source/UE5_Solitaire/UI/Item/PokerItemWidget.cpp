@@ -18,10 +18,11 @@ FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, co
         {
             this->bInDrag = true;
             this->beginPos = UMGHelper::GetSlotPos(this);
-            this->beginScreenSpacePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(this);
+            this->beginScreenSpacePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
             //AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
             AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
             AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this);
+            return FReply::Handled().CaptureMouse(TakeWidget());
         }
     }
     return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
@@ -33,6 +34,7 @@ FReply UPokerItemWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, cons
     if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
     {
         this->OnDragEnd();
+        return FReply::Handled().ReleaseMouseCapture();
     }
     return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
@@ -96,7 +98,7 @@ void UPokerItemWidget::OnDrag()
 {
     if (this->bInDrag)
     {
-        FVector2D  MousePos = UWidgetLayoutLibrary::GetMousePositionOnViewport(this);
+        FVector2D  MousePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
         FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(MousePos);
         FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(this->beginScreenSpacePos);
         FVector2D OffsetPos = localPos1 - localPos2;
