@@ -1497,10 +1497,11 @@ void UMainUIWidget::onAddScore()
         int32 nContinueToA4StepCount = 0;
         while (nLastIndex >= 0)
         {
+            ensureMsgf(nLastIndex >= 0 && nLastIndex < tableOpStepItem.Num(), TEXT("nLastIndex: %d"), nLastIndex);
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
 
-            check(nTempLastOpInfo.toPosTypeInfo.Num() == 3);
+            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("toPosTypeInfo.Num: %d"), nTempLastOpInfo.toPosTypeInfo.Num());
             if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
             {
                 nContinueToA4StepCount = nContinueToA4StepCount + 1;
@@ -1524,10 +1525,11 @@ void UMainUIWidget::onAddScore()
         int32 nContinueCount = 0;
         while (nLastIndex >= 0)
         {
+            ensureMsgf(nLastIndex >= 0 && nLastIndex < tableOpStepItem.Num(), TEXT("nLastIndex: %d"), nLastIndex);
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
 
-            check(nTempLastOpInfo.toPosTypeInfo.Num() == 3);
+            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("toPosTypeInfo.Num: %d"), nTempLastOpInfo.toPosTypeInfo.Num());
             if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos && 
                 nTempLastOpInfo.nTureOverPokerId == nLastOpInfo.nTureOverPokerId)
             {
