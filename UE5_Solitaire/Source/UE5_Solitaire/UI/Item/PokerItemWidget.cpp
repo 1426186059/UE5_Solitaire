@@ -5,7 +5,7 @@
 
 FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseButtonDown "));
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseButtonDown %d: "), this->nPokerId);
     if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
     {
         //return UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton).NativeReply;
@@ -36,13 +36,12 @@ FReply UPokerItemWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FP
 void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation)
 {
     Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragDetected "));
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragDetected %d: "), this->nPokerId);
 
     this->beginPos = UMGHelper::GetSlotPos(this);
     this->beginScreenSpacePos = InMouseEvent.GetScreenSpacePosition();
 
     UPokerItemDragDropOperation* DragOp = NewObject<UPokerItemDragDropOperation>();
-
     DragOp->WidgetSource = this;
     DragOp->DragOffset = InGeometry.GetAbsolutePosition() - InMouseEvent.GetScreenSpacePosition();
     DragOp->BeginScreenSpacePos = InMouseEvent.GetScreenSpacePosition();
@@ -63,21 +62,21 @@ void UPokerItemWidget::NativeOnDragDetected(const FGeometry& InGeometry, const F
 void UPokerItemWidget::NativeOnDragEnter(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragEnter(InGeometry, InDragDropEvent, InOperation);
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragEnter "));
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragEnter %d:"), this->nPokerId);
 }
 
 void UPokerItemWidget::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
     Super::NativeOnDragLeave(InDragDropEvent, InOperation);
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragLeave "));
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragLeave %d:"), this->nPokerId);
 }
 
 bool UPokerItemWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragOver "));
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragOver %d:"), this->nPokerId);
 
     UPokerItemDragDropOperation* DragOp = Cast<UPokerItemDragDropOperation>(InOperation);
-    if (DragOp)
+    if (DragOp && DragOp->WidgetSource == this)
     {
         FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(InDragDropEvent.GetScreenSpacePosition());
         FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(DragOp->BeginScreenSpacePos);
@@ -86,7 +85,7 @@ bool UPokerItemWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDrag
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDrag(this);
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
     }
-
+    
     return Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
 }
 
@@ -94,7 +93,7 @@ void UPokerItemWidget::NativeOnDragCancelled(const FDragDropEvent& InDragDropEve
 {
     Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
 
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragCancelled "));
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragCancelled %d: "), this->nPokerId);
     if (this->bInDrag)
     {
         this->bInDrag = false;
@@ -106,7 +105,7 @@ void UPokerItemWidget::NativeOnDragCancelled(const FDragDropEvent& InDragDropEve
 
 bool UPokerItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDrop "));
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDrop  %d: "), this->nPokerId);
 
     if (this->bInDrag)
     {

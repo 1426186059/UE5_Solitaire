@@ -35,6 +35,7 @@ FReply UMainUIWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const
     return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 }
 
+//--------------------------------------------------------------------------------------------------------------------
 void UMainUIWidget::OnCreate()
 {
     Super::OnCreate();
@@ -955,12 +956,12 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int32 nPosType
         this->onAddIQ();
         this->DoWhenSet_FastGame();
 
-        if (oriPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+        if (oriPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
             this->DoTop7ReSizeHeightAni(oriPosTypeInfo[2]);
         }
 
-        if (targetPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+        if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
             this->DoTop7ReSizeHeightAni(targetPosTypeInfo[2]);
         }
@@ -977,7 +978,7 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int32 nPosType
             {
                 if (targetPosTypeInfo.Num() > 0)
                 {
-                    if (targetPosTypeInfo[1] == SolitairePokerPosType::A4Pos)
+                    if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
                     {
                         this->PlayToA4EffectAni(targetPosTypeInfo[2], mTempCardItem);
                     }
@@ -985,7 +986,7 @@ void UMainUIWidget::LockTargetToMove(UPokerItemWidget* mCardItem, int32 nPosType
             });
     }
 
-    if ((!this->bGameEnd) && oriPosTypeInfo[1] != SolitairePokerPosType::A4Pos)
+    if ((!this->bGameEnd) && oriPosTypeInfo[0] != SolitairePokerPosType::A4Pos)
     {
         if (this->tween_OnFastGameToResultA4.IsValid())
         {

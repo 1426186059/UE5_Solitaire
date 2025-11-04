@@ -10,6 +10,7 @@ void DataCenter::Init(InitFinishFunc func)
 
 	AKKDBSaveMgr::GetSingleton()->GetEventList()->AddLambda([this]()
 		{
+			check(this->data);
 			this->SaveData();
 		});
 }
@@ -39,6 +40,8 @@ void DataCenter::LoadData(bool bSync)
 		LoadedDelegate.BindRaw(this, &DataCenter::OnLoadDataComplete);
 		UGameplayStatics::AsyncLoadGameFromSlot(DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX, LoadedDelegate);
 	}
+
+	ensureMsgf(this->data, TEXT("DataCenter::LoadData: "));
 }
 
 void DataCenter::OnLoadDataComplete(const FString& SlotName, const int32 UserIndex, USaveGame* SaveGameInstance)
