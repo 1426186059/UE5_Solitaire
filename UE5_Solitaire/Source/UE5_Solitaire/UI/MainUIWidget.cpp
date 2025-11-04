@@ -1486,8 +1486,8 @@ void UMainUIWidget::onAddScore()
 
     auto& tableOpStepItem = RecordStepDataHandler::GetSingleton()->GetData()->tableOpStepItem;
     auto& nLastOpInfo = tableOpStepItem[tableOpStepItem.Num() - 1];
-    auto& fromPosTypeInfo = nLastOpInfo.fromPosTypeInfo;
-    auto& toPosTypeInfo = nLastOpInfo.toPosTypeInfo;
+    const auto& fromPosTypeInfo = nLastOpInfo.fromPosTypeInfo;
+    const auto& toPosTypeInfo = nLastOpInfo.toPosTypeInfo;
 
     int32 nAddSumScore = 0;
     if (toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
