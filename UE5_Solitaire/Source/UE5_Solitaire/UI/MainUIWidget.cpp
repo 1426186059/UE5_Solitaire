@@ -1498,6 +1498,8 @@ void UMainUIWidget::onAddScore()
         {
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
+
+            check(nTempLastOpInfo.toPosTypeInfo.Num() == 3);
             if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
             {
                 nContinueToA4StepCount = nContinueToA4StepCount + 1;
@@ -1524,7 +1526,7 @@ void UMainUIWidget::onAddScore()
             const auto& nTempLastOpInfo = tableOpStepItem[nLastIndex];
             nLastIndex--;
 
-            ensureMsgf(nTempLastOpInfo.toPosTypeInfo.Num() == 3, TEXT("MainUIWidget Error: %d"), nTempLastOpInfo.toPosTypeInfo.Num());
+            check(nTempLastOpInfo.toPosTypeInfo.Num() == 3);
             if (nTempLastOpInfo.toPosTypeInfo[0] == SolitairePokerPosType::Top7Pos && 
                 nTempLastOpInfo.nTureOverPokerId == nLastOpInfo.nTureOverPokerId)
             {
