@@ -49,7 +49,7 @@ public:
     }
 
     template<typename T>
-    static bool orTArrayEqual(TArray<T> mArray1, TArray<T> mArray2)
+    static bool orTArrayEqual(const TArray<T>& mArray1, const TArray<T>& mArray2)
     {
         if (mArray1.Num() != mArray2.Num())
         {
