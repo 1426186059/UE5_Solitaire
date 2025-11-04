@@ -128,6 +128,7 @@ FString RecordStepDataHandler::GetPosTypeName(SolitairePokerPosType nPosType)
 
 void RecordStepDataHandler::PrintOp(const FRecordStepData_OpStepItem& mOpStepItemData)
 {
+#if WITH_EDITOR
 	//if LuaGameConfig.isMobilePlatform then return end
 
 	int nIndex = this->GetData()->tableOpStepItem.IndexOfByKey(mOpStepItemData);
@@ -142,30 +143,32 @@ void RecordStepDataHandler::PrintOp(const FRecordStepData_OpStepItem& mOpStepIte
 		mOpStepItemData.nScore
 	);
 	UE_LOG(LogTemp, Log, TEXT("%s"), *info);
+#endif
 }
 
 void RecordStepDataHandler::PrintAllOp()
 {
-	//if LuaGameConfig.isMobilePlatform then return end
+#if WITH_EDITOR
 	for (const auto& v : this->GetData()->tableOpStepItem)
 	{
 		this->PrintOp(v);
 	}
+#endif
 }
 
 void RecordStepDataHandler::AddMoveCount()
 {
-	this->GetData()->nMoveCount = this->GetData()->nMoveCount + 1;
+	this->GetData()->nMoveCount += 1;
 }
 
 void RecordStepDataHandler::AddScore(int32 nCount)
 {
-	this->GetData()->nScore = this->GetData()->nScore + nCount;
+	this->GetData()->nScore += nCount;
 }
 
 void RecordStepDataHandler::AddTime(int32 nCount)
 {
-	this->GetData()->nTime = this->GetData()->nTime + nCount;
+	this->GetData()->nTime += nCount;
 }
 
 void RecordStepDataHandler::SetLoseWin(bool bWin)
@@ -175,5 +178,5 @@ void RecordStepDataHandler::SetLoseWin(bool bWin)
 
 bool RecordStepDataHandler::orGameEnd()
 {
-	return this->GetData()->mInitSendCardList.Num() == 0 || this->GetData()->bWin == true;
+	return this->GetData()->mInitSendCardList.Num() == 0 || this->GetData()->bWin;
 }

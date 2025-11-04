@@ -24,7 +24,7 @@ void DataCenter::Init(InitFinishFunc func)
 
 UGameData* DataCenter::GetData()
 {
-	return this->data;
+	return this->data.Get();
 }
 
 void DataCenter::LoadData(bool bSync)
@@ -34,11 +34,11 @@ void DataCenter::LoadData(bool bSync)
 		USaveGame* SaveGameInstance = UGameplayStatics::LoadGameFromSlot(DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX);
 		if (SaveGameInstance != NULL)
 		{
-			this->data = Cast<UGameData>(SaveGameInstance);
+			this->data = TStrongObjectPtr<UGameData>(Cast<UGameData>(SaveGameInstance));
 		}
 		else
 		{
-			this->data = Cast<UGameData>(UGameplayStatics::CreateSaveGameObject(UGameData::StaticClass()));
+			this->data = TStrongObjectPtr<UGameData>(Cast<UGameData>(UGameplayStatics::CreateSaveGameObject(UGameData::StaticClass())));
 		}
 	}
 	else
@@ -48,18 +48,18 @@ void DataCenter::LoadData(bool bSync)
 		UGameplayStatics::AsyncLoadGameFromSlot(DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX, LoadedDelegate);
 	}
 
-	ensureMsgf(this->data, TEXT("DataCenter::LoadData: "));
+	ensureMsgf(this->data.IsValid(), TEXT("DataCenter::LoadData: Error "));
 }
 
 void DataCenter::OnLoadDataComplete(const FString& SlotName, const int32 UserIndex, USaveGame* SaveGameInstance)
 {
 	if (SaveGameInstance != NULL)
 	{
-		this->data = Cast<UGameData>(SaveGameInstance);
+		this->data = TStrongObjectPtr<UGameData>(Cast<UGameData>(SaveGameInstance));
 	}
 	else
 	{
-		this->data = Cast<UGameData>(UGameplayStatics::CreateSaveGameObject(UGameData::StaticClass()));
+		this->data = TStrongObjectPtr<UGameData>(Cast<UGameData>(UGameplayStatics::CreateSaveGameObject(UGameData::StaticClass())));
 	}
 
 	if (this->mInitFinishFunc != NULL)
@@ -72,14 +72,14 @@ void DataCenter::SaveData(bool bSync)
 {
 	if (bSync)
 	{
-		UGameplayStatics::SaveGameToSlot(this->data, DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX);
+		UGameplayStatics::SaveGameToSlot(this->GetData(), DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX);
 		UE_LOG(LogTemp, Log, TEXT("SaveData completed"));
 	}
 	else
 	{
 		FAsyncSaveGameToSlotDelegate SavedDelegate;
 		SavedDelegate.BindRaw(this, &DataCenter::OnSaveDataComplete);
-		UGameplayStatics::AsyncSaveGameToSlot(this->data, DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX, SavedDelegate);
+		UGameplayStatics::AsyncSaveGameToSlot(this->GetData(), DataCenter::DATA_SLOT_NAME, DataCenter::DATA_USER_INDEX, SavedDelegate);
 	}
 }
 
@@ -98,120 +98,120 @@ void DataCenter::OnSaveDataComplete(const FString& SlotName, const int32 UserInd
 
 void DataCenter::AddMagicWandCount(int32 nAddCount)
 {
-	this->data->nMagicWandCount = this->data->nMagicWandCount + nAddCount;
-	this->data->nMagicWandCount = FMath::Clamp(this->data->nMagicWandCount, 0, 9);
+	GetData()->nMagicWandCount += nAddCount;
+	GetData()->nMagicWandCount = FMath::Clamp(this->data->nMagicWandCount, 0, 9);
 }
 
 void DataCenter::AddTotalGameCount()
 {
-	this->data->nTotalGameCount = this->data->nTotalGameCount + 1;
+	GetData()->nTotalGameCount++;
 }
 
 void DataCenter::AddTotalWinGameCount()
 {
-	this->data->nTotalWinGameCount = this->data->nTotalWinGameCount + 1;
+	GetData()->nTotalWinGameCount++;
 }
 
 void DataCenter::AddCoinCount(int32 nCointCount)
 {
-	this->data->nCoinCount = this->data->nCoinCount + nCointCount;
+	GetData()->nCoinCount += nCointCount;
 }
 
 void DataCenter::SetDrawCount(int32 nDrawCount)
 {
-	this->data->nDrawCount = nDrawCount;
+	GetData()->nDrawCount = nDrawCount;
 }
 
 void DataCenter::AddGameLevel()
 {
-	this->data->nGameLevel = this->data->nGameLevel + 1;
+	GetData()->nGameLevel++;
 }
 
 void DataCenter::AddNomalModeTotalWinCount()
 {
-	this->data->nNomalModeTotalWinCount = this->data->nNomalModeTotalWinCount + 1;
+	GetData()->nNomalModeTotalWinCount++;
 }
 
 void DataCenter::AddDifficultLayerWinResult(bool bWin)
 {
 	if (bWin)
 	{
-		this->data->nDifficultLayer_ContinueLoseCount = 0;
-		this->data->nDifficultLayer_ContinueWinCount = this->data->nDifficultLayer_ContinueWinCount + 1;
-		if (this->data->nDifficultLayer_ContinueWinCount > 3)
+		GetData()->nDifficultLayer_ContinueLoseCount = 0;
+		GetData()->nDifficultLayer_ContinueWinCount++;
+		if (GetData()->nDifficultLayer_ContinueWinCount > 3)
 		{
-			this->data->nDifficultLayer_ContinueWinCount = 0;
-			this->data->nDifficultLayer = this->data->nDifficultLayer + 1;
+			GetData()->nDifficultLayer_ContinueWinCount = 0;
+			GetData()->nDifficultLayer++;
 		}
 	}
 	else
 	{
-		this->data->nDifficultLayer_ContinueWinCount = 0;
-		this->data->nDifficultLayer_ContinueLoseCount = this->data->nDifficultLayer_ContinueLoseCount + 1;
-		if (this->data->nDifficultLayer_ContinueLoseCount > 3)
+		GetData()->nDifficultLayer_ContinueWinCount = 0;
+		GetData()->nDifficultLayer_ContinueLoseCount++;
+		if (GetData()->nDifficultLayer_ContinueLoseCount > 3)
 		{
-			this->data->nDifficultLayer_ContinueLoseCount = 0;
-			this->data->nDifficultLayer = this->data->nDifficultLayer - 1;
+			GetData()->nDifficultLayer_ContinueLoseCount = 0;
+			GetData()->nDifficultLayer--;
 		}
 	}
-	this->data->nDifficultLayer = FMath::Clamp(this->data->nDifficultLayer, 1, 10);
+	GetData()->nDifficultLayer = FMath::Clamp(this->data->nDifficultLayer, 1, 10);
 }
 
 void DataCenter::SetLanguageName(FString langName)
 {
-	this->data->langName = langName;
+	GetData()->langName = langName;
 	//CS.LanguageManager.Instance : OnSelectLanguage(self.data.langName)
 }
 
 void DataCenter::SetUIStype(int32 nUIStyle)
 {
-	this->data->nUIStyle = nUIStyle;
+	GetData()->nUIStyle = nUIStyle;
 	//CS.UIStyleSwitchMgr.Instance : DoSwitch(self.data.nUIStyle)
 }
 
 void DataCenter::SetSoundOpen(bool bTrue)
 {
-	this->data->bOpenSound = bTrue;
+	GetData()->bOpenSound = bTrue;
 }
 
 void DataCenter::SetClickToMove(bool bTrue)
 {
-	this->data->bClickToMove = bTrue;
+	GetData()->bClickToMove = bTrue;
 }
 
 void DataCenter::SetAutoHint(bool bTrue)
 {
-	this->data->bAutoHint = bTrue;
+	GetData()->bAutoHint = bTrue;
 }
 
 void DataCenter::SetAutoComplete(bool bTrue)
 {
-	this->data->bAutoComplete = bTrue;
+	GetData()->bAutoComplete = bTrue;
 }
 
 void DataCenter::SetFastGame(bool bTrue)
 {
-	this->data->bFastGame = bTrue;
+	GetData()->bFastGame = bTrue;
 }
 
 void DataCenter::SetIQMode(bool bTrue)
 {
-	this->data->bIQMode = bTrue;
+	GetData()->bIQMode = bTrue;
 }
 
 void DataCenter::AddIQValue(int32 nIQValue)
 {
-	this->data->nIQValue = this->data->nIQValue + nIQValue;
-	this->data->nIQValue = FMath::Clamp(this->data->nIQValue, 75, 300);
+	GetData()->nIQValue += nIQValue;
+	GetData()->nIQValue = FMath::Clamp(this->data->nIQValue, 75, 300);
 }
 
 void DataCenter::UpdateMusic(int32 nMusicIndex)
 {
-	this->data->nMusicIndex = nMusicIndex;
+	GetData()->nMusicIndex = nMusicIndex;
 }
 
 void DataCenter::SetLeftHandMode(bool bLeftHandMode)
 {
-	this->data->bLeftHandMode = bLeftHandMode;
+	GetData()->bLeftHandMode = bLeftHandMode;
 }
 
