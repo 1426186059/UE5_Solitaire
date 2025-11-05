@@ -1,5 +1,6 @@
 #include "AnimationView2_Default_Widget.h"
 #include "UE5_Solitaire/UI/GameWinAniMgr.h"
+#include "UE5_Solitaire/GameLogic/AudioHandler.h"
 
 void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -30,7 +31,7 @@ void UAnimationView2_Default_Widget::PlayAni()
     
     FVector2D A = GameTools.WorldToUILocalPos(startPt_w, this->cardsNode);
     float delay = 0.1f;
-    mBlastBgm = UAudioHandler::GetSingleton()->PlaySound(Sounds.blast_bgm, 1);
+    //mBlastBgm = UAudioHandler::GetSingleton()->PlaySound(Sounds.blast_bgm);
     for (int i = 0; i < colors.Num(); i++)
     {
         int color = colors[i];
@@ -39,15 +40,15 @@ void UAnimationView2_Default_Widget::PlayAni()
         float delayoffset = 0.1f;
         for (int j = 13; j > 0; j--)
         {
-            this->showAnimation_Default_ColValue(colindex, pt, index * 0.5f + (13 - j) * 0.1f, color, index, offsetX);
+            this->CreateAniEntry(i, pt, index * 0.5f + (13 - j) * 0.1f, color, index, offsetX);
             delayvalue += delayoffset;
         }
     }
 }
 
-void UAnimationView2_Default_Widget::showAnimation_Default_ColValue(int colindex, FVector2D pt, float delay, int color, int value, int offsetX = 0)
+void UAnimationView2_Default_Widget::CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay)
 {
-    auto node ret = this->addStaticCard(pt, color, value, colindex);
+    auto node = this->GetPoolCard(pt, color, value, colindex);
     auto startNode = ret.node;
 
     var entity = AnimationEntity.create(colindex, color, value);
@@ -75,7 +76,7 @@ void UAnimationView2_Default_Widget::showAnimation_Default_ColValue(int colindex
 }
 
     // 检查是否最后一个队列中的最后一个，标志动画结束。   
-UWidget* UAnimationView2_Default_Widget::CreateCard(FVector2D pt, int colorType, int value, int colindex)
+UWidget* UAnimationView2_Default_Widget::GetPoolCard()
 {
     int nodekey = AnimationEntity.getCardId(colorType, value);
     TArray<CardAnimationItem> nodeArrs = this->colNodes_Dic.get(nodekey);

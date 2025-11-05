@@ -121,6 +121,9 @@ public:
     void showAnimation_Default(Vector3 pt, TSArray<CardType> colors, int offsetX);
     GameObject addStaticCard(Vector3 pt, CardType colorType, int value, int colindex);
     void updateAnimation(AnimationEntity entity, float dt);
+    void CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay);
+    UPokerAnimationItemW* UAnimationView2_Default_Widget::GetPoolCard();
+
     void Update();
     void onAnimatinCallBack();
     void DoDestroyAction();
