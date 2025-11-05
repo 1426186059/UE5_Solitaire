@@ -13,6 +13,8 @@ void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mgr)
     this->mMgr = mgr;
 
     FVector2D RootSize = UWidgetLayoutLibrary::GetViewportSize(this);
+    UE_LOG(LogTemp, Log, TEXT("UAnimationView2_Default_Widget RootSize: %s"), *RootSize.ToString());
+
     auto animationSize = FVector2D(RootSize.X, RootSize.Y);
     this->maxHeight = animationSize.Y / 2.0f;
     this->minHeight = -animationSize.Y / 2.0f + 100;
@@ -20,8 +22,12 @@ void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mgr)
     this->minWidth = -animationSize.X / 2.0f - 150;
     //this->maxWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     //this->minWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
-    this->ItemParent = Cast<UCanvasPanel>(this->GetWidgetFromName("cardsnode"));
+    this->ItemParent = Cast<UCanvasPanel>(this->GetWidgetFromName("ItemParent"));
     UMGHelper::RemoveAllChildren(this->ItemParent);
+
+    this->skipNode = this->GetWidgetFromName("SkipBtn");
+    auto skipBtn = Cast<UButton>(this->skipNode);
+    skipBtn->OnClicked.AddDynamic(this, &UAnimationView2_Default_Widget::onClick_Skip);
 }
 
 void UAnimationView2_Default_Widget::PlayAni()
@@ -38,14 +44,13 @@ void UAnimationView2_Default_Widget::PlayAni()
     //mBlastBgm = UAudioHandler::GetSingleton()->PlaySound(Sounds.blast_bgm);
     for (int i = 0; i < table4AColor.Num(); i++)
     {
-        int nColor = colors[i];
+        int nColor = table4AColor[i];
         FVector2D beginPos = table4AWorldPos[i];
         for (int j = 13; j > 0; j--)
         {
             this->CreateAniEntry(i, nColor, j, beginPos, i * 0.5f + (13 - j) * 0.1f);
         }
     }
-
 }
 
 void UAnimationView2_Default_Widget::CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay)

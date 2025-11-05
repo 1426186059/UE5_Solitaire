@@ -2,6 +2,8 @@
 
 #include "WinAnimation/WinAniBaseUW.h"
 #include "Item/PokerAnimationItemW.h"
+#include "WinAnimation/AnimationView2_Default_Widget.h"
+
 #include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "CoreMinimal.h"
 #include "GameWinAniMgr.generated.h"

@@ -22,7 +22,7 @@ void UGMWidget::Init()
     auto WinAnimationBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("WinAnimationBtn")));
     WinAnimationBtn->OnClicked.AddDynamic(this, &UGMWidget::OnBtnClicked_WinAnimationBtn);
 
- /*   auto GuideFastPlayBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("GuideFastPlayBtn")));
+    /*auto GuideFastPlayBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("GuideFastPlayBtn")));
     GuideFastPlayBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_StageRewardBtn);*/
 }
 

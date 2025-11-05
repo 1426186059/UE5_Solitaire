@@ -1,8 +1,6 @@
 #include "GameWinAniMgr.h"
 #include "MainUIWidget.h"
 
-#include "WinAnimation/AnimationView2_Default_Widget.h"
-
 void UGameWinAniMgr::Init(UCanvasPanel* t)
 {
     this->go = t;
@@ -44,13 +42,15 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
     nWinType = 1;
     if (nWinType == 1)
     {
-        auto mInstance = AKKUIMgr::GetSingleton()->Get<UAnimationView2_Default_Widget>("WinAni_Default_CWBP");
+        FString path = TEXT("/Game/ResourceABs/MainScene/BPS/UI/WinAnimation/WinAni_Default_CWBP.WinAni_Default_CWBP_C");
+        auto mInstance = AKKUIMgr::GetSingleton()->GetByFullPath<UAnimationView2_Default_Widget>(*path);
         UMGHelper::SetParent(mInstance, this->go);
         UMGHelper::SetSlotAnchor(mInstance, FAnchors(0, 0, 1, 1));
         UMGHelper::SetSlotAlignment(mInstance, FVector2D(0.5));
         UMGHelper::SetSlotPos(mInstance, FVector2D(0));
         UMGHelper::SetSlotSize(mInstance, FVector2D(0));
         mInstance->SetVisibility(ESlateVisibility::Visible);
+        mInstance->Init(this);
         mInstance->PlayAni();
         this->mWinAniInstance = mInstance;
     }
