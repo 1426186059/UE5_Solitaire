@@ -287,7 +287,7 @@ public:
 
     static void DestroyWidget(UWidget* t)
     {
-        if (t->IsInViewport())
+        if (t->IsInViewport() || t->GetParent() != nullptr)
         {
             t->RemoveFromParent(); //Ïú»Ù
         }

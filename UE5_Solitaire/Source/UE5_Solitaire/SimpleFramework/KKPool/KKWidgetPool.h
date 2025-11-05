@@ -64,7 +64,7 @@ public:
         uint64 nKey = (uint64)mItem.Get();
         if (mKeepAliveDic.Contains(nKey))
         {
-            if (this->mPool.Num() >= this->nMaxCapicity)
+            if (this->nMaxCapicity > 0 && this->mPool.Num() >= this->nMaxCapicity)
             {
                 mKeepAliveDic.Remove(nKey);
                 UMGHelper::DestroyWidget(mItem);
