@@ -1291,7 +1291,8 @@ TArray<FVector2D> UMainUIWidget::GetTableA4WorldPos()
     TArray<FVector2D> tableWorldPos = {};
     for (int32 i = 0; i < 4; i++)
     {
-        tableWorldPos[i] = this->PokerItemParent->GetCachedGeometry().LocalToAbsolute(this->GetCardNode4APos(i));
+        auto pos = this->PokerItemParent->GetCachedGeometry().LocalToAbsolute(this->GetCardNode4APos(i));
+        tableWorldPos.Add(pos);
     }
     return tableWorldPos;
 }
@@ -1299,7 +1300,7 @@ TArray<FVector2D> UMainUIWidget::GetTableA4WorldPos()
 TArray<int32> UMainUIWidget::GetTableA4Color()
 {
     TArray<int32> tableNowColor = { 1, 2, 3, 4 };
-    TArray<int32> table4AColor = {};
+    TArray<int32> table4AColor = {0, 0, 0, 0};
     for (int32 i = 0; i < 4; i++)
     {
         ensureMsgf(this->tableCardNode4AGo[i].Num() == 13, TEXT("%d"), this->tableCardNode4AGo[i].Num());
@@ -1317,7 +1318,7 @@ TArray<int32> UMainUIWidget::GetTableA4Color()
         int32 nColor = TArrayExtentions::Remove(tableNowColor);
         for (int32 i = 0; i < 4; i++)
         {
-            if (!table4AColor[i])
+            if (table4AColor[i] == 0)
             {
                 table4AColor[i] = nColor;
                 break;
