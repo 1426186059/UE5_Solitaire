@@ -223,9 +223,9 @@ void UAnimationView2_Default_Widget::UpdateAllAniEntry(float dt)
 
 void UAnimationView2_Default_Widget::onAnimatinCallBack()
 {
+    this->DoDestroyAction();
     if (this->callBack.IsSet())
     {
-        //AudioController::GetSingleton()->StopSound(Sounds.blast_bgm);
         this->callBack();
         this->callBack.Reset();
     }
@@ -256,8 +256,6 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
 
 void UAnimationView2_Default_Widget::onClick_Skip()
 {
-    this->skipNode->SetVisibility(ESlateVisibility::Hidden);
-    //AudioController.Instance.playSound(Sounds.button, 1);
     this->onAnimatinCallBack();
-    this->DoDestroyAction();
+    this->Hide(true);
 }
