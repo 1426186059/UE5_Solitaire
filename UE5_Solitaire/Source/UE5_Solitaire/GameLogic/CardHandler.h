@@ -32,7 +32,8 @@ public:
 	int GetColor(int nPokerId);
 	int GetExcelToLocalPokerId(int nExcelNum);
 	std::tuple<bool, TArray<int>> GetExcelTablePokerId_ForHalfWay(const csv_jianhuan_vita::RowData& configItem);
-	std::tuple<bool, TArray<int>> GetExcelTablePokerId(const csv_jianhuan_vita::RowData& configItem);
+	std::tuple<bool, TArray<int>> GetExcelTablePokerId(csv_jianhuan_vita::RowData* configItem);
 	void reverseTable(TArray<int>& t, int nBeginIndex, int nEndIndex);
 	bool CheckCardListError(const TArray<int>& mCardList);
+	csv_jianhuan_vita::RowData* GetVitaConfigItem(FString sid);
 };

@@ -4,8 +4,7 @@
 void UGameWinAniMgr::Init(UCanvasPanel* t)
 {
     this->go = t;
-    this->go->SetVisibility(ESlateVisibility::Visible);
-    
+
     TSubclassOf<UUserWidget> PokerAnimationItemCWBP = LoadClass<UPokerAnimationItemW>(this,
             TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerAnimationItemCWBP.PokerAnimationItemCWBP_C"));
     this->mCardItemPool = new KKWidgetPool<UPokerAnimationItemW>();

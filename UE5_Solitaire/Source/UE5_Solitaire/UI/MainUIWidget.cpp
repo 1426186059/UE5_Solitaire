@@ -1120,7 +1120,15 @@ void UMainUIWidget::CheckGameEnd()
             DataCenter::GetSingleton()->AddCoinCount(GameConst::nFightResultWinGetCoinsCount);
             RecordStepDataHandler::GetSingleton()->SetLoseWin(true);
 
-            this->GameWinAniMgr->Show();
+            if (this->GameWinAniMgr)
+            {
+                this->GameWinAniMgr->Show();
+            }
+            else
+            {
+                UE_LOG(LogTemp, Error, TEXT("this->GameWinAniMgr == null"));
+            }
+
             KKTween::delayedCall(this, 0.5,
                 [this]()
                 {
@@ -1216,7 +1224,7 @@ void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
             {
                 mCardItem->SetTurnOverState(true);
                 mCardItem->PlayTurnOverAni();
-                //mCardItem.transform : SetAsLastSibling()
+                UMGHelper::SetChildLastZOrder(mCardItem);
                 KKTween::AddTween(this, 0.15,
                     [=](float fTimePercent)
                     {

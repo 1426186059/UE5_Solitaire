@@ -13,13 +13,15 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
     nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
     nGameLevel = FMath::Max(nGameLevel, 1);
 
-    if (nGameLevel <= 50)
+    if (nGameLevel <= 5)
     {
-        /*local tableSimpleLevelData = RobotTestGenJsonFile.tableSimpleLevelData
-        if (tableSimpleLevelData and #tableSimpleLevelData > 0)
+        auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
+        auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
+        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
+        if (bTrue)
         {
-            return tableSimpleLevelData[math.random(1, #tableSimpleLevelData)]
-        }*/
+            return tablePokerId;
+        }
     }
     
     return this->GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
@@ -57,6 +59,20 @@ TArray<int> CardHandler::GetInitCards_ForChallengeMode()
     return GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
 }
 
+csv_jianhuan_vita::RowData* CardHandler::GetVitaConfigItem(FString sid)
+{
+    auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_vita>()->GetTable();
+    for (int k = 0; k < mTable.Num(); k++)
+    {
+        if (mTable[k].sid == sid)
+        {
+            return &mTable[k];
+        }
+    }
+
+    return nullptr;
+}
+
 TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGameLevel)
 {
     nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
@@ -77,7 +93,7 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     if (tableIndex.Num() > 0)
     {
         int nRandomIndex = tableIndex[KKRandomTool::RandomArrayInt(tableIndex.Num())];
-        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mTable[nRandomIndex]);
+        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(&mTable[nRandomIndex]);
         if (bTrue)
         {
             return tablePokerId;
@@ -219,11 +235,11 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
     return { true, tablePokerId };
 }
 
-std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(const csv_jianhuan_vita::RowData& configItem)
+std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vita::RowData* configItem)
 {
     TArray<FString> tablePokerStr;
-    configItem.jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
-    ensureMsgf(tablePokerStr.Num() == 52, TEXT("Error: %s"), *configItem.jianhuanstr);
+    configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
+    ensureMsgf(tablePokerStr.Num() == 52, TEXT("Error: %d: %s"), tablePokerStr.Num(), *configItem->jianhuanstr);
 
     TArray<int> tablePokerId = {};
     for (int i = 0; i < tablePokerStr.Num(); i++)
@@ -241,13 +257,13 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(const csv_jianhu
 
     if (this->CheckCardListError(tablePokerId) == false)
     {
-        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem.sid);
+        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem->sid);
         return {false, tablePokerId};
     }
 
     this->reverseTable(tablePokerId, tablePokerId.Num() - 24, tablePokerId.Num() - 1);
     this->reverseTable(tablePokerId, 0, tablePokerId.Num() - 1);
-    ensureMsgf(tablePokerId.Num() == 52, TEXT("Error: %d %s"), tablePokerId.Num(), *configItem.sid);
+    ensureMsgf(tablePokerId.Num() == 52, TEXT("Error: %d %s"), tablePokerId.Num(), *configItem->sid);
     return {true, tablePokerId };
 }
 
