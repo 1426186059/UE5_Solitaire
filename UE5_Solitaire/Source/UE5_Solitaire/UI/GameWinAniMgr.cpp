@@ -52,6 +52,7 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
         UMGHelper::SetSlotSize(mInstance, FVector2D(0));
         mInstance->SetVisibility(ESlateVisibility::Visible);
         mInstance->PlayAni();
+        this->mWinAniInstance = mInstance;
     }
     else if (nWinType == 2)
     {
@@ -67,11 +68,11 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
 void UGameWinAniMgr::DestroyAniNode()
 {
     this->Hide();
-    //if (this->mAni)
-    //{
-    //    this->mAni->DoDestroyAction();
-    //    this->mAni = nullptr;
-    //}
+    if (this->mWinAniInstance)
+    {
+        this->mWinAniInstance->DoDestroyAction();
+        this->mWinAniInstance = nullptr;
+    }
 }
 
 TArray<int32> UGameWinAniMgr::GetTableA4Color()

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "WinAnimation/WinAniBaseUW.h"
 #include "Item/PokerAnimationItemW.h"
 #include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "CoreMinimal.h"
@@ -14,6 +15,9 @@ public:
     UCanvasPanel* go;
     KKWidgetPool<UPokerAnimationItemW>* mCardItemPool;
     TFunction<void()> mFinishFunc;
+    
+    UWinAniBaseUW* mWinAniInstance;
+
 public:
     void Init(UCanvasPanel* t);
     void Show();

@@ -115,8 +115,6 @@ public:
     void Init(UGameWinAniMgr* mgr);
     virtual void PlayAni() override;
     virtual void DoDestroyAction() override;
-
-    void Show(TFunction<void()> callback);
     UPokerAnimationItemW* GetPoolCard();
     void RecyclePoolCard(UPokerAnimationItemW* mCard);
     void UpdateAllAniEntry(float dt);
