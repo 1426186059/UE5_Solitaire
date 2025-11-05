@@ -29,6 +29,7 @@ void UGMWidget::Init()
 void UGMWidget::Show()
 {
     Super::Show();
+    this->Init();
 }
 
 void UGMWidget::Hide(bool bDestory)

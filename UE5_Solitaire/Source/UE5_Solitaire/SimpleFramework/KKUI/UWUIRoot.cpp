@@ -17,7 +17,7 @@ void UWUIRoot::Init()
     this->Layer_Tip = Cast<UCanvasPanel>(this->GetWidgetFromName("Layer_Tip"));
     this->Layer_Debug = Cast<UCanvasPanel>(this->GetWidgetFromName("Layer_Debug"));
 
-    this->AddToViewport(0);
+    this->AddToViewport(1);
     Cast<UCanvasPanelSlot>(this->Layer_Background->Slot)->SetZOrder(0);
     Cast<UCanvasPanelSlot>(this->Layer_Base->Slot)->SetZOrder(1);
     Cast<UCanvasPanelSlot>(this->Layer_Loading->Slot)->SetZOrder(2);
