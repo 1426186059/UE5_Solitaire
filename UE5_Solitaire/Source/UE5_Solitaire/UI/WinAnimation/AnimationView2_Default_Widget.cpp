@@ -1,21 +1,58 @@
 #include "AnimationView2_Default_Widget.h"
 
+
+void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+
+}
+
+void UAnimationView2_Default_Widget::OnCreate()
+{
+    Super::OnCreate();
+}
+
+void UAnimationView2_Default_Widget::Init()
+{
+    Super::Init();
+}
+
+void UAnimationView2_Default_Widget::Show()
+{
+    Super::Show();
+}
+
+void UAnimationView2_Default_Widget::Hide(bool bDestroy)
+{
+    Super::Hide(bDestroy);
+}
+
+void UAnimationView2_Default_Widget::OnLayoutChanged()
+{
+    Super::OnLayoutChanged();
+}
+
+void UAnimationView2_Default_Widget::CheckFirstLayoutOkToShow()
+{
+    Super::CheckFirstLayoutOkToShow();
+}
+
 void UAnimationView2_Default_Widget::Init()
 {
     RectTransform tUITransform = GameLauncher.Instance.mUIRoot.mCanvas_Tip;
-    this->animationSize = new Vector2(tUITransform.rect.width, tUITransform.rect.height);
-    this->maxHeight = this->animationSize.y / 2;
-    this->minHeight = -this->animationSize.y / 2 + 100;
-    this->maxWidth = this->animationSize.x / 2 + CardWidth;
-    this->minWidth = -this->animationSize.x / 2 - CardWidth;
+    this->animationSize = FVector2D(tUITransform.rect.width, tUITransform.rect.height);
+    this->maxHeight = this->animationSize.Y / 2;
+    this->minHeight = -this->animationSize.Y / 2 + 100;
+    this->maxWidth = this->animationSize.X / 2 + CardWidth;
+    this->minWidth = -this->animationSize.X / 2 - CardWidth;
     this->maxWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     this->minWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     this->cardsNode = this->transform.FindDeepChild("cardsnode").GetComponent<RectTransform>();
     this->cardsNode.gameObject.removeAllChildren();
 }
 
-void UAnimationView2_Default_Widget::Show(TFunction<void()> Show)
+void UAnimationView2_Default_Widget::Show(TFunction<void()> callback)
 {
+    this->callBack = callback;
     this->animationOver = false;
     this->skipNode.SetActive(true);
     this->colors = new TArray<CardType>();
@@ -24,7 +61,6 @@ void UAnimationView2_Default_Widget::Show(TFunction<void()> Show)
         CardType element = colors[index];
         this->colors.push(element);
     }
-    this->callBack = callback;
     this->showAnimation(colors, startPt_w, offsetX);
 }
 

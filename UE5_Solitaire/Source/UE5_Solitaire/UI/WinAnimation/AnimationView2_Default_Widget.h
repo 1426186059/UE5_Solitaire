@@ -9,6 +9,16 @@ UCLASS()
 class UE5_SOLITAIRE_API UAnimationView2_Default_Widget : public UWUIBase
 {
     GENERATED_BODY()
+
+protected:
+    virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+public:
+    virtual void OnCreate() override;
+    virtual void Init() override;
+    virtual void Show() override;
+    virtual void Hide(bool bDestroy) override;
+    virtual void OnLayoutChanged() override;
+    virtual void CheckFirstLayoutOkToShow() override;
 public:
     class AnimationEntity
     {
