@@ -1,6 +1,8 @@
 #include "GameWinAniMgr.h"
 #include "MainUIWidget.h"
 
+#include "WinAnimation/AnimationView2_Default_Widget.h"
+
 void UGameWinAniMgr::Init(UCanvasPanel* t)
 {
     this->go = t;
@@ -39,24 +41,22 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
         nWinType = KKRandomTool::RandomInt(1, 9);
     }
 
-    //--nWinType = 9
+    nWinType = 1;
     if (nWinType == 1)
     {
-        TSubclassOf<UUserWidget> PokerAnimationItemCWBP = LoadClass<UPokerAnimationItemW>(this,
-            TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerAnimationItemCWBP.PokerAnimationItemCWBP_C"));
-
-        //var prefab = ResCenter.Instance.mBundleGameAllRes.FindPrefab("gameanimation2");
-        //auto node = Instantiate(prefab) as GameObject;
-        //node.transform.SetParent(GameLauncher.readOnlyInstance.mUIRoot.mCanvas_WinAnimation, false);
-        //var mAnimationView = node.GetComponent<AnimationView2_Default>();
-        //mAnimationView.gameObject.SetActive(true);
-        //mAnimationView.Show(colors, startPt_w, offsetX, callback);
-        //this.animationNode = mAnimationView.gameObject;
+        auto mInstance = AKKUIMgr::GetSingleton()->Get<UAnimationView2_Default_Widget>("WinAni_Default_CWBP");
+        UMGHelper::SetParent(mInstance, this->go);
+        UMGHelper::SetSlotAnchor(mInstance, FAnchors(0, 0, 1, 1));
+        UMGHelper::SetSlotAlignment(mInstance, FVector2D(0.5));
+        UMGHelper::SetSlotPos(mInstance, FVector2D(0));
+        UMGHelper::SetSlotSize(mInstance, FVector2D(0));
+        mInstance->SetVisibility(ESlateVisibility::Visible);
+        mInstance->PlayAni();
     }
     else if (nWinType == 2)
     {
        // self.mAni = require "Lua.MainLogic.view.GameWinAni_2_TiaoDong"
-         //   self.mAni : PlayAni(finishFunc)
+       // self.mAni : PlayAni(finishFunc)
     }
     else
     {

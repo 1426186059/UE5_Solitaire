@@ -54,6 +54,10 @@ void UGMWidget::OnBtnClicked_WinAnimationBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("UGMWidget OnBtnClicked_WinAnimationBtn"));
     auto mMainUIWidget = AKKUIMgr::GetSingleton()->Get<UMainUIWidget>();
+
+    ensureMsgf(mMainUIWidget, TEXT("mMainUIWidget == null"));
+    ensureMsgf(mMainUIWidget->GameWinAniMgr, TEXT("mMainUIWidget->GameWinAniMgr == null"));
+
     if (mMainUIWidget && mMainUIWidget->GameWinAniMgr)
     {
         mMainUIWidget->GameWinAniMgr->PlayAni([]()

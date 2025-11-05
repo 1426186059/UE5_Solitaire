@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Blueprint/WidgetLayoutLibrary.h"
-
+#include "WinAniBaseUW.h"
 class UGameWinAniMgr;
 
 #include "UE5_Solitaire/UI/Item/PokerAnimationItemW.h"
@@ -10,7 +10,7 @@ class UGameWinAniMgr;
 #include "AnimationView2_Default_Widget.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API UAnimationView2_Default_Widget : public UUserWidget
+class UE5_SOLITAIRE_API UAnimationView2_Default_Widget : public UWinAniBaseUW
 {
     GENERATED_BODY()
 
@@ -113,7 +113,9 @@ public:
 
 public:
     void Init(UGameWinAniMgr* mgr);
-    void PlayAni();
+    virtual void PlayAni() override;
+    virtual void DoDestroyAction() override;
+
     void Show(TFunction<void()> callback);
     UPokerAnimationItemW* GetPoolCard();
     void RecyclePoolCard(UPokerAnimationItemW* mCard);
@@ -121,6 +123,5 @@ public:
     void UpdateAniEntry(AnimationEntity* entity, float dt);
     void CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay);
     void onAnimatinCallBack();
-    void DoDestroyAction();
     void onClick_Skip();
 };

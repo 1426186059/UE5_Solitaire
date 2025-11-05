@@ -14,6 +14,7 @@
 #include "Components/EditableText.h"
 #include "Components/EditableTextBox.h"
 #include "Components/Button.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "PaperSprite.h"
 
 class UMGHelper
