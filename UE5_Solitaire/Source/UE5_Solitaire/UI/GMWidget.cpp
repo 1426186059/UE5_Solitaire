@@ -44,9 +44,12 @@ void UGMWidget::Refresh()
 void UGMWidget::OnBtnClicked_WinAnimationBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("UGMWidget OnBtnClicked_WinAnimationBtn"));
-
-    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GameWinAniMgr->PlayAni([]()
-        {
-            AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GameWinAniMgr->DestroyAniNode();
-        });
+    auto mMainUIWidget = AKKUIMgr::GetSingleton()->Get<UMainUIWidget>();
+    if (mMainUIWidget && mMainUIWidget->GameWinAniMgr)
+    {
+        mMainUIWidget->GameWinAniMgr->PlayAni([]()
+            {
+                AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GameWinAniMgr->DestroyAniNode();
+            });
+    }
 }

@@ -5,7 +5,6 @@
 #include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
 #include "GMWidget.generated.h"
 
 UCLASS()
