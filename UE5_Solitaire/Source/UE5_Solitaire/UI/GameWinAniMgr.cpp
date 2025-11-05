@@ -4,6 +4,7 @@
 void UGameWinAniMgr::Init(UCanvasPanel* t)
 {
     this->go = t;
+    ensureMsgf(go, TEXT("UGameWinAniMgr this->go == nil"));
 
     TSubclassOf<UUserWidget> PokerAnimationItemCWBP = LoadClass<UPokerAnimationItemW>(this,
             TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerAnimationItemCWBP.PokerAnimationItemCWBP_C"));

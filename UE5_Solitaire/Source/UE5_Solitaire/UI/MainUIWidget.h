@@ -149,6 +149,6 @@ public:
 	KKTween::Handle tween_OnFastGameToResultA4;
 
 	UImage* mBG;
-	UGameWinAniMgr* GameWinAniMgr;
+	UPROPERTY() UGameWinAniMgr* GameWinAniMgr;
 	FTimerHandle mTimer;
 };

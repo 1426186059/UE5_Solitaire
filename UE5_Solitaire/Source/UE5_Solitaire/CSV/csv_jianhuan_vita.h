@@ -60,15 +60,16 @@ private:
         {
             switch (i)
             {
-            case 0: data.sid = Cols[i]; break;
-            case 1: data.layer = FCString::Atoi(*Cols[i]); break;
-            case 2: data.qid = FCString::Atoi(*Cols[i]); break;
-            case 3: data.step = FCString::Atoi(*Cols[i]); break;
-            case 4: data.available = FCString::Atoi(*Cols[i]); break;
-            case 5: data.jianhuanstr = Cols[i]; break;
-            case 6: data.sourcefrom = Cols[i]; break;
-            case 7: data.fromid = FCString::Atoi(*Cols[i]); break;
-            case 8: data.sourcestr = Cols[i]; break;
+            case 0: data.RowName = Cols[i]; break;
+            case 1: data.sid = Cols[i]; break;
+            case 2: data.layer = FCString::Atoi(*Cols[i]); break;
+            case 3: data.qid = FCString::Atoi(*Cols[i]); break;
+            case 4: data.step = FCString::Atoi(*Cols[i]); break;
+            case 5: data.available = FCString::Atoi(*Cols[i]); break;
+            case 6: data.jianhuanstr = Cols[i]; break;
+            case 7: data.sourcefrom = Cols[i]; break;
+            case 8: data.fromid = FCString::Atoi(*Cols[i]); break;
+            case 9: data.sourcestr = Cols[i]; break;
             default: break;
             }
         }
