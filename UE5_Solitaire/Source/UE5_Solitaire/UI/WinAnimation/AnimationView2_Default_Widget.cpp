@@ -252,5 +252,4 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
 void UAnimationView2_Default_Widget::onClick_Skip()
 {
     this->onAnimatinCallBack();
-    this->Hide(true);
 }

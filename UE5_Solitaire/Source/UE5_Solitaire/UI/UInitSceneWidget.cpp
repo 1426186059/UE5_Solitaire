@@ -62,10 +62,7 @@ void UInitSceneWidget::Hide(bool bDestory)
 
     if (bDestory)
     {
-        if (this->IsInViewport())
-        {
-            this->RemoveFromParent();
-        }
+        UMGHelper::DestroyWidget(this);
     }
 }
 

@@ -50,10 +50,7 @@ void UWUIBase::Hide(bool bDestroy)
     
     if (bDestroy)
     {
-        if (this->IsInViewport())
-        {
-            this->RemoveFromParent();
-        }
+        UMGHelper::DestroyWidget(this);
     }
 }
 
