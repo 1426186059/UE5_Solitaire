@@ -207,7 +207,7 @@ public:
         else
         {
             int nFirstZOrder = 0;
-            if (Parent->GetChildrenCount() > 0)
+            if (Parent->GetChildrenCount() >= 2)
             {
                 UWidget* mFirstWidget = Parent->GetChildAt(1);
                 nFirstZOrder = Cast<UCanvasPanelSlot>(mFirstWidget->Slot)->GetZOrder();
@@ -236,7 +236,7 @@ public:
         else
         {
             int nLastZOrder = 0;
-            if (Parent->GetChildrenCount() > 0)
+            if (Parent->GetChildrenCount() >= 2)
             {
                 UWidget* mLastWidget = Parent->GetChildAt(Parent->GetChildrenCount() - 2);
                 nLastZOrder = Cast<UCanvasPanelSlot>(mLastWidget->Slot)->GetZOrder();

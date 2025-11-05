@@ -120,7 +120,6 @@ public:
                         if (mFinishFunc.IsSet())
                         {
                             mFinishFunc();
-                            mFinishFunc;
                         }
                         return false;
                     }
