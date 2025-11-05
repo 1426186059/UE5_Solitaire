@@ -65,7 +65,7 @@ void UAnimationView2_Default_Widget::PlayAni()
     {
         int nColor = table4AColor[i];
         FVector2D beginPos = table4AWorldPos[i];
-        for (int j = 13; j > 0; j--)
+        for (int j = 13; j >= 1; j--)
         {
             this->CreateAniEntry(i, nColor, j, beginPos, i * 0.5f + (13 - j) * 0.1f);
         }
@@ -251,5 +251,6 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
 
 void UAnimationView2_Default_Widget::onClick_Skip()
 {
+    UE_LOG(LogTemp, Log, TEXT("UAnimationView2_Default_Widget onClick_Skip"));
     this->onAnimatinCallBack();
 }

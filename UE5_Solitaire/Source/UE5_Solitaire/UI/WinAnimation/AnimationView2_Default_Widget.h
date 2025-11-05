@@ -123,5 +123,5 @@ public:
     void UpdateAniEntry(TSharedPtr<AnimationEntity> entity, float dt);
     void CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay);
     void onAnimatinCallBack();
-    void onClick_Skip();
+    UFUNCTION() void onClick_Skip();
 };
