@@ -42,6 +42,14 @@ void UGMWidget::Refresh()
     Super::Refresh();
 }
 
+void UGMWidget::CheckFirstLayoutOkToShow()
+{
+    if (this->bShowUI)
+    {
+        this->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+    }
+}
+
 void UGMWidget::OnBtnClicked_WinAnimationBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("UGMWidget OnBtnClicked_WinAnimationBtn"));

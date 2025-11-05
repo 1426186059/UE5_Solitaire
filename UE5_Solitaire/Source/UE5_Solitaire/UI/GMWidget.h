@@ -17,7 +17,7 @@ public:
 	virtual void Show() override;
 	virtual void Hide(bool bDestory = false) override;
 	virtual void Refresh() override;
-
+	virtual void CheckFirstLayoutOkToShow() override;
 	UFUNCTION() void OnBtnClicked_WinAnimationBtn();
 private:
 	//UButton* StageRewardBtn;
