@@ -45,13 +45,13 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
         TSubclassOf<UUserWidget> PokerAnimationItemCWBP = LoadClass<UPokerAnimationItemW>(this,
             TEXT("/Game/ResourceABs/MainScene/BPS/UI/PokerAnimationItemCWBP.PokerAnimationItemCWBP_C"));
 
-        var prefab = ResCenter.Instance.mBundleGameAllRes.FindPrefab("gameanimation2");
-        auto node = Instantiate(prefab) as GameObject;
-        node.transform.SetParent(GameLauncher.readOnlyInstance.mUIRoot.mCanvas_WinAnimation, false);
-        var mAnimationView = node.GetComponent<AnimationView2_Default>();
-        mAnimationView.gameObject.SetActive(true);
-        mAnimationView.Show(colors, startPt_w, offsetX, callback);
-        this.animationNode = mAnimationView.gameObject;
+        //var prefab = ResCenter.Instance.mBundleGameAllRes.FindPrefab("gameanimation2");
+        //auto node = Instantiate(prefab) as GameObject;
+        //node.transform.SetParent(GameLauncher.readOnlyInstance.mUIRoot.mCanvas_WinAnimation, false);
+        //var mAnimationView = node.GetComponent<AnimationView2_Default>();
+        //mAnimationView.gameObject.SetActive(true);
+        //mAnimationView.Show(colors, startPt_w, offsetX, callback);
+        //this.animationNode = mAnimationView.gameObject;
     }
     else if (nWinType == 2)
     {

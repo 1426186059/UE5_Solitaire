@@ -56,13 +56,13 @@ enum SolitairePokerPosType : int32
 
 enum SolitaireWinAnimationType : int32
 {
-    Default = 1, // 默认 连续跳的
-    FlyToCardPool = 2, // FlyToSendPoker
-    Heart = 3, //方形动画
-    FlyFullScreen = 4, //飞满屏幕
-    FiveStar = 5, //五角星
-    LingXing = 6, //菱形动画
-    Butterfly = 7, //蝴蝶动画
-    SmileFace = 8, //笑脸动画
-    FiveStar_BeiFen1 = 100, //五角星
+    WinAnimationType_Default = 1,  // 默认 连续跳的
+    WinAnimationType_FlyToCardPool = 2,  // FlyToSendPoker
+    WinAnimationType_Heart = 3,
+    WinAnimationType_FlyFullScreen = 4,  //飞满屏幕
+    WinAnimationType_FiveStar = 5,  //五角星
+    WinAnimationType_LingXing = 6,  //菱形动画
+    WinAnimationType_Butterfly = 7,  //蝴蝶动画
+    WinAnimationType_SmileFace = 8,  //笑脸动画
+    WinAnimationType_FiveStar_BeiFen1 = 100,  //五角星
 };

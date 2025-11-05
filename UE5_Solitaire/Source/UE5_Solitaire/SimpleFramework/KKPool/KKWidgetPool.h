@@ -58,7 +58,7 @@ public:
 
         if (this->nMaxCapicity > 0 && this->usedArray.Num() + this->mPool.Num() > this->nMaxCapicity)
         {
-            UE_LOG(LogTemp, Error, TEXT("Capicity Error: %d"), this.nMaxCapicity);
+            UE_LOG(LogTemp, Error, TEXT("Capicity Error: %d"), this->nMaxCapicity);
         }
         return mItem;
     }

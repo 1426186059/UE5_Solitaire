@@ -259,6 +259,14 @@ public:
         }
     }
 
+    static void DestroyWidget(UWidget* t)
+    {
+        if (t->IsInViewport())
+        {
+            t->RemoveFromParent(); //Ïú»Ù
+        }
+    }
+
 private:
     UMGHelper() = delete;
     ~UMGHelper() = delete;

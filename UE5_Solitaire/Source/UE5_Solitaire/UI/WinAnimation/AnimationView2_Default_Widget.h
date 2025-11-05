@@ -48,7 +48,7 @@ public:
         {
             TArray<int32> toRightRate = { 100, 50, 40, 30 };
             int rate = KKRandomTool::RandomInt(0, 100);
-            if (DataCenter.Instance.sysConfig.leftHand == 1)
+            if (DataCenter::GetSingleton()->GetData()->bLeftHandMode)
             {
                 rate = KKRandomTool::RandomInt(0, 200);
             }
@@ -98,24 +98,21 @@ public:
 
     UWidget* skipNode = nullptr;
     UCanvasPanel* ItemParent = nullptr;
-
     TFunction<void()> callBack = nullptr;
-    FVector2D animationSize = new FVector2D(0, 0);
 
     float maxHeight = 0;
     float minHeight = 0;
     float maxWidth = 0;
     float minWidth = 0;
-
-    TMap<int, TArray<PokerAnimationItemW*>> colNodes_Dic = new TMap<int, TArray<PokerAnimationItemW*>>();
-    TArray<PokerAnimationItemW*> allNodes = new TArray<PokerAnimationItemW*>();
-    TArray<AnimationEntity*> animationEntitys = new TArray<AnimationEntity*>();
+    
+    TArray<UPokerAnimationItemW*> allNodes;
+    TArray<AnimationEntity*> animationEntitys;
     bool animationOver = false;
     TArray<int> colors;
     UAudioComponent* mBlastBgm = nullptr;
 
 public:
-    void Init(UGameWinAniMgr* mMgr);
+    void Init(UGameWinAniMgr* mgr);
     void PlayAni();
     void Show(TFunction<void()> callback);
     UPokerAnimationItemW* GetPoolCard();
@@ -126,5 +123,4 @@ public:
     void onAnimatinCallBack();
     void DoDestroyAction();
     void onClick_Skip();
-}
 };

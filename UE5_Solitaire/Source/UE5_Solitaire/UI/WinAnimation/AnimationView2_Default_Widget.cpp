@@ -8,16 +8,16 @@ void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, flo
     this->UpdateAllAniEntry(InDeltaTime);
 }
 
-void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mMgr)
+void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mgr)
 {
-    this->mMgr = mMgr;
+    this->mMgr = mgr;
 
     FVector2D RootSize = UWidgetLayoutLibrary::GetViewportSize(this);
-    this->animationSize = FVector2D(RootSize.X, RootSize.Y);
-    this->maxHeight = this->animationSize.Y / 2;
-    this->minHeight = -this->animationSize.Y / 2 + 100;
-    this->maxWidth = this->animationSize.X / 2 + CardWidth;
-    this->minWidth = -this->animationSize.X / 2 - CardWidth;
+    auto animationSize = FVector2D(RootSize.X, RootSize.Y);
+    this->maxHeight = animationSize.Y / 2.0f;
+    this->minHeight = -animationSize.Y / 2.0f + 100;
+    this->maxWidth = animationSize.X / 2.0f + 150;
+    this->minWidth = -animationSize.X / 2.0f - 150;
     //this->maxWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     //this->minWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     this->ItemParent = Cast<UCanvasPanel>(this->GetWidgetFromName("cardsnode"));
@@ -122,7 +122,6 @@ void UAnimationView2_Default_Widget::UpdateAniEntry(AnimationEntity* mEntry, flo
 
     float deltTime = mEntry->deltTime;
     FVector2D startPt = mEntry->nowPt;
-    float maxHeight = mEntry->maxHeight;
     float toRight = mEntry->btoRight;
     float vx_a = mEntry->vx_a;
     float vy_a = mEntry->vy_a;
@@ -218,8 +217,8 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
     this->animationOver = true;
     for (int i = 0; i < this->animationEntitys.Num(); i++)
     {
-        AnimationEntity element = this->animationEntitys[i];
-        element.open = false;
+        AnimationEntity* element = this->animationEntitys[i];
+        element->open = false;
     }
     this->animationEntitys = {};
 
@@ -228,16 +227,12 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
         this->mMgr->mCardItemPool->Recycle(v);
     }
     this->allNodes = {};
-
-    if (this->IsInViewport())
-    {
-        this->RemoveFromParent(); //销毁
-    }
+    UMGHelper::DestroyWidget(this);
 }
 
 void UAnimationView2_Default_Widget::onClick_Skip()
 {
-    this->skipNode.SetActive(false);
+    this->skipNode->SetVisibility(ESlateVisibility::Hidden);
     //AudioController.Instance.playSound(Sounds.button, 1);
     this->onAnimatinCallBack();
     this->DoDestroyAction();
