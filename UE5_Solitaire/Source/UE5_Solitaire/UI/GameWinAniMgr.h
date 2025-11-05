@@ -13,6 +13,7 @@ class UGameWinAniMgr :public UObject
 private:
     UCanvasPanel* go;
     KKWidgetPool<UPokerAnimationItemW>* mCardItemPool;
+    TFunction<void()> mFinishFunc;
 public:
     void Init(UCanvasPanel* t);
     void Show();

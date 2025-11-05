@@ -25,6 +25,7 @@ void UGameWinAniMgr::Hide()
 
 void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
 {
+    this->mFinishFunc = finishFunc;
     this->DestroyAniNode();
     this->Show();
 

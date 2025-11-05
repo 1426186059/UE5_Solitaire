@@ -1,112 +1,53 @@
 #include "AnimationView2_Default_Widget.h"
-
+#include "UE5_Solitaire/UI/GameWinAniMgr.h"
 
 void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
 
 }
 
-void UAnimationView2_Default_Widget::OnCreate()
+void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mMgr)
 {
-    Super::OnCreate();
-}
+    this->mMgr = mMgr;
 
-void UAnimationView2_Default_Widget::Init()
-{
-    Super::Init();
-}
-
-void UAnimationView2_Default_Widget::Show()
-{
-    Super::Show();
-}
-
-void UAnimationView2_Default_Widget::Hide(bool bDestroy)
-{
-    Super::Hide(bDestroy);
-}
-
-void UAnimationView2_Default_Widget::OnLayoutChanged()
-{
-    Super::OnLayoutChanged();
-}
-
-void UAnimationView2_Default_Widget::CheckFirstLayoutOkToShow()
-{
-    Super::CheckFirstLayoutOkToShow();
-}
-
-void UAnimationView2_Default_Widget::Init()
-{
-    RectTransform tUITransform = GameLauncher.Instance.mUIRoot.mCanvas_Tip;
-    this->animationSize = FVector2D(tUITransform.rect.width, tUITransform.rect.height);
+    FVector2D RootSize = UWidgetLayoutLibrary::GetViewportSize(this);
+    this->animationSize = FVector2D(RootSize.X, RootSize.Y);
     this->maxHeight = this->animationSize.Y / 2;
     this->minHeight = -this->animationSize.Y / 2 + 100;
     this->maxWidth = this->animationSize.X / 2 + CardWidth;
     this->minWidth = -this->animationSize.X / 2 - CardWidth;
-    this->maxWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
-    this->minWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
-    this->cardsNode = this->transform.FindDeepChild("cardsnode").GetComponent<RectTransform>();
+    //this->maxWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
+    //this->minWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
+    this->cardsNode = this->GetWidgetFromName("cardsnode");
     this->cardsNode.gameObject.removeAllChildren();
 }
 
-void UAnimationView2_Default_Widget::Show(TFunction<void()> callback)
+void UAnimationView2_Default_Widget::PlayAni()
 {
-    this->callBack = callback;
     this->animationOver = false;
-    this->skipNode.SetActive(true);
-    this->colors = new TArray<CardType>();
-    for (int index = 0; index < colors.length; index++)
-    {
-        CardType element = colors[index];
-        this->colors.push(element);
-    }
-    this->showAnimation(colors, startPt_w, offsetX);
-}
-
-void UAnimationView2_Default_Widget::Show()
-{
-   
-}
-
-void UAnimationView2_Default_Widget::showAnimation(TArray<CardType> colors, FVector2D startPt_w, int offsetX = 0)
-{
-    FVector2D firstPt_l = GameTools.WorldToUILocalPos(startPt_w, this->cardsNode);
-    this->showAnimation_Default(firstPt_l, colors, offsetX);
-}
-
-// 默认弹跳动画。
-void UAnimationView2_Default_Widget::showAnimation_Default(FVector2D pt, TArray<CardType> colors, int offsetX)
-{
+    auto table4AColor = this->GetTableA4Color();
+    auto table4AWorldPos = this->GetTableA4WorldPos();
+    
+    FVector2D A = GameTools.WorldToUILocalPos(startPt_w, this->cardsNode);
     float delay = 0.1f;
-    mBlastBgm = AudioController.Instance.playSound(Sounds.blast_bgm, 1);
-
-    for (int index = 0; index < colors.length; index++)
+    mBlastBgm = UAudioHandler::GetSingleton()->PlaySound(Sounds.blast_bgm, 1);
+    for (int i = 0; i < colors.Num(); i++)
     {
-        CardType color = colors[index];
-        int offset = offsetX * index;
-        FVector2D frompt = new FVector2D(pt.x + index * (CardWidth - 1) + offset, pt.y, pt.z);
-        delay = index * 0.5f; //+ 0.1;  
-        this->showAnimation_Default_Col(index, frompt, delay, color, offsetX);
+        int color = colors[i];
+        FVector2D frompt = FVector2D(pt.x + index * (CardWidth - 1) + offset, pt.y, pt.z);
+        float delayvalue = 0;
+        float delayoffset = 0.1f;
+        for (int j = 13; j > 0; j--)
+        {
+            this->showAnimation_Default_ColValue(colindex, pt, index * 0.5f + (13 - j) * 0.1f, color, index, offsetX);
+            delayvalue += delayoffset;
+        }
     }
 }
 
-// 每一个位置的动画
-void UAnimationView2_Default_Widget::showAnimation_Default_Col(int colindex, FVector2D pt, float delay, CardType color, int offsetX = 0)
+void UAnimationView2_Default_Widget::showAnimation_Default_ColValue(int colindex, FVector2D pt, float delay, int color, int value, int offsetX = 0)
 {
-    float delayvalue = 0;
-    float delayoffset = 0.1f;
-    for (int index = 13; index > 0; index--)
-    {
-        this->showAnimation_Default_ColValue(colindex, pt, delay + delayvalue, color, index, offsetX);
-        delayvalue += delayoffset;
-    }
-}
-
-// 每一列中，单个数字的移动。
-void UAnimationView2_Default_Widget::showAnimation_Default_ColValue(int colindex, FVector2D pt, float delay, CardType color, int value, int offsetX = 0)
-{
-    GameObject node ret = this->addStaticCard(pt, color, value, colindex);
+    auto node ret = this->addStaticCard(pt, color, value, colindex);
     auto startNode = ret.node;
 
     var entity = AnimationEntity.create(colindex, color, value);

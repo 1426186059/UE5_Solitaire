@@ -1,24 +1,24 @@
 #pragma once
 
+#include "Blueprint/WidgetLayoutLibrary.h"
+
+class UGameWinAniMgr;
+
 #include "UE5_Solitaire/UI/Item/PokerAnimationItemW.h"
 #include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "CoreMinimal.h"
 #include "AnimationView2_Default_Widget.generated.h"
 
 UCLASS()
-class UE5_SOLITAIRE_API UAnimationView2_Default_Widget : public UWUIBase
+class UE5_SOLITAIRE_API UAnimationView2_Default_Widget : public UUserWidget
 {
     GENERATED_BODY()
 
 protected:
     virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
-    virtual void OnCreate() override;
-    virtual void Init() override;
-    virtual void Show() override;
-    virtual void Hide(bool bDestroy) override;
-    virtual void OnLayoutChanged() override;
-    virtual void CheckFirstLayoutOkToShow() override;
+    void Init(UGameWinAniMgr* mMgr);
+    void PlayAni();
 public:
     class AnimationEntity
     {
@@ -90,6 +90,7 @@ public:
         }
     };
       
+    UGameWinAniMgr* mMgr;
     // Card 数据
     const float CardWidth = 103;
     const float CardHeigt = 154;
