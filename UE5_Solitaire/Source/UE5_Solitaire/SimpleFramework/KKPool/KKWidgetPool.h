@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "../KKUI/KKUI.h"
 #include "../KKTimer/KKTimer.h"
 
@@ -8,15 +9,14 @@ template<typename T = UUserWidget>
 class KKWidgetPool
 {
 private:
-    TArray<T*> mPool = {};
-    TArray<T*> usedArray = {};
-
+    TMap<uint64, TWeakObjectPtr<T>> mKeepAliveDic;
+    TArray<TObjectPtr<T>> mPool = {};
     TSubclassOf<UUserWidget> mWidgetClass;
     UPanelWidget* mItemParent;
     int nMaxCapicity = -1;
 
 private:
-    T* InnerCreateItem()
+    TObjectPtr<T> InnerCreateItem()
     {
         T* mItem = AKKUIMgr::GetSingleton()->KKCreateWidget<T>(this->mWidgetClass);
         UMGHelper::SetParent(mItem, this->mItemParent);
@@ -24,7 +24,9 @@ private:
         UMGHelper::SetSlotAlignment(mItem, FVector2D(0.5));
         UMGHelper::SetSlotSize(mItem, FVector2D(0, 0));
         mItem->SetVisibility(ESlateVisibility::Hidden);
-        mPool.Add(mItem);
+
+        auto mItemPtr = TWeakObjectPtr<T>(mItem);
+        mKeepAliveDic.Add((uint64)mItem, mItemPtr);
         return mItem;
     }
     
@@ -41,7 +43,7 @@ public:
         this->preLoadObj(nInitCount);
     }
 
-    T* Pop()
+    TObjectPtr<T> Pop()
     {
         T* mItem = nullptr;
         if (this->mPool.Num() > 0)
@@ -54,38 +56,41 @@ public:
         }
 
         mItem->SetVisibility(ESlateVisibility::Visible);
-        this->usedArray.Add(mItem);
-
-        if (this->nMaxCapicity > 0 && this->usedArray.Num() + this->mPool.Num() > this->nMaxCapicity)
-        {
-            UE_LOG(LogTemp, Error, TEXT("Capicity Error: %d"), this->nMaxCapicity);
-        }
         return mItem;
     }
-
-
-    void Recycle(T* mItem)
+    
+    void Recycle(TObjectPtr<T> mItem)
     {
-        UMGHelper::SetParent(mItem, this->mItemParent);
-
-        int nIndex = this->usedArray.IndexOfByKey(mItem);
-        ensureMsgf(nIndex >= 0, TEXT("recyleObj 000 Error: %d"), nIndex);
-        this->usedArray.RemoveAt(nIndex);
-        nIndex = this->usedArray.IndexOfByKey(mItem);
-        ensureMsgf(nIndex == -1, TEXT("recyleObj 111 Error"));
-
-        mItem->SetVisibility(ESlateVisibility::Hidden);
-        this->mPool.Add(mItem);
+        uint64 nKey = (uint64)mItem.Get();
+        if (mKeepAliveDic.Contains(nKey))
+        {
+            if (this->mPool.Num() >= this->nMaxCapicity)
+            {
+                mKeepAliveDic.Remove(nKey);
+                UMGHelper::DestroyWidget(mItem);
+            }
+            else
+            {
+                UMGHelper::SetParent(mItem, this->mItemParent);
+                mItem->SetVisibility(ESlateVisibility::Hidden);
+                this->mPool.Add(mItem);
+            }
+        }
+        else
+        {
+            ensureMsgf(false, TEXT("recyleObj Error"));
+            UMGHelper::DestroyWidget(mItem);
+        }
     }
 
     void SetMaxCapacity(int nMaxCapacity)
     {
-        this.nMaxCapicity = nMaxCapacity;
+        this->nMaxCapicity = nMaxCapacity;
     }
 
     int GetSumCount()
     {
-        return this->usedArray.Num() + this->mPool.Num();
+        return this->mKeepAliveDic.Num();
     }
 
     void SetItemParent(UPanelWidget* ItemParent)
@@ -101,30 +106,6 @@ public:
             this->mPool.Add(this->InnerCreateItem());
         }
     }
-
-    //public IEnumerator preLoadObj_Co(int nFrameCount, int nCount, Action finishFunc = null)
-    //{
-    //    Action mFinishFunc = finishFunc;
-    //    int nCreateCountSingle = Mathf.CeilToInt(nCount / nFrameCount);
-
-    //    while(this.GetSumCount() < nCount)
-    //    {
-    //        for (int j = 0; j < nCreateCountSingle; j++)
-    //        {
-    //            if (this.GetSumCount() >= nCount)
-    //            {
-    //                if (mFinishFunc != null)
-    //                {
-    //                    mFinishFunc();
-    //                    mFinishFunc = null;
-    //                }
-    //                break;
-    //            }
-    //            this->mPool.push(this.InnerCreateItem());
-    //        }
-    //        yield return null;
-    //    }
-    //}
 
     void preLoadObj(int nFrameCount, int nCount, TFunction<void()> mFinishFunc = nullptr)
     {
