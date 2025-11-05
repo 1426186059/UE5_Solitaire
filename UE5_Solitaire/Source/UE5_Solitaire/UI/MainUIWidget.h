@@ -120,7 +120,7 @@ public:
 	void DoWhenSet_FastGame();
 	void PlayToA4EffectAni(int32 nIndex, UPokerItemWidget* mCardItem);
 	void OnFastGameToResultA4();
-private:
+public:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;
 	UCanvasPanel* GameWinAniParent;

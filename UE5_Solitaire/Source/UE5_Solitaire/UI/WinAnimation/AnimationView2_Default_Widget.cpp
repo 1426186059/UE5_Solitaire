@@ -4,7 +4,8 @@
 
 void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
-
+    Super::NativeTick(MyGeometry, InDeltaTime);
+    this->UpdateAllAniEntry(InDeltaTime);
 }
 
 void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mMgr)
@@ -19,244 +20,191 @@ void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mMgr)
     this->minWidth = -this->animationSize.X / 2 - CardWidth;
     //this->maxWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     //this->minWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
-    this->cardsNode = this->GetWidgetFromName("cardsnode");
-    this->cardsNode.gameObject.removeAllChildren();
+    this->ItemParent = Cast<UCanvasPanel>(this->GetWidgetFromName("cardsnode"));
+    UMGHelper::RemoveAllChildren(this->ItemParent);
 }
 
 void UAnimationView2_Default_Widget::PlayAni()
 {
     this->animationOver = false;
-    auto table4AColor = this->GetTableA4Color();
-    auto table4AWorldPos = this->GetTableA4WorldPos();
-    
-    FVector2D A = GameTools.WorldToUILocalPos(startPt_w, this->cardsNode);
+    TArray<int32> table4AColor = this->mMgr->GetTableA4Color();
+    TArray<FVector2D> table4AWorldPos = this->mMgr->GetTableA4WorldPos();
+    for (int i = 0; i < table4AWorldPos.Num(); i++)
+    {
+        table4AWorldPos[i] = this->ItemParent->GetCachedGeometry().AbsoluteToLocal(table4AWorldPos[i]);
+    }
+
     float delay = 0.1f;
     //mBlastBgm = UAudioHandler::GetSingleton()->PlaySound(Sounds.blast_bgm);
-    for (int i = 0; i < colors.Num(); i++)
+    for (int i = 0; i < table4AColor.Num(); i++)
     {
-        int color = colors[i];
-        FVector2D frompt = FVector2D(pt.x + index * (CardWidth - 1) + offset, pt.y, pt.z);
-        float delayvalue = 0;
-        float delayoffset = 0.1f;
+        int nColor = colors[i];
+        FVector2D beginPos = table4AWorldPos[i];
         for (int j = 13; j > 0; j--)
         {
-            this->CreateAniEntry(i, pt, index * 0.5f + (13 - j) * 0.1f, color, index, offsetX);
-            delayvalue += delayoffset;
+            this->CreateAniEntry(i, nColor, j, beginPos, i * 0.5f + (13 - j) * 0.1f);
         }
     }
+
 }
 
 void UAnimationView2_Default_Widget::CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay)
 {
-    auto node = this->GetPoolCard(pt, color, value, colindex);
-    auto startNode = ret.node;
+    int nPokerId = CardHandler::GetSingleton()->GetPokerId(nDigitId, nColor);
+    auto mPokerItem = this->GetPoolCard();
+    mPokerItem->InitPokerId(nPokerId);
+    UMGHelper::SetSlotPos(mPokerItem, beginPos);
+    UMGHelper::SetChildLastZOrder(mPokerItem);
 
-    var entity = AnimationEntity.create(colindex, color, value);
-    entity.open = true;
-    entity.trigger = false;
-    entity.triggerDelay = delay;
-    entity.btoRight = AnimationEntity.toRight(colindex);
-    entity.startPt = pt;
-    entity.nowPt = pt;
-    entity.firstNode = startNode;
-    entity.maxHeight = this->maxHeight;
-    entity.vx = AnimationEntity.randomVx();
-    entity.vx_a = 0;
-    entity.vy = AnimationEntity.randomVy();
-    if (!entity.btoRight)
+    auto mEntry = AnimationEntity::Create(nDigitId, nColor);
+    mEntry->open = true;
+    mEntry->trigger = false;
+    mEntry->triggerDelay = delay;
+    mEntry->deltTime = 0;
+    mEntry->btoRight = AnimationEntity::toRight(nColIndex);
+    mEntry->startPt = beginPos;
+    mEntry->nowPt = beginPos;
+    mEntry->mPokerWidget = mPokerItem;
+    mEntry->maxHeight = this->maxHeight;
+    mEntry->vx = AnimationEntity::randomVx();
+    mEntry->vx_a = 0;
+    mEntry->vy = AnimationEntity::randomVy();
+    mEntry->vy_a = AnimationEntity::randomVy_a();
+
+    if (!mEntry->btoRight)
     {
-        entity.vx *= -1;
+        mEntry->vx *= -1;
     }
-
-    entity.vy_a = AnimationEntity.randomVy_a();
-    entity.deltTime = 0;
-    entity.firstNode = startNode;
-    this->animationEntitys.push(entity);
-    startNode.transform.SetSiblingIndex(0);
+    
+    this->animationEntitys.Add(mEntry);
 }
 
-    // 检查是否最后一个队列中的最后一个，标志动画结束。   
-UWidget* UAnimationView2_Default_Widget::GetPoolCard()
+//检查是否最后一个队列中的最后一个，标志动画结束。   
+UPokerAnimationItemW* UAnimationView2_Default_Widget::GetPoolCard()
 {
-    int nodekey = AnimationEntity.getCardId(colorType, value);
-    TArray<CardAnimationItem> nodeArrs = this->colNodes_Dic.get(nodekey);
-    if (nodeArrs == null)
+    auto startNode = this->mMgr->mCardItemPool->Pop();
+    UMGHelper::SetParent(startNode, this->ItemParent);
+    UMGHelper::SetSlotAnchor(startNode, FAnchors(0, 0, 1, 1));
+    UMGHelper::SetSlotAlignment(startNode, FVector2D(0.5));
+    UMGHelper::SetSlotPos(startNode, FVector2D(0));
+    UMGHelper::SetSlotSize(startNode, FVector2D(0));
+    this->allNodes.Add(startNode);
+    return startNode;
+}
+
+void UAnimationView2_Default_Widget::RecyclePoolCard(UPokerAnimationItemW* mCard)
+{
+    this->mMgr->mCardItemPool->Recycle(mCard);
+}
+
+void UAnimationView2_Default_Widget::UpdateAniEntry(AnimationEntity* mEntry, float dt)
+{
+    if (!mEntry->open)
     {
-        nodeArrs = new TArray<CardAnimationItem>();
-        this->colNodes_Dic.set(nodekey, nodeArrs);
+        return;
     }
 
-    bool firstNodeByNewValue = false;
-    if (value == 13 && nodeArrs.length == 0)
+    if (!mEntry->trigger)
     {
-        firstNodeByNewValue = true;
-    }
-
-    AnimationEntity entity = null;
-    // 从后往前找，找到第一个。
-    for (int index = this->animationEntitys.length - 1; index >= 0; index--)
-    {
-        AnimationEntity element = this->animationEntitys[index];
-        if (element.color == colorType && element.value == value && element.index == colindex)
+        mEntry->triggerDelay -= dt;
+        if (mEntry->triggerDelay <= 0)
         {
-            entity = element;
-            break;
+            mEntry->trigger = true;;
         }
+        return;
+    }
+    
+    // 没有节点的时候，不更新。
+    if (mEntry->mPokerWidget == nullptr)
+    {
+        return;
     }
 
-    if (nodeArrs.length >= CardsColTotal)
-    {
-        if (entity == null)
-        {
+    float deltTime = mEntry->deltTime;
+    FVector2D startPt = mEntry->nowPt;
+    float maxHeight = mEntry->maxHeight;
+    float toRight = mEntry->btoRight;
+    float vx_a = mEntry->vx_a;
+    float vy_a = mEntry->vy_a;
 
-        }
-        else
+    FVector2D nowPt = FVector2D(0, 0);
+
+    // 现在速度
+    mEntry->vx += vx_a * dt;
+    mEntry->vy += vy_a * dt;
+
+    float vx = mEntry->vx;
+    float vy = mEntry->vy;
+
+    nowPt.X = (float)(startPt.X + vx * dt + 0.5f * vx_a * dt * dt);
+    nowPt.Y = (float)(startPt.Y + vy * dt + 0.5f * vy_a * dt * dt);
+
+    // 垂直. 小于最低值。
+    if (nowPt.Y < this->minHeight)
+    {
+        nowPt.Y = this->minHeight;
+        mEntry->vy *= -0.95f;
+    }
+
+    if (nowPt.Y > mEntry->maxHeight)
+    {
+        nowPt.Y = mEntry->maxHeight;
+        mEntry->vy = 0;
+        mEntry->maxHeight = mEntry->maxHeight * 0.8f;
+    }
+
+
+    // X轴移除就消失。
+    bool willRemove = false;
+    if (nowPt.X < this->minWidth - CardWidth)
+    {
+        nowPt.X = this->minWidth;
+        willRemove = true;
+    }
+
+    if (nowPt.X > this->maxWidth + CardWidth)
+    {
+        nowPt.X = this->maxWidth;
+        mEntry->vx *= -1;
+        willRemove = true;
+    }
+
+    mEntry->checktimes += 1;
+    UMGHelper::SetSlotPos(mEntry->mPokerWidget, nowPt);
+    mEntry->nowPt = nowPt;
+    if (mEntry->open)
+    {
+        UMGHelper::SetSlotPos(mEntry->mPokerWidget, nowPt);
+        if (willRemove)
         {
-            if (entity.color == this->colors[this->colors.length - 1] && entity.value == 1)
+            mEntry->open = false;
+            if (mEntry->nDigitId == 6 && mEntry->nColor == 2)
             {
                 this->onAnimatinCallBack();
                 this->DoDestroyAction();
             }
 
-        }
-        return (null, firstNodeByNewValue);
-    }
-
-    auto startNode = ResCenter.Instance.mCardAnimationItemPool.popObj();
-    startNode.transform.SetParent(this->cardsNode.transform, false);
-    startNode.transform.localPosition = pt;
-    nodeArrs.push(startNode);
-    startNode.initByNum(value, colorType);
-
-    this->allNodes.push(startNode);
-    return (startNode.gameObject, firstNodeByNewValue);
-}
-
-
-void UAnimationView2_Default_Widget::updateAnimation(AnimationEntity entity, float dt)
-{
-    if (!entity.open)
-    {
-        return;
-    }
-
-    if (entity.trigger)
-    {
-        // 没有节点的时候，不更新。
-        if (entity.firstNode == null)
-        {
             return;
         }
-
-        var deltTime = entity.deltTime;
-        var startPt = entity.nowPt;
-        var firstNode = entity.firstNode;
-        var maxHeight = entity.maxHeight;
-        var toRight = entity.btoRight;
-        var vx_a = entity.vx_a;
-        var vy_a = entity.vy_a;
-
-        var nowPt = new FVector2D(0, 0, 0);
-
-        // 匀变速直线运动位移公式：a=dv/dt，
-        // 距离 x = v0t+1/2·at^2
-
-        // 现在速度
-        entity.vx += vx_a * dt;
-        entity.vy += vy_a * dt;
-
-        var vx = entity.vx;
-        var vy = entity.vy;
-
-        nowPt.x = (float)(startPt.x + vx * dt + 0.5f * vx_a * dt * dt);
-        nowPt.y = (float)(startPt.y + vy * dt + 0.5f * vy_a * dt * dt);
-        nowPt.z = startPt.z;
-
-        // 垂直. 小于最低值。
-        if (nowPt.y < this->minHeight)
-        {
-            nowPt.y = this->minHeight;
-            entity.vy *= -0.95f;  //转变方向
-        }
-
-        if (nowPt.y > entity.maxHeight)
-        {
-            nowPt.y = entity.maxHeight;
-            // vy_a = -vy_a;
-            entity.vy = 0;
-            entity.maxHeight = entity.maxHeight * 0.8f;
-        }
-
-
-        // X轴移除就消失。
-        bool willRemove = false;
-        if (nowPt.x < this->minWidth - CardWidth)
-        {
-            nowPt.x = this->minWidth;
-            willRemove = true;
-        }
-
-        if (nowPt.x > this->maxWidth + CardWidth)
-        {
-            nowPt.x = this->maxWidth;
-            entity.vx *= -1;
-            willRemove = true;
-
-
-        }
-
-        // 每两帧之间 添加
-        entity.checktimes += 1;
-        firstNode.transform.localPosition = nowPt;
-        entity.nowPt = nowPt;
-            
-        if (entity.open)
-        {
-            firstNode.transform.localPosition = nowPt;
-            if (willRemove)
-            {
-                entity.open = false;
-                if (entity.value == 6 && entity.index == 2)
-                {
-
-                    this->onAnimatinCallBack();
-                    this->DoDestroyAction();
-                }
-
-                return;
-            }
-        }
-    }
-    else
-    {
-
-        entity.triggerDelay -= dt;
-        if (entity.triggerDelay <= 0)
-        {
-            entity.trigger = true;
-        }
     }
 }
-    
-void UAnimationView2_Default_Widget::Update()
-{
-    if (gameObject == null) return;
 
-    float dt = Time.deltaTime;
-    for (int index = 0; index < this->animationEntitys.length; index++)
+void UAnimationView2_Default_Widget::UpdateAllAniEntry(float dt)
+{
+    for (int i = 0; i < this->animationEntitys.Num(); i++)
     {
-        AnimationEntity entity = this->animationEntitys[index];
-        this->updateAnimation(entity, dt);
+        AnimationEntity* mEntry = this->animationEntitys[i];
+        this->UpdateAniEntry(mEntry, dt);
     }
 }
 
 void UAnimationView2_Default_Widget::onAnimatinCallBack()
 {
-    if (this->callBack != null)
+    if (this->callBack.IsSet())
     {
-        AudioController.Instance.StopSound(Sounds.blast_bgm);
+        //AudioController::GetSingleton()->StopSound(Sounds.blast_bgm);
         this->callBack();
-        this->callBack = null;
+        this->callBack.Reset();
     }
 }
 
@@ -268,26 +216,29 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
     }
 
     this->animationOver = true;
-    for (int index = 0; index < this->animationEntitys.length; index++)
+    for (int i = 0; i < this->animationEntitys.Num(); i++)
     {
-        AnimationEntity element = this->animationEntitys[index];
+        AnimationEntity element = this->animationEntitys[i];
         element.open = false;
     }
-    this->animationEntitys = new TArray<AnimationEntity>();
+    this->animationEntitys = {};
 
-    foreach(var v in this->allNodes)
+    for(auto v : this->allNodes)
     {
-        ResCenter.Instance.mCardAnimationItemPool.recycleObj(v);
+        this->mMgr->mCardItemPool->Recycle(v);
     }
-    this->allNodes.Clear();
-    Destroy(gameObject);
+    this->allNodes = {};
+
+    if (this->IsInViewport())
+    {
+        this->RemoveFromParent(); //销毁
+    }
 }
-    
+
 void UAnimationView2_Default_Widget::onClick_Skip()
 {
     this->skipNode.SetActive(false);
-    AudioController.Instance.playSound(Sounds.button, 1);
+    //AudioController.Instance.playSound(Sounds.button, 1);
     this->onAnimatinCallBack();
     this->DoDestroyAction();
-    TAController.Instance.trackAnimationSkip();
 }

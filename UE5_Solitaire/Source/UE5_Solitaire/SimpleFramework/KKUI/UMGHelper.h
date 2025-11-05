@@ -251,6 +251,14 @@ public:
         }
     }
 
+    static void RemoveAllChildren(UCanvasPanel* mParent)
+    {
+        while (mParent->GetChildrenCount() > 0)
+        {
+            mParent->RemoveChildAt(0);
+        }
+    }
+
 private:
     UMGHelper() = delete;
     ~UMGHelper() = delete;

@@ -22,6 +22,12 @@ void UPokerAnimationItemW::Init()
     }*/
 }
 
+void UPokerAnimationItemW::InitPokerId(int nPokerId)
+{
+    this->Init();
+
+}
+
 void UPokerAnimationItemW::Show()
 {
     this->Init();

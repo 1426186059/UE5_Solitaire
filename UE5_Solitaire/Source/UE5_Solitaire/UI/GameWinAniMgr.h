@@ -10,7 +10,7 @@ class UGameWinAniMgr :public UObject
 {
     GENERATED_BODY()
 
-private:
+public:
     UCanvasPanel* go;
     KKWidgetPool<UPokerAnimationItemW>* mCardItemPool;
     TFunction<void()> mFinishFunc;
@@ -20,4 +20,7 @@ public:
     void Hide();
     void PlayAni(TFunction<void()> finishFunc);
     void DestroyAniNode();
+
+    TArray<int32> GetTableA4Color();
+    TArray<FVector2D> GetTableA4WorldPos();
 };

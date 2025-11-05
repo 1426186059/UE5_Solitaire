@@ -17,18 +17,15 @@ class UE5_SOLITAIRE_API UAnimationView2_Default_Widget : public UUserWidget
 protected:
     virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
-    void Init(UGameWinAniMgr* mMgr);
-    void PlayAni();
-public:
     class AnimationEntity
     {
     public:
-        UWidget* firstNode = nullptr;
-        
+        UPokerAnimationItemW* mPokerWidget = nullptr;
+
         int nDigitId = 13;
         int nColor = 0;
         int nPokerId = 1;  //13*v+value cardid
-        
+
         int index = 0; //第几个col的
         bool open = false;
         bool trigger = false;
@@ -37,8 +34,8 @@ public:
         float deltTime = 0;
         float checktimes = 0; //每两帧，检查一次位置。
 
-        Vector3 startPt = new Vector3(0, 0, 0);  //最开始的起始点。
-        Vector3 nowPt = new Vector3(0, 0, 0);
+        FVector2D startPt;  //最开始的起始点。
+        FVector2D nowPt;
 
         float vx = 0;    // x方向的速度
         float vy = 0;    // y方向的速度  
@@ -79,17 +76,18 @@ public:
             return (int32)nDigitId * 13 + color;
         }
 
-        static AnimationEntity create(int32 nDigitId, int32 color, int32 value)
+        static AnimationEntity* Create(int32 nDigitId, int32 nColor)
         {
-            AnimationEntity entity = new AnimationEntity();
-            entity.color = color;
-            entity.index = index;
-            entity.value = value;
-            entity.cardid = AnimationEntity.getCardId(color, value);
+            AnimationEntity* entity = new AnimationEntity();
+            entity->nColor = nColor;
+            entity->nDigitId = nDigitId;
+            entity->nPokerId = CardHandler::GetSingleton()->GetPokerId(nDigitId, nColor);
             return entity;
         }
     };
-      
+
+
+public:
     UGameWinAniMgr* mMgr;
     // Card 数据
     const float CardWidth = 103;
@@ -99,6 +97,8 @@ public:
     const float Delay_Value_Offset = 0.01f; // 22*2/30
 
     UWidget* skipNode = nullptr;
+    UCanvasPanel* ItemParent = nullptr;
+
     TFunction<void()> callBack = nullptr;
     FVector2D animationSize = new FVector2D(0, 0);
 
@@ -106,26 +106,25 @@ public:
     float minHeight = 0;
     float maxWidth = 0;
     float minWidth = 0;
-    
-    TMap<int, TSArray<CardAnimationItem>> colNodes_Dic = new TMap<int, TSArray<CardAnimationItem>>();
-    TArray<CardAnimationItem> allNodes = new TArray<CardAnimationItem>();
-    TArray<AnimationEntity> animationEntitys = new TArray<AnimationEntity>();
-    bool animationOver = false;
-    RectTransform cardsNode = null;
-    TArray<CardType> colors = new TArray<CardType>();
-    AudioSource mBlastBgm = null;
-    
-    void Awake();
-    void Show(TFunction<void()> callback);
-    void showAnimation(TSArray<CardType> colors, Vector3 startPt_w, int offsetX = 0);
-    void showAnimation_Default(Vector3 pt, TSArray<CardType> colors, int offsetX);
-    GameObject addStaticCard(Vector3 pt, CardType colorType, int value, int colindex);
-    void updateAnimation(AnimationEntity entity, float dt);
-    void CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay);
-    UPokerAnimationItemW* UAnimationView2_Default_Widget::GetPoolCard();
 
-    void Update();
+    TMap<int, TArray<PokerAnimationItemW*>> colNodes_Dic = new TMap<int, TArray<PokerAnimationItemW*>>();
+    TArray<PokerAnimationItemW*> allNodes = new TArray<PokerAnimationItemW*>();
+    TArray<AnimationEntity*> animationEntitys = new TArray<AnimationEntity*>();
+    bool animationOver = false;
+    TArray<int> colors;
+    UAudioComponent* mBlastBgm = nullptr;
+
+public:
+    void Init(UGameWinAniMgr* mMgr);
+    void PlayAni();
+    void Show(TFunction<void()> callback);
+    UPokerAnimationItemW* GetPoolCard();
+    void RecyclePoolCard(UPokerAnimationItemW* mCard);
+    void UpdateAllAniEntry(float dt);
+    void UpdateAniEntry(AnimationEntity* entity, float dt);
+    void CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay);
     void onAnimatinCallBack();
     void DoDestroyAction();
     void onClick_Skip();
 }
+};

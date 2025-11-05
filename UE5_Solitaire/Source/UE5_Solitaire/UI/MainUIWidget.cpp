@@ -1280,7 +1280,7 @@ TArray<FVector2D> UMainUIWidget::GetTableA4WorldPos()
     TArray<FVector2D> tableWorldPos = {};
     for (int32 i = 0; i < 4; i++)
     {
-        tableWorldPos[i] = this->GetCardNode4APos(i);
+        tableWorldPos[i] = this->PokerItemParent->GetCachedGeometry().LocalToAbsolute(this->GetCardNode4APos(i));
     }
     return tableWorldPos;
 }

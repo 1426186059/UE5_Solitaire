@@ -73,3 +73,13 @@ void UGameWinAniMgr::DestroyAniNode()
     //    this->mAni = nullptr;
     //}
 }
+
+TArray<int32> UGameWinAniMgr::GetTableA4Color()
+{
+    return AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GetTableA4Color();
+}
+
+TArray<FVector2D> UGameWinAniMgr::GetTableA4WorldPos()
+{
+    return AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GetTableA4WorldPos();
+}

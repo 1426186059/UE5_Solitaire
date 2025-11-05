@@ -15,11 +15,10 @@ class UE5_SOLITAIRE_API UPokerAnimationItemW : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void Init();
+	void Init(int nPokerId);
 	void Show();
 	void Hide();
 	void Refresh();
-	void SetPokerId(int nPokerId);
 public:
 	int nPokerId;
 	bool bTurnOverState = false;
