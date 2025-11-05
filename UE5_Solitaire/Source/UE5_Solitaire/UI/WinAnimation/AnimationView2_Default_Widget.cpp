@@ -121,7 +121,7 @@ void UAnimationView2_Default_Widget::RecyclePoolCard(UPokerAnimationItemW* mCard
     this->mMgr->mCardItemPool->Recycle(mCard);
 }
 
-void UAnimationView2_Default_Widget::UpdateAniEntry(AnimationEntity* mEntry, float dt)
+void UAnimationView2_Default_Widget::UpdateAniEntry(TSharedPtr<AnimationEntity> mEntry, float dt)
 {
     if (!mEntry->open)
     {
@@ -216,7 +216,7 @@ void UAnimationView2_Default_Widget::UpdateAllAniEntry(float dt)
 {
     for (int i = 0; i < this->animationEntitys.Num(); i++)
     {
-        AnimationEntity* mEntry = this->animationEntitys[i];
+        auto mEntry = this->animationEntitys[i];
         this->UpdateAniEntry(mEntry, dt);
     }
 }
@@ -239,11 +239,6 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
     }
 
     this->animationOver = true;
-    for (int i = 0; i < this->animationEntitys.Num(); i++)
-    {
-        AnimationEntity* element = this->animationEntitys[i];
-        element->open = false;
-    }
     this->animationEntitys = {};
 
     for(auto v : this->allNodes)

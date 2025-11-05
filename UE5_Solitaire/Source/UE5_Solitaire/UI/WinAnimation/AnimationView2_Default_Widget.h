@@ -78,13 +78,13 @@ public:
             return (int32)nDigitId * 13 + color;
         }
 
-        static AnimationEntity* Create(int32 nDigitId, int32 nColor)
+        static TSharedPtr<AnimationEntity> Create(int32 nDigitId, int32 nColor)
         {
             AnimationEntity* entity = new AnimationEntity();
             entity->nColor = nColor;
             entity->nDigitId = nDigitId;
             entity->nPokerId = CardHandler::GetSingleton()->GetPokerId(nDigitId, nColor);
-            return entity;
+            return TSharedPtr<AnimationEntity>(entity);
         }
     };
 
@@ -108,7 +108,7 @@ public:
     float minWidth = 0;
     
     TArray<UPokerAnimationItemW*> allNodes;
-    TArray<AnimationEntity*> animationEntitys;
+    TArray<TSharedPtr<AnimationEntity>> animationEntitys;
     bool animationOver = false;
     TArray<int> colors;
     UAudioComponent* mBlastBgm = nullptr;
@@ -120,7 +120,7 @@ public:
     UPokerAnimationItemW* GetPoolCard();
     void RecyclePoolCard(UPokerAnimationItemW* mCard);
     void UpdateAllAniEntry(float dt);
-    void UpdateAniEntry(AnimationEntity* entity, float dt);
+    void UpdateAniEntry(TSharedPtr<AnimationEntity> entity, float dt);
     void CreateAniEntry(int nColIndex, int nColor, int nDigitId, FVector2D beginPos, float delay);
     void onAnimatinCallBack();
     void onClick_Skip();
