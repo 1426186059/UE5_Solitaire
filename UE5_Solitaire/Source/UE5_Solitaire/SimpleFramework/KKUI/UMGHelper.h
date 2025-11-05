@@ -49,6 +49,30 @@ public:
         return FIntPoint::ZeroValue;
     }
 
+    static FVector2D GetScreenLocalSize(UUserWidget*  mWidget)
+    {
+        FVector2D ScreenSize = UWidgetLayoutLibrary::GetViewportSize(mWidget);
+        if(mWidget == nullptr)
+        {
+            return ScreenSize;
+        }
+
+        const FGeometry& Geo = mWidget->GetPaintSpaceGeometry();
+
+        // 获取本地 (0,0) 和 (1,1) 对应的屏幕位置
+        FVector2D ScreenOrigin = Geo.LocalToAbsolute(FVector2D::Zero());
+        FVector2D ScreenUnit = Geo.LocalToAbsolute(FVector2D(1.0f, 1.0f));
+
+        // 计算每单位本地尺寸对应的屏幕像素（缩放因子）
+        FVector2D Scale = ScreenUnit - ScreenOrigin; // 注意：可能为负（镜像）
+
+        // 避免除零
+        float InvScaleX = FMath::Abs(Scale.X) > KINDA_SMALL_NUMBER ? 1.0f / Scale.X : 1.0f;
+        float InvScaleY = FMath::Abs(Scale.Y) > KINDA_SMALL_NUMBER ? 1.0f / Scale.Y : 1.0f;
+
+        return FVector2D(ScreenSize.X * InvScaleX, ScreenSize.Y * InvScaleY);
+    }
+
     static FVector2D GetUMGRootSzie(UUserWidget* mWidget)
     {
         UCanvasPanel* mCanvasPanel = Cast<UCanvasPanel>(mWidget->GetRootWidget());

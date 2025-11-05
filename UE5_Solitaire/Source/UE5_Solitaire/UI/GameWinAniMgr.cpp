@@ -49,9 +49,8 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
         UMGHelper::SetSlotAlignment(mInstance, FVector2D(0.5));
         UMGHelper::SetSlotPos(mInstance, FVector2D(0));
         UMGHelper::SetSlotSize(mInstance, FVector2D(0));
-        mInstance->SetVisibility(ESlateVisibility::Visible);
-        mInstance->Init(this);
-        mInstance->PlayAni();
+        mInstance->SetMgr(this);
+        mInstance->Show();
         this->mWinAniInstance = mInstance;
     }
     else if (nWinType == 2)

@@ -1306,7 +1306,7 @@ TArray<int32> UMainUIWidget::GetTableA4Color()
         ensureMsgf(this->tableCardNode4AGo[i].Num() == 13, TEXT("%d"), this->tableCardNode4AGo[i].Num());
         if (this->tableCardNode4AGo[i].Num() > 0)
         {
-            int32 nColor = CardHandler::GetSingleton()->GetSubDigital(this->tableCardNode4AGo[i][1]->nPokerId);
+            int32 nColor = CardHandler::GetSingleton()->GetSubDigital(this->tableCardNode4AGo[i][0]->nPokerId);
             table4AColor[i] = nColor;
             int32 nRemoveIndex = tableNowColor.IndexOfByKey(nColor);
             TArrayExtentions::Remove(tableNowColor, nRemoveIndex);

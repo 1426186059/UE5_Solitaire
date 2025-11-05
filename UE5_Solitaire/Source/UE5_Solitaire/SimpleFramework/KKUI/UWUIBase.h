@@ -20,7 +20,6 @@ public:
 	virtual void Hide(bool bDestroy = false);
 	virtual void Refresh();
 	virtual void OnLayoutChanged();
-	virtual void OnFirstLayoutFinish();
 	virtual void CheckFirstLayoutOkToShow();
 
 	bool orFirstLayoutFinish();

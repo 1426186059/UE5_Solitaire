@@ -8,11 +8,12 @@ void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, flo
     this->UpdateAllAniEntry(InDeltaTime);
 }
 
-void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mgr)
+void UAnimationView2_Default_Widget::Init()
 {
-    this->mMgr = mgr;
+    if (this->bInit) return;
+    this->bInit = true;
 
-    FVector2D RootSize = UWidgetLayoutLibrary::GetViewportSize(this);
+    FVector2D RootSize = UMGHelper::GetUMGRootSzie(this);
     UE_LOG(LogTemp, Log, TEXT("UAnimationView2_Default_Widget RootSize: %s"), *RootSize.ToString());
 
     auto animationSize = FVector2D(RootSize.X, RootSize.Y);
@@ -28,6 +29,24 @@ void UAnimationView2_Default_Widget::Init(UGameWinAniMgr* mgr)
     this->skipNode = this->GetWidgetFromName("SkipBtn");
     auto skipBtn = Cast<UButton>(this->skipNode);
     skipBtn->OnClicked.AddDynamic(this, &UAnimationView2_Default_Widget::onClick_Skip);
+}
+
+void UAnimationView2_Default_Widget::CheckFirstLayoutOkToShow()
+{
+    if (orFirstLayoutFinish())
+    {
+        if (this->bShowUI)
+        {
+            this->SetVisibility(ESlateVisibility::Visible);
+            this->Init();
+            this->PlayAni();
+        }
+    }
+}
+
+void UAnimationView2_Default_Widget::SetMgr(UGameWinAniMgr* mgr)
+{
+    this->mMgr = mgr;
 }
 
 void UAnimationView2_Default_Widget::PlayAni()

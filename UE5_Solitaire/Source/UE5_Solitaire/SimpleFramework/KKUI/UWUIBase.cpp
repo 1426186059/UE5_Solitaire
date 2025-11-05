@@ -39,6 +39,7 @@ void UWUIBase::Init()
 void UWUIBase::Show()
 {
     this->bShowUI = true;
+    this->bFirstLayoutFinish = UMGHelper::GetUMGRootSzie(this) != FVector2D::ZeroVector;
     this->CheckFirstLayoutOkToShow();
 }
 
@@ -66,19 +67,17 @@ void UWUIBase::OnLayoutChanged()
     if (!this->bFirstLayoutFinish)
     {
         this->bFirstLayoutFinish = true;
-        this->OnFirstLayoutFinish();
+        this->CheckFirstLayoutOkToShow();
     }
-}
-
-void UWUIBase::OnFirstLayoutFinish()
-{
-    this->CheckFirstLayoutOkToShow();
 }
 
 void UWUIBase::CheckFirstLayoutOkToShow()
 {
-    if (this->bShowUI)
+    if (orFirstLayoutFinish())
     {
-        this->SetVisibility(ESlateVisibility::Visible);
+        if (this->bShowUI)
+        {
+            this->SetVisibility(ESlateVisibility::Visible);
+        }
     }
 }
