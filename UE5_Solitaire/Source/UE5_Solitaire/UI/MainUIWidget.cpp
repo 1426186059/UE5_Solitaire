@@ -4,6 +4,7 @@
 #include "MainUIWidget.h"
 #include "Item/PokerItemWidget.h"
 #include "Item/PokerAnimationItemW.h"
+#include "GMWidget.h"
 
 void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -121,6 +122,8 @@ void UMainUIWidget::Init()
         true
     );
     UEHelper::PauseTimer(this, this->mTimer);
+
+    AKKUIMgr::GetSingleton()->Show<UGMWidget>("GMCWBP");
 }
 
 void UMainUIWidget::TimerPerSecondUpdate()

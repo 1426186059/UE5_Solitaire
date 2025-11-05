@@ -12,3 +12,8 @@
 #include "KKEventMgr.h"
 #include "UEHelper.h"
 #include "KKDBSaveMgr.h"
+
+#include "KKUI/KKUI.h"
+#include "KKTween/KKTween.h"
+#include "KKTimer/KKTimer.h"
+#include "KKPool/KKPool.h"

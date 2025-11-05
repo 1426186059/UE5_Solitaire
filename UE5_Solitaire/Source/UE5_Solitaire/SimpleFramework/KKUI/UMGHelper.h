@@ -13,6 +13,7 @@
 #include "Components/TextBlock.h"
 #include "Components/EditableText.h"
 #include "Components/EditableTextBox.h"
+#include "Components/Button.h"
 #include "PaperSprite.h"
 
 class UMGHelper

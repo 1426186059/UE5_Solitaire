@@ -1,0 +1,52 @@
+#include "GMWidget.h"
+#include "MainUIWidget.h"
+
+void UGMWidget::OnCreate()
+{
+    Super::OnCreate();
+    UMGHelper::SetParent(this, AKKUIMgr::GetSingleton()->GetRootWidget()->Layer_Debug);
+    UMGHelper::SetSlotAnchor(this, FAnchors(0, 0, 1, 1));
+    UMGHelper::SetSlotAlignment(this, FVector2D(0.5));
+    UMGHelper::SetSlotPos(this, FVector2D(0));
+    UMGHelper::SetSlotSize(this, FVector2D(0));
+}
+
+void UGMWidget::Init()
+{
+    if (this->bInit) return;
+    this->bInit = true;
+
+    //auto StageRewardBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("StageRewardBtn")));
+    //StageRewardBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_StageRewardBtn);
+
+    auto WinAnimationBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("WinAnimationBtn")));
+    WinAnimationBtn->OnClicked.AddDynamic(this, &UGMWidget::OnBtnClicked_WinAnimationBtn);
+
+ /*   auto GuideFastPlayBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("GuideFastPlayBtn")));
+    GuideFastPlayBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_StageRewardBtn);*/
+}
+
+void UGMWidget::Show()
+{
+    Super::Show();
+}
+
+void UGMWidget::Hide(bool bDestory)
+{
+    Super::Hide(bDestory);
+}
+
+void UGMWidget::Refresh()
+{
+    Super::Refresh();
+}
+
+void UGMWidget::OnBtnClicked_WinAnimationBtn()
+{
+    UE_LOG(LogTemp, Log, TEXT("UGMWidget OnBtnClicked_WinAnimationBtn"));
+
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GameWinAniMgr->PlayAni([]()
+        {
+            AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GameWinAniMgr->DestroyAniNode();
+        });
+}
