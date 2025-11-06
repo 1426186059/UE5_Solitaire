@@ -42,7 +42,7 @@ public:
         float vyMax = 0; // y方向的最大速度
         float vx_a = 0;  // x方向的加速度 x轴匀速
         float vy_a = 0;  // y方向的加速度
-        float maxHeight = 0;   //每次更新最高值。
+        float minY = 0;   //每次更新最高值。
 
         static bool toRight(int index)
         {
@@ -63,12 +63,12 @@ public:
 
         static float randomVy()
         {
-            return KKRandomTool::RandomInt(500, 600);
+            return -KKRandomTool::RandomInt(500, 600);
         }
 
         static float randomVy_a()
         {
-            return KKRandomTool::RandomInt(5500, 6200) * (-1);
+            return KKRandomTool::RandomInt(5500, 6200);
         }
 
         static TSharedPtr<AnimationEntity> Create(int32 nDigitId, int32 nColor)
@@ -95,10 +95,10 @@ public:
     UCanvasPanel* ItemParent = nullptr;
     TFunction<void()> callBack = nullptr;
 
-    float maxHeight = 0;
-    float minHeight = 0;
-    float maxWidth = 0;
-    float minWidth = 0;
+    float maxY = 0;
+    float minY = 0;
+    float maxX = 0;
+    float minX = 0;
     
     TArray<UPokerAnimationItemW*> allNodes;
     TArray<TSharedPtr<AnimationEntity>> animationEntitys;

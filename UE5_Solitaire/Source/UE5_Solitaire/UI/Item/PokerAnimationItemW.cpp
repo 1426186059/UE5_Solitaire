@@ -7,7 +7,7 @@ void UPokerAnimationItemW::Init()
     if (this->bInit) return;
     this->bInit = true;
 
-    /*this->mIcon = Cast<UImage>(this->GetWidgetFromName(TEXT("Icon")));
+    this->mIcon = Cast<UImage>(this->GetWidgetFromName(TEXT("Icon")));
     if (!mIcon)
     {
         UE_LOG(LogTemp, Error, TEXT("mIcon == null"));
@@ -19,7 +19,7 @@ void UPokerAnimationItemW::Init()
     {
         UE_LOG(LogTemp, Error, TEXT("tranCardItemAni == null"));
         return;
-    }*/
+    }
 }
 
 void UPokerAnimationItemW::InitPokerId(int poker_id)
@@ -43,7 +43,7 @@ void UPokerAnimationItemW::Hide()
 void UPokerAnimationItemW::Refresh()
 {
     this->Init();
-    //this->mIcon->SetBrushFromAtlasInterface(AResCenter::GetSingleton()->GetPokerSprite(this->nPokerId));
+    this->mIcon->SetBrushFromAtlasInterface(AResCenter::GetSingleton()->GetPokerSprite(this->nPokerId));
 }
 
 void UPokerAnimationItemW::SetPokerId(int nPokerId1)

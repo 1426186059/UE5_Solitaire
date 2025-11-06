@@ -5,7 +5,7 @@
 void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
-    //this->UpdateAllAniEntry(InDeltaTime);
+    this->UpdateAllAniEntry(InDeltaTime);
 }
 
 void UAnimationView2_Default_Widget::Init()
@@ -16,11 +16,10 @@ void UAnimationView2_Default_Widget::Init()
     FVector2D RootSize = UMGHelper::GetUMGRootSzie(this);
     UE_LOG(LogTemp, Log, TEXT("UAnimationView2_Default_Widget RootSize: %s"), *RootSize.ToString());
 
-    auto animationSize = FVector2D(RootSize.X, RootSize.Y);
-    this->maxHeight = animationSize.Y / 2.0f;
-    this->minHeight = -animationSize.Y / 2.0f + 100;
-    this->maxWidth = animationSize.X / 2.0f + 150;
-    this->minWidth = -animationSize.X / 2.0f - 150;
+    this->maxY = RootSize.Y / 2.0f - 100;
+    this->minY = -RootSize.Y / 2.0f;
+    this->maxX = RootSize.X / 2.0f + 150;
+    this->minX = -RootSize.X / 2.0f - 150;
     //this->maxWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     //this->minWidth /= GameLauncher.Instance.mUIRoot.mCanvas_WinAnimation.localScale.x;
     this->ItemParent = Cast<UCanvasPanel>(this->GetWidgetFromName("ItemParent"));
@@ -78,7 +77,7 @@ void UAnimationView2_Default_Widget::CreateAniEntry(int nColIndex, int nColor, i
     auto mPokerItem = this->GetPoolCard();
     mPokerItem->InitPokerId(nPokerId);
     UMGHelper::SetSlotPos(mPokerItem, beginPos);
-    UMGHelper::SetChildLastZOrder(mPokerItem);
+    UMGHelper::SetChildFirstZOrder(mPokerItem);
 
     auto mEntry = AnimationEntity::Create(nDigitId, nColor);
     mEntry->open = true;
@@ -89,7 +88,7 @@ void UAnimationView2_Default_Widget::CreateAniEntry(int nColIndex, int nColor, i
     mEntry->beginPos = beginPos;
     mEntry->nowPos = beginPos;
     mEntry->mPokerWidget = mPokerItem;
-    mEntry->maxHeight = this->maxHeight;
+    mEntry->minY = this->minY;
     mEntry->vx = AnimationEntity::randomVx();
     mEntry->vx_a = 0;
     mEntry->vy = AnimationEntity::randomVy();
@@ -144,7 +143,7 @@ void UAnimationView2_Default_Widget::UpdateAniEntry(TSharedPtr<AnimationEntity> 
         return;
     }
     
-    FVector2D startPt = mEntry->beginPos;
+    FVector2D startPt = mEntry->nowPos;
     float toRight = mEntry->btoRight;
     float vx_a = mEntry->vx_a;
     float vy_a = mEntry->vy_a;
@@ -162,51 +161,45 @@ void UAnimationView2_Default_Widget::UpdateAniEntry(TSharedPtr<AnimationEntity> 
     nowPt.Y = (float)(startPt.Y + vy * dt + 0.5f * vy_a * dt * dt);
 
     // 垂直. 小于最低值。
-    if (nowPt.Y < this->minHeight)
+    if (nowPt.Y < mEntry->minY)
     {
-        nowPt.Y = this->minHeight;
+        nowPt.Y = mEntry->minY;
+        mEntry->vy = 0;
+        mEntry->minY += 100;
+    }
+
+    if (nowPt.Y > this->maxY)
+    {
+        nowPt.Y = this->maxY;
         mEntry->vy *= -0.95f;
     }
-
-    if (nowPt.Y > mEntry->maxHeight)
-    {
-        nowPt.Y = mEntry->maxHeight;
-        mEntry->vy = 0;
-        mEntry->maxHeight = mEntry->maxHeight * 0.8f;
-    }
-
-
-    // X轴移除就消失。
+    
     bool willRemove = false;
-    if (nowPt.X < this->minWidth - CardWidth)
+    if (nowPt.X < this->minX - CardWidth)
     {
-        nowPt.X = this->minWidth;
+        nowPt.X = this->minX;
         willRemove = true;
     }
 
-    if (nowPt.X > this->maxWidth + CardWidth)
+    if (nowPt.X > this->maxX + CardWidth)
     {
-        nowPt.X = this->maxWidth;
+        nowPt.X = this->maxX;
         mEntry->vx *= -1;
         willRemove = true;
     }
 
     UMGHelper::SetSlotPos(mEntry->mPokerWidget, nowPt);
     mEntry->nowPos = nowPt;
-    if (mEntry->open)
+    
+    if (willRemove)
     {
-        UMGHelper::SetSlotPos(mEntry->mPokerWidget, nowPt);
-        if (willRemove)
+        mEntry->open = false;
+        if (mEntry->nDigitId == 6 && mEntry->nColor == 2)
         {
-            mEntry->open = false;
-            if (mEntry->nDigitId == 6 && mEntry->nColor == 2)
-            {
-                this->onAnimatinCallBack();
-                this->DoDestroyAction();
-            }
-
-            return;
+            this->onAnimatinCallBack();
         }
+
+        return;
     }
 }
 

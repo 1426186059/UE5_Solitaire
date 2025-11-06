@@ -29,4 +29,8 @@ public:
 	bool bInDrag = false;
 private:
 	bool bInit;
+	bool bShow;
+	bool bCanClick;
+	UWidget* tranCardItemAni;
+	UImage* mIcon;
 };

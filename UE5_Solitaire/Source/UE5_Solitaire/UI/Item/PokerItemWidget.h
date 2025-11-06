@@ -70,29 +70,29 @@ private:
 	KKTween::Handle mShakeTween;
 };
 
-class FPokerItemDragDropOperation : public FDragDropOperation
-{
-public:
-	UPokerItemWidget* WidgetSource;
-	FVector2D BeginScreenSpacePos;
-	FVector2D DragStartSlotPos;
-	FVector2D DragOffset;
-};
-
-UCLASS()
-class UPokerItemDragDropOperation : public UDragDropOperation
-{
-	GENERATED_BODY()
-
-public:
-	UPokerItemWidget* WidgetSource;
-	FVector2D BeginScreenSpacePos;
-	FVector2D DragStartSlotPos;
-	FVector2D DragOffset;
-
-	UPROPERTY()
-	int32 ItemID = 0;
-
-	UPROPERTY()
-	int32 Quantity = 0;
-};
+//class FPokerItemDragDropOperation : public FDragDropOperation
+//{
+//public:
+//	UPokerItemWidget* WidgetSource;
+//	FVector2D BeginScreenSpacePos;
+//	FVector2D DragStartSlotPos;
+//	FVector2D DragOffset;
+//};
+//
+//UCLASS()
+//class UPokerItemDragDropOperation : public UDragDropOperation
+//{
+//	GENERATED_BODY()
+//
+//public:
+//	UPokerItemWidget* WidgetSource;
+//	FVector2D BeginScreenSpacePos;
+//	FVector2D DragStartSlotPos;
+//	FVector2D DragOffset;
+//
+//	UPROPERTY()
+//	int32 ItemID = 0;
+//
+//	UPROPERTY()
+//	int32 Quantity = 0;
+//};
