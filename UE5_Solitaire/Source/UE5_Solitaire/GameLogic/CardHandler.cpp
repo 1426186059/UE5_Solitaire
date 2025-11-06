@@ -90,7 +90,8 @@ TArray<int> CardHandler::GetInitCards_Random_ForEasy()
     TArray<int> mSendCardList2 = {};
     while (mSendCardList.Num() > 0)
     {
-        int nRandomDigital = KKRandomTool::GetIndexByRate(randomRate);
+        int nRandomIndex = KKRandomTool::GetIndexByRate(randomRate);
+        int nRandomDigital = nRandomIndex + 1;
 
         int nRemoveIndex = -1;
         for (int i = 0; i < mSendCardList.Num(); i++)
@@ -103,15 +104,21 @@ TArray<int> CardHandler::GetInitCards_Random_ForEasy()
             }
         }
 
-        if (nRemoveIndex > 0)
+        if (nRemoveIndex >= 0)
         {
             int nPokerId = TArrayExtentions::Remove(mSendCardList, nRemoveIndex);
             mSendCardList2.Add(nPokerId);
         }
         else
         {
-            randomRate[nRandomDigital] = 0;
+            randomRate[nRandomIndex] = 0;
         }
+    }
+
+    if (this->CheckCardListError(mSendCardList2) == false)
+    {
+        UE_LOG(LogTemp, Error, TEXT("GetInitCards_Random_ForEasy CheckCardListError"));
+        return this->GetInitCards_Random();
     }
 
     return mSendCardList2;
