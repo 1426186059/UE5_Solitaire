@@ -13,21 +13,26 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
     nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
     nGameLevel = FMath::Max(nGameLevel, 1);
 
-    if (nGameLevel <= 20)
+    if (false)
     {
-        return this->GetInitCards_Random_ForEasy();
-    }
-    else if (nGameLevel <= 5)
-    {
-        auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
-        auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
-        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
-        if (bTrue)
+        if (nGameLevel <= 10)
         {
-            return tablePokerId;
+            return this->GetInitCards_Random_ForEasy();
         }
-
-        UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
+    }
+    else
+    {
+        if (nGameLevel <= 5)
+        {
+            auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
+            auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
+            auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
+            if (bTrue)
+            {
+                return tablePokerId;
+            }
+            UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
+        }
     }
     
     return this->GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
@@ -77,7 +82,7 @@ TArray<int> CardHandler::GetInitCards_Random_ForEasy()
         3, 2, 1
     };
 
-    int nMaxRate = 14 - nDifficultLayer;
+    int nMaxRate = 10 - nDifficultLayer;
     nMaxRate = FMath::Max(1, nMaxRate);
     for (int i = 0; i < randomRate.Num(); i++)
     {
@@ -115,7 +120,7 @@ TArray<int> CardHandler::GetInitCards_Random_ForEasy()
         }
     }
 
-    if (this->CheckCardListError(mSendCardList2) == false)
+    if (this->CheckCardListError(mSendCardList2))
     {
         UE_LOG(LogTemp, Error, TEXT("GetInitCards_Random_ForEasy CheckCardListError"));
         return this->GetInitCards_Random();
@@ -294,7 +299,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
         tablePokerId[i] = nPokerId;
     }
 
-    if (this->CheckCardListError(tablePokerId) == false)
+    if (this->CheckCardListError(tablePokerId))
     {
         UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem.sid);
         return { false, tablePokerId };
@@ -325,7 +330,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
         tablePokerId[i] = nPokerId;
     }
     
-    if (this->CheckCardListError(tablePokerId) == false)
+    if (this->CheckCardListError(tablePokerId))
     {
         UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem->sid);
         return {false, tablePokerId};
