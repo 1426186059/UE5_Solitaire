@@ -22,4 +22,9 @@ void Test::Do()
 	TArray<FString> Cols2;
 	Line2.ParseIntoArray(Cols2, TEXT(","), false);
 	UE_LOG(LogTemp, Error, TEXT("Test Line.ParseIntoArray: %d"), Cols2.Num());
+
+
+	//FString A;
+	//A.TrimStart().RightChopInline(1);
+	//A.TrimEnd().RightChopInline(1);
 }

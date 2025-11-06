@@ -1,4 +1,6 @@
 #pragma once
+
+#include "UEHelper.h"
 #include "CoreMinimal.h"
 
 class KKCSVParser
@@ -57,14 +59,18 @@ public:
 
                 if (!traceEnd.IsEmpty())
                 {
-                    CombineContent += Cols[i] + ", ";
+                    auto content = Cols[i].TrimStart();
+                    content.RightChopInline(1);
+                    CombineContent += content + ", ";
                 }
             }
             else
             {
                 if (Cols[i].Contains(traceEnd))
                 {
-                    CombineContent += Cols[i];
+                    auto content = Cols[i].TrimEnd();
+                    content.LeftChopInline(1);
+                    CombineContent += content;
                     Cols2.Add(CombineContent);
                     traceEnd = "";
                     CombineContent = "";
