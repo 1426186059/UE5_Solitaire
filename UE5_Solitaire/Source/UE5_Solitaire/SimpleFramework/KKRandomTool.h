@@ -18,7 +18,7 @@ public:
         return FMath::RandRange(0, nArrayCount - 1);
     }
 
-    static int32 GetIndexByRate(TArray<int32> tableRate)
+    static int32 GetIndexByRate(const TArray<int32>& tableRate)
     {
         int32 nSumRate = 0;
         for(int32 v : tableRate)
