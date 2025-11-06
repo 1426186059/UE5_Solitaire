@@ -78,8 +78,8 @@ void UMainUIWidget::Init()
     this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
     this->GameWinAniParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("GameWinAniParent"));
 
-    this->tranFaPaiPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName("FaPaiPos"));
-    this->mCardNodeDraw3BeginPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName("Draw3Pos1"));
+    this->tranFaPaiPos = UMGHelper::GetRLocalPos(this->PokerItemParent, mUIRoot->GetWidgetFromName("FaPaiPos"));
+    this->mCardNodeDraw3BeginPos = UMGHelper::GetRLocalPos(this->PokerItemParent, mUIRoot->GetWidgetFromName("Draw3Pos1"));
 
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget tranFaPaiPos: %s"), *this->tranFaPaiPos.ToString());
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget mCardNodeDraw3BeginPos: %s"), *this->mCardNodeDraw3BeginPos.ToString());
@@ -88,7 +88,7 @@ void UMainUIWidget::Init()
     for (int32 i = 1; i <= 4; i++)
     {
         FString Key = FString::Printf(TEXT("4APos%d"), i);
-        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(*Key));
+        FVector2D mPos = UMGHelper::GetRLocalPos(this->PokerItemParent, mUIRoot->GetWidgetFromName(*Key));
         this->tableCardNode4APos.Add(mPos);
     }
 
@@ -96,7 +96,7 @@ void UMainUIWidget::Init()
     for (int32 i = 1; i <= 7; i++)
     {
         FString Key = FString::Printf(TEXT("Top7Pos%d"), i);
-        FVector2D mPos = UMGHelper::GetRelativePos(this->PokerItemParent, mUIRoot->GetWidgetFromName(*Key));
+        FVector2D mPos = UMGHelper::GetRLocalPos(this->PokerItemParent, mUIRoot->GetWidgetFromName(*Key));
         this->tableCardNodeTop7Pos.Add(mPos);
 
         UE_LOG(LogTemp, Log, TEXT("UMainUIWidget tableCardNodeTop7Pos: %s"), *mPos.ToString());
@@ -1291,7 +1291,7 @@ TArray<FVector2D> UMainUIWidget::GetTableA4WorldPos()
     TArray<FVector2D> tableWorldPos = {};
     for (int32 i = 0; i < 4; i++)
     {
-        auto pos = this->PokerItemParent->GetCachedGeometry().LocalToAbsolute(this->GetCardNode4APos(i));
+        FVector2D pos = UMGHelper::GetRAbsolutePos(this->PokerItemParent, this->tableCardNode4APos[i]);
         tableWorldPos.Add(pos);
     }
     return tableWorldPos;

@@ -5,7 +5,7 @@
 void UAnimationView2_Default_Widget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
     Super::NativeTick(MyGeometry, InDeltaTime);
-    this->UpdateAllAniEntry(InDeltaTime);
+    //this->UpdateAllAniEntry(InDeltaTime);
 }
 
 void UAnimationView2_Default_Widget::Init()
@@ -51,16 +51,16 @@ void UAnimationView2_Default_Widget::SetMgr(UGameWinAniMgr* mgr)
 
 void UAnimationView2_Default_Widget::PlayAni()
 {
-    this->animationOver = false;
     TArray<int32> table4AColor = this->mMgr->GetTableA4Color();
     TArray<FVector2D> table4AWorldPos = this->mMgr->GetTableA4WorldPos();
+
     for (int i = 0; i < table4AWorldPos.Num(); i++)
     {
-        table4AWorldPos[i] = this->ItemParent->GetCachedGeometry().AbsoluteToLocal(table4AWorldPos[i]);
+        auto pos = UMGHelper::GetRLocalPos(this->ItemParent, table4AWorldPos[i]);
+        UE_LOG(LogTemp, Log, TEXT("UAnimationView2_Default_Widget table4AWorldPos: %s"), *pos.ToString());
+        table4AWorldPos[i] = pos;
     }
-
-    float delay = 0.1f;
-    //mBlastBgm = UAudioHandler::GetSingleton()->PlaySound(Sounds.blast_bgm);
+    
     for (int i = 0; i < table4AColor.Num(); i++)
     {
         int nColor = table4AColor[i];
@@ -84,10 +84,10 @@ void UAnimationView2_Default_Widget::CreateAniEntry(int nColIndex, int nColor, i
     mEntry->open = true;
     mEntry->trigger = false;
     mEntry->triggerDelay = delay;
-    mEntry->deltTime = 0;
+    mEntry->nColIndex = nColIndex;
     mEntry->btoRight = AnimationEntity::toRight(nColIndex);
-    mEntry->startPt = beginPos;
-    mEntry->nowPt = beginPos;
+    mEntry->beginPos = beginPos;
+    mEntry->nowPos = beginPos;
     mEntry->mPokerWidget = mPokerItem;
     mEntry->maxHeight = this->maxHeight;
     mEntry->vx = AnimationEntity::randomVx();
@@ -108,7 +108,7 @@ UPokerAnimationItemW* UAnimationView2_Default_Widget::GetPoolCard()
 {
     auto startNode = this->mMgr->mCardItemPool->Pop();
     UMGHelper::SetParent(startNode, this->ItemParent);
-    UMGHelper::SetSlotAnchor(startNode, FAnchors(0, 0, 1, 1));
+    UMGHelper::SetSlotAnchor(startNode, FAnchors(0.5));
     UMGHelper::SetSlotAlignment(startNode, FVector2D(0.5));
     UMGHelper::SetSlotPos(startNode, FVector2D(0));
     UMGHelper::SetSlotSize(startNode, FVector2D(0));
@@ -143,9 +143,8 @@ void UAnimationView2_Default_Widget::UpdateAniEntry(TSharedPtr<AnimationEntity> 
     {
         return;
     }
-
-    float deltTime = mEntry->deltTime;
-    FVector2D startPt = mEntry->nowPt;
+    
+    FVector2D startPt = mEntry->beginPos;
     float toRight = mEntry->btoRight;
     float vx_a = mEntry->vx_a;
     float vy_a = mEntry->vy_a;
@@ -192,9 +191,8 @@ void UAnimationView2_Default_Widget::UpdateAniEntry(TSharedPtr<AnimationEntity> 
         willRemove = true;
     }
 
-    mEntry->checktimes += 1;
     UMGHelper::SetSlotPos(mEntry->mPokerWidget, nowPt);
-    mEntry->nowPt = nowPt;
+    mEntry->nowPos = nowPt;
     if (mEntry->open)
     {
         UMGHelper::SetSlotPos(mEntry->mPokerWidget, nowPt);
@@ -243,7 +241,7 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
 
     for(auto v : this->allNodes)
     {
-        this->mMgr->mCardItemPool->Recycle(v);
+        RecyclePoolCard(v);
     }
     this->allNodes = {};
     UMGHelper::DestroyWidget(this);

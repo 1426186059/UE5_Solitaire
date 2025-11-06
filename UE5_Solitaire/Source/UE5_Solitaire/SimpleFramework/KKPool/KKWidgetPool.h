@@ -61,6 +61,11 @@ public:
     
     void Recycle(TObjectPtr<T> mItem)
     {
+        if (mItem == nullptr)
+        {
+            return;
+        }
+
         uint64 nKey = (uint64)mItem.Get();
         if (mKeepAliveDic.Contains(nKey))
         {

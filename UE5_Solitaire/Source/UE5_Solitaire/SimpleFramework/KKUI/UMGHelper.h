@@ -156,19 +156,44 @@ public:
     }
     
     //这个返回的坐标，还是左上角的坐标
-    static FVector2D GetRelativePos(UWidget* RootWidget, UWidget* target)
+    static FVector2D GetRLocalPos(UWidget* Me, UWidget* otherTarget)
     {
-        FVector2D PositionInFrom = target->GetPaintSpaceGeometry().GetLocalSize() / 2;
-        FVector2D PositionInScreen = target->GetPaintSpaceGeometry().LocalToAbsolute(PositionInFrom);
-        FVector2D PositionInTo = RootWidget->GetPaintSpaceGeometry().AbsoluteToLocal(PositionInScreen) - RootWidget->GetPaintSpaceGeometry().GetLocalSize() / 2;
-        return PositionInTo;
+        FVector2D AbsolutePos = GetRAbsolutePos(otherTarget);
+        return GetRLocalPos(Me, AbsolutePos);
     }
 
-    static void SetRelativePos(UWidget* RootWidget, UWidget* target, FVector2D RelativePos)
+    static FVector2D GetRLocalPos(UWidget* Me, FVector2D AbsolutePos)
     {
-        FVector2D RootAbsPos = RootWidget->GetPaintSpaceGeometry().LocalToAbsolute(RelativePos);
-        FVector2D targetPos = target->GetPaintSpaceGeometry().AbsoluteToLocal(RootAbsPos);
-        UMGHelper::SetSlotPos(target, targetPos);
+        auto mUCanvasPanelSlot = Cast<UCanvasPanelSlot>(Me->Slot);
+        FVector2D OffsetPos;
+        if (mUCanvasPanelSlot)
+        {
+            OffsetPos = mUCanvasPanelSlot->GetAlignment() * Me->GetPaintSpaceGeometry().GetLocalSize();
+        }
+
+        return Me->GetPaintSpaceGeometry().AbsoluteToLocal(AbsolutePos) - OffsetPos;
+    }
+
+    static FVector2D GetRAbsolutePos(UWidget* Parent, FVector2D localPos)
+    {
+        auto mUCanvasPanelSlot = Cast<UCanvasPanelSlot>(Parent->Slot);
+        FVector2D OffsetPos;
+        if (mUCanvasPanelSlot)
+        {
+            OffsetPos = mUCanvasPanelSlot->GetAlignment() * Parent->GetPaintSpaceGeometry().GetLocalSize();
+        }
+        return Parent->GetPaintSpaceGeometry().LocalToAbsolute(localPos + OffsetPos);
+    }
+
+    static FVector2D GetRAbsolutePos(UWidget* target)
+    {
+        auto mUCanvasPanelSlot = Cast<UCanvasPanelSlot>(target->Slot);
+        FVector2D OffsetPos;
+        if (mUCanvasPanelSlot)
+        {
+            OffsetPos = mUCanvasPanelSlot->GetAlignment() * target->GetPaintSpaceGeometry().GetLocalSize();
+        }
+        return target->GetPaintSpaceGeometry().LocalToAbsolute(OffsetPos);
     }
 
     static void SetChildIndex(UWidget* target, int nIndex)

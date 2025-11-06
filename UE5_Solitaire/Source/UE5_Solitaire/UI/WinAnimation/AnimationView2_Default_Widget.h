@@ -27,17 +27,15 @@ public:
         int nDigitId = 13;
         int nColor = 0;
         int nPokerId = 1;  //13*v+value cardid
+        int nColIndex = 0; //第几个col的
 
-        int index = 0; //第几个col的
         bool open = false;
         bool trigger = false;
         float triggerDelay = 0;
         bool btoRight = true;
-        float deltTime = 0;
-        float checktimes = 0; //每两帧，检查一次位置。
 
-        FVector2D startPt;  //最开始的起始点。
-        FVector2D nowPt;
+        FVector2D beginPos;  //最开始的起始点。
+        FVector2D nowPos;
 
         float vx = 0;    // x方向的速度
         float vy = 0;    // y方向的速度  
@@ -71,11 +69,6 @@ public:
         static float randomVy_a()
         {
             return KKRandomTool::RandomInt(5500, 6200) * (-1);
-        }
-
-        static int32 getCardId(int32 nDigitId, int32 color)
-        {
-            return (int32)nDigitId * 13 + color;
         }
 
         static TSharedPtr<AnimationEntity> Create(int32 nDigitId, int32 nColor)
