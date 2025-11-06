@@ -83,15 +83,15 @@ TArray<int> CardHandler::GetInitCards_Random_ForEasy()
         3, 2, 1
     };
 
-    int nMaxRate = 10 - nDifficultLayer;
-    nMaxRate = FMath::Max(1, nMaxRate);
-    for (int i = 0; i < randomRate.Num(); i++)
-    {
-        if (randomRate[i] > nMaxRate)
-        {
-            randomRate[i] = nMaxRate;
-        }
-    }
+    //int nMaxRate = 10 - nDifficultLayer;
+    //nMaxRate = FMath::Max(1, nMaxRate);
+    //for (int i = 0; i < randomRate.Num(); i++)
+    //{
+    //    if (randomRate[i] > nMaxRate)
+    //    {
+    //        randomRate[i] = nMaxRate;
+    //    }
+    //}
 
     TArray<int> mSendCardList2 = {};
     while (mSendCardList.Num() > 0)
