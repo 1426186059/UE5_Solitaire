@@ -22,6 +22,9 @@ void UGMWidget::Init()
     auto WinAnimationBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("WinAnimationBtn")));
     WinAnimationBtn->OnClicked.AddDynamic(this, &UGMWidget::OnBtnClicked_WinAnimationBtn);
 
+    auto AutoShouPaiBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("AutoShouPaiBtn")));
+    AutoShouPaiBtn->OnClicked.AddDynamic(this, &UGMWidget::OnBtnClicked_AutoShouPaiBtn);
+
     /*auto GuideFastPlayBtn = Cast<UButton>(this->GetWidgetFromName(TEXT("GuideFastPlayBtn")));
     GuideFastPlayBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_StageRewardBtn);*/
 }
@@ -48,6 +51,19 @@ void UGMWidget::CheckFirstLayoutOkToShow()
     {
         this->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
     }
+}
+
+void UGMWidget::OnBtnClicked_AutoShouPaiBtn()
+{
+    UE_LOG(LogTemp, Log, TEXT("UGMWidget OnBtnClicked_AutoShouPaiBtn"));
+    auto mMainUIWidget = AKKUIMgr::GetSingleton()->Get<UMainUIWidget>();
+    ensureMsgf(mMainUIWidget, TEXT("mMainUIWidget == null"));
+
+    mMainUIWidget->DoA4AllDataOp();
+    mMainUIWidget->AutoShouPai([]()
+        {
+
+        });
 }
 
 void UGMWidget::OnBtnClicked_WinAnimationBtn()

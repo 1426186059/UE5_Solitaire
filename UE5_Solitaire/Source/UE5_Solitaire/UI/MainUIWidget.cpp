@@ -1222,8 +1222,8 @@ void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
         auto fromPos = UMGHelper::GetSlotPos(mCardItem);
         auto toPos = this->GetPosByCardItem(mCardItem);
         int32 nAniIndex = i;
-        KKTween::delayedCall(this, 0.03 * i, 
-            [=,this]()
+        KKTween::delayedCall(this, 0.03 * i,
+            [=, this]()
             {
                 mCardItem->SetTurnOverState(true);
                 mCardItem->PlayTurnOverAni();
@@ -1233,7 +1233,7 @@ void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
                     {
                         UMGHelper::SetSlotPos(mCardItem, KKTween::EaseFunc::easeLinear(fromPos, toPos, fTimePercent));
                     },
-                    [=,this]()
+                    [=, this]()
                     {
                         KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                         if (nAniIndex == this->tableFinalA4AniCardItem.Num())
