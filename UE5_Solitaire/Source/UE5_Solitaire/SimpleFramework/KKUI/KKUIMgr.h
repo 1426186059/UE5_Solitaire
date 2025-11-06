@@ -22,7 +22,7 @@ public:
 
 public:
 	template<typename T>
-	void Show(FString ui_path)
+	void Show(FString ui_path = TEXT(""))
 	{
 		static_assert(TIsDerivedFrom<T, UWUIBase>::Value, "T must be an UUserWidget derived class");
 		auto mUI = Get<T>(ui_path);
