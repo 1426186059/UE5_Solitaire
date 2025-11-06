@@ -237,6 +237,8 @@ void CardHandler::InitConfusingDic()
         69,29,76,28,12,50,39,42,59,96,63,26,17
     };
 
+    ensure(ConfusingList.Num() == 52);
+
     this->ConfusingDic = {};
     for (int i = 0; i < ConfusingList.Num(); i++)
     {
@@ -311,10 +313,11 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
 
 std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vita::RowData* configItem)
 {
-    UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr: %s"), *configItem->jianhuanstr);
+    //UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr: %s"), *configItem->jianhuanstr);
     TArray<FString> tablePokerStr;
     configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
-    ensureMsgf(tablePokerStr.Num() == 52, TEXT("Error: %d: %s"), tablePokerStr.Num(), *configItem->jianhuanstr);
+
+    ensureMsgf(tablePokerStr.Num() == 52, TEXT("%d"), tablePokerStr.Num());
 
     TArray<int> tablePokerId = {};
     for (int i = 0; i < tablePokerStr.Num(); i++)
@@ -323,6 +326,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
         tablePokerId.Add(number);
     }
 
+    ensureMsgf(tablePokerId.Num() == 52, TEXT("%d"), tablePokerId.Num());
     for (int i = 0; i < tablePokerId.Num(); i++)
     {
         int number = tablePokerId[i];
@@ -330,6 +334,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
         tablePokerId[i] = nPokerId;
     }
     
+    ensureMsgf(tablePokerId.Num() == 52, TEXT("%d"), tablePokerId.Num());
     if (this->CheckCardListError(tablePokerId))
     {
         UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem->sid);
