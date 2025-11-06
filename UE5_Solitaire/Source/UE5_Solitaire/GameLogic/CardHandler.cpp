@@ -191,6 +191,8 @@ TArray<int> CardHandler::GetInitCards_Random()
         int nPokerId = TArrayExtentions::RandomRemove(tableCards);
         mSendCardList.Add(nPokerId);
     }
+
+    ensureMsgf(mSendCardList.Num() == 52, TEXT("%d"), mSendCardList.Num());
     return mSendCardList;
 }
 
