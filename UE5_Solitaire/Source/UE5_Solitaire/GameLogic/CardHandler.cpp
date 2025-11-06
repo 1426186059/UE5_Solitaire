@@ -13,7 +13,11 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
     nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
     nGameLevel = FMath::Max(nGameLevel, 1);
 
-    if (nGameLevel <= 5)
+    if (nGameLevel <= 20)
+    {
+        return this->GetInitCards_Random_ForEasy();
+    }
+    else if (nGameLevel <= 5)
     {
         auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
         auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
@@ -59,6 +63,58 @@ TArray<int> CardHandler::GetInitCards_ForChallengeMode()
     int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
     int nDifficultLayer = KKRandomTool::RandomInt(2, 10);
     return GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
+}
+
+TArray<int> CardHandler::GetInitCards_Random_ForEasy()
+{
+    int nDifficultLayer = DataCenter::GetSingleton()->data->nDifficultLayer;
+    int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
+
+    TArray<int> mSendCardList = this->GetInitCards_Random();
+    TArray<int> randomRate = {
+        13, 12, 11, 10, 9,
+        8, 7, 6, 5, 4,
+        3, 2, 1
+    };
+
+    int nMaxRate = 14 - nDifficultLayer;
+    nMaxRate = FMath::Max(1, nMaxRate);
+    for (int i = 0; i < randomRate.Num(); i++)
+    {
+        if (randomRate[i] > nMaxRate)
+        {
+            randomRate[i] = nMaxRate;
+        }
+    }
+
+    TArray<int> mSendCardList2 = {};
+    while (mSendCardList.Num() > 0)
+    {
+        int nRandomDigital = KKRandomTool::GetIndexByRate(randomRate);
+
+        int nRemoveIndex = -1;
+        for (int i = 0; i < mSendCardList.Num(); i++)
+        {
+            int v = mSendCardList[i];
+            if (this->GetDigital(v) == nRandomDigital)
+            {
+                nRemoveIndex = i;
+                break;
+            }
+        }
+
+        if (nRemoveIndex > 0)
+        {
+            int nPokerId = TArrayExtentions::Remove(mSendCardList, nRemoveIndex);
+            mSendCardList2.Add(nPokerId);
+        }
+        else
+        {
+            randomRate[nRandomDigital] = 0;
+        }
+    }
+
+    return mSendCardList2;
 }
 
 csv_jianhuan_vita::RowData* CardHandler::GetVitaConfigItem(FString sid)
@@ -198,6 +254,10 @@ int CardHandler::GetExcelToLocalPokerId(int nExcelNum)
     {
         nColorType = SolitaireColorType::Spade;
     }
+    else
+    {
+        ensureMsgf(false, TEXT("GetExcelToLocalPokerId Error: %d"), cardNum);
+    }
 
     int nDigial = (cardNum - 1) % 13 + 1;
     int nPokerId = this->GetPokerId(nDigial, (int)nColorType);
@@ -220,7 +280,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
         }
     }
 
-    for (int i = 1; i < tablePokerId.Num(); i++)
+    for (int i = 0; i < tablePokerId.Num(); i++)
     {
         int number = tablePokerId[i];
         int nPokerId = this->GetExcelToLocalPokerId(number);
@@ -239,7 +299,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
 
 std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vita::RowData* configItem)
 {
-    UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr:  %s"), *configItem->jianhuanstr);
+    UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr: %s"), *configItem->jianhuanstr);
     TArray<FString> tablePokerStr;
     configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
     ensureMsgf(tablePokerStr.Num() == 52, TEXT("Error: %d: %s"), tablePokerStr.Num(), *configItem->jianhuanstr);
@@ -257,7 +317,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
         int nPokerId = GetExcelToLocalPokerId(number);
         tablePokerId[i] = nPokerId;
     }
-
+    
     if (this->CheckCardListError(tablePokerId) == false)
     {
         UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem->sid);
@@ -284,23 +344,23 @@ void CardHandler::reverseTable(TArray<int>& mCardList, int nBeginIndex, int nEnd
 
 bool CardHandler::CheckCardListError(const TArray<int>& mCardList)
 {
+    bool bHaveError = false;
     if (mCardList.Num() != 52)
     {
         UE_LOG(LogTemp, Error, TEXT("CheckCardListError: mCardList.Num() != 52:  %d"), mCardList.Num());
-        return false;
+        bHaveError = true;
     }
     
-    TArray<int> taleCardId = this->GetInitCards_Random();
-    for (int i = 0; i < 52; i++)
+    const TArray<int> taleCardId = this->GetInitCards_Random();
+    for (int nPokerId : taleCardId)
     {
-        int nPokerId = taleCardId[i];
         if (!mCardList.Contains(nPokerId))
         {
             UE_LOG(LogTemp, Error, TEXT("CheckCardListError: mCardList.Contains(nPokerId):  %d"), nPokerId);
-            return false;
+            bHaveError = true;
         }
     }
 
-    return true;
+    return bHaveError;
 }
 

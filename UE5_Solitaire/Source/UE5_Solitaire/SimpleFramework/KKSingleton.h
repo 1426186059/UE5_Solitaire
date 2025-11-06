@@ -12,14 +12,14 @@ public:
         return &Instance;
     }
 
+protected:
+    // 允许派生类构造/析构
+    KKSingleton() = default;
+    virtual ~KKSingleton() = default;
+
     // 禁止拷贝和移动（单例不应被复制）
     KKSingleton(const KKSingleton&) = delete;
     KKSingleton& operator=(const KKSingleton&) = delete;
     KKSingleton(KKSingleton&&) = delete;
     KKSingleton& operator=(KKSingleton&&) = delete;
-
-protected:
-    // 允许派生类构造/析构
-    KKSingleton() = default;
-    virtual ~KKSingleton() = default;
 };

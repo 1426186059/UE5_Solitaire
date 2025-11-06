@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UE5_Solitaire/SimpleFramework/KKCSVParser.h"
 
 class csv_jianhuan_vita
 {
@@ -33,28 +34,18 @@ private:
     static csv_jianhuan_vita* ParseData(FString csvFileContent)
     {
         csv_jianhuan_vita* mDataClass = new csv_jianhuan_vita();
-        TArray<FString> Lines;
-        csvFileContent.ParseIntoArrayLines(Lines);
-        for (int i = 3; i < Lines.Num(); ++i)        // 跳过表头
+
+        TArray<TArray<FString>> mOriTable = KKCSVParser::ParseFileContent(csvFileContent);
+        for (int i = 3; i < mOriTable.Num(); ++i)        // 跳过表头
         {
-            if (!Lines[i].IsEmpty())
-            {
-                RowData mRawData = ParseRowData(Lines[i]);
-                mDataClass->mTable.Add(mRawData);
-            }
-            else
-            {
-                break;
-            }
+            RowData mRawData = ParseRowData(mOriTable[i]);
+            mDataClass->mTable.Add(mRawData);
         }
         return mDataClass;
     }
 
-    static RowData ParseRowData(FString Line)
+    static RowData ParseRowData(TArray<FString> Cols)
     {
-        TArray<FString> Cols;
-        Line.ParseIntoArray(Cols, TEXT(","), false);
-
         RowData data;
         for (int i = 0; i < Cols.Num(); i++)
         {

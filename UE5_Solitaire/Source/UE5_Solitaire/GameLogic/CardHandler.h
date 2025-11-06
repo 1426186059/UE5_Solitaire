@@ -23,6 +23,7 @@ public:
 	TArray<int> GetInitCards_ForNormalMode();
 	TArray<int> GetInitCards_ForRankMode();
 	TArray<int> GetInitCards_ForChallengeMode();
+	TArray<int> GetInitCards_Random_ForEasy();
 	TArray<int> GetInitCards_ExcelRandom(int nDifficultLayer, int nGameLevel);
 	TArray<int> GetInitCards_Random();
 	int GetPokerId(int nDigitId, int nColorType);

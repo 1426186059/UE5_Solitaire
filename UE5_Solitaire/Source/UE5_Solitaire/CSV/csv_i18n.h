@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UE5_Solitaire/SimpleFramework/KKCSVParser.h"
 
 class csv_i18n
 {

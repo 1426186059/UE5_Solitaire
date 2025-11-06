@@ -8,14 +8,43 @@
 class KKRandomTool
 {
 public:
-    static int RandomInt(int min, int max)
+    static int32 RandomInt(int32 min, int32 max)
     {
         return FMath::RandRange(min, max);
     }
 
-    static int RandomArrayInt(int nArrayCount)
+    static int32 RandomArrayInt(int32 nArrayCount)
     {
         return FMath::RandRange(0, nArrayCount - 1);
+    }
+
+    static int32 GetIndexByRate(TArray<int32> tableRate)
+    {
+        int32 nSumRate = 0;
+        for(int32 v : tableRate)
+        {
+            nSumRate += v;
+        }
+
+        int32 nTempTargetRate = nSumRate + 1;
+        if (nSumRate >= 1)
+        {
+            nTempTargetRate = RandomInt(1, nSumRate);
+        }
+        
+        int32 nTempRate = 0;
+        int32 nTargetIndex = -1;
+        for (int32 i = 0; i < tableRate.Num(); i++)
+        {
+            nTempRate += tableRate[i];
+            if (nTempRate >= nTempTargetRate)
+            {
+                nTargetIndex = i;
+                break;
+            }
+        }
+
+        return nTargetIndex;
     }
 
 private:
@@ -35,10 +64,10 @@ public:
         mRandom = std::mt19937(Seed); //Mersenne Twister ÒýÇæ
     }
     
-    int RandomInt(int min, int max)
+    int32 RandomInt(int32 min, int32 max)
     {
-        std::uniform_int_distribution<int> dist(min, max);
-        int random_number = dist(mRandom);
+        std::uniform_int_distribution<int32> dist(min, max);
+        int32 random_number = dist(mRandom);
         return random_number;
     }
 
