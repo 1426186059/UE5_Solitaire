@@ -57,21 +57,19 @@ public:
 		}
 		else
 		{
+			mUIDic.Remove(Key);
 			bool bForceCreate = !ui_path.IsEmpty();
 			if (bForceCreate)
 			{
 				FString path = FString::Printf(TEXT("/Game/ResourceABs/MainScene/BPS/UI/%s.%s_C"), *ui_path, *ui_path);
-				auto mClass = LoadClass<T>(this, *path);
-				if (mClass != NULL)
+				T* t = Load<T>(path);
+				if (t != nullptr)
 				{
-					TWeakObjectPtr<UWUIBase> mUI = CreateWidget<T>(GetRootWidget(), mClass);
-					mUI.Get()->OnCreate();
+					t->OnCreate();
+
+					TWeakObjectPtr<UWUIBase> mUI = TWeakObjectPtr<UWUIBase>(t);
 					mUIDic.Add(Key, mUI);
-					return Cast<T>(mUI.Get());
-				}
-				else
-				{
-					UE_LOG(LogTemp, Error, TEXT("AKKUIMgr Load UI Fail: %s"), *ui_path);
+					return t;
 				}
 			}
 		}
@@ -80,36 +78,25 @@ public:
 	}
 
 	template<typename T>
-	T* GetByFullPath(FString ui_path = TEXT(""))
+	T* Load(FString ui_path)
 	{
 		static_assert(TIsDerivedFrom<T, UWUIBase>::Value, "T must be an UUserWidget derived class");
 
-		TSubclassOf<UWUIBase> Key = T::StaticClass();
-		TWeakObjectPtr<UWUIBase>* mInstancePtr = mUIDic.Find(Key);
-		if (mInstancePtr != nullptr)
+		if (!ui_path.EndsWith("_C"))
 		{
-			return Cast<T>(mInstancePtr->Get());
+			ui_path += FString("_C");
+		}
+
+		auto mClass = LoadClass<T>(this, *ui_path);
+		if (mClass != NULL)
+		{
+			return CreateWidget<T>(GetRootWidget(), mClass);
 		}
 		else
 		{
-			bool bForceCreate = !ui_path.IsEmpty();
-			if (bForceCreate)
-			{
-				auto mClass = LoadClass<T>(this, *ui_path);
-				if (mClass != NULL)
-				{
-					TWeakObjectPtr<UWUIBase> mUI = CreateWidget<T>(GetRootWidget(), mClass);
-					mUI.Get()->OnCreate();
-					mUIDic.Add(Key, mUI);
-					return Cast<T>(mUI.Get());
-				}
-				else
-				{
-					UE_LOG(LogTemp, Error, TEXT("AKKUIMgr Load UI Fail: %s"), *ui_path);
-				}
-			}
+			UE_LOG(LogTemp, Error, TEXT("AKKUIMgr Load UI Fail: %s"), *ui_path);
 		}
-
+		
 		return nullptr;
 	}
 	

@@ -43,7 +43,7 @@ void UGameWinAniMgr::PlayAni(TFunction<void()> finishFunc)
     if (nWinType == 1)
     {
         FString path = TEXT("/Game/ResourceABs/MainScene/BPS/UI/WinAnimation/WinAni_Default_CWBP.WinAni_Default_CWBP_C");
-        auto mInstance = AKKUIMgr::GetSingleton()->GetByFullPath<UAnimationView2_Default_Widget>(*path);
+        auto mInstance = AKKUIMgr::GetSingleton()->Load<UAnimationView2_Default_Widget>(*path);
         UMGHelper::SetParent(mInstance, this->go);
         UMGHelper::SetSlotAnchor(mInstance, FAnchors(0, 0, 1, 1));
         UMGHelper::SetSlotAlignment(mInstance, FVector2D(0.5));
