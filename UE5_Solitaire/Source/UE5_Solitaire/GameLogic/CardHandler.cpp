@@ -7,35 +7,36 @@ void CardHandler::Init()
 
 TArray<int> CardHandler::GetInitCards_ForNormalMode()
 {
-    int nDifficultLayer = DataCenter::GetSingleton()->data->nDifficultLayer;
-    int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
+    return this->GetInitCards_Random_ForEasy();
+    //int nDifficultLayer = DataCenter::GetSingleton()->data->nDifficultLayer;
+    //int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
 
-    nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
-    nGameLevel = FMath::Max(nGameLevel, 1);
+    //nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
+    //nGameLevel = FMath::Max(nGameLevel, 1);
 
-    if (false)
-    {
-        if (nGameLevel <= 10)
-        {
-            return this->GetInitCards_Random_ForEasy();
-        }
-    }
-    else
-    {
-        if (nGameLevel <= 5)
-        {
-            auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
-            auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
-            auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
-            if (bTrue)
-            {
-                return tablePokerId;
-            }
-            UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
-        }
-    }
-    
-    return this->GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
+    //if (false)
+    //{
+    //    if (nGameLevel <= 10)
+    //    {
+    //        return this->GetInitCards_Random_ForEasy();
+    //    }
+    //}
+    //else
+    //{
+    //    if (nGameLevel <= 5)
+    //    {
+    //        auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
+    //        auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
+    //        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
+    //        if (bTrue)
+    //        {
+    //            return tablePokerId;
+    //        }
+    //        UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
+    //    }
+    //}
+    //
+    //return this->GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
 }
 
 TArray<int> CardHandler::GetInitCards_ForRankMode()

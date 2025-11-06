@@ -60,10 +60,7 @@ void UGMWidget::OnBtnClicked_AutoShouPaiBtn()
     ensureMsgf(mMainUIWidget, TEXT("mMainUIWidget == null"));
 
     mMainUIWidget->DoA4AllDataOp();
-    mMainUIWidget->AutoShouPai([]()
-        {
-
-        });
+    mMainUIWidget->PlayWinAni();
 }
 
 void UGMWidget::OnBtnClicked_WinAnimationBtn()

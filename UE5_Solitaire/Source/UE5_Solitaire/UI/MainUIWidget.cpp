@@ -1236,7 +1236,7 @@ void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
                     [=, this]()
                     {
                         KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
-                        if (nAniIndex == this->tableFinalA4AniCardItem.Num())
+                        if (nAniIndex == this->tableFinalA4AniCardItem.Num() - 1)
                         {
                             AudioHandler::GetSingleton()->StopSound("win_animation");
                             if (finishFunc.IsSet())
