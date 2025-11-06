@@ -22,6 +22,8 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
         {
             return tablePokerId;
         }
+
+        UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
     }
     
     return this->GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
@@ -237,6 +239,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
 
 std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vita::RowData* configItem)
 {
+    UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr:  %s"), *configItem->jianhuanstr);
     TArray<FString> tablePokerStr;
     configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
     ensureMsgf(tablePokerStr.Num() == 52, TEXT("Error: %d: %s"), tablePokerStr.Num(), *configItem->jianhuanstr);
@@ -283,15 +286,17 @@ bool CardHandler::CheckCardListError(const TArray<int>& mCardList)
 {
     if (mCardList.Num() != 52)
     {
+        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: mCardList.Num() != 52:  %d"), mCardList.Num());
         return false;
     }
-      
+    
     TArray<int> taleCardId = this->GetInitCards_Random();
     for (int i = 0; i < 52; i++)
     {
         int nPokerId = taleCardId[i];
         if (!mCardList.Contains(nPokerId))
         {
+            UE_LOG(LogTemp, Error, TEXT("CheckCardListError: mCardList.Contains(nPokerId):  %d"), nPokerId);
             return false;
         }
     }
