@@ -249,27 +249,20 @@ public:
         auto Parent = Cast<UCanvasPanel>(target->GetParent());
         Parent->ShiftChild(0, target);
 
-        if (true)
+        int nFirstZOrder = 0;
+        if (Parent->GetChildrenCount() >= 2)
+        {
+            UWidget* mFirstWidget = Parent->GetChildAt(1);
+            nFirstZOrder = Cast<UCanvasPanelSlot>(mFirstWidget->Slot)->GetZOrder();
+        }
+
+        if (nFirstZOrder <= -UINT16_MAX)
         {
             AutoSetChildZOrder(Parent);
         }
         else
         {
-            int nFirstZOrder = 0;
-            if (Parent->GetChildrenCount() >= 2)
-            {
-                UWidget* mFirstWidget = Parent->GetChildAt(1);
-                nFirstZOrder = Cast<UCanvasPanelSlot>(mFirstWidget->Slot)->GetZOrder();
-            }
-
-            if (nFirstZOrder <= -UINT16_MAX)
-            {
-                AutoSetChildZOrder(Parent);
-            }
-            else
-            {
-                SetZOrder(target, --nFirstZOrder);
-            }
+            SetZOrder(target, --nFirstZOrder);
         }
     }
 
@@ -278,27 +271,20 @@ public:
         auto Parent = Cast<UCanvasPanel>(target->GetParent());
         Parent->ShiftChild(Parent->GetChildrenCount(), target);
 
-        if (false)
+        int nLastZOrder = 0;
+        if (Parent->GetChildrenCount() >= 2)
+        {
+            UWidget* mLastWidget = Parent->GetChildAt(Parent->GetChildrenCount() - 2);
+            nLastZOrder = Cast<UCanvasPanelSlot>(mLastWidget->Slot)->GetZOrder();
+        }
+
+        if (nLastZOrder >= UINT16_MAX)
         {
             AutoSetChildZOrder(Parent);
         }
         else
         {
-            int nLastZOrder = 0;
-            if (Parent->GetChildrenCount() >= 2)
-            {
-                UWidget* mLastWidget = Parent->GetChildAt(Parent->GetChildrenCount() - 2);
-                nLastZOrder = Cast<UCanvasPanelSlot>(mLastWidget->Slot)->GetZOrder();
-            }
-
-            if (nLastZOrder >= UINT16_MAX)
-            {
-                AutoSetChildZOrder(Parent);
-            }
-            else
-            {
-                SetZOrder(target, ++nLastZOrder);
-            }
+            SetZOrder(target, ++nLastZOrder);
         }
     }
 
