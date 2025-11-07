@@ -3,6 +3,3 @@
 #pragma once
 
 #include "KKInstanceIdBase.h"
-
-uint64 KKInstanceIdBase::InnerAutoAddID = 1;
-uint64 KKTypeBase::nKKTypeInnerAutoAddID = 1;

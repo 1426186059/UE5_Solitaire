@@ -10,12 +10,12 @@ class UE5_SOLITAIRE_API UGameData : public USaveGame
 {
 	GENERATED_BODY()
 public:
-    UPROPERTY() FString langName;
-    UPROPERTY() int32  nUIStyle = 0;
-    UPROPERTY() int32 nCoinCount = 0;
-    UPROPERTY() int32 nNomalModeTotalWinCount = 0;
-    UPROPERTY() int32 nTotalGameCount = 0;
-    UPROPERTY() int32 nTotalWinGameCount = 0;
+    UPROPERTY() FString langName = {};
+    UPROPERTY() int32  nUIStyle = {};
+    UPROPERTY() int32 nCoinCount = {};
+    UPROPERTY() int32 nNomalModeTotalWinCount = {};
+    UPROPERTY() int32 nTotalGameCount = {};
+    UPROPERTY() int32 nTotalWinGameCount = {};
 
     UPROPERTY() FRecordStepData tableOpRecord = {};
     UPROPERTY() FStatisticData StatisticData = {};
@@ -52,7 +52,7 @@ class UE5_SOLITAIRE_API UAllRecordData_OpRecord : public USaveGame
 {
     GENERATED_BODY()
 public:
-    UPROPERTY() FRecordStepData tableOpRecord;
+    UPROPERTY() FRecordStepData tableOpRecord = {};
 };
 
 UCLASS()
@@ -61,5 +61,5 @@ class UE5_SOLITAIRE_API UAllRecordData : public USaveGame
     GENERATED_BODY()
 
 public:
-    UPROPERTY() TArray<FAllRecordData_fileNameItem> tableFileNameItem;
+    UPROPERTY() TArray<FAllRecordData_fileNameItem> tableFileNameItem = {};
 };
