@@ -181,7 +181,7 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     TArray<int> tableIndex = {};
     for (int k = 0; k < mTable->Num(); k++)
     {
-        FDT_jianhuan_vita v = (*mTable)[k];
+        const FDT_jianhuan_vita& v = (*mTable)[k];
         if (v.layer == nDifficultLayer)
         {
             tableIndex.Add(k);
