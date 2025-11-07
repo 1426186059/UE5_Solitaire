@@ -60,15 +60,15 @@ private:
         {
             switch (i)
             {
-            case 0: data.key = Cols[i]; break;
-            case 1: data.English = Cols[i]; break;
-            case 2: data.Chinese = Cols[i]; break;
-            case 3: data.Japanese = Cols[i]; break;
-            case 4: data.Hindi = Cols[i]; break;
-            case 5: data.Arabic = Cols[i]; break;
-            case 6: data.French = Cols[i]; break;
-            case 7: data.Spanish = Cols[i]; break;
-            case 8: data.Russian = Cols[i]; break;
+            case 1: data.key = Cols[i]; break;
+            case 2: data.English = Cols[i]; break;
+            case 3: data.Chinese = Cols[i]; break;
+            case 4: data.Japanese = Cols[i]; break;
+            case 5: data.Hindi = Cols[i]; break;
+            case 6: data.Arabic = Cols[i]; break;
+            case 7: data.French = Cols[i]; break;
+            case 8: data.Spanish = Cols[i]; break;
+            case 9: data.Russian = Cols[i]; break;
             default: break;
             }
         }

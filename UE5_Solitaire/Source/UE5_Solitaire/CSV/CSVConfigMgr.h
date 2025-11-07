@@ -18,31 +18,31 @@ class UE5_SOLITAIRE_API CSVConfigMgr : public KKSingleton<CSVConfigMgr>
     friend class KKSingleton<CSVConfigMgr>;
 
 public:
-    TMap<FName, void*> mCSVDic;
+    TMap<FString, void*> mCSVDic;
 public:
     void Init();
 
     template<typename T>
     T* GetCSV()
     {
-        FName Key = typeid(T).name();
+        FString Key = typeid(T).name();
         return (T*)(this->mCSVDic[Key]);
     }
 private:
     template<typename T>
     void LoadCSV(FString csvFileName)
     {
-        FString path = FPaths::ProjectContentDir() / TEXT("/ResourceABs/MainScene/Config/CSV/") / csvFileName;
+        FString path = FPaths::ProjectContentDir() / TEXT("ResourceABs/MainScene/Config/CSV/") / csvFileName;
 
         FString CsvStr;
         if (!FFileHelper::LoadFileToString(CsvStr, *path))
         {
-            UE_LOG(LogTemp, Warning, TEXT("CSV not found in Pak"));
+            UE_LOG(LogTemp, Error, TEXT("LoadCSV Error+: %s"), *path);
             return;
         }
 
         T* t = T::ParseData(CsvStr);
-        FName Key = typeid(T).name();
+        FString Key = typeid(T).name();
         this->mCSVDic.Add(Key, t);
     }
 
