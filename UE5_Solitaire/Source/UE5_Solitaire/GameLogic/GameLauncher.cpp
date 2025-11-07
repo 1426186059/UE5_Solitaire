@@ -102,7 +102,7 @@ void AGameLauncher::StartEnterGame(void* param)
 
     //加载CSV配置表
     CSVConfigMgr::GetSingleton()->Init();
-    DTMgr::GetSingleton()->Init();
+    ADTMgr::GetSingleton()->Init();
 
     AKKDBSaveMgr::GetSingleton()->Init();
     //加载游戏数据
@@ -113,7 +113,7 @@ void AGameLauncher::StartEnterGame(void* param)
     AllRecordDataHandler::GetSingleton()->Init();
     StatisticDataHandler::GetSingleton()->Init();
 
-    //资源中心初始化
+    ////资源中心初始化
     AResCenter::GetSingleton()->Init();
     AudioHandler::GetSingleton()->Init();
 

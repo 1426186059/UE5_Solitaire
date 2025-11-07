@@ -25,7 +25,7 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
         if (nGameLevel <= 5)
         {
             auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
-            auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
+            auto mConfigItem = CardHandler::GetVitaConfigItem2(mTable[nGameLevel].sid);
             auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
             if (bTrue)
             {
@@ -144,7 +144,7 @@ csv_jianhuan_vita::RowData* CardHandler::GetVitaConfigItem(FString sid)
 
 FTableRow_jianhuan_vita* CardHandler::GetVitaConfigItem2(FString sid)
 {
-    auto mTable = DTMgr::GetSingleton()->Get<UDataTable_jianhuan_vita>();
+    auto mTable = ADTMgr::GetSingleton()->Get<UDataTable_jianhuan_vita>();
     ensure(mTable);
     if (auto Row = mTable->FindRow<FTableRow_jianhuan_vita>(FName("sid"), sid))
     {

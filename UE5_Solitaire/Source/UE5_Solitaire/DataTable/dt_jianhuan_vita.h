@@ -11,15 +11,15 @@ struct FTableRow_jianhuan_vita : public FTableRowBase
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere) FString sid;
-    UPROPERTY(EditAnywhere) int32 layer;
-    UPROPERTY(EditAnywhere) int32 qid;
-    UPROPERTY(EditAnywhere) int32 step;
-    UPROPERTY(EditAnywhere) int32 available;
-    UPROPERTY(EditAnywhere) FString jianhuanstr;
-    UPROPERTY(EditAnywhere) FString sourcefrom;
-    UPROPERTY(EditAnywhere) int32 fromid;
-    UPROPERTY(EditAnywhere) FString sourcestr;
+    UPROPERTY(EditAnywhere) FString sid = {};
+    UPROPERTY(EditAnywhere) int32 layer = {};
+    UPROPERTY(EditAnywhere) int32 qid = {};
+    UPROPERTY(EditAnywhere) int32 step = {};
+    UPROPERTY(EditAnywhere) int32 available = {};
+    UPROPERTY(EditAnywhere) FString jianhuanstr = {};
+    UPROPERTY(EditAnywhere) FString sourcefrom = {};
+    UPROPERTY(EditAnywhere) int32 fromid = {};
+    UPROPERTY(EditAnywhere) FString sourcestr = {};
 };
 
 UCLASS()

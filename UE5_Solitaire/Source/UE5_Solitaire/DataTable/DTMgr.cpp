@@ -2,10 +2,13 @@
 
 #include "DTMgr.h"
 
-TMap<TSubclassOf<UDataTable>, TWeakObjectPtr<UDataTable>> DTMgr::mConfigDic = {};
-
-void DTMgr::Init()
+void ADTMgr::Init()
 {
-    //this->LoadTable<UDataTable_jianhuan_vita>(TEXT("/Game/ResourceABs/MainScene/Config/DT/jianhuan_vita.jianhuan_vita"));
-    //this->LoadTable<UDataTable_i18n>(TEXT("/Game/ResourceABs/MainScene/Config/DT/i18n.i18n"));
+    this->LoadTable<UDataTable_jianhuan_vita>(TEXT("jianhuan_vita"));
+    this->LoadTable<UDataTable_i18n>(TEXT("i18n"));
+    this->LoadTable<UDataTable_themeitem>(TEXT("1104themeitem"));;
+    this->LoadTable<UDataTable_stagereward>(TEXT("1105stagereward"));
+    this->LoadTable<UDataTable_theme>(TEXT("1203theme"));
+    this->LoadTable<UDataTable_table2element>(TEXT("1301table2element"));
+    this->LoadTable<UDataTable_jianhuan_newbie>(TEXT("jianhuan_newbie"));
 }

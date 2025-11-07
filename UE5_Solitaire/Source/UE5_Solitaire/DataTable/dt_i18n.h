@@ -11,15 +11,15 @@ struct FTableRow_i18n : public FTableRowBase
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere) FString key;
-    UPROPERTY(EditAnywhere) FString English;
-    UPROPERTY(EditAnywhere) FString Chinese;
-    UPROPERTY(EditAnywhere) FString Japanese;
-    UPROPERTY(EditAnywhere) FString Hindi;
-    UPROPERTY(EditAnywhere) FString Arabic;
-    UPROPERTY(EditAnywhere) FString French;
-    UPROPERTY(EditAnywhere) FString Spanish;
-    UPROPERTY(EditAnywhere) FString Russian;
+    UPROPERTY(EditAnywhere) FString key = {};
+    UPROPERTY(EditAnywhere) FString English = {};
+    UPROPERTY(EditAnywhere) FString Chinese = {};
+    UPROPERTY(EditAnywhere) FString Japanese = {};
+    UPROPERTY(EditAnywhere) FString Hindi = {};
+    UPROPERTY(EditAnywhere) FString Arabic = {};
+    UPROPERTY(EditAnywhere) FString French = {};
+    UPROPERTY(EditAnywhere) FString Spanish = {};
+    UPROPERTY(EditAnywhere) FString Russian = {};
 };
 
 UCLASS()

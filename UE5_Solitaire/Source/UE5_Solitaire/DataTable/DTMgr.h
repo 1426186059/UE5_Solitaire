@@ -5,14 +5,27 @@
 #include "CoreMinimal.h"
 #include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 
+#include "dt_jianhuan_newbie.h"
+#include "dt_stagereward.h"
+#include "dt_table2element.h"
+#include "dt_theme.h"
+#include "dt_themeitem.h"
 #include "dt_i18n.h"
 #include "dt_jianhuan_vita.h"
 
-class UE5_SOLITAIRE_API DTMgr : public KKSingleton<DTMgr>
+#include "DTMgr.generated.h"
+
+UCLASS()
+class UE5_SOLITAIRE_API ADTMgr : public AKKActorSingleton
 {
-    friend class KKSingleton<DTMgr>;
+    GENERATED_BODY()
 public:
     void Init();
+
+    static ADTMgr* GetSingleton(bool bCreate = true)
+    {
+        return ADTMgr::GetActorSingleton<ADTMgr>(bCreate);
+    }
 
     template<typename T>
     T* Get()
@@ -34,18 +47,18 @@ private:
     template<typename T>
     void LoadTable(FString path)
     {
+        if (!path.StartsWith(TEXT("/Game/")))
+        {
+            FString fileName = path;
+            path = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Config/DT/%s.%s"), *fileName, *fileName);
+        }
+
         static_assert(TIsDerivedFrom<T, UDataTable>::Value, "T must be an UDataTable derived class");
-        T* mTable = LoadObject<T>(nullptr, *path);
+        UDataTable* mTable = LoadObject<UDataTable>(nullptr, *path);
         TSubclassOf<UDataTable> mKey = T::StaticClass();
         ensure(mTable);
         mConfigDic.Add(mKey, mTable);
     }
 
-    static TMap<TSubclassOf<UDataTable>, TWeakObjectPtr<UDataTable>> mConfigDic;
-
-private:
-    DTMgr() = default;
-    ~DTMgr() = default;
-    DTMgr(const DTMgr&) = delete;
-    DTMgr& operator=(const DTMgr&) = delete;
+    TMap<TSubclassOf<UDataTable>, TWeakObjectPtr<UDataTable>> mConfigDic;
 };
