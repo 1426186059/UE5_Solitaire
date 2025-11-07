@@ -8,23 +8,13 @@ class csv_stagereward
 {
     friend class CSVConfigMgr;
 public:
-    struct RowData
-    {
-        FString RowName;
-        int32 id;
-        int32 rewardtype;
-        int32 rewardid;
-        int32 wincount;
-        FString imgsrc;
-    };
-    
-    TArray<RowData>& GetTable()
+    TArray<FDT_stagereward>& GetTable()
     {
         return mTable;
     }
 
 private:
-    TArray<RowData> mTable;
+    TArray<FDT_stagereward> mTable;
 
     static csv_stagereward* ParseData(FString csvFileContent)
     {
@@ -35,7 +25,7 @@ private:
         {
             if (!Lines[i].IsEmpty())
             {
-                RowData mRawData = ParseRowData(Lines[i]);
+                FDT_stagereward mRawData = ParseRowData(Lines[i]);
                 mDataClass->mTable.Add(mRawData);
             }
             else
@@ -46,17 +36,16 @@ private:
         return mDataClass;
     }
 
-    static RowData ParseRowData(FString Line)
+    static FDT_stagereward ParseRowData(FString Line)
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","), false);
 
-        RowData data;
+        FDT_stagereward data;
         for (int i = 0; i < Cols.Num(); i++)
         {
             switch (i)
             {
-            case 0: data.RowName = Cols[i]; break;
             case 1: data.id = FCString::Atoi(*Cols[i]); break;
             case 2: data.rewardtype = FCString::Atoi(*Cols[i]); break;
             case 3: data.rewardid = FCString::Atoi(*Cols[i]); break;

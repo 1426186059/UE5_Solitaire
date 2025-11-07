@@ -8,20 +8,13 @@ class csv_jianhuan_newbie
 {
     friend class CSVConfigMgr;
 public:
-    struct RowData
-    {
-        FString RowName;
-        int32 index;
-        FString sid;
-    };
-    
-    TArray<RowData>& GetTable()
+    TArray<FDT_jianhuan_newbie>& GetTable()
     {
         return mTable;
     }
 
 private:
-    TArray<RowData> mTable;
+    TArray<FDT_jianhuan_newbie> mTable;
 
     static csv_jianhuan_newbie* ParseData(FString csvFileContent)
     {
@@ -32,7 +25,7 @@ private:
         {
             if (!Lines[i].IsEmpty())
             {
-                RowData mRawData = ParseRowData(Lines[i]);
+                FDT_jianhuan_newbie mRawData = ParseRowData(Lines[i]);
                 mDataClass->mTable.Add(mRawData);
             }
             else
@@ -43,17 +36,16 @@ private:
         return mDataClass;
     }
 
-    static RowData ParseRowData(FString Line)
+    static FDT_jianhuan_newbie ParseRowData(FString Line)
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","), false);
 
-        RowData data;
+        FDT_jianhuan_newbie data;
         for (int i = 0; i < Cols.Num(); i++)
         {
             switch (i)
             {
-            case 0: data.RowName = Cols[i]; break;
             case 1: data.index = FCString::Atoi(*Cols[i]); break;
             case 2: data.sid = Cols[i]; break;
             default: break;

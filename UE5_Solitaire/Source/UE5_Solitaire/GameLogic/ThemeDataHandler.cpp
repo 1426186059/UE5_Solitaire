@@ -96,14 +96,14 @@ void ThemeDataHandler::InitDefaultThemeElement()
 	this->RefreshThemePai();
 }
 
-void ThemeDataHandler::UnLockNewTheme(const csv_theme::RowData& mThemeConfig)
+void ThemeDataHandler::UnLockNewTheme(const FDT_theme& mThemeConfig)
 {
 	this->addThemeid(mThemeConfig.id);
 	this->InitDefaultThemeElement();
 }
 
 
-void ThemeDataHandler::UseNewTheme(const csv_theme::RowData& mThemeConfig)
+void ThemeDataHandler::UseNewTheme(const FDT_theme& mThemeConfig)
 {
 	this->GetData()->themeBgId = this->GetThemeElements_internalid_byId(mThemeConfig.table);
 	this->GetData()->themeBackId = this->GetThemeElements_internalid_byId(mThemeConfig.back);
@@ -141,7 +141,7 @@ void ThemeDataHandler::RefreshThemePai()
 }
 
 //-- 是否主题中的元素，比如桌面Bg，牌面，牌背，跟随主题解锁
-bool ThemeDataHandler::orThemeUnLockToUnLockMe(const csv_themeitem::RowData& mTargetConfig)
+bool ThemeDataHandler::orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
 	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
@@ -164,7 +164,7 @@ bool ThemeDataHandler::orThemeUnLockToUnLockMe(const csv_themeitem::RowData& mTa
 	return false;
 }
 
-FString ThemeDataHandler::GetBgThemeName(const csv_themeitem::RowData& mTargetConfig)
+FString ThemeDataHandler::GetBgThemeName(const FDT_themeitem& mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
 	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
@@ -211,7 +211,7 @@ int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
 	return -1;
 }
 
-csv_theme::RowData* ThemeDataHandler::GetUsedThemeConfig()
+FDT_theme* ThemeDataHandler::GetUsedThemeConfig()
 {
 	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
 	for (auto& v : mTable)
@@ -229,7 +229,7 @@ csv_theme::RowData* ThemeDataHandler::GetUsedThemeConfig()
 	return nullptr;
 }
 
-csv_theme::RowData* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
+FDT_theme* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
 {
 	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
 	for (auto& v : mTable)

@@ -8,27 +8,13 @@ class csv_theme
 {
     friend class CSVConfigMgr;
 public:
-    struct RowData
-    {
-        FString RowName;
-        int32 id;
-        FString name;
-        int32 table;
-        int32 front;
-        int32 back;
-        int32 pai;
-        int32 unlocktype;
-        int32 unlockcost;
-        int32 order;
-    };
-    
-    TArray<RowData>& GetTable()
+    TArray<FDT_theme>& GetTable()
     {
         return mTable;
     }
 
 private:
-    TArray<RowData> mTable;
+    TArray<FDT_theme> mTable;
 
     static csv_theme* ParseData(FString csvFileContent)
     {
@@ -39,7 +25,7 @@ private:
         {
             if (!Lines[i].IsEmpty())
             {
-                RowData mRawData = ParseRowData(Lines[i]);
+                FDT_theme mRawData = ParseRowData(Lines[i]);
                 mDataClass->mTable.Add(mRawData);
             }
             else
@@ -50,17 +36,16 @@ private:
         return mDataClass;
     }
 
-    static RowData ParseRowData(FString Line)
+    static FDT_theme ParseRowData(FString Line)
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","), false);
 
-        RowData data;
+        FDT_theme data;
         for (int i = 0; i < Cols.Num(); i++)
         {
             switch (i)
             {
-            case 0: data.RowName = Cols[i]; break;
             case 1: data.id = FCString::Atoi(*Cols[i]); break;
             case 2: data.name = Cols[i]; break;
             case 3: data.table = FCString::Atoi(*Cols[i]); break;

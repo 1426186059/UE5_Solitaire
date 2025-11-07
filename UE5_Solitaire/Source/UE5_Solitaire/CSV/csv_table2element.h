@@ -8,21 +8,13 @@ class csv_table2element
 {
     friend class CSVConfigMgr;
 public:
-    struct RowData
-    {
-        FString RowName;
-        int32 id;
-        int32 tableid;
-        int32 paiid;
-    };
-    
-    TArray<RowData>& GetTable()
+    TArray<FDT_table2element>& GetTable()
     {
         return mTable;
     }
 
 private:
-    TArray<RowData> mTable;
+    TArray<FDT_table2element> mTable;
 
     static csv_table2element* ParseData(FString csvFileContent)
     {
@@ -33,7 +25,7 @@ private:
         {
             if (!Lines[i].IsEmpty())
             {
-                RowData mRawData = ParseRowData(Lines[i]);
+                FDT_table2element mRawData = ParseRowData(Lines[i]);
                 mDataClass->mTable.Add(mRawData);
             }
             else
@@ -44,17 +36,16 @@ private:
         return mDataClass;
     }
 
-    static RowData ParseRowData(FString Line)
+    static FDT_table2element ParseRowData(FString Line)
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","), false);
 
-        RowData data;
+        FDT_table2element data;
         for (int i = 0; i < Cols.Num(); i++)
         {
             switch (i)
             {
-            case 0: data.RowName = Cols[i]; break;
             case 1: data.id = FCString::Atoi(*Cols[i]); break;
             case 2: data.tableid = FCString::Atoi(*Cols[i]); break;
             case 3: data.paiid = FCString::Atoi(*Cols[i]); break;

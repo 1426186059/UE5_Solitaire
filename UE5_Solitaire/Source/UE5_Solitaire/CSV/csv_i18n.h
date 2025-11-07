@@ -3,32 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UE5_Solitaire/SimpleFramework/KKCSVParser.h"
+#include "UE5_Solitaire/DataTable/DTMgr.h"
 
 class csv_i18n
 {
     friend class CSVConfigMgr;
 public:
-    struct RowData
-    {
-        FString RowName;
-        FString key;
-        FString English;
-        FString Chinese;
-        FString Japanese;
-        FString Hindi;
-        FString Arabic;
-        FString French;
-        FString Spanish;
-        FString Russian;
-    };
-    
-    TArray<RowData>& GetTable()
+    TArray<FDT_i18n>& GetTable()
     {
         return mTable;
     }
 private:
-    TArray<RowData> mTable;
+    TArray<FDT_i18n> mTable;
 
     static csv_i18n* ParseData(FString csvFileContent)
     {
@@ -39,7 +25,7 @@ private:
         {
             if (!Lines[i].IsEmpty())
             {
-                RowData mRawData = ParseRowData(Lines[i]);
+                FDT_i18n mRawData = ParseRowData(Lines[i]);
                 nDataClass->mTable.Add(mRawData);
             }
             else
@@ -50,12 +36,12 @@ private:
         return nDataClass;
     }
 
-    static RowData ParseRowData(FString Line)
+    static FDT_i18n ParseRowData(FString Line)
     {
         TArray<FString> Cols;
         Line.ParseIntoArray(Cols, TEXT(","), false);
 
-        RowData data;
+        FDT_i18n data;
         for (int i = 0; i < Cols.Num(); i++)
         {
             switch (i)

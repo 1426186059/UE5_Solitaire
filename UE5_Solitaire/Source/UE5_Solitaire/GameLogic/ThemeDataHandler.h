@@ -24,18 +24,18 @@ public:
 
 	void InitDefaultTheme();
 	void InitDefaultThemeElement();
-	void UnLockNewTheme(const csv_theme::RowData& mThemeConfig);
-	void UseNewTheme(const csv_theme::RowData& mThemeConfig);
+	void UnLockNewTheme(const FDT_theme& mThemeConfig);
+	void UseNewTheme(const FDT_theme& mThemeConfig);
 	void UseNewThemeBg(int32 Id);
 	void UseNewThemeFront(int32 Id);
 	void UseNewThemeBack(int32 Id);
 	void RefreshThemePai();
-	bool orThemeUnLockToUnLockMe(const csv_themeitem::RowData& mTargetConfig);
-	FString GetBgThemeName(const csv_themeitem::RowData& mTargetConfig);
+	bool orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfig);
+	FString GetBgThemeName(const FDT_themeitem& mTargetConfig);
 	//int32 GetBgUnLock_ForStageRemainWinCount(csv_stagereward::RowData mTargetConfig);
 	int32 GetThemePaiId_ForBgId(int32 Internalid);
-	csv_theme::RowData* GetUsedThemeConfig();
-	csv_theme::RowData* GetThemeConfigById(int32 nThemeId);
+	FDT_theme* GetUsedThemeConfig();
+	FDT_theme* GetThemeConfigById(int32 nThemeId);
 	int32 GetThemeElements_internalid_byId(int32 id);
 	int32 GetThemeElements_Id_byInternalidAndType(int32 Internalid, int32 type);
 	FString GetThemeThumbPath(int32 nId, int32 nType);
