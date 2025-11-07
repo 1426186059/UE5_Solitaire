@@ -7,7 +7,7 @@
 #include "dt_theme.generated.h"
 
 USTRUCT()
-struct FTableRow_theme : public FTableRowBase
+struct FDT_theme : public FTableRowBase
 {
     GENERATED_BODY()
 
@@ -20,15 +20,4 @@ struct FTableRow_theme : public FTableRowBase
     UPROPERTY(EditAnywhere) int32 unlocktype = {};
     UPROPERTY(EditAnywhere) int32 unlockcost = {};
     UPROPERTY(EditAnywhere) int32 order = {};
-};
-
-UCLASS()
-class UE5_SOLITAIRE_API UDataTable_theme : public UDataTable
-{
-    GENERATED_BODY()
-
-    UDataTable_theme()
-    {
-        RowStruct = FTableRow_theme::StaticStruct();   // 告诉表用哪一行结构
-    }
 };

@@ -7,7 +7,7 @@
 #include "dt_themeitem.generated.h"
 
 USTRUCT()
-struct FTableRow_themeitem : public FTableRowBase
+struct FDT_themeitem : public FTableRowBase
 {
     GENERATED_BODY()
 
@@ -19,15 +19,4 @@ struct FTableRow_themeitem : public FTableRowBase
     UPROPERTY(EditAnywhere) int32 download = {};
     UPROPERTY(EditAnywhere) FString dynamic = {};
     UPROPERTY(EditAnywhere) int32 order = {};
-};
-
-UCLASS()
-class UE5_SOLITAIRE_API UDataTable_themeitem : public UDataTable
-{
-    GENERATED_BODY()
-
-    UDataTable_themeitem()
-    {
-        RowStruct = FTableRow_themeitem::StaticStruct();   // 告诉表用哪一行结构
-    }
 };

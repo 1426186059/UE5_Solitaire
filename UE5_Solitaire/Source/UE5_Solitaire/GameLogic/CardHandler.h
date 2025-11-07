@@ -38,7 +38,7 @@ public:
 	void reverseTable(TArray<int>& t, int nBeginIndex, int nEndIndex);
 	bool CheckCardListError(const TArray<int>& mCardList);
 	csv_jianhuan_vita::RowData* GetVitaConfigItem(FString sid);
-	FTableRow_jianhuan_vita* GetVitaConfigItem2(FString sid);
-	std::tuple<bool, TArray<int>> GetExcelTablePokerId(FTableRow_jianhuan_vita* configItem);
+	FDT_jianhuan_vita* GetVitaConfigItem2(FString sid);
+	std::tuple<bool, TArray<int>> GetExcelTablePokerId(FDT_jianhuan_vita* configItem);
 	std::tuple<bool, TArray<int>> GetExcelTablePokerId(TArray<int> tablePokerId);
 };

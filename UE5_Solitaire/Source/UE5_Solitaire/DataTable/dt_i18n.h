@@ -7,7 +7,7 @@
 #include "dt_i18n.generated.h"
 
 USTRUCT()
-struct FTableRow_i18n : public FTableRowBase
+struct FDT_i18n : public FTableRowBase
 {
     GENERATED_BODY()
 
@@ -20,15 +20,4 @@ struct FTableRow_i18n : public FTableRowBase
     UPROPERTY(EditAnywhere) FString French = {};
     UPROPERTY(EditAnywhere) FString Spanish = {};
     UPROPERTY(EditAnywhere) FString Russian = {};
-};
-
-UCLASS()
-class UE5_SOLITAIRE_API UDataTable_i18n : public UDataTable
-{
-    GENERATED_BODY()
-
-    UDataTable_i18n()
-    {
-        RowStruct = FTableRow_i18n::StaticStruct();   // 告诉表用哪一行结构
-    }
 };

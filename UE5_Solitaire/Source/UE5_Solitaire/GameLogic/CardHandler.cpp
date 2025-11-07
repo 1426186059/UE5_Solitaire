@@ -142,11 +142,11 @@ csv_jianhuan_vita::RowData* CardHandler::GetVitaConfigItem(FString sid)
     return nullptr;
 }
 
-FTableRow_jianhuan_vita* CardHandler::GetVitaConfigItem2(FString sid)
+FDT_jianhuan_vita* CardHandler::GetVitaConfigItem2(FString sid)
 {
-    auto mTable = ADTMgr::GetSingleton()->Get<UDataTable_jianhuan_vita>();
+    auto mTable = ADTMgr::GetSingleton()->Get<FDT_jianhuan_vita>();
     ensure(mTable);
-    if (auto Row = mTable->FindRow<FTableRow_jianhuan_vita>(FName("sid"), sid))
+    if (auto Row = mTable->FindRow<FDT_jianhuan_vita>(TEXT("sid"), sid))
     {
         return Row;
     }
@@ -362,7 +362,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
     return { true, tablePokerId };
 }
 
-std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(FTableRow_jianhuan_vita* configItem)
+std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(FDT_jianhuan_vita* configItem)
 {
     UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr: %s, %s"), *configItem->sid, *configItem->jianhuanstr);
     TArray<FString> tablePokerStr;

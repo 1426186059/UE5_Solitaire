@@ -28,22 +28,24 @@ public:
     }
 
     template<typename T>
-    T* Get()
+    UDataTable* Get()
     {
-        static_assert(TIsDerivedFrom<T, UDataTable>::Value, "T must be an UDataTable derived class");
+        static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an UDataTable derived class");
 
-        TSubclassOf<UDataTable> Key = T::StaticClass();
-        TWeakObjectPtr<UDataTable>* mPtr = mConfigDic.Find(Key);
+        FString mKey = T::StaticStruct()->GetFName().ToString();
+        TWeakObjectPtr<UDataTable>* mPtr = mConfigDic.Find(mKey);
         if (mPtr)
         {
-            return Cast<T>(mPtr->Get());
+            return mPtr->Get();
         }
 
+        UE_LOG(LogTemp, Error, TEXT("ADTMgr Get Error: %s"), *mKey);
         ensure(mPtr);
         return nullptr;
     }
 
 private:
+
     template<typename T>
     void LoadTable(FString path)
     {
@@ -53,12 +55,12 @@ private:
             path = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Config/DT/%s.%s"), *fileName, *fileName);
         }
 
-        static_assert(TIsDerivedFrom<T, UDataTable>::Value, "T must be an UDataTable derived class");
+        static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an UDataTable derived class");
         UDataTable* mTable = LoadObject<UDataTable>(nullptr, *path);
-        TSubclassOf<UDataTable> mKey = T::StaticClass();
+        FString mKey = T::StaticStruct()->GetFName().ToString();
         ensure(mTable);
         mConfigDic.Add(mKey, mTable);
     }
 
-    TMap<TSubclassOf<UDataTable>, TWeakObjectPtr<UDataTable>> mConfigDic;
+    TMap<FString, TWeakObjectPtr<UDataTable>> mConfigDic;
 };
