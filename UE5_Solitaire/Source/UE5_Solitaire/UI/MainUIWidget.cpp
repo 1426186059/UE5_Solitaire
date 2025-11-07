@@ -1895,7 +1895,7 @@ bool UMainUIWidget::orHavePopView()
     UCanvasPanel* popCanvas = AKKUIMgr::GetSingleton()->GetRootWidget()->Layer_Popup;
     for (int32 i = 0; i < popCanvas->GetChildrenCount(); i++)
     {
-        if (popCanvas->GetChildAt(i)->IsVisibleInDesigner())
+        if(popCanvas->GetChildAt(i)->IsVisible())
         {
             return true;
         }

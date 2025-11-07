@@ -304,6 +304,20 @@ public:
         }
     }
 
+    static bool IsTreeVisible(const UWidget* Widget)
+    {
+        while (Widget)
+        {
+            if (Widget->GetVisibility() == ESlateVisibility::Collapsed ||
+                Widget->GetVisibility() == ESlateVisibility::Hidden)
+            {
+                return false;
+            }
+            Widget = Widget->GetParent();
+        }
+        return true;
+    }
+
 private:
     UMGHelper() = delete;
     ~UMGHelper() = delete;
