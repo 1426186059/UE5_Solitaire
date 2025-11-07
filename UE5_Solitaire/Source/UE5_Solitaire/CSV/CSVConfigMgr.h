@@ -26,7 +26,7 @@ public:
     T* GetCSV()
     {
         FName Key = typeid(T).name();
-        return StaticCast<T*>(this->mCSVDic[Key]);
+        return (T*)(this->mCSVDic[Key]);
     }
 private:
     template<typename T>

@@ -1,9 +1,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 #include "../KKUI/KKUI.h"
 #include "../KKTimer/KKTimer.h"
+
+#define N_DEFAULT_MAX_CAPACITY 1024
 
 template<typename T = UUserWidget>
 class KKWidgetPool
@@ -36,8 +37,10 @@ public:
         static_assert(TIsDerivedFrom<T, UUserWidget>::Value, "T must be an UWidget derived class");
     }
 
-    void Init(TSubclassOf<UUserWidget> mClass, UPanelWidget* ItemParent = nullptr, int nInitCount = 0)
+    //由于Widget 具有父Widget, 所以不会被 GC 掉，这个 ItemParent 是必须的。
+    void Init(TSubclassOf<UUserWidget> mClass, UPanelWidget* ItemParent, int nInitCount = 0)
     {
+        this->nMaxCapicity = N_DEFAULT_MAX_CAPACITY;
         this->mWidgetClass = mClass;
         this->mItemParent = ItemParent;
         this->preLoadObj(nInitCount);

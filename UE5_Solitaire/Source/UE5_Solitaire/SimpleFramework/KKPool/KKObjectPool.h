@@ -10,7 +10,7 @@ class KKObjectPool
 private:
 	TArray<TSharedPtr<T>> mObjectPool = {};
 	TMap<uint64, TSharedPtr<T>> mAllDic = {};
-
+	int nMaxCapacity;
 
 private:
 	TSharedPtr<T> InnerCreateItem()
@@ -20,20 +20,20 @@ private:
 		return t;
 	}
 public:
-	void Init(int nInitCount = 0, int nMaxCapacity = 0)
+	void Init(int nInitCount = 0, int maxCapacity = 0)
 	{
 		for (int i = 0; i < nInitCount; i++)
 		{
 			mObjectPool.Add(InnerCreateItem());
 		}
 
-		if (nMaxCapacity <= 0)
+		if (maxCapacity <= 0)
 		{
 			this->SetMaxCapacity(N_DEFAULT_MAX_CAPACITY);
 		}
 		else
 		{
-			this->SetMaxCapacity(nMaxCapacity);
+			this->SetMaxCapacity(maxCapacity);
 		}
 	}
 
@@ -59,7 +59,7 @@ public:
 		if (t->IsValid())
 		{
 			uint64 nKey = (uint64)t.Get();
-			if (mObjectPool.Num() >= this->nMaxCapacity)
+			if (this->nMaxCapacity > 0 && mObjectPool.Num() >= this->nMaxCapacity)
 			{
 				mAllDic.Remove(nKey);
 				t.Reset();
@@ -96,18 +96,5 @@ public:
 	int Count()
 	{
 		return mObjectPool.Num();
-	}
-
-	TSharedPtr<T> GetSharePtr(T* oriPtr)
-	{
-		uint64 nKey = (uint64)oriPtr;
-		if (mAllDic.Contains(nKey))
-		{
-			return mAllDic[nKey];
-		}
-		else
-		{
-			return nullptr;
-		}
 	}
 };
