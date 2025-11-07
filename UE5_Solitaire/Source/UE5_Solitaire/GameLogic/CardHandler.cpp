@@ -7,36 +7,35 @@ void CardHandler::Init()
 
 TArray<int> CardHandler::GetInitCards_ForNormalMode()
 {
-    return this->GetInitCards_Random_ForEasy();
-    //int nDifficultLayer = DataCenter::GetSingleton()->data->nDifficultLayer;
-    //int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
+    int nDifficultLayer = DataCenter::GetSingleton()->data->nDifficultLayer;
+    int nGameLevel = DataCenter::GetSingleton()->data->nGameLevel;
 
-    //nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
-    //nGameLevel = FMath::Max(nGameLevel, 1);
+    nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
+    nGameLevel = FMath::Max(nGameLevel, 1);
 
-    //if (false)
-    //{
-    //    if (nGameLevel <= 10)
-    //    {
-    //        return this->GetInitCards_Random_ForEasy();
-    //    }
-    //}
-    //else
-    //{
-    //    if (nGameLevel <= 5)
-    //    {
-    //        auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
-    //        auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
-    //        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
-    //        if (bTrue)
-    //        {
-    //            return tablePokerId;
-    //        }
-    //        UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
-    //    }
-    //}
-    //
-    //return this->GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
+    if (false)
+    {
+        if (nGameLevel <= 10)
+        {
+            return this->GetInitCards_Random_ForEasy();
+        }
+    }
+    else
+    {
+        if (nGameLevel <= 5)
+        {
+            auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
+            auto mConfigItem = CardHandler::GetVitaConfigItem(mTable[nGameLevel].sid);
+            auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
+            if (bTrue)
+            {
+                return tablePokerId;
+            }
+            UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
+        }
+    }
+
+    return this->GetInitCards_ExcelRandom(nDifficultLayer, nGameLevel);
 }
 
 TArray<int> CardHandler::GetInitCards_ForRankMode()
@@ -83,15 +82,15 @@ TArray<int> CardHandler::GetInitCards_Random_ForEasy()
         3, 2, 1
     };
 
-    //int nMaxRate = 10 - nDifficultLayer;
-    //nMaxRate = FMath::Max(1, nMaxRate);
-    //for (int i = 0; i < randomRate.Num(); i++)
-    //{
-    //    if (randomRate[i] > nMaxRate)
-    //    {
-    //        randomRate[i] = nMaxRate;
-    //    }
-    //}
+    int nMaxRate = 10 - nDifficultLayer;
+    nMaxRate = FMath::Max(1, nMaxRate);
+    for (int i = 0; i < randomRate.Num(); i++)
+    {
+        if (randomRate[i] > nMaxRate)
+        {
+            randomRate[i] = nMaxRate;
+        }
+    }
 
     TArray<int> mSendCardList2 = {};
     while (mSendCardList.Num() > 0)
@@ -139,6 +138,17 @@ csv_jianhuan_vita::RowData* CardHandler::GetVitaConfigItem(FString sid)
         {
             return &mTable[k];
         }
+    }
+    return nullptr;
+}
+
+FTableRow_jianhuan_vita* CardHandler::GetVitaConfigItem2(FString sid)
+{
+    auto mTable = DTMgr::GetSingleton()->Get<UDataTable_jianhuan_vita>();
+    ensure(mTable);
+    if (auto Row = mTable->FindRow<FTableRow_jianhuan_vita>(FName("sid"), sid))
+    {
+        return Row;
     }
 
     return nullptr;
@@ -315,7 +325,46 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
 
 std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vita::RowData* configItem)
 {
-    UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr: %s   %s"), *configItem->sid, *configItem->jianhuanstr);
+    UE_LOG(LogTemp, Error, TEXT("configItem->jianhuanstr:%d, %s, %s"), configItem->layer,  *configItem->sid, *configItem->jianhuanstr);
+    TArray<FString> tablePokerStr;
+    configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
+
+    ensureMsgf(tablePokerStr.Num() == 52, TEXT("%d"), tablePokerStr.Num());
+    TArrayExtentions::PrintTArray(tablePokerStr, "tablePokerStr");
+    
+    TArray<int> tablePokerId = {};
+    for (int i = 0; i < tablePokerStr.Num(); i++)
+    {
+        int number = FCString::Atoi(*tablePokerStr[i]);
+        tablePokerId.Add(number);
+    }
+
+    TArrayExtentions::PrintTArray(tablePokerId, "tablePokerId 000");
+    ensureMsgf(tablePokerId.Num() == 52, TEXT("%d"), tablePokerId.Num());
+    for (int i = 0; i < tablePokerId.Num(); i++)
+    {
+        int number = tablePokerId[i];
+        int nPokerId = GetExcelToLocalPokerId(number);
+        tablePokerId[i] = nPokerId;
+    }
+
+    TArrayExtentions::PrintTArray(tablePokerId, "tablePokerId 111");
+    ensureMsgf(tablePokerId.Num() == 52, TEXT("%d"), tablePokerId.Num());
+    if (this->CheckCardListError(tablePokerId))
+    {
+        UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem->sid);
+        return { false, tablePokerId };
+    }
+
+    this->reverseTable(tablePokerId, tablePokerId.Num() - 24, tablePokerId.Num() - 1);
+    this->reverseTable(tablePokerId, 0, tablePokerId.Num() - 1);
+    ensureMsgf(tablePokerId.Num() == 52, TEXT("Error: %d %s"), tablePokerId.Num(), *configItem->sid);
+    return { true, tablePokerId };
+}
+
+std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(FTableRow_jianhuan_vita* configItem)
+{
+    UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr: %s, %s"), *configItem->sid, *configItem->jianhuanstr);
     TArray<FString> tablePokerStr;
     configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
 
@@ -330,7 +379,6 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
     }
 
     TArrayExtentions::PrintTArray(tablePokerId, "tablePokerId 000");
-
     ensureMsgf(tablePokerId.Num() == 52, TEXT("%d"), tablePokerId.Num());
     for (int i = 0; i < tablePokerId.Num(); i++)
     {
@@ -340,18 +388,17 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
     }
 
     TArrayExtentions::PrintTArray(tablePokerId, "tablePokerId 111");
-    
     ensureMsgf(tablePokerId.Num() == 52, TEXT("%d"), tablePokerId.Num());
     if (this->CheckCardListError(tablePokerId))
     {
         UE_LOG(LogTemp, Error, TEXT("CheckCardListError: %s"), *configItem->sid);
-        return {false, tablePokerId};
+        return { false, tablePokerId };
     }
 
     this->reverseTable(tablePokerId, tablePokerId.Num() - 24, tablePokerId.Num() - 1);
     this->reverseTable(tablePokerId, 0, tablePokerId.Num() - 1);
     ensureMsgf(tablePokerId.Num() == 52, TEXT("Error: %d %s"), tablePokerId.Num(), *configItem->sid);
-    return {true, tablePokerId };
+    return { true, tablePokerId };
 }
 
 void CardHandler::reverseTable(TArray<int>& mCardList, int nBeginIndex, int nEndIndex)

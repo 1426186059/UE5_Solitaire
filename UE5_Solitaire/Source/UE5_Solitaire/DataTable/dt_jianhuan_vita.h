@@ -11,7 +11,7 @@ struct FTableRow_jianhuan_vita : public FTableRowBase
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere) FString id;
+    UPROPERTY(EditAnywhere) FString sid;
     UPROPERTY(EditAnywhere) int32 layer;
     UPROPERTY(EditAnywhere) int32 qid;
     UPROPERTY(EditAnywhere) int32 step;
