@@ -325,7 +325,7 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId_ForHalfWay(const
 
 std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vita::RowData* configItem)
 {
-    UE_LOG(LogTemp, Error, TEXT("configItem->jianhuanstr:%d, %s, %s"), configItem->layer,  *configItem->sid, *configItem->jianhuanstr);
+    //UE_LOG(LogTemp, Error, TEXT("configItem->jianhuanstr:%d, %s, %s"), configItem->layer,  *configItem->sid, *configItem->jianhuanstr);
     TArray<FString> tablePokerStr;
     configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
 
