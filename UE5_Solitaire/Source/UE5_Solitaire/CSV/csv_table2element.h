@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 
-class csv_table2element
+class csv_table2element: public KKTypeTBase<csv_table2element>
 {
     friend class CSVConfigMgr;
 public:

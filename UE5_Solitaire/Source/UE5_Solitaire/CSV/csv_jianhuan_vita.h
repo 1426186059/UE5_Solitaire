@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UE5_Solitaire/SimpleFramework/KKCSVParser.h"
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 
-class csv_jianhuan_vita
+class csv_jianhuan_vita : public KKTypeTBase<csv_jianhuan_vita>
 {
     friend class CSVConfigMgr;
 public:

@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 
-class csv_stagereward
+class csv_stagereward : public KKTypeTBase<csv_stagereward>
 {
     friend class CSVConfigMgr;
 public:

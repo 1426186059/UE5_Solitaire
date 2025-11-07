@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "UE5_Solitaire/DataTable/DTMgr.h"
 
-class csv_i18n
+class csv_i18n : public KKTypeTBase<csv_i18n>
 {
     friend class CSVConfigMgr;
 public:
