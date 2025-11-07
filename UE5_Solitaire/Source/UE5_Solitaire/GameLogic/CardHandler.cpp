@@ -26,10 +26,17 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
         {
             auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
             auto mConfigItem = CardHandler::GetVitaConfigItem2(mTable[nGameLevel].sid);
-            auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
-            if (bTrue)
+            if (mConfigItem)
             {
-                return tablePokerId;
+                auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
+                if (bTrue)
+                {
+                    return tablePokerId;
+                }
+            }
+            else
+            {
+
             }
             UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
         }
@@ -364,6 +371,11 @@ std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(csv_jianhuan_vit
 
 std::tuple<bool, TArray<int>> CardHandler::GetExcelTablePokerId(FDT_jianhuan_vita* configItem)
 {
+    if (configItem == nullptr)
+    {
+        return { false, {} };
+    }
+
     UE_LOG(LogTemp, Error, TEXT("CheckCardListError: configItem->jianhuanstr: %s, %s"), *configItem->sid, *configItem->jianhuanstr);
     TArray<FString> tablePokerStr;
     configItem->jianhuanstr.ParseIntoArray(tablePokerStr, TEXT(","), false);
