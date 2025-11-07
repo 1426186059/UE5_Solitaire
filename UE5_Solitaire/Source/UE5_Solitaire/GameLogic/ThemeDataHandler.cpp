@@ -72,8 +72,8 @@ void ThemeDataHandler::InitDefaultTheme()
 {
 	if (this->GetData()->themeBgId <= 0)
 	{
-		auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-		auto& mThemeConfig = mTable[4];
+		auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+		auto& mThemeConfig = (*mTable)[4];
 		this->UnLockNewTheme(mThemeConfig);
 		this->UseNewTheme(mThemeConfig);
 	}
@@ -81,8 +81,8 @@ void ThemeDataHandler::InitDefaultTheme()
 
 void ThemeDataHandler::InitDefaultThemeElement()
 {
-	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : mTable)
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : *mTable)
 	{
 		auto& mConfig = v;
 		if (this->hasThemeid(mConfig.id))
@@ -144,8 +144,8 @@ void ThemeDataHandler::RefreshThemePai()
 bool ThemeDataHandler::orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
-	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : mThemeConfig)
+	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : *mThemeConfig)
 	{
 		auto& mConfig = v;
 		if (mConfig.table == mTargetConfig.id)
@@ -167,8 +167,8 @@ bool ThemeDataHandler::orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfi
 FString ThemeDataHandler::GetBgThemeName(const FDT_themeitem& mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
-	auto& mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : mThemeConfig)
+	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : *mThemeConfig)
 	{
 		auto& mConfig = v;
 		if (mConfig.table == mTargetConfig.id)
@@ -197,8 +197,8 @@ FString ThemeDataHandler::GetBgThemeName(const FDT_themeitem& mTargetConfig)
 int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
 {
 	int32 tableid = this->GetThemeElements_Id_byInternalidAndType(Internalid, 1);
-	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_table2element>()->GetTable();
-	for (auto& v : mTable)
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_table2element>()->GetTable();
+	for (auto& v : *mTable)
 	{
 		auto& mConfig = v;
 		if (mConfig.tableid == tableid)
@@ -213,8 +213,8 @@ int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
 
 FDT_theme* ThemeDataHandler::GetUsedThemeConfig()
 {
-	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : mTable)
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : *mTable)
 	{
 		auto& mConfig = v;
 		if (
@@ -231,8 +231,8 @@ FDT_theme* ThemeDataHandler::GetUsedThemeConfig()
 
 FDT_theme* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
 {
-	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : mTable)
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
+	for (auto& v : *mTable)
 	{
 		auto& mConfig = v;
 		if (mConfig.id == nThemeId)
@@ -247,7 +247,7 @@ FDT_theme* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
 int32 ThemeDataHandler::GetThemeElements_internalid_byId(int32 id)
 {
 	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
-	for (auto& v : mTable)
+	for (auto& v : *mTable)
 	{
 		auto& mConfig = v;
 		if (mConfig.id == id)
@@ -263,8 +263,8 @@ int32 ThemeDataHandler::GetThemeElements_internalid_byId(int32 id)
 //--type 1:Bg 2 : front 3 : back 4 : 主题元素
 int32 ThemeDataHandler::GetThemeElements_Id_byInternalidAndType(int32 Internalid, int32 type)
 {
-	auto& mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
-	for (auto& v : mTable)
+	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
+	for (auto& v : *mTable)
 	{
 		auto& mConfig = v;
 		if (mConfig.internalid == Internalid && mConfig.type == type)

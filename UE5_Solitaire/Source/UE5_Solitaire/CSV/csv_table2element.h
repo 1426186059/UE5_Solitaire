@@ -9,9 +9,14 @@ class csv_table2element: public KKTypeTBase<csv_table2element>
 {
     friend class CSVConfigMgr;
 public:
-    TArray<FDT_table2element>& GetTable()
+    TArray<FDT_table2element>* GetTable()
     {
-        return mTable;
+        return &mTable;
+    }
+
+    FDT_table2element* GetItem(int nIndex)
+    {
+        return &mTable[nIndex];
     }
 
 private:

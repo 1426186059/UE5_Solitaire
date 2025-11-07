@@ -10,9 +10,14 @@ class csv_i18n : public KKTypeTBase<csv_i18n>
 {
     friend class CSVConfigMgr;
 public:
-    TArray<FDT_i18n>& GetTable()
+    TArray<FDT_i18n>* GetTable()
     {
-        return mTable;
+        return &mTable;
+    }
+
+    FDT_i18n* GetItem(int nIndex)
+    {
+        return &mTable[nIndex];
     }
 private:
     TArray<FDT_i18n> mTable;

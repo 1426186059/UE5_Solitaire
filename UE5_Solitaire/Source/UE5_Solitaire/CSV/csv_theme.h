@@ -9,9 +9,14 @@ class csv_theme : public KKTypeTBase<csv_theme>
 {
     friend class CSVConfigMgr;
 public:
-    TArray<FDT_theme>& GetTable()
+    TArray<FDT_theme>* GetTable()
     {
-        return mTable;
+        return &mTable;
+    }
+
+    FDT_theme* GetItem(int nIndex)
+    {
+        return &mTable[nIndex];
     }
 
 private:

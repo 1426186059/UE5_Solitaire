@@ -9,9 +9,14 @@ class csv_stagereward : public KKTypeTBase<csv_stagereward>
 {
     friend class CSVConfigMgr;
 public:
-    TArray<FDT_stagereward>& GetTable()
+    TArray<FDT_stagereward>* GetTable()
     {
-        return mTable;
+        return &mTable;
+    }
+
+    FDT_stagereward* GetItem(int nIndex)
+    {
+        return &mTable[nIndex];
     }
 
 private:

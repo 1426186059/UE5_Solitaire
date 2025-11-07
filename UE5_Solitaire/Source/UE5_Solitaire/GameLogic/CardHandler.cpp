@@ -25,7 +25,7 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
         if (nGameLevel <= 5)
         {
             auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
-            auto mConfigItem = CardHandler::GetVitaConfigItem2(mTable[nGameLevel].sid);
+            auto mConfigItem = CardHandler::GetVitaConfigItem2((*mTable)[nGameLevel].sid);
             if (mConfigItem)
             {
                 auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
@@ -38,7 +38,7 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
             {
 
             }
-            UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *mTable[nGameLevel].sid);
+            UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *(*mTable)[nGameLevel].sid);
         }
     }
 
@@ -141,11 +141,11 @@ FDT_jianhuan_vita* CardHandler::GetVitaConfigItem2(FString sid)
     if (false)
     {
         auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_vita>()->GetTable();
-        for (int k = 0; k < mTable.Num(); k++)
+        for (int k = 0; k < mTable->Num(); k++)
         {
-            if (mTable[k].sid == sid)
+            if ((*mTable)[k].sid == sid)
             {
-                return &mTable[k];
+                return &(*mTable)[k];
             }
         }
         return nullptr;
@@ -179,9 +179,9 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_vita>()->GetTable();
 
     TArray<int> tableIndex = {};
-    for (int k = 0; k < mTable.Num(); k++)
+    for (int k = 0; k < mTable->Num(); k++)
     {
-        FDT_jianhuan_vita v = mTable[k];
+        FDT_jianhuan_vita v = (*mTable)[k];
         if (v.layer == nDifficultLayer)
         {
             tableIndex.Add(k);
@@ -191,7 +191,7 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     if (tableIndex.Num() > 0)
     {
         int nRandomIndex = tableIndex[KKRandomTool::RandomArrayInt(tableIndex.Num())];
-        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(&mTable[nRandomIndex]);
+        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(&(*mTable)[nRandomIndex]);
         if (bTrue)
         {
             return tablePokerId;

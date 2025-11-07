@@ -9,9 +9,14 @@ class csv_jianhuan_vita : public KKTypeTBase<csv_jianhuan_vita>
 {
     friend class CSVConfigMgr;
 public:
-    TArray<FDT_jianhuan_vita>& GetTable()
+    TArray<FDT_jianhuan_vita>* GetTable()
     {
-        return mTable;
+        return &mTable;
+    }
+
+    FDT_jianhuan_vita* GetItem(int nIndex)
+    {
+        return &mTable[nIndex];
     }
 
 private:
