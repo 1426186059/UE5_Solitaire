@@ -73,6 +73,8 @@
 		mInstanceDic.Remove(mKey);
 	}
 
+7： Excel导出为CSV, 正常保存就行了，别使用什么UTF8 啥的，否则 CSV 加载会有问题。
+
 UMG问题：
 
 1：UMG 蓝图里 Widget 的【眼睛】设置，只在编辑模式下起作用，运行起来无效。得修改 详细面板里的 可视性 属性。
