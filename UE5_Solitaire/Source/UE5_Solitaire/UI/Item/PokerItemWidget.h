@@ -63,6 +63,7 @@ public:
 	int32 nStepIndex_ForFirstShowPokerId = -1;
 	FVector2D beginPos;
 	FVector2D beginScreenSpacePos;
+	FVector2D CurrentTouchPosition;
 	bool bInDrag = false;
 private:
 	bool bInit;

@@ -114,3 +114,8 @@ UMG问题：
 
 3：打包后发现手机上[屏幕适配]不对：所以得专门调一下[DPI适配曲线]的关键帧: 我参考的分辨率是(750, 1334) 那么我可以这样设置关键帧：(0, 0) => (7500, 10)， 或者[ScalToFit]。
 
+4: UE5鼠标拖拽，在Android下会有问题，最大问题是：UWidgetLayoutLibrary::GetMousePositionOnPlatform() 这个位置，在Android下返回的有问题，导致无法更新位置。解决方案：
+(1) 项目设置-引擎-输入 最下面 [鼠标用于触控] 选项勾上,（这样可以在PC上模拟Touch行为，也就是间接的调用了 Touch系列方法） 
+(2) 然后使用 NativeOnTouchMoved 系列方法
+(3) 不要使用这个API: UWidgetLayoutLibrary::GetMousePositionOnPlatform(). 而是 在NativeOnTouchMoved 里鼠标位置全局缓存一下，这样就可以在Tick里实时更新.
+

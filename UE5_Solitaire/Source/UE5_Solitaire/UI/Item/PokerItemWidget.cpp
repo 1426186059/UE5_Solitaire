@@ -70,6 +70,7 @@ void UPokerItemWidget::NativeOnDragLeave(const FDragDropEvent& InDragDropEvent, 
 
 bool UPokerItemWidget::NativeOnDragOver(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation)
 {
+   // this->CurrentTouchPosition = InDragDropEvent.GetScreenSpacePosition();
    // UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDragOver %d:"), this->nPokerId);
     return Super::NativeOnDragOver(InGeometry, InDragDropEvent, InOperation);
 }
@@ -89,10 +90,11 @@ bool UPokerItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 
 FReply UPokerItemWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
-    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnTouchStarted %d: "), this->nPokerId);
     uint32 FingerIndex = InGestureEvent.GetPointerIndex();
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnTouchStarted :%d, FingerIndex: %d"), this->nPokerId, FingerIndex);
     if (FingerIndex == 0)
     {
+        this->CurrentTouchPosition = InGestureEvent.GetScreenSpacePosition();
         this->OnDragBegin();
         return FReply::Handled().CaptureMouse(TakeWidget());
     }
@@ -101,6 +103,7 @@ FReply UPokerItemWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const
 
 FReply UPokerItemWidget::NativeOnTouchMoved(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
+    this->CurrentTouchPosition = InGestureEvent.GetScreenSpacePosition();
     return Super::NativeOnTouchMoved(InGeometry, InGestureEvent);
 }
 
@@ -110,7 +113,9 @@ FReply UPokerItemWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const F
     uint32 FingerIndex = InGestureEvent.GetPointerIndex();
     if (FingerIndex == 0)
     {
+        this->CurrentTouchPosition = InGestureEvent.GetScreenSpacePosition();
         this->OnDragEnd();
+        return FReply::Handled().ReleaseMouseCapture();
     }
     return Super::NativeOnTouchEnded(InGeometry, InGestureEvent);
 }
@@ -121,7 +126,7 @@ void UPokerItemWidget::OnDragBegin()
     {
         this->bInDrag = true;
         this->beginPos = UMGHelper::GetSlotPos(this);
-        this->beginScreenSpacePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
+        this->beginScreenSpacePos = this->CurrentTouchPosition;
         //AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this);
@@ -132,6 +137,9 @@ void UPokerItemWidget::OnDrag()
 {
     if (this->bInDrag)
     {
+        UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget OnDrag"));
+
+        FVector2D  MousePos = this->CurrentTouchPosition;
         FVector2D  MousePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
         FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(MousePos);
         FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(this->beginScreenSpacePos);
@@ -157,15 +165,16 @@ void UPokerItemWidget::Init()
 {
     if (this->bInit) return;
     this->bInit = true;
+
     this->mIcon = Cast<UImage>(this->GetWidgetFromName(TEXT("Icon")));
-    if (!mIcon)
+    if (!this->mIcon)
     {
         UE_LOG(LogTemp, Error, TEXT("mIcon == null"));
         return;
     }
 
     this->tranCardItemAni = this->GetWidgetFromName("CardItemAni");
-    if (!tranCardItemAni)
+    if (!this->tranCardItemAni)
     {
         UE_LOG(LogTemp, Error, TEXT("tranCardItemAni == null"));
         return;
