@@ -15,6 +15,29 @@
 
 #include "DTMgr.generated.h"
 
+template<typename T>
+class UDataTableTMgr : KKTypeTBase<UDataTableTMgr<T>>
+{
+private:
+    UDataTable* mTable;
+    TArray<T*> mTableT = {};
+public:
+    UDataTableTMgr(UDataTable* t)
+    {
+        static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an FTableRowBase derived class");
+        this->mTable = t;
+    }
+
+    const TArray<T*>* GetTableT()
+    {
+        if (mTableT.Num() == 0)
+        {
+            mTable->GetAllRows("", mTableT);
+        }
+        return &mTableT;
+    }
+};
+
 UCLASS()
 class UE5_SOLITAIRE_API ADTMgr : public AKKActorSingleton
 {
@@ -28,19 +51,18 @@ public:
     }
 
     template<typename T>
-    UDataTable* Get()
+    UDataTableTMgr<T>* Get()
     {
-        static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an UDataTable derived class");
+        static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an FTableRowBase derived class");
 
         FString mKey = T::StaticStruct()->GetFName().ToString();
-        TWeakObjectPtr<UDataTable>* mPtr = mConfigDic.Find(mKey);
+        void** mPtr = mConfigDic.Find(mKey);
         if (mPtr)
         {
-            return mPtr->Get();
+            return (UDataTableTMgr<T>*)(*mPtr);
         }
 
         UE_LOG(LogTemp, Error, TEXT("ADTMgr Get Error: %s"), *mKey);
-        ensure(mPtr);
         return nullptr;
     }
 
@@ -55,12 +77,12 @@ private:
             path = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Config/DT/%s.%s"), *fileName, *fileName);
         }
 
-        static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an UDataTable derived class");
+        static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an FTableRowBase derived class");
         UDataTable* mTable = LoadObject<UDataTable>(nullptr, *path);
         FString mKey = T::StaticStruct()->GetFName().ToString();
         ensure(mTable);
-        mConfigDic.Add(mKey, mTable);
+        mConfigDic.Add(mKey, new UDataTableTMgr<T>(mTable));
     }
 
-    TMap<FString, TWeakObjectPtr<UDataTable>> mConfigDic;
+    TMap<FString, void*> mConfigDic;
 };

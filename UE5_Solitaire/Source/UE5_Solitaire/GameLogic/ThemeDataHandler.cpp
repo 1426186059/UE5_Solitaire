@@ -144,34 +144,34 @@ void ThemeDataHandler::RefreshThemePai()
 bool ThemeDataHandler::orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfig)
 {
 	ensure(mTargetConfig.itemunlock == 4);
-	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : *mThemeConfig)
+	auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_theme>();
+	for (auto& v : *mTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (mConfig.table == mTargetConfig.id)
+		auto mConfig = v;
+		if (mConfig->table == mTargetConfig.id)
 		{
-			return this->hasThemeid(mConfig.id);
+			return this->hasThemeid(mConfig->id);
 		}
-		else if (mConfig.back == mTargetConfig.id)
+		else if (mConfig->back == mTargetConfig.id)
 		{
-			return this->hasThemeid(mConfig.id);
+			return this->hasThemeid(mConfig->id);
 		}
-		else if (mConfig.front == mTargetConfig.id)
+		else if (mConfig->front == mTargetConfig.id)
 		{
-			return this->hasThemeid(mConfig.id);
+			return this->hasThemeid(mConfig->id);
 		}
 	}
 	return false;
 }
 
-FString ThemeDataHandler::GetBgThemeName(const FDT_themeitem& mTargetConfig)
+FString ThemeDataHandler::GetBgThemeName(FDT_themeitem* mTargetConfig)
 {
-	ensure(mTargetConfig.itemunlock == 4);
-	auto mThemeConfig = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : *mThemeConfig)
+	ensure(mTargetConfig->itemunlock == 4);
+	auto mThemeTableMgr = ADTMgr::GetSingleton()->Get<FDT_theme>();
+	for (auto v : *mThemeTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (mConfig.table == mTargetConfig.id)
+		auto mConfig = v;
+		if (mConfig->table == mTargetConfig->id)
 		{
 			//return GameHelper:GetLanguageSwitchDes(mConfig.name)
 		}
@@ -179,31 +179,30 @@ FString ThemeDataHandler::GetBgThemeName(const FDT_themeitem& mTargetConfig)
 	return "";
 }
 
-//int32 ThemeDataHandler::GetBgUnLock_ForStageRemainWinCount(csv_stagereward::RowData mTargetConfig)
-//{
-//	ensure(mTargetConfig.itemunlock == 2);
-//	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_stagereward>()->GetTable();
-//	for (auto v : mTable)
-//	{
-//		auto mConfig = v;
-//		if (mConfig.rewardid == mTargetConfig.id)
-//		{
-//			return mConfig.wincount - DataCenter::GetSingleton()->data->mStageReward_WinCount;
-//		}
-//	}
-//	return 0;
-//}
+int32 ThemeDataHandler::GetBgUnLock_ForStageRemainWinCount(FDT_stagereward* mTargetConfig)
+{
+	auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_stagereward>();
+	for (auto v : *mTableMgr->GetTableT())
+	{
+		auto mConfig = v;
+		if (mConfig->rewardid == mTargetConfig->id)
+		{
+			return mConfig->wincount - DataCenter::GetSingleton()->data->mStageReward_WinCount;
+		}
+	}
+	return 0;
+}
 
 int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
 {
 	int32 tableid = this->GetThemeElements_Id_byInternalidAndType(Internalid, 1);
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_table2element>()->GetTable();
-	for (auto& v : *mTable)
+	const auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_table2element>();
+	for (auto v : *mTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (mConfig.tableid == tableid)
+		auto mConfig = v;
+		if (mConfig->tableid == tableid)
 		{
-			return this->GetThemeElements_internalid_byId(mConfig.paiid);
+			return this->GetThemeElements_internalid_byId(mConfig->paiid);
 		}
 	}
 	
@@ -213,17 +212,15 @@ int32 ThemeDataHandler::GetThemePaiId_ForBgId(int32 Internalid)
 
 FDT_theme* ThemeDataHandler::GetUsedThemeConfig()
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : *mTable)
+	auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_theme>();
+	for (auto v : *mTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (
-			mConfig.table == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeBgId, 1) &&
-			mConfig.front == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeZhengId, 2) &&
-			mConfig.back == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeBackId, 3)
-			)
+		auto mConfig = v;
+		if (mConfig->table == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeBgId, 1) &&
+			mConfig->front == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeZhengId, 2) &&
+			mConfig->back == this->GetThemeElements_Id_byInternalidAndType(this->GetData()->themeBackId, 3))
 		{
-			return &mConfig;
+			return mConfig;
 		}
 	}
 	return nullptr;
@@ -231,13 +228,13 @@ FDT_theme* ThemeDataHandler::GetUsedThemeConfig()
 
 FDT_theme* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : *mTable)
+	const auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_theme>();
+	for (auto v : *mTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (mConfig.id == nThemeId)
+		auto mConfig = v;
+		if (mConfig->id == nThemeId)
 		{
-			return &mConfig;
+			return mConfig;
 		}
 	}
 	return nullptr;
@@ -246,13 +243,13 @@ FDT_theme* ThemeDataHandler::GetThemeConfigById(int32 nThemeId)
 //
 int32 ThemeDataHandler::GetThemeElements_internalid_byId(int32 id)
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
-	for (auto& v : *mTable)
+	auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_themeitem>();
+	for (auto v : *mTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (mConfig.id == id)
+		auto mConfig = v;
+		if (mConfig->id == id)
 		{
-			return mConfig.internalid;
+			return mConfig->internalid;
 		}
 	}
 
@@ -263,13 +260,13 @@ int32 ThemeDataHandler::GetThemeElements_internalid_byId(int32 id)
 //--type 1:Bg 2 : front 3 : back 4 : 主题元素
 int32 ThemeDataHandler::GetThemeElements_Id_byInternalidAndType(int32 Internalid, int32 type)
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_themeitem>()->GetTable();
-	for (auto& v : *mTable)
+	auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_themeitem>();
+	for (auto v : *mTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (mConfig.internalid == Internalid && mConfig.type == type)
+		auto mConfig = v;
+		if (mConfig->internalid == Internalid && mConfig->type == type)
 		{
-			return mConfig.id;
+			return mConfig->id;
 		}
 	}
 	

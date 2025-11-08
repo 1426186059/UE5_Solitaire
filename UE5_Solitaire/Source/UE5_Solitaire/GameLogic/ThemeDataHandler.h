@@ -31,8 +31,8 @@ public:
 	void UseNewThemeBack(int32 Id);
 	void RefreshThemePai();
 	bool orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfig);
-	FString GetBgThemeName(const FDT_themeitem& mTargetConfig);
-	//int32 GetBgUnLock_ForStageRemainWinCount(csv_stagereward::RowData mTargetConfig);
+	FString GetBgThemeName(FDT_themeitem* mTargetConfig);
+	int32 GetBgUnLock_ForStageRemainWinCount(FDT_stagereward* mTargetConfig);
 	int32 GetThemePaiId_ForBgId(int32 Internalid);
 	FDT_theme* GetUsedThemeConfig();
 	FDT_theme* GetThemeConfigById(int32 nThemeId);

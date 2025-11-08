@@ -152,18 +152,12 @@ FDT_jianhuan_vita* CardHandler::GetVitaConfigItem2(FString sid)
     }
     else
     {
-        auto mTable = ADTMgr::GetSingleton()->Get<FDT_jianhuan_vita>();
-        ensure(mTable);
-
-        TArray<FName> mNameList = mTable->GetRowNames();
-        for (auto v : mNameList)
+        auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_jianhuan_vita>();
+        for (auto v : *mTableMgr->GetTableT())
         {
-            if (auto Row = mTable->FindRow<FDT_jianhuan_vita>(v, ""))
+            if (v->sid == sid)
             {
-                if (Row->sid == sid)
-                {
-                    return Row;
-                }
+                return v;
             }
         }
     }
