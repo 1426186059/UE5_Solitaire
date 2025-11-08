@@ -4,6 +4,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/UserInterfaceSettings.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 class UEHelper
 {
