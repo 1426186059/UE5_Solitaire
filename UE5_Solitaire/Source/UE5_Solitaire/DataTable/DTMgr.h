@@ -33,6 +33,13 @@ public:
         if (mTableT.Num() == 0)
         {
             mTable->GetAllRows("", mTableT);
+
+            //UE_LOG(LogTemp, Error, TEXT("mTable.Num() : %s : %d"), *T::StaticStruct()->GetFName().ToString(), mTableT.Num());
+            //总共3行无用, 上面返回的已经排除了1行, 还剩2行无用
+            for (int i = 0; i < 2 && i < mTableT.Num(); i++)
+            {
+                mTableT.RemoveAt(0);
+            }
         }
         return &mTableT;
     }

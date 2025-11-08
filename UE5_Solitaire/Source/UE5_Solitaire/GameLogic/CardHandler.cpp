@@ -24,8 +24,8 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
     {
         if (nGameLevel <= 5)
         {
-            auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_newbie>()->GetTable();
-            auto mConfigItem = CardHandler::GetVitaConfigItem2((*mTable)[nGameLevel].sid);
+            auto mTable = ADTMgr::GetSingleton()->Get<FDT_jianhuan_newbie>()->GetTableT();
+            auto mConfigItem = CardHandler::GetVitaConfigItem2((*mTable)[nGameLevel]->sid);
             if (mConfigItem)
             {
                 auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(mConfigItem);
@@ -38,7 +38,8 @@ TArray<int> CardHandler::GetInitCards_ForNormalMode()
             {
 
             }
-            UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *(*mTable)[nGameLevel].sid);
+
+            UE_LOG(LogTemp, Error, TEXT("SimpleLevel Error: %s"), *((*mTable)[nGameLevel]->sid));
         }
     }
 
@@ -138,30 +139,14 @@ TArray<int> CardHandler::GetInitCards_Random_ForEasy()
 
 FDT_jianhuan_vita* CardHandler::GetVitaConfigItem2(FString sid)
 {
-    if (false)
+    auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_jianhuan_vita>();
+    for (auto v : *mTableMgr->GetTableT())
     {
-        auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_vita>()->GetTable();
-        for (int k = 0; k < mTable->Num(); k++)
+        if (v->sid == sid)
         {
-            if ((*mTable)[k].sid == sid)
-            {
-                return &(*mTable)[k];
-            }
-        }
-        return nullptr;
-    }
-    else
-    {
-        auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_jianhuan_vita>();
-        for (auto v : *mTableMgr->GetTableT())
-        {
-            if (v->sid == sid)
-            {
-                return v;
-            }
+            return v;
         }
     }
-
     return nullptr;
 }
 

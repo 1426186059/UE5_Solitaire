@@ -24,13 +24,13 @@ public:
 
 	void InitDefaultTheme();
 	void InitDefaultThemeElement();
-	void UnLockNewTheme(const FDT_theme& mThemeConfig);
-	void UseNewTheme(const FDT_theme& mThemeConfig);
+	void UnLockNewTheme(FDT_theme* mThemeConfig);
+	void UseNewTheme(FDT_theme* mThemeConfig);
 	void UseNewThemeBg(int32 Id);
 	void UseNewThemeFront(int32 Id);
 	void UseNewThemeBack(int32 Id);
 	void RefreshThemePai();
-	bool orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfig);
+	bool orThemeUnLockToUnLockMe(FDT_themeitem* mTargetConfig);
 	FString GetBgThemeName(FDT_themeitem* mTargetConfig);
 	int32 GetBgUnLock_ForStageRemainWinCount(FDT_stagereward* mTargetConfig);
 	int32 GetThemePaiId_ForBgId(int32 Internalid);

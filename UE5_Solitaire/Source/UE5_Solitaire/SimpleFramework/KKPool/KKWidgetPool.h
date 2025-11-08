@@ -137,7 +137,7 @@ public:
                     }
                 }
 
-                UE_LOG(LogTemp, Log, TEXT("KKWidgetPool preLoadObj: %d"), this->GetSumCount());
+                //UE_LOG(LogTemp, Log, TEXT("KKWidgetPool preLoadObj: %d"), this->GetSumCount());
                 return true;
             }, 1 / 60.0f, nFrameCount);
         mTimer->Start();

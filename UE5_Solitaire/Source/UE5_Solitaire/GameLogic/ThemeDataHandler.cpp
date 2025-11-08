@@ -72,8 +72,8 @@ void ThemeDataHandler::InitDefaultTheme()
 {
 	if (this->GetData()->themeBgId <= 0)
 	{
-		auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-		auto& mThemeConfig = (*mTable)[4];
+		auto mTable = ADTMgr::GetSingleton()->Get<FDT_theme>()->GetTableT();
+		auto mThemeConfig = (*mTable)[4];
 		this->UnLockNewTheme(mThemeConfig);
 		this->UseNewTheme(mThemeConfig);
 	}
@@ -81,33 +81,32 @@ void ThemeDataHandler::InitDefaultTheme()
 
 void ThemeDataHandler::InitDefaultThemeElement()
 {
-	auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_theme>()->GetTable();
-	for (auto& v : *mTable)
+	auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_theme>();
+	for (auto v : *mTableMgr->GetTableT())
 	{
-		auto& mConfig = v;
-		if (this->hasThemeid(mConfig.id))
+		auto mConfig = v;
+		if (this->hasThemeid(mConfig->id))
 		{
-			this->addbgid(this->GetThemeElements_internalid_byId(mConfig.table));
-			this->addfrontid(this->GetThemeElements_internalid_byId(mConfig.front));
-			this->addbackid(this->GetThemeElements_internalid_byId(mConfig.back));
+			this->addbgid(this->GetThemeElements_internalid_byId(mConfig->table));
+			this->addfrontid(this->GetThemeElements_internalid_byId(mConfig->front));
+			this->addbackid(this->GetThemeElements_internalid_byId(mConfig->back));
 		}
 	}
 
 	this->RefreshThemePai();
 }
 
-void ThemeDataHandler::UnLockNewTheme(const FDT_theme& mThemeConfig)
+void ThemeDataHandler::UnLockNewTheme(FDT_theme* mThemeConfig)
 {
-	this->addThemeid(mThemeConfig.id);
+	this->addThemeid(mThemeConfig->id);
 	this->InitDefaultThemeElement();
 }
 
-
-void ThemeDataHandler::UseNewTheme(const FDT_theme& mThemeConfig)
+void ThemeDataHandler::UseNewTheme(FDT_theme* mThemeConfig)
 {
-	this->GetData()->themeBgId = this->GetThemeElements_internalid_byId(mThemeConfig.table);
-	this->GetData()->themeBackId = this->GetThemeElements_internalid_byId(mThemeConfig.back);
-	this->GetData()->themeZhengId = this->GetThemeElements_internalid_byId(mThemeConfig.front);
+	this->GetData()->themeBgId = this->GetThemeElements_internalid_byId(mThemeConfig->table);
+	this->GetData()->themeBackId = this->GetThemeElements_internalid_byId(mThemeConfig->back);
+	this->GetData()->themeZhengId = this->GetThemeElements_internalid_byId(mThemeConfig->front);
 	this->RefreshThemePai();
 	KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdatePokerAtlas)->Broadcast(nullptr);
 }
@@ -141,22 +140,22 @@ void ThemeDataHandler::RefreshThemePai()
 }
 
 //-- 是否主题中的元素，比如桌面Bg，牌面，牌背，跟随主题解锁
-bool ThemeDataHandler::orThemeUnLockToUnLockMe(const FDT_themeitem& mTargetConfig)
+bool ThemeDataHandler::orThemeUnLockToUnLockMe(FDT_themeitem* mTargetConfig)
 {
-	ensure(mTargetConfig.itemunlock == 4);
+	ensure(mTargetConfig->itemunlock == 4);
 	auto mTableMgr = ADTMgr::GetSingleton()->Get<FDT_theme>();
 	for (auto& v : *mTableMgr->GetTableT())
 	{
 		auto mConfig = v;
-		if (mConfig->table == mTargetConfig.id)
+		if (mConfig->table == mTargetConfig->id)
 		{
 			return this->hasThemeid(mConfig->id);
 		}
-		else if (mConfig->back == mTargetConfig.id)
+		else if (mConfig->back == mTargetConfig->id)
 		{
 			return this->hasThemeid(mConfig->id);
 		}
-		else if (mConfig->front == mTargetConfig.id)
+		else if (mConfig->front == mTargetConfig->id)
 		{
 			return this->hasThemeid(mConfig->id);
 		}
