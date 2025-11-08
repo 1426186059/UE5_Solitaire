@@ -74,7 +74,7 @@
 		mInstanceDic.Remove(mKey);
 	}
 
-7： Excel导出为CSV, 正常保存就行了，别使用什么UTF8 啥的，否则 CSV 加载会有问题。
+7： Excel导出为CSV导入UE5, 最好的方法是使用UE5 的 UDataTable，否则各种乱码问题，不能一眼识别，运行直接崩。
 
 UMG问题：
 
