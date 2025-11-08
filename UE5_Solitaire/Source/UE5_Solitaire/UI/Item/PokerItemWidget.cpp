@@ -12,30 +12,22 @@ void UPokerItemWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime
 FReply UPokerItemWidget::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseButtonDown %d: "), this->nPokerId);
-    if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
-    {
-        if (!this->bInDrag)
-        {
-            this->bInDrag = true;
-            this->beginPos = UMGHelper::GetSlotPos(this);
-            this->beginScreenSpacePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
-            //AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
-            AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
-            AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this);
-            return FReply::Handled().CaptureMouse(TakeWidget());
-        }
-    }
+    //if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+    //{
+    //    this->OnDragBegin();
+    //    return FReply::Handled().CaptureMouse(TakeWidget());
+    //}
     return Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
 }
 
 FReply UPokerItemWidget::NativeOnMouseButtonUp(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnMouseButtonUp %d: "), this->nPokerId);
-    if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
-    {
-        this->OnDragEnd();
-        return FReply::Handled().ReleaseMouseCapture();
-    }
+    //if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+    //{
+    //    this->OnDragEnd();
+    //    return FReply::Handled().ReleaseMouseCapture();
+    //}
     return Super::NativeOnMouseButtonUp(InGeometry, InMouseEvent);
 }
 
@@ -92,6 +84,48 @@ bool UPokerItemWidget::NativeOnDrop(const FGeometry& InGeometry, const FDragDrop
 {
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnDrop  %d: "), this->nPokerId);
     return Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+}
+
+
+FReply UPokerItemWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
+{
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnTouchStarted %d: "), this->nPokerId);
+    uint32 FingerIndex = InGestureEvent.GetPointerIndex();
+    if (FingerIndex == 0)
+    {
+        this->OnDragBegin();
+        return FReply::Handled().CaptureMouse(TakeWidget());
+    }
+    return Super::NativeOnTouchStarted(InGeometry, InGestureEvent);
+}
+
+FReply UPokerItemWidget::NativeOnTouchMoved(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
+{
+    return Super::NativeOnTouchMoved(InGeometry, InGestureEvent);
+}
+
+FReply UPokerItemWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
+{
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnTouchEnded %d: "), this->nPokerId);
+    uint32 FingerIndex = InGestureEvent.GetPointerIndex();
+    if (FingerIndex == 0)
+    {
+        this->OnDragEnd();
+    }
+    return Super::NativeOnTouchEnded(InGeometry, InGestureEvent);
+}
+
+void UPokerItemWidget::OnDragBegin()
+{
+    if (!this->bInDrag)
+    {
+        this->bInDrag = true;
+        this->beginPos = UMGHelper::GetSlotPos(this);
+        this->beginScreenSpacePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
+        //AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->CardHintEffectPool->Reset();
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnDragBegin(this);
+    }
 }
 
 void UPokerItemWidget::OnDrag()
