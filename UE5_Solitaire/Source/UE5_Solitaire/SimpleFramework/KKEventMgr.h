@@ -30,6 +30,23 @@ public:
         }
     }
 
+    void RemoveListener(int nEventId, FDelegateUserObjectConst mObj)
+    {
+        if (mEventDic.Contains(nEventId))
+        {
+            mEventDic[nEventId].RemoveAll(mObj);
+        }
+    }
+
+    void RemoveListener(int nEventId)
+    {
+        if (mEventDic.Contains(nEventId))
+        {
+            mEventDic[nEventId].Clear();
+            mEventDic.Remove(nEventId);
+        }
+    }
+
     void Broadcast(int nEventId, void* Param = nullptr)
     {
         if (mEventDic.Contains(nEventId))
