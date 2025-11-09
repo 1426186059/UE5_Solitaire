@@ -366,7 +366,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 auto fromPos = this->GetCardNodeSendPokerPos();
                 auto toPos = this->GetCardNodeTop7Pos(i, j);
 
-                auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(this, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
+                auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(mCardItem, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
                     [=, this]()
                     {
                         if (mCardItem->orTurnOverStateIsTrue())
@@ -389,7 +389,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                         auto fromPos = this->GetCardNodeSendPokerPos();
                         auto toPos = this->GetCardNode4APos(i);
 
-                        auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(this, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
+                        auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(mCardItem, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
                             [=, this]()
                             {
                                 if (mCardItem->orTurnOverStateIsTrue())
@@ -417,7 +417,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                     auto fromPos = this->GetCardNodeSendPokerPos();
                     auto toPos = this->GetCardNodeDraw3Pos(i);
 
-                    auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(this, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
+                    auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(mCardItem, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
                         [=, this]()
                         {
                             if (mCardItem->orTurnOverStateIsTrue())
