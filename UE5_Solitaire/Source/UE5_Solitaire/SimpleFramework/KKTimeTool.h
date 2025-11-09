@@ -25,15 +25,15 @@ public:
 
         if (Day > 0)
         {
-            return FString::Printf(TEXT("%02dd:%02dh"), Day, Hour);
+            return FString::Printf(TEXT("%02dd:%02d"), Day, Hour);
         }
         else if (Hour > 0)
         {
-            return FString::Printf(TEXT("%02dh:%02dm"), Hour, Minutes);
+            return FString::Printf(TEXT("%02d:%02d"), Hour, Minutes);
         }
         else
         {
-            return FString::Printf(TEXT("%02dm:%02ds"), Minutes, Seconds);
+            return FString::Printf(TEXT("%02d:%02d"), Minutes, Seconds);
         }
     }
 
