@@ -366,76 +366,144 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 auto fromPos = this->GetCardNodeSendPokerPos();
                 auto toPos = this->GetCardNodeTop7Pos(i, j);
 
-                /*local mTween = TweenMgr:AddGoTween(this->transform, 0.3, function(fTimePercent)
-                    this->SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
-                    end, function()
-                    if mCardItem : orTurnOverStateIsTrue() then
-                        mCardItem : PlayTurnOverAni()
-                        end
-                        end) : SetDelay(0.05 * j)
-                        end
-                        end
-
-                        TweenMgr : delayedCall(0.5, function()
-                            local n4ACount = 0
-                            for i = 1, 4 do
-                                for j = 1, #this->tableCardNode4AGo[i] do
-                                    n4ACount = n4ACount + 1
-
-                                    local mCardItem = this->tableCardNode4AGo[i][j]
-                                    local fromPos = this->GetCardNodeSendPokerPos()
-                                    local toPos = this-> GetCardNode4APos(i)
-                                    local mTween = TweenMgr : AddGoTween(this->transform, 0.3, function(fTimePercent)
-                                        this->SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
-                                        end, function()
-                                        if mCardItem : orTurnOverStateIsTrue() then
-                                            mCardItem : PlayTurnOverAni()
-                                            end
-                                            end)
-                                    end
-                                    end
-
-                                    if n4ACount > 0 then
-                                        AudioHandler : PlaySound("P2")
-                                        end
-                                        end)
-
-                        TweenMgr : delayedCall(1.0, function()
-                            local nDraw3Count = 0
-                            for i = 1, #this->tableCardDraw3Go do
-                                nDraw3Count = nDraw3Count + 1
-
-                                local mCardItem = this->tableCardDraw3Go[i]
-                                local fromPos = this->GetCardNodeSendPokerPos()
-                                local toPos = this-> GetCardNodeDraw3Pos(i)
-                                local mTween = TweenMgr : AddGoTween(this->transform, 0.3, function(fTimePercent)
-                                    this->SetRelativePos(mCardItem, TweenCommonFunc:easeOutQuad(fromPos, toPos, fTimePercent))
-                                    end, function()
-                                    if mCardItem : orTurnOverStateIsTrue() then
-                                        mCardItem : PlayTurnOverAni()
-                                        end
-                                        end)
-                                end
-
-                                if nDraw3Count > 0 then
-                                    AudioHandler : PlaySound("P2")
-                                    end
-                                    end)
-                                else
-                                    this->RefreshAllPokerState()
-                                    end
-
-                                    GameEventHandler : Brocast(EventName.RefreshTopBottomUI)
-                                    this->mTimer : Start()
-                                    this-> UpdateGameMode()
-                                    this-> ResetRemainHintCount()
-                                    this-> onAddScore_InitParam()
-                                    this->GameWinAniMgr : DestroyAniNode()
-                                    this-> DoWhenSet_FastGame()*/
-                                    //}
+                auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(this, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
+                    [=, this]()
+                    {
+                        if (mCardItem->orTurnOverStateIsTrue())
+                        {
+                            mCardItem->PlayTurnOverAni();
+                        }
+                    })->SetDelay(0.05 * j);
             }
         }
+
+        KKTween::delayedCall(0.5, [=, this]()
+            {
+                int n4ACount = 0;
+                for (int i = 0; i < 4; i++)
+                {
+                    for (int j = 0; j < this->tableCardNode4AGo[i].Num(); j++)
+                    {
+                        n4ACount++;
+                        auto mCardItem = this->tableCardNode4AGo[i][j];
+                        auto fromPos = this->GetCardNodeSendPokerPos();
+                        auto toPos = this->GetCardNode4APos(i);
+
+                        auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(this, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
+                            [=, this]()
+                            {
+                                if (mCardItem->orTurnOverStateIsTrue())
+                                {
+                                    mCardItem->PlayTurnOverAni();
+                                }
+                            });
+                    }
+                }
+
+                if (n4ACount > 0)
+                {
+                    AudioHandler::GetSingleton()->PlaySound("P2");
+                }
+            });
+
+        KKTween::delayedCall(1.0, []()
+            {
+                int nDraw3Count = 0;
+                for (int i = 0; i < this->tableCardDraw3Go.Num(); i++)
+                {
+                    nDraw3Count = nDraw3Count + 1;
+
+                    auto mCardItem = this->tableCardDraw3Go[i];
+                    auto fromPos = this->GetCardNodeSendPokerPos();
+                    auto toPos = this->GetCardNodeDraw3Pos(i);
+
+
+                    auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(this, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
+                        [=, this]()
+                        {
+                            if (mCardItem->orTurnOverStateIsTrue())
+                            {
+                                mCardItem->PlayTurnOverAni();
+                            }
+                        });
+                }
+
+                if (nDraw3Count > 0)
+                {
+                    AudioHandler::GetSingleton()->PlaySound("P2");
+                }
+            });
     }
+    else
+    {
+        this->RefreshAllPokerState();
+    }
+
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
+    UEHelper::StartTimer(this, this->mTimer);
+    this->UpdateGameMode();
+    //this->ResetRemainHintCount();
+    this->onAddScore_InitParam();
+    this->GameWinAniMgr->DestroyAniNode();
+    this->DoWhenSet_FastGame();
+}
+
+void UMainUIWidget::RefreshAllPokerState()
+{
+    for (auto v : this->mSendCardListGo)
+    {
+        auto mCardItem = v;
+        UMGHelper::SetChildLastZOrder(mCardItem);
+        UMGHelper::SetSlotPos(mCardItem, this->GetCardNodeSendPokerPos());
+        mCardItem->Refresh();
+        mCardItem->SetEventTriggerState(false);
+        mCardItem->Show();
+    }
+
+    for (int i = 0; i < this->tableCardDraw3Go.Num(); i++)
+    {
+        auto mCardItem = this->tableCardDraw3Go[i];
+        UMGHelper::SetAsFirstChildIndex(mCardItem);
+        UMGHelper::SetSlotPos(mCardItem, this->GetCardNodeDraw3Pos(i));
+        mCardItem->Refresh();
+        mCardItem->SetEventTriggerState(i == 1);
+        if (i <= 3)
+        {
+            mCardItem->Show();
+        }
+        else
+        {
+            mCardItem->Hide();
+        }
+    }
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < this->tableCardNode4AGo[i].Num(); i++)
+        {
+            auto mCardItem = this->tableCardNode4AGo[i][j];
+            UMGHelper::SetChildLastZOrder(mCardItem);
+            UMGHelper::SetSlotPos(mCardItem, this->GetCardNode4APos(i));
+            mCardItem->Refresh();
+            mCardItem->Show();
+            mCardItem->SetEventTriggerState(j == this->tableCardNode4AGo[i].Num());
+        }
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        for (int j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
+        {
+            auto mCardItem = this->tableCardNodeTop7Go[i][j];
+            UMGHelper::SetChildLastZOrder(mCardItem);
+            UMGHelper::SetSlotPos(mCardItem, this->GetCardNodeTop7Pos(i, j));
+            mCardItem->Show();
+            mCardItem->Refresh();
+            mCardItem->SetEventTriggerState(mCardItem->orTurnOverStateIsTrue());
+        }
+        this->DoTop7ReSizeHeightAni(i);
+    }
+
 }
 
 void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)

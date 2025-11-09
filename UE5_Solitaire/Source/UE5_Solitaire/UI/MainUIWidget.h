@@ -126,6 +126,7 @@ public:
 	void PlayToA4EffectAni(int32 nIndex, UPokerItemWidget* mCardItem);
 	void OnFastGameToResultA4();
 
+	void RefreshAllPokerState();
 	int32 GetNowRecordStepIndex();
 	void PlayRecordUndoAni();
 	void PlayRecordForwardAni();

@@ -42,6 +42,7 @@ protected:
 public:
 	void CheckAndInit();
 	void Init();
+	void Release();
 	void StartEnterGame(void* param);
 	void GoToLobby();
 

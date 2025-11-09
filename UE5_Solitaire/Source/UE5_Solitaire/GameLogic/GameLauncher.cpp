@@ -17,7 +17,7 @@ void AGameLauncher::BeginPlay()
 void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
-    KKEventMgr::GetSingleton()->RemoveAllListener();
+    this->Release();
 }
 
 void AGameLauncher::Tick(float DeltaTime)
@@ -41,7 +41,7 @@ void AGameLauncher::Init()
 
     //一些测试例子
     Test::Do();
-    
+
     //设置目标帧率
     UGameUserSettings* UserSettings = GEngine->GetGameUserSettings();
     if (UserSettings)
@@ -94,6 +94,11 @@ void AGameLauncher::Init()
         mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GetWorld(), BPClass);
         mUInitSceneWidget->Show();
     }
+}
+
+void AGameLauncher::Release()
+{
+    KKEventMgr::GetSingleton()->RemoveAllListener();
 }
 
 void AGameLauncher::StartEnterGame(void* param)
