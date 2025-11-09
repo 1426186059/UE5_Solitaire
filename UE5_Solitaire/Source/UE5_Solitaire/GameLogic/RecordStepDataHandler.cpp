@@ -5,7 +5,6 @@ void RecordStepDataHandler::Init()
 	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler nGameLevel: %d"), DataCenter::GetSingleton()->GetData()->nGameLevel);
 	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler nTime: %d"), this->GetData()->nTime);
 	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler tableOpStepItem Count: %d"), this->GetData()->tableOpStepItem.Num());
-	this->InitData();
 }
 
 void RecordStepDataHandler::InitData()
