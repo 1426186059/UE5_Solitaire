@@ -5,6 +5,7 @@ void RecordStepDataHandler::Init()
 	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler nGameLevel: %d"), DataCenter::GetSingleton()->GetData()->nGameLevel);
 	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler nTime: %d"), this->GetData()->nTime);
 	UE_LOG(LogTemp, Log, TEXT("RecordStepDataHandler tableOpStepItem Count: %d"), this->GetData()->tableOpStepItem.Num());
+	InitData();
 }
 
 void RecordStepDataHandler::InitData()
@@ -86,8 +87,15 @@ void RecordStepDataHandler::AddStepRecord(const FRecordStepData_OpStepItem& mOpS
 
 std::tuple<int32, FRecordStepData_OpStepItem*> RecordStepDataHandler::GetNowStepRecord()
 {
-	int32 nStepIndex = this->GetData()->tableOpStepItem.Num() - this->GetData()->nUndoCount;
-	return { nStepIndex, &this->GetData()->tableOpStepItem[nStepIndex] };
+	int32 nStepIndex = this->GetData()->tableOpStepItem.Num() - 1 - this->GetData()->nUndoCount;
+	if (nStepIndex >= 0 && nStepIndex < this->GetData()->tableOpStepItem.Num())
+	{
+		return { nStepIndex, &this->GetData()->tableOpStepItem[nStepIndex] };
+	}
+	else
+	{
+		return { nStepIndex, nullptr };
+	}
 }
 
 bool RecordStepDataHandler::orCanUndo()

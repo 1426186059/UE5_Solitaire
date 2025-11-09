@@ -45,10 +45,14 @@ public:
 	virtual void CheckFirstLayoutOkToShow() override;
 
 public:
-
-	UFUNCTION() void OnBtnClicked_GameNodeBtn();
 	UFUNCTION() void OnBtnClicked_SendPokerBtn();
 	UFUNCTION() void OnBtnClicked_BGBtn();
+
+	UFUNCTION() void OnBtnClicked_GameNodeBtn();
+	UFUNCTION() void OnBtnClicked_UndoBtn();
+	UFUNCTION() void OnBtnClicked_ForwardBtn();
+	UFUNCTION() void OnBtnClicked_ThemeBtn();
+	UFUNCTION() void OnBtnClicked_SettingBtn();
 
 	void InitGame();
 	void RecoverGame(bool bPlayAni = false);

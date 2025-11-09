@@ -11,85 +11,22 @@ void TopBottomView::Init(UMainUIWidget* root_uw)
     this->textMoves = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("textMoves"));
     this->textRemainCount = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("textRemainCount"));
 
-    this->hintNodeBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("hintNode"));
-    //this->hintNodeBtn.onClick.AddListener(function()
-    //    AudioHandler:PlaySound("button")
-
-    //    ThemeSolitaire.GameView.fIQTime = 0
-    //    ThemeSolitaire.DataCenter : AddIQValue(-2)
-    //    ThemeSolitaire.GameView : PlayHintAni()
-    //    end)
-
     this->undoNodeBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("undoNode"));
-    //this->undoNodeBtn.onClick : AddListener(function()
-    //    AudioHandler:PlaySound("button")
-    //    ThemeSolitaire.GameView : PlayRecordUndoAni()
-    //    end)
+    this->undoNodeBtn->OnClicked.AddDynamic(this->mUIRoot, &UMainUIWidget::OnBtnClicked_UndoBtn);
 
     this->forwardNodeBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("forwardNode"));
-    //this->forwardNodeBtn.onClick : AddListener(function()
-    //    AudioHandler:PlaySound("button")
-    //    ThemeSolitaire.GameView : PlayRecordForwardAni()
-    //    end)
+    this->forwardNodeBtn->OnClicked.AddDynamic(this->mUIRoot, &UMainUIWidget::OnBtnClicked_ForwardBtn);
 
     this->gameNode = Cast<UButton>(this->mUIRoot->GetWidgetFromName("gameNode"));
-    //this->gameNode.onClick : AddListener(function()
-    //    AudioHandler:PlaySound("button")
-    //    ThemeSolitaire.GameBeginView : Show()
-    //    end)
+    this->gameNode->OnClicked.AddDynamic(this->mUIRoot, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
 
     this->themeNode = Cast<UButton>(this->mUIRoot->GetWidgetFromName("themeNode"));
-    //this->themeNode.onClick : AddListener(function()
-    //    AudioHandler:PlaySound("button")
-    //    ThemeSolitaire.GameThemeView : Show()
-    //    end)
-
     this->SettingBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("SettingBtn"));
-    //this->SettingBtn.onClick : AddListener(function()
-    //    AudioHandler:PlaySound("button")
-    //    ThemeSolitaire.GameSetView : Show()
-    //    end)
+    //this->hintNodeBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("hintNode"));
 
-    this->textIQMode = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("IQMode"));
-    this->goMagicwandTipCount = this->mUIRoot->GetWidgetFromName("bt_magicwand_goTip");
-    this->textMagicwandCount = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("bt_magicwand_goTip_lb_newcount"));
-    this->bt_magicwand = Cast<UButton>(this->mUIRoot->GetWidgetFromName("bt_magicwand"));
-
-    /* this->bt_magicwand.onClick : AddListener(function()
-         AudioHandler:PlaySound("mofabang")
-
-         if ThemeSolitaire.DataCenter.data.nMagicWandCount > 0 then
-             if ThemeSolitaire.GameView:orCanUseMagicWand() then
-                 ThemeSolitaire.GameView : UseMagicWand()
-                 GameEventHandler : Brocast(ThemeSolitaire.EventName.UpdateMagicWandState)
-             else
-                 CommonTipPoolView:Show("No useable moves")
-                 end
-         else
-             ThemeSolitaire.GameMagicWandView:Show()
-             end
-             end)*/
-
-             //this->ChallengeHead = this->mUIRoot:FindDeepChild("ChallengeHead").gameObject
-             //this->NormalHead = this->mUIRoot : FindDeepChild("NormalHead").gameObject
-             //this->TripHead = this->mUIRoot : FindDeepChild("MissionHead").gameObject
-             //this->TripTaskInfo = this->mUIRoot : FindDeepChild("TripTaskInfo").gameObject
-             //this->GameTitle2 = this->mUIRoot : FindDeepChild("GameTitle2").gameObject
-             //this->RankHead = this->mUIRoot : FindDeepChild("RankHead").gameObject
-
-    //this->imageProgress = this->mUIRoot : FindDeepChild("CollectNode/n_mask/n_Progress") : GetComponent(typeof(UnityUI.Image))
-    //    this->AIcon = this->mUIRoot : FindDeepChild("CollectNode/AIcon") : GetComponent(typeof(UnityUI.Image))
-    //    this->goCollectFinishEffect = this->mUIRoot : FindDeepChild("CollectNode/goFinishEffect").gameObject
-    //    this->goCollectEffect = this->mUIRoot : FindDeepChild("CollectNode/goCollectEffect").gameObject
-    //    local ItemPoolGenerator = require "Lua/SimpleFramework/ObjectPool/ItemPool"
-    //    local SpineEffect = require "Lua.Effect.SpineEffect"
-    //    this->spineCollectEffectPool = ItemPoolGenerator : New(this->goCollectEffect, SpineEffect, 0)
-
-    //    this->collectABtn = this->mUIRoot : FindDeepChild("CollectNode") : GetComponent(typeof(UnityUI.Button))
-    //    this->collectABtn.onClick : AddListener(function()
-    //        AudioHandler:PlaySound("button")
-    //        ThemeSolitaire.GameCollectAView : Show()
-    //        end)
+    this->ChallengeHead = this->mUIRoot->GetWidgetFromName("ChallengeHead");
+    this->NormalHead = this->mUIRoot->GetWidgetFromName("NormalHead");
+    this->RankHead = this->mUIRoot->GetWidgetFromName("RankHead");
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->AddLambda([this](void* param)
         {
@@ -99,12 +36,27 @@ void TopBottomView::Init(UMainUIWidget* root_uw)
         {
             this->UpdateGameModeState();
         });
+}
 
-    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateMagicWandState)->AddRaw(this, &TopBottomView::UpdateMagicWandState);
-    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateTripState)->AddRaw(this, &TopBottomView::UpdateTripState);
-    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateIQState)->AddRaw(this, &TopBottomView::UpdateIQState);
-    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateCollectState)->AddRaw(this, &TopBottomView::UpdateCollectState);
-    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_PlayCollectAAni)->AddRaw(this, &TopBottomView::PlayCollectAAni);
+void TopBottomView::OnBtnClicked_GameNodeBtn()
+{
+    UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_GameNodeBtn"));
+    AudioHandler::GetSingleton()->PlaySound("button");
+    //mUIRoot->GameBeginView->Show();
+}
+
+void TopBottomView::OnBtnClicked_UndoBtn()
+{
+    UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_UndoBtn"));
+    AudioHandler::GetSingleton()->PlaySound("button");
+    mUIRoot->PlayRecordUndoAni();
+}
+
+void TopBottomView::OnBtnClicked_ForwardBtn()
+{
+    UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_ForwardBtn"));
+    AudioHandler::GetSingleton()->PlaySound("button");
+    mUIRoot->PlayRecordForwardAni();
 }
 
 void TopBottomView::RefreshTopBottomUI()
@@ -121,21 +73,21 @@ void TopBottomView::RefreshTopBottomUI()
     //this->UpdateCollectALobbyUI();
 }
 
-void TopBottomView::UpdateShowHideAni(bool bShow)
+void TopBottomView::UpdateShowHideAni(bool bAuto, bool bShow)
 {
-    if (bShow)
+    if (bAuto)
     {
-        this->bShowBottomUI = bShow;
+        this->bShowBottomUI = !this->bShowBottomUI;
     }
     else
     {
-        this->bShowBottomUI = !this->bShowBottomUI;
+        this->bShowBottomUI = bShow;
     }
 
     if (this->DownObj == nullptr)
     {
-        this->DownObj = this->mUIRoot->GetWidgetFromName("Bottom_DownObj");
-        this->RightObj = this->mUIRoot->GetWidgetFromName("Bottom_RightObj");
+        this->DownObj = this->mUIRoot->GetWidgetFromName("DownObj");
+        this->RightObj = this->mUIRoot->GetWidgetFromName("RightObj");
     }
 
     KKTween::Cancel(this->DownObj);

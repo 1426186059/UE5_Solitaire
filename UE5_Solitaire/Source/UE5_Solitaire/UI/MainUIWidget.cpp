@@ -73,9 +73,6 @@ void UMainUIWidget::Init()
         return;
     }
 
-    UButton* mGameNodeBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("gameNodeBtn"));
-    mGameNodeBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_GameNodeBtn);
-
     this->PokerItemParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("PokerItemParent"));
     this->GameWinAniParent = Cast<UCanvasPanel>(mUIRoot->GetWidgetFromName("GameWinAniParent"));
 
@@ -108,12 +105,12 @@ void UMainUIWidget::Init()
     this->mBG = Cast<UImage>(mUIRoot->GetWidgetFromName("BG"));
     UButton* BGBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("BGBtn"));
     BGBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_BGBtn);
-
-    //this->TopBottomView:UpdateShowHideAni(false);  
-    //if (LuaGameConfig.PLATFORM_EDITOR)
-    //{
-    //    TestView->Show();
-    //}
+     
+    this->GameWinAniMgr = NewObject<UGameWinAniMgr>(this);
+    this->GameWinAniMgr->Init(this->GameWinAniParent);
+    this->mTopBottomView = TSharedPtr<TopBottomView>(new TopBottomView());
+    //this->mTopBottomView->Init(this);
+    //this->mTopBottomView->UpdateShowHideAni(false, true);
 
     GetWorld()->GetTimerManager().SetTimer(
         this->mTimer, 
@@ -124,7 +121,9 @@ void UMainUIWidget::Init()
     );
     UEHelper::PauseTimer(this, this->mTimer);
 
+#if WITH_EDITOR
     AKKUIMgr::GetSingleton()->Show<UGMWidget>("GMCWBP");
+#endif
 }
 
 void UMainUIWidget::TimerPerSecondUpdate()
@@ -164,8 +163,29 @@ void UMainUIWidget::CheckFirstLayoutOkToShow()
 //-----------------------------------------Button 点击事件---------------------------------------------------------------------------
 void UMainUIWidget::OnBtnClicked_GameNodeBtn()
 {
-    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_GameNodeBtn"));
+    this->mTopBottomView->OnBtnClicked_GameNodeBtn();
 }
+
+void UMainUIWidget::OnBtnClicked_UndoBtn()
+{
+    this->mTopBottomView->OnBtnClicked_UndoBtn();
+}
+
+void UMainUIWidget::OnBtnClicked_ForwardBtn()
+{
+    this->mTopBottomView->OnBtnClicked_ForwardBtn();
+}
+
+void UMainUIWidget::OnBtnClicked_ThemeBtn()
+{
+    //this->mTopBottomView->OnBtnClicked_ThemeBtn();
+}
+
+void UMainUIWidget::OnBtnClicked_SettingBtn()
+{
+    //this->mTopBottomView->OnBtnClicked_SettingBtn();
+}
+
 
 void UMainUIWidget::OnBtnClicked_SendPokerBtn()
 {
@@ -181,7 +201,7 @@ void UMainUIWidget::OnBtnClicked_BGBtn()
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget OnBtnClicked_BGBtn"));
     this->TellRobot_PlayerAlive();
     //this->CardHintEffectPool->Reset();
-    //this->TopBottomView->UpdateShowHideAni();
+    this->mTopBottomView->UpdateShowHideAni();
 }
 
 void UMainUIWidget::RecycleAndInitCardGo()
@@ -242,13 +262,8 @@ void UMainUIWidget::InitGame()
 
     this->tableCardNodeTop7Go.SetNumZeroed(7);
     this->tableCardNode4AGo.SetNumZeroed(4);
-    
-    this->GameWinAniMgr = NewObject<UGameWinAniMgr>(this);
-    this->GameWinAniMgr->Init(this->GameWinAniParent);
+   
     this->RecoverGame(true);
-
-    mTopBottomView = TSharedPtr<TopBottomView>(new TopBottomView());
-    mTopBottomView->Init(this);
 }
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
@@ -1447,10 +1462,6 @@ void UMainUIWidget::UpdateGameMode()
 {
     UE_LOG(LogTemp, Log, TEXT("this->nGameMode: %d"), this->nGameMode);
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateGameModeState)->Broadcast(nullptr);
-    if (this->nGameMode == SolitaireGameMode::Trip)
-    {
-        KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateTripState)->Broadcast(nullptr);
-    }
 }
 
 //----------------------------------------------------------- 增加分数--------------------------------------------------------------------------

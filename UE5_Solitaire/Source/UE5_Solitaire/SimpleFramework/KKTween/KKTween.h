@@ -211,12 +211,12 @@ public:
         switch(nType)
         {
             case EaseType::linear: { mFunc = EaseFunc::easeLinear<T>; break;}
+            case EaseType::easeOutQuad: { mFunc = EaseFunc::easeOutQuad<T>; break; }
         }
-
-        ensureMsgf(false, TEXT("GetEaseFunc(nType) Miss : %d"), nType);
 
         if (!mFunc.IsSet())
         {
+            ensureMsgf(false, TEXT("GetEaseFunc(nType) Miss : %d"), nType);
             mFunc = &EaseFunc::easeLinear<T>;
         }
         return mFunc;

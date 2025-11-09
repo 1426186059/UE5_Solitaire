@@ -10,8 +10,12 @@ class TopBottomView
 public:
     void Init(UMainUIWidget* mRootUW);
     void RefreshTopBottomUI();
-    void UpdateShowHideAni(bool bShow);
+    void UpdateShowHideAni(bool bAuto = true, bool bShow = true);
     void UpdateGameModeState();
+
+    void OnBtnClicked_GameNodeBtn();
+    void OnBtnClicked_UndoBtn();
+    void OnBtnClicked_ForwardBtn();
 private:
     UMainUIWidget* mUIRoot;
 
