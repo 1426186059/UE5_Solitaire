@@ -2,7 +2,7 @@
   "meta": {
     "version": "0.6.7"
   },
-  "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\AtlasGroup\\common",
+  "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\MainScene\\UI\\AtlasGroup\\common",
   "images": [],
   "folders": [
     "D:/Me/MyProject/UE5_Solitaire/资源/美术资源/0通用"
@@ -19,15 +19,15 @@
     "filter": "none",
     "exporter": "JSON (hash)",
     "fileName": "pack-result",
-    "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\AtlasGroup\\common",
+    "savePath": "D:\\Me\\MyProject\\UE5_Solitaire\\资源\\UE5Res\\MainScene\\UI\\AtlasGroup\\common",
     "width": 2048,
     "height": 2048,
     "fixedSize": false,
     "powerOfTwo": false,
     "padding": 0,
     "extrude": 0,
-    "allowRotation": true,
-    "allowTrim": true,
+    "allowRotation": false,
+    "allowTrim": false,
     "trimMode": "trim",
     "alphaThreshold": "0",
     "detectIdentical": true,
