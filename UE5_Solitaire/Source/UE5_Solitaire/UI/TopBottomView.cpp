@@ -128,9 +128,7 @@ void TopBottomView::UpdateShowHideAni(bool bShow)
     if (this->DownObj == nullptr)
     {
         this->DownObj = this->mUIRoot->GetWidgetFromName("Bottom_DownObj");
-        this->goDownObjCanvasGroup = this->DownObj->GetComponent(typeof(Unity.CanvasGroup));
         this->RightObj = this->mUIRoot->GetWidgetFromName("Bottom_RightObj");
-        this->goRightObjCanvasGroup = this->RightObj->GetComponent(typeof(Unity.CanvasGroup));
     }
 
     LeanTween.cancel(this->DownObj);

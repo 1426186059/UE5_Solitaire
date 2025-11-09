@@ -15,6 +15,9 @@ public:
 private:
     UMainUIWidget* mUIRoot;
 
+    UWidget* DownObj;
+    UWidget* RightObj;
+
     UWidget* ChallengeHead;
     UWidget* NormalHead;
     UWidget* RankHead;
