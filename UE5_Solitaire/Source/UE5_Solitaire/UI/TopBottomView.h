@@ -11,10 +11,13 @@ public:
     void Init(UMainUIWidget* mRootUW);
     void RefreshTopBottomUI();
     void UpdateShowHideAni(bool bShow);
-
+    void UpdateGameModeState();
 private:
-    UMainUIWidget* mRootUW;
-    UCanvasPanel* mUIRoot;
+    UMainUIWidget* mUIRoot;
+
+    UWidget* ChallengeHead;
+    UWidget* NormalHead;
+    UWidget* RankHead;
 
     UTextBlock* textFenShu;
     UTextBlock* textTime;
@@ -34,4 +37,6 @@ private:
 
     UButton* bt_magicwand;
     UButton* hintNodeBtn;
+
+    bool bShowBottomUI;
 };

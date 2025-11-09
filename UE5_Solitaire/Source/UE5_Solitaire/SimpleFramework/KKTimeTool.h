@@ -12,6 +12,31 @@ public:
         return FDateTime::Now().ToUnixTimestamp();
     }
 
+    static FString GetFormatTimeStr(int64 TotalSeconds)
+    {
+        const int ONE_DAY = 3600 * 24;
+        const int ONE_HOUR = 3600;
+        const int ONE_MINUTES = 60;
+
+        int32 Day = TotalSeconds / ONE_DAY;
+        int32 Hour = (TotalSeconds - ONE_DAY * Day) / ONE_HOUR;
+        int32 Minutes = (TotalSeconds - ONE_DAY * Day - Hour * ONE_HOUR) / ONE_MINUTES;
+        int32 Seconds = TotalSeconds % 60;
+
+        if (Day > 0)
+        {
+            return FString::Printf(TEXT("%02dd:%02dh"), Day, Hour);
+        }
+        else if (Hour > 0)
+        {
+            return FString::Printf(TEXT("%02dh:%02dm"), Hour, Minutes);
+        }
+        else
+        {
+            return FString::Printf(TEXT("%02dm:%02ds"), Minutes, Seconds);
+        }
+    }
+
 private:
     KKTimeTool() = delete;
     ~KKTimeTool() = delete;

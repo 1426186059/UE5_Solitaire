@@ -3,16 +3,15 @@
 
 void TopBottomView::Init(UMainUIWidget* root_uw)
 {
-    this->mRootUW = root_uw;
-    this->mUIRoot = Cast<UCanvasPanel>(this->mRootUW->GetWidgetFromName("goTopBottomView"));
+    this->mUIRoot = root_uw;
     this->mUIRoot->SetVisibility(ESlateVisibility::Visible);
 
-    this->textFenShu = Cast<UTextBlock>(this->mRootUW->GetWidgetFromName("textFenShu"));
-    this->textTime = Cast<UTextBlock>(this->mRootUW->GetWidgetFromName("textTime"));
-    this->textMoves = Cast<UTextBlock>(this->mRootUW->GetWidgetFromName("textMoves"));
-    this->textRemainCount = Cast<UTextBlock>(this->mRootUW->GetWidgetFromName("textRemainCount"));
+    this->textFenShu = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("textFenShu"));
+    this->textTime = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("textTime"));
+    this->textMoves = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("textMoves"));
+    this->textRemainCount = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("textRemainCount"));
 
-    this->hintNodeBtn = Cast<UButton>(this->mRootUW->GetWidgetFromName("hintNode"));
+    this->hintNodeBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("hintNode"));
     //this->hintNodeBtn.onClick.AddListener(function()
     //    AudioHandler:PlaySound("button")
 
@@ -21,40 +20,40 @@ void TopBottomView::Init(UMainUIWidget* root_uw)
     //    ThemeSolitaire.GameView : PlayHintAni()
     //    end)
 
-    this->undoNodeBtn = Cast<UButton>(this->mRootUW->GetWidgetFromName("undoNode"));
+    this->undoNodeBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("undoNode"));
     //this->undoNodeBtn.onClick : AddListener(function()
     //    AudioHandler:PlaySound("button")
     //    ThemeSolitaire.GameView : PlayRecordUndoAni()
     //    end)
 
-    this->forwardNodeBtn = Cast<UButton>(this->mRootUW->GetWidgetFromName("forwardNode"));
+    this->forwardNodeBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("forwardNode"));
     //this->forwardNodeBtn.onClick : AddListener(function()
     //    AudioHandler:PlaySound("button")
     //    ThemeSolitaire.GameView : PlayRecordForwardAni()
     //    end)
 
-    this->gameNode = Cast<UButton>(this->mRootUW->GetWidgetFromName("gameNode"));
+    this->gameNode = Cast<UButton>(this->mUIRoot->GetWidgetFromName("gameNode"));
     //this->gameNode.onClick : AddListener(function()
     //    AudioHandler:PlaySound("button")
     //    ThemeSolitaire.GameBeginView : Show()
     //    end)
 
-    this->themeNode = Cast<UButton>(this->mRootUW->GetWidgetFromName("themeNode"));
+    this->themeNode = Cast<UButton>(this->mUIRoot->GetWidgetFromName("themeNode"));
     //this->themeNode.onClick : AddListener(function()
     //    AudioHandler:PlaySound("button")
     //    ThemeSolitaire.GameThemeView : Show()
     //    end)
 
-    this->SettingBtn = Cast<UButton>(this->mRootUW->GetWidgetFromName("SettingBtn"));
+    this->SettingBtn = Cast<UButton>(this->mUIRoot->GetWidgetFromName("SettingBtn"));
     //this->SettingBtn.onClick : AddListener(function()
     //    AudioHandler:PlaySound("button")
     //    ThemeSolitaire.GameSetView : Show()
     //    end)
 
-    this->textIQMode = Cast<UTextBlock>(this->mRootUW->GetWidgetFromName("IQMode"));
-    this->goMagicwandTipCount = this->mRootUW->GetWidgetFromName("bt_magicwand_goTip");
-    this->textMagicwandCount = Cast<UTextBlock>(this->mRootUW->GetWidgetFromName("bt_magicwand_goTip_lb_newcount"));
-    this->bt_magicwand = Cast<UButton>(this->mRootUW->GetWidgetFromName("bt_magicwand"));
+    this->textIQMode = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("IQMode"));
+    this->goMagicwandTipCount = this->mUIRoot->GetWidgetFromName("bt_magicwand_goTip");
+    this->textMagicwandCount = Cast<UTextBlock>(this->mUIRoot->GetWidgetFromName("bt_magicwand_goTip_lb_newcount"));
+    this->bt_magicwand = Cast<UButton>(this->mUIRoot->GetWidgetFromName("bt_magicwand"));
 
     /* this->bt_magicwand.onClick : AddListener(function()
          AudioHandler:PlaySound("mofabang")
@@ -94,24 +93,25 @@ void TopBottomView::Init(UMainUIWidget* root_uw)
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->AddRaw(this, &TopBottomView::RefreshTopBottomUI);
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateGameModeState)->AddRaw(this, &TopBottomView::UpdateGameModeState);
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateMagicWandState)->AddRaw(this, &TopBottomView::UpdateMagicWandState);
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateTripState)->AddRaw(this, &TopBottomView::UpdateTripState);
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateIQState)->AddRaw(this, &TopBottomView::UpdateIQState);
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateCollectState)->AddRaw(this, &TopBottomView::UpdateCollectState);
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_PlayCollectAAni)->AddRaw(this, &TopBottomView::PlayCollectAAni);
+    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateMagicWandState)->AddRaw(this, &TopBottomView::UpdateMagicWandState);
+    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateTripState)->AddRaw(this, &TopBottomView::UpdateTripState);
+    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateIQState)->AddRaw(this, &TopBottomView::UpdateIQState);
+    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateCollectState)->AddRaw(this, &TopBottomView::UpdateCollectState);
+    //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_PlayCollectAAni)->AddRaw(this, &TopBottomView::PlayCollectAAni);
 }
 
 void TopBottomView::RefreshTopBottomUI()
 {
     auto GameView = AKKUIMgr::GetSingleton()->Get<UMainUIWidget>();
-    this->textRemainCount.text = GameView->mSendCardListGo.Num();
-    this->textFenShu.text = RecordStepDataHandler::GetSingleton()->GetData()->nScore;
-    this->textMoves.text = RecordStepDataHandler::GetSingleton()->GetData()->nMoveCount;
-    auto timeSpan = CS.System.TimeSpan.FromSeconds(RecordStepDataHandler::GetSingleton()->GetData()->nTime);
-    this->textTime.text = timeSpan:ToString("mm\\:ss");
-    this->UpdateMagicWandState();
-    this->UpdateIQState();
-    this->UpdateCollectALobbyUI();
+    this->textRemainCount->SetText(FText::AsNumber(GameView->mSendCardListGo.Num()));
+    this->textFenShu->SetText(FText::AsNumber(RecordStepDataHandler::GetSingleton()->GetData()->nScore));
+    this->textMoves->SetText(FText::AsNumber(RecordStepDataHandler::GetSingleton()->GetData()->nMoveCount));
+    auto timeSpan = KKTimeTool::GetFormatTimeStr(RecordStepDataHandler::GetSingleton()->GetData()->nTime);
+    this->textTime->SetText(FText::FromString(timeSpan));
+
+    //this->UpdateMagicWandState();
+    //this->UpdateIQState();
+    //this->UpdateCollectALobbyUI();
 }
 
 void TopBottomView::UpdateShowHideAni(bool bShow)
@@ -155,5 +155,26 @@ void TopBottomView::UpdateShowHideAni(bool bShow)
             end)
         end
     }
+}
+
+void TopBottomView::UpdateGameModeState()
+{
+    this->ChallengeHead->SetVisibility(ESlateVisibility::Hidden);
+    this->NormalHead->SetVisibility(ESlateVisibility::Hidden);
+    this->RankHead->SetVisibility(ESlateVisibility::Hidden);
+
+    if (this->mUIRoot->nGameMode == SolitaireGameMode::Rank)
+    {
+        this->RankHead->SetVisibility(ESlateVisibility::Visible);
+    }
+    else if (this->mUIRoot->nGameMode == SolitaireGameMode::DailyChallenge)
+    {
+        this->ChallengeHead->SetVisibility(ESlateVisibility::Visible);
+    }
+    else
+    {
+        this->NormalHead->SetVisibility(ESlateVisibility::Visible);
+    }
+
 }
 
