@@ -277,18 +277,22 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
     }
     this->mLastSendCardList = mInitSendCardList;
 
-    //-------------------------- - 初始化资源------------------------------
-
+    //--------------------------- 初始化资源------------------------------
+    
     this->RecycleAndInitCardGo();
     this->bGameEnd = false;
     this->nGameMode = (SolitaireGameMode)RecordStepDataHandler::GetSingleton()->GetData()->nGameMode;
-    this->PokerItemParent->SetVisibility(ESlateVisibility::Collapsed);
+    this->PokerItemParent->SetVisibility(ESlateVisibility::Visible);
 
     ensureMsgf(mInitSendCardList.Num() == 52, TEXT("mInitSendCardList Error: %d"), mInitSendCardList.Num());
     for (int32 i = 0; i < mInitSendCardList.Num(); i++)
     {
         this->mSendCardListGo[i]->SetPokerId(mInitSendCardList[i]);
         this->mSendCardListGo[i]->SetTurnOverState(false);
+        this->mSendCardListGo[i]->SetEventTriggerState(false);
+        this->mSendCardListGo[i]->Show();
+        this->mSendCardListGo[i]->Refresh();
+        UMGHelper::SetSlotPos(this->mSendCardListGo[i], this->GetCardNodeSendPokerPos());
     }
 
     for (int32 i = 0; i < 7; i++)
@@ -304,6 +308,123 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 mCardItem->SetTurnOverState(true);
             }
         }
+    }
+
+    RecordStepDataHandler::GetSingleton()->PrintAllOp();
+    //this->PrintGameStartInfo();
+    for (int i = 0; i < tableOpStepItem.Num(); i++)
+    {
+        auto nLastOpInfo = tableOpStepItem[i];
+        auto oriPosTypeInfo = nLastOpInfo.fromPosTypeInfo;
+        auto targetPosTypeInfo = nLastOpInfo.toPosTypeInfo;
+
+        if (oriPosTypeInfo[0] == SolitairePokerPosType::SendPokerPos)
+        {
+            int nSendPokerCount = oriPosTypeInfo[2];
+            ensureMsgf(nSendPokerCount <= this->mSendCardListGo.Num(), TEXT("%d, %d"), nSendPokerCount, this->mSendCardListGo.Num());
+
+            int nCount = 0;
+            while (nCount < nSendPokerCount)
+            {
+                nCount++;
+                auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
+                this->tableCardDraw3Go.Insert(mCardItem, 0);
+                mCardItem->SetTurnOverState(true, i - 1);
+            }
+        }
+        else if (oriPosTypeInfo[0] == SolitairePokerPosType::Draw3Pos)
+        {
+            if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
+            {
+                auto mCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go, 0);
+                auto tableCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[1]];
+                tableCardNode4AGo.Add(mCardItem);
+            }
+            else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
+            {
+                auto mCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go, 0);
+                auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
+                tableCardNodeTop7Go.Add(mCardItem);
+            }
+            else if (targetPosTypeInfo[0] == SolitairePokerPosType::SendPokerPos)
+            {
+                while (this->tableCardDraw3Go.Num() > 0)
+                {
+                    auto mTempCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go, 0);
+                    this->mSendCardListGo.Add(mTempCardItem);
+                    mTempCardItem->SetTurnOverState(false);
+                }
+            }
+            else
+            {
+                ensure(false);
+            }
+        }
+        else if (oriPosTypeInfo[1] == SolitairePokerPosType::A4Pos)
+        {
+            auto mCardItem = TArrayExtentions::Remove(this->tableCardNode4AGo[oriPosTypeInfo[1]]);
+            if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
+            {
+                auto tableCardNode4AGo2 = this->tableCardNode4AGo[targetPosTypeInfo[1]];
+                tableCardNode4AGo2.Add(mCardItem);
+            }
+            else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
+            {
+                auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[targetPosTypeInfo[1]];
+                tableCardNodeTop7Go.Add(mCardItem);
+            }
+            else
+            {
+                ensure(false);
+            }
+        }
+        else if (oriPosTypeInfo[1] == SolitairePokerPosType::Top7Pos)
+        {
+            int oriTop7Index = oriPosTypeInfo[2];
+            int oriIndex = oriPosTypeInfo[3];
+            auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[oriTop7Index];
+            if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
+            {
+                bool bUseMagicWand = oriIndex < tableCardNodeTop7Go.Num();
+                auto mCardItem = TArrayExtentions::Remove(tableCardNodeTop7Go, oriIndex);
+                if (bUseMagicWand)
+                {
+                    mCardItem->SetTurnOverState(true, i - 1);
+                }
+
+                auto tableCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[2]];
+                tableCardNode4AGo.Add(mCardItem);
+            }
+            else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
+            {
+                auto taleResult = this->RemoveArrayFromTop7Go(oriPosTypeInfo[2], oriPosTypeInfo[3]);
+                this->InsertArrayToTop7Go(targetPosTypeInfo[2], taleResult);
+            }
+            else
+            {
+                ensure(false);
+            }
+
+            if (tableCardNodeTop7Go.Num() > 0)
+            {
+                tableCardNodeTop7Go[tableCardNodeTop7Go.Num() - 1]->SetTurnOverState(true, i - 1);
+            }
+            else
+            {
+                ensureMsgf(false, TEXT("%d"), oriPosTypeInfo[0]);
+            }
+        }
+    }
+
+    //-------------------------------------------------------------------------- -
+    for (auto v : this->mSendCardListGo)
+    {
+        auto mCardItem = v;
+        UMGHelper::SetChildLastZOrder(mCardItem);
+        UMGHelper::SetSlotPos(mCardItem, GetCardNodeSendPokerPos());
+        mCardItem->Refresh();
+        mCardItem->SetEventTriggerState(false);
+        mCardItem->Show();
     }
 
     if (bPlayAni)
@@ -466,7 +587,7 @@ void UMainUIWidget::RefreshAllPokerState()
         UMGHelper::SetSlotPos(mCardItem, this->GetCardNodeDraw3Pos(i));
         mCardItem->Refresh();
         mCardItem->SetEventTriggerState(i == 1);
-        if (i <= 3)
+        if (i <= 2)
         {
             mCardItem->Show();
         }
@@ -2250,7 +2371,7 @@ void UMainUIWidget::PlayRecordUndoAni()
                 fromPos = this->GetCardNodeDraw3Pos(nDraw3Index);
                 this->OnClickDraw3Move(mTempItem, fromPos, toPos, true, [=]()
                     {
-                        if (nDraw3Index <= 3)
+                        if (nDraw3Index <= 2)
                         {
                             mTempItem->Show();
                         }
