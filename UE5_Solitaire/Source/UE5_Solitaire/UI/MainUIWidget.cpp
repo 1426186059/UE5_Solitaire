@@ -456,9 +456,9 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
         for (int32 i = 0; i < this->tableCardDraw3Go.Num(); i++)
         {
             auto mCardItem = this->tableCardDraw3Go[i];
-            UMGHelper::SetChildLastZOrder(mCardItem);
+            UMGHelper::SetChildFirstZOrder(mCardItem);
             mCardItem->ForceShowBackUI();
-            mCardItem->SetEventTriggerState(i == 1);
+            mCardItem->SetEventTriggerState(i == 0);
 
             if (i <= 2)
             {
@@ -2304,8 +2304,8 @@ void UMainUIWidget::PlayRecordUndoAni()
         RecordStepDataHandler::GetSingleton()->AddScore(-nScore);
     }
 
-    auto oriPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
-    auto targetPosTypeInfo = nLastOpInfo->toPosTypeInfo;
+    const auto& oriPosTypeInfo = nLastOpInfo->fromPosTypeInfo;
+    const auto& targetPosTypeInfo = nLastOpInfo->toPosTypeInfo;
     auto fromPos = GetPosByPosTypeInfo(oriPosTypeInfo);
     auto toPos = GetPosByPosTypeInfo(targetPosTypeInfo);
 
@@ -2518,7 +2518,7 @@ void UMainUIWidget::PlayRecordForwardAni()
         int nCount = 0;
         while (nCount < nSendPokerCount)
         {
-            nCount = nCount + 1;
+            nCount++;
             auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
             this->tableCardDraw3Go.Insert(mCardItem, 0);
 
@@ -2540,7 +2540,7 @@ void UMainUIWidget::PlayRecordForwardAni()
         }
         else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
-            mCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go, 1);
+            mCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go, 0);
             int nTop7Index = targetPosTypeInfo[1];
             this->tableCardNodeTop7Go[nTop7Index].Add(mCardItem);
             this->DoTop7ReSizeHeightAni(nTop7Index);
