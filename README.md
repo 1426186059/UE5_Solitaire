@@ -119,3 +119,6 @@ UMG问题：
 (2) 然后使用 NativeOnTouchMoved 系列方法
 (3) 不要使用这个API: UWidgetLayoutLibrary::GetMousePositionOnPlatform(). 而是 在NativeOnTouchMoved 里鼠标位置全局缓存一下，这样就可以在Tick里实时更新.
 
+<h1>包体尺寸优化</h1>
+1：游戏已经包含游戏资源：75M
+2：未经其他优化： 开发包200M左右, 发行包140M，尺寸约相差60M，距离U3D的包体尺寸，相差70M左右。

@@ -114,12 +114,17 @@ public:
 	TArray<int32> GetTableA4Color();
 
 	void OnClickDraw3Move(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr);
-	void OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc);
+	void OnDragEndMove(UPokerItemWidget* mCardItem, FVector2D fromPos, FVector2D toPos, bool bUndo, TFunction<void()> finishFunc = nullptr);
 	void DoTop7ReSizeHeightAni(int32 nTop7Index);
 
 	void DoWhenSet_FastGame();
 	void PlayToA4EffectAni(int32 nIndex, UPokerItemWidget* mCardItem);
 	void OnFastGameToResultA4();
+
+	int32 GetNowRecordStepIndex();
+	void PlayRecordUndoAni();
+	void PlayRecordForwardAni();
+
 public:
 	UUserWidget* mUIRoot;
 	UCanvasPanel* PokerItemParent;

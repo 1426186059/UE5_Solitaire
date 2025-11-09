@@ -224,7 +224,7 @@ void UPokerItemWidget::SetTurnOverState(bool orShow, int nStepIndex)
     {
         if (nStepIndex == -1)
         {
-            //nStepIndex = AKKUIMgr::GetSingleton()->GetNowRecordStepIndex();
+            nStepIndex = AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->GetNowRecordStepIndex();
         }
 
         this->nStepIndex_ForFirstShowPokerId = nStepIndex;
