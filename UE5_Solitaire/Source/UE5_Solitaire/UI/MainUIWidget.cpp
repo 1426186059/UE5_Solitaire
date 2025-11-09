@@ -406,7 +406,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 }
             });
 
-        KKTween::delayedCall(1.0, []()
+        KKTween::delayedCall(1.0, [=, this]()
             {
                 int nDraw3Count = 0;
                 for (int i = 0; i < this->tableCardDraw3Go.Num(); i++)
@@ -416,7 +416,6 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                     auto mCardItem = this->tableCardDraw3Go[i];
                     auto fromPos = this->GetCardNodeSendPokerPos();
                     auto toPos = this->GetCardNodeDraw3Pos(i);
-
 
                     auto mTween = KKTweenExtentions::UMG_MoveLocal_SlotPos(this, toPos, 0.3, KKTween::EaseType::easeOutQuad)->SetOnCompleteFunc(
                         [=, this]()
