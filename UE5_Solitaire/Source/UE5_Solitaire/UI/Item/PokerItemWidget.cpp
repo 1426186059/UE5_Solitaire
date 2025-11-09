@@ -135,12 +135,12 @@ void UPokerItemWidget::OnDragBegin()
 
 void UPokerItemWidget::OnDrag()
 {
+    //FVector2D  MousePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
     if (this->bInDrag)
     {
         UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget OnDrag"));
 
         FVector2D  MousePos = this->CurrentTouchPosition;
-        FVector2D  MousePos = UWidgetLayoutLibrary::GetMousePositionOnPlatform();
         FVector2D localPos1 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(MousePos);
         FVector2D localPos2 = this->GetParent()->GetCachedGeometry().AbsoluteToLocal(this->beginScreenSpacePos);
         FVector2D OffsetPos = localPos1 - localPos2;

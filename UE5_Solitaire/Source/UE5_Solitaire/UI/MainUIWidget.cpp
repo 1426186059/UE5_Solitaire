@@ -2127,7 +2127,7 @@ void UMainUIWidget::PlayRecordUndoAni()
             mCardItem->SetTurnOverState(false);
             mCardItem->PlayTurnOverAni();
 
-            auto toPos = this->GetCardNodeDraw3Pos(nCount);
+            toPos = this->GetCardNodeDraw3Pos(nCount);
             this->OnClickDraw3Move(mCardItem, fromPos, toPos, true);
         }
         this->RefreshDrawZone();
@@ -2165,7 +2165,7 @@ void UMainUIWidget::PlayRecordUndoAni()
                 UMGHelper::SetChildLastZOrder(mTempItem);
                 this->tableCardDraw3Go.Insert(mTempItem, 0);
 
-                auto fromPos = this->GetCardNodeDraw3Pos(nDraw3Index);
+                fromPos = this->GetCardNodeDraw3Pos(nDraw3Index);
                 this->OnClickDraw3Move(mTempItem, fromPos, toPos, true, [=]()
                     {
                         if (nDraw3Index <= 3)
@@ -2195,10 +2195,10 @@ void UMainUIWidget::PlayRecordUndoAni()
     }
     else if (oriPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
     {
-        auto tableCardNode4AGo = this->tableCardNode4AGo[oriPosTypeInfo[1]];
-        if (tableCardNode4AGo[tableCardNode4AGo.Num() - 1])
+        auto mListCardNode4AGo = this->tableCardNode4AGo[oriPosTypeInfo[1]];
+        if (mListCardNode4AGo[mListCardNode4AGo.Num() - 1])
         {
-            tableCardNode4AGo[tableCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
+            mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
         }
 
         UPokerItemWidget* mCardItem = nullptr;
@@ -2206,14 +2206,14 @@ void UMainUIWidget::PlayRecordUndoAni()
         {
             auto tableCardNode4AGo2 = this->tableCardNode4AGo[targetPosTypeInfo[1]];
             mCardItem = TArrayExtentions::Remove(tableCardNode4AGo2);
-            tableCardNode4AGo.Add(mCardItem);
+            mListCardNode4AGo.Add(mCardItem);
         }
         else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
-            int nTop7Index = targetPosTypeInfo[2];
-            auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
-            mCardItem = TArrayExtentions::Remove(tableCardNodeTop7Go);
-            tableCardNode4AGo.Add(mCardItem);
+            int nTop7Index = targetPosTypeInfo[1];
+            auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
+            mCardItem = TArrayExtentions::Remove(mListCardNodeTop7Go);
+            mListCardNode4AGo.Add(mCardItem);
             this->DoTop7ReSizeHeightAni(nTop7Index);
         }
         else
@@ -2226,10 +2226,10 @@ void UMainUIWidget::PlayRecordUndoAni()
     }
     else if (oriPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
     {
-        int oriTop7Index = oriPosTypeInfo[2];
-        int oriIndex = oriPosTypeInfo[3];
-        auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[oriTop7Index];
-        auto mCardItem2 = tableCardNodeTop7Go[oriIndex - 1];
+        int oriTop7Index = oriPosTypeInfo[1];
+        int oriIndex = oriPosTypeInfo[2];
+        auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[oriTop7Index];
+        auto mCardItem2 = mListCardNodeTop7Go[oriIndex - 1];
         if (mCardItem2 and nStepIndex - 1 == mCardItem2->nStepIndex_ForFirstShowPokerId)
         {
             mCardItem2->SetTurnOverState(false);
@@ -2237,30 +2237,30 @@ void UMainUIWidget::PlayRecordUndoAni()
             mCardItem2->SetEventTriggerState(false);
         }
 
-        auto fromPos = this->GetPosByPosTypeInfo(oriPosTypeInfo);
+        fromPos = this->GetPosByPosTypeInfo(oriPosTypeInfo);
         UPokerItemWidget* mCardItem = nullptr;
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
-            bool bUseMagicWand = oriIndex != tableCardNodeTop7Go.Num() + 1;
-            auto tableCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[2]];
-            mCardItem = TArrayExtentions::Remove(tableCardNode4AGo);
-            tableCardNodeTop7Go.Insert(mCardItem, oriIndex);
+            bool bUseMagicWand = oriIndex != mListCardNodeTop7Go.Num() + 1;
+            auto mListCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[1]];
+            mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
+            mListCardNodeTop7Go.Insert(mCardItem, oriIndex);
 
             if (bUseMagicWand)
             {
                 mCardItem->SetTurnOverState(false);
-                mCardItem->PlayTurnOverAni()l;
+                mCardItem->PlayTurnOverAni();
                 mCardItem->SetEventTriggerState(false);
             }
 
-            if (tableCardNode4AGo.Num() > 0)
+            if (mListCardNode4AGo.Num() > 0)
             {
-                tableCardNode4AGo[tableCardNode4AGo.Num() - 1]->SetEventTriggerState(true);
+                mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(true);
             }
             else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
             {
-                int nTargetTop7Index = targetPosTypeInfo[2];
-                int nRemoveIndex = targetPosTypeInfo[3];
+                int nTargetTop7Index = targetPosTypeInfo[1];
+                int nRemoveIndex = targetPosTypeInfo[2];
                 auto taleResult = this->RemoveArrayFromTop7Go(nTargetTop7Index, nRemoveIndex);
                 mCardItem = taleResult[0];
                 this->InsertArrayToTop7Go(oriTop7Index, taleResult);
@@ -2321,7 +2321,7 @@ void UMainUIWidget::PlayRecordForwardAni()
         {
             nCount = nCount + 1;
             auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
-            this->tableCardDraw3Go.Add(mCardItem, 0);
+            this->tableCardDraw3Go.Insert(mCardItem, 0);
 
             UMGHelper::SetChildLastZOrder(mCardItem);
             mCardItem->SetTurnOverState(true, nStepIndex - 1);
@@ -2330,7 +2330,7 @@ void UMainUIWidget::PlayRecordForwardAni()
         }
         this->RefreshDrawZone();
     }
-    else if (oriPosTypeInfo[1] == SolitairePokerPosType::Draw3Pos)
+    else if (oriPosTypeInfo[0] == SolitairePokerPosType::Draw3Pos)
     {
         UPokerItemWidget* mCardItem = nullptr;
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
@@ -2359,7 +2359,7 @@ void UMainUIWidget::PlayRecordForwardAni()
                 mTempItem->Show();
                 this->mSendCardListGo.Add(mTempItem);
 
-                auto fromPos = this->GetCardNodeDraw3Pos(i);
+                fromPos = this->GetCardNodeDraw3Pos(i);
                 this->OnClickDraw3Move(mTempItem, fromPos, toPos, false);
             }
             this->tableCardDraw3Go = {};
@@ -2382,8 +2382,8 @@ void UMainUIWidget::PlayRecordForwardAni()
     else if (oriPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
     {
         int nOriA4Index = oriPosTypeInfo[1];
-        auto tableCardNode4AGo = this->tableCardNode4AGo[nOriA4Index];
-        auto mCardItem = TArrayExtentions::Remove(tableCardNode4AGo);
+        auto mListCardNode4AGo = this->tableCardNode4AGo[nOriA4Index];
+        auto mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
             int nToA4Index = targetPosTypeInfo[1];
@@ -2391,7 +2391,7 @@ void UMainUIWidget::PlayRecordForwardAni()
 
             if (tableCardNode4AGo2.Num() > 0)
             {
-                tableCardNode4AGo2[tableCardNode4AGo2.Num() - 1]->SetEventTriggerState(false);
+                tableCardNode4AGo2[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
             }
 
             tableCardNode4AGo2.Add(mCardItem);
@@ -2399,8 +2399,8 @@ void UMainUIWidget::PlayRecordForwardAni()
         else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
             int nTop7Index = targetPosTypeInfo[1];
-            auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
-            tableCardNodeTop7Go.Add(mCardItem);
+            auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[nTop7Index];
+            mListCardNodeTop7Go.Add(mCardItem);
             this->DoTop7ReSizeHeightAni(nTop7Index);
         }
         else
@@ -2415,12 +2415,12 @@ void UMainUIWidget::PlayRecordForwardAni()
     {
         int nOriTop7Index = oriPosTypeInfo[1];
         int nRemoveIndex = oriPosTypeInfo[2];
-        auto tableCardNodeTop7Go = this->tableCardNodeTop7Go[nOriTop7Index];
+        auto mListCardNodeTop7Go = this->tableCardNodeTop7Go[nOriTop7Index];
 
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
-            bool bUseMagicWand = nRemoveIndex < tableCardNodeTop7Go.Num();
-            auto mCardItem = TArrayExtentions::Remove(tableCardNodeTop7Go, nRemoveIndex);
+            bool bUseMagicWand = nRemoveIndex < mListCardNodeTop7Go.Num();
+            auto mCardItem = TArrayExtentions::Remove(mListCardNodeTop7Go, nRemoveIndex);
             if (bUseMagicWand)
             {
                 mCardItem->SetTurnOverState(true, nStepIndex - 1);
@@ -2429,7 +2429,7 @@ void UMainUIWidget::PlayRecordForwardAni()
             }
             else
             {
-                auto nNowLastTop7CardItem = tableCardNodeTop7Go[tableCardNodeTop7Go.Num() - 1];
+                auto nNowLastTop7CardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
                 if (nNowLastTop7CardItem && nNowLastTop7CardItem->orTurnOverStateIsTrue() == false)
                 {
                     nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex - 1);
@@ -2439,12 +2439,12 @@ void UMainUIWidget::PlayRecordForwardAni()
             }
 
             int nA4Index = targetPosTypeInfo[1];
-            auto tableCardNode4AGo = this->tableCardNode4AGo[nA4Index];
-            if (tableCardNode4AGo.Num() > 0)
+            auto mListCardNode4AGo = this->tableCardNode4AGo[nA4Index];
+            if (mListCardNode4AGo.Num() > 0)
             {
-                tableCardNode4AGo[tableCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
+                mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
             }
-            tableCardNode4AGo.Add(mCardItem);
+            mListCardNode4AGo.Add(mCardItem);
 
             this->DoTop7ReSizeHeightAni(nOriTop7Index);
             this->OnDragBegin(mCardItem);
@@ -2454,7 +2454,7 @@ void UMainUIWidget::PlayRecordForwardAni()
         {
             auto tableCardList = this->RemoveArrayFromTop7Go(nOriTop7Index, nRemoveIndex);
             auto mCardItem = tableCardList[0];
-            auto nNowLastTop7CardItem = tableCardNodeTop7Go[tableCardNodeTop7Go.Num() - 1];
+            auto nNowLastTop7CardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
             if (nNowLastTop7CardItem and nNowLastTop7CardItem->orTurnOverStateIsTrue() == false)
             {
                 nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex - 1);
