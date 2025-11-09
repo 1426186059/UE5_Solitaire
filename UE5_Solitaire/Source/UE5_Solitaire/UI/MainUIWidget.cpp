@@ -2112,7 +2112,7 @@ void UMainUIWidget::PlayRecordUndoAni()
 
     if (oriPosTypeInfo[0] == SolitairePokerPosType::SendPokerPos)
     {
-        int nSendPokerCount = oriPosTypeInfo[2];
+        int nSendPokerCount = oriPosTypeInfo[1];
 
         int nCount = 0;
         while (nCount < nSendPokerCount)
@@ -2144,13 +2144,13 @@ void UMainUIWidget::PlayRecordUndoAni()
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
             mCardItem = TArrayExtentions::Remove(this->tableCardNode4AGo[targetPosTypeInfo[1]]);
-            this->tableCardDraw3Go.Add(mCardItem, 0);
+            this->tableCardDraw3Go.Insert(mCardItem, 0);
         }
         else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {
-            int nTop7Index = targetPosTypeInfo[2];
+            int nTop7Index = targetPosTypeInfo[1];
             mCardItem = TArrayExtentions::Remove(this->tableCardNodeTop7Go[nTop7Index]);
-            this->tableCardDraw3Go.Add(mCardItem, 0);
+            this->tableCardDraw3Go.Insert(mCardItem, 0);
             this->DoTop7ReSizeHeightAni(nTop7Index);
         }
         else if (targetPosTypeInfo[0] == SolitairePokerPosType::SendPokerPos)
@@ -2163,10 +2163,10 @@ void UMainUIWidget::PlayRecordUndoAni()
                 mTempItem->SetTurnOverState(true);
                 mTempItem->PlayTurnOverAni();
                 UMGHelper::SetChildLastZOrder(mTempItem);
-                this->tableCardDraw3Go.Add(mTempItem, 0);
+                this->tableCardDraw3Go.Insert(mTempItem, 0);
 
                 auto fromPos = this->GetCardNodeDraw3Pos(nDraw3Index);
-                this->OnClickDraw3Move(mTempItem, fromPos, toPos, true, []()
+                this->OnClickDraw3Move(mTempItem, fromPos, toPos, true, [=]()
                     {
                         if (nDraw3Index <= 3)
                         {
@@ -2244,7 +2244,7 @@ void UMainUIWidget::PlayRecordUndoAni()
             bool bUseMagicWand = oriIndex != tableCardNodeTop7Go.Num() + 1;
             auto tableCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[2]];
             mCardItem = TArrayExtentions::Remove(tableCardNode4AGo);
-            tableCardNodeTop7Go.Add(mCardItem, oriIndex);
+            tableCardNodeTop7Go.Insert(mCardItem, oriIndex);
 
             if (bUseMagicWand)
             {
@@ -2286,7 +2286,6 @@ void UMainUIWidget::PlayRecordUndoAni()
     }
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
 }
-
 
 void UMainUIWidget::PlayRecordForwardAni()
 {
