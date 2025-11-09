@@ -3,17 +3,35 @@
 #include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "CoreMinimal.h"
 
+class UMainUIWidget;
+
 class TopBottomView
 {
 public:
-    void Init(UCanvasPanel* t);
-    void Show();
-    void Hide();
-    void PlayAni(TFunction<void()> finishFunc);
-    void DestroyAniNode();
+    void Init(UMainUIWidget* mRootUW);
+    void RefreshTopBottomUI();
+    void UpdateShowHideAni(bool bShow);
 
-    /*TArray<int32> GetTableA4Color();
-    TArray<FVector2D> GetTableA4WorldPos();*/
 private:
+    UMainUIWidget* mRootUW;
     UCanvasPanel* mUIRoot;
+
+    UTextBlock* textFenShu;
+    UTextBlock* textTime;
+    UTextBlock* textMoves;
+    UTextBlock* textRemainCount;
+
+    UTextBlock* textIQMode;
+    UWidget* goMagicwandTipCount;
+    UTextBlock* textMagicwandCount;
+    UTextBlock* textRemainCount;
+    
+    UButton* SettingBtn;
+    UButton* undoNodeBtn;
+    UButton* forwardNodeBtn;
+    UButton* gameNode;
+    UButton* themeNode;
+
+    UButton* bt_magicwand;
+    UButton* hintNodeBtn;
 };
