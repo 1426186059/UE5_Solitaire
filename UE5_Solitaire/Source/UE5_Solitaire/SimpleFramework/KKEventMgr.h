@@ -47,6 +47,11 @@ public:
         }
     }
 
+    void RemoveAllListener()
+    {
+        mEventDic.Empty();
+    }
+
     void Broadcast(int nEventId, void* Param = nullptr)
     {
         if (mEventDic.Contains(nEventId))

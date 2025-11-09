@@ -17,6 +17,7 @@ void AGameLauncher::BeginPlay()
 void AGameLauncher::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
+    KKEventMgr::GetSingleton()->RemoveAllListener();
 }
 
 void AGameLauncher::Tick(float DeltaTime)
