@@ -105,12 +105,12 @@ void UMainUIWidget::Init()
     this->mBG = Cast<UImage>(mUIRoot->GetWidgetFromName("BG"));
     UButton* BGBtn = Cast<UButton>(mUIRoot->GetWidgetFromName("BGBtn"));
     BGBtn->OnClicked.AddDynamic(this, &UMainUIWidget::OnBtnClicked_BGBtn);
-     
+    
     this->GameWinAniMgr = NewObject<UGameWinAniMgr>(this);
     this->GameWinAniMgr->Init(this->GameWinAniParent);
     this->mTopBottomView = TSharedPtr<TopBottomView>(new TopBottomView());
-    //this->mTopBottomView->Init(this);
-    //this->mTopBottomView->UpdateShowHideAni(false, true);
+    this->mTopBottomView->Init(this);
+    this->mTopBottomView->UpdateShowHideAni(false, true);
 
     GetWorld()->GetTimerManager().SetTimer(
         this->mTimer, 

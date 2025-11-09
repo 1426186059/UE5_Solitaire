@@ -61,8 +61,7 @@ void TopBottomView::OnBtnClicked_ForwardBtn()
 
 void TopBottomView::RefreshTopBottomUI()
 {
-    auto GameView = AKKUIMgr::GetSingleton()->Get<UMainUIWidget>();
-    this->textRemainCount->SetText(FText::AsNumber(GameView->mSendCardListGo.Num()));
+    this->textRemainCount->SetText(FText::AsNumber(mUIRoot->mSendCardListGo.Num()));
     this->textFenShu->SetText(FText::AsNumber(RecordStepDataHandler::GetSingleton()->GetData()->nScore));
     this->textMoves->SetText(FText::AsNumber(RecordStepDataHandler::GetSingleton()->GetData()->nMoveCount));
     auto timeSpan = KKTimeTool::GetFormatTimeStr(RecordStepDataHandler::GetSingleton()->GetData()->nTime);
@@ -102,7 +101,7 @@ void TopBottomView::UpdateShowHideAni(bool bAuto, bool bShow)
     }
     else
     {
-        KKTweenExtentions::UMG_MoveLocal_SlotPosY(this->DownObj, -300, 0.3, KKTween::EaseType::easeOutQuad);
+        KKTweenExtentions::UMG_MoveLocal_SlotPosY(this->DownObj, 300, 0.3, KKTween::EaseType::easeOutQuad);
         KKTweenExtentions::UMG_MoveLocal_SlotPosX(this->RightObj, 300, 0.3, KKTween::EaseType::easeOutQuad);
         KKTweenExtentions::UMG_Opacity(this->DownObj, 0, 0.3, KKTween::EaseType::easeOutQuad);
         KKTweenExtentions::UMG_Opacity(this->RightObj, 0, 0.3, KKTween::EaseType::easeOutQuad);
