@@ -1,7 +1,6 @@
 #pragma once
 
 #include "KKTweenHead.h"
-#include "UE5_Solitaire/SimpleFramework/KKUI/UMGHelper.h"
 #include "CoreMinimal.h"
 
 using namespace KKTweenAPI;
@@ -9,6 +8,17 @@ using namespace KKTweenAPI;
 class KKTween
 {
 public:
+    enum EaseType
+    {
+        linear, easeOutQuad, easeInQuad, easeInOutQuad, easeInCubic, easeOutCubic,
+        easeInOutCubic, easeInQuart, easeOutQuart, easeInOutQuart,
+        easeInQuint, easeOutQuint, easeInOutQuint, easeInSine, easeOutSine, easeInOutSine,
+        easeInExpo, easeOutExpo, easeInOutExpo, easeInCirc, easeOutCirc, easeInOutCirc,
+        easeInBounce, easeOutBounce, easeInOutBounce, easeInBack, easeOutBack, easeInOutBack,
+        easeInElastic, easeOutElastic, easeInOutElastic,
+        easeSpring, easeShake, punch, once, clamp, pingPong, animationCurve
+    };
+
     struct Handle
     {
     private:
@@ -163,6 +173,16 @@ public:
         return KKTween::Handle(mTSharePtr);
     }
 
+    static void CancelAll()
+    {
+        AKKTweenMgr::GetSingleton()->CancelAll();
+    }
+
+    static void Cancel(UObject* obj)
+    {
+        AKKTweenMgr::GetSingleton()->Cancel(obj);
+    }
+
     static TSharedPtr<KKTweenItem> AddTween(float time, Action_Float_Delegate updateFunc = nullptr, ActionDelegate finishFunc = nullptr)
     {
         return AKKTweenMgr::GetSingleton()->AddTween(nullptr, time, updateFunc, finishFunc);
@@ -183,28 +203,23 @@ public:
         return AddTween(obj, time, nullptr, finishFunc);
     }
 
-    static TSharedPtr<KKTweenItem> UMG_MoveLocal_Render(UWidget* target, FVector2D to, float time)
+    template<typename T>
+    static TFunction<T(T, T, float)> GetEaseFunc(EaseType nType)
     {
-        FVector2D InnerFrom = UMGHelper::GetRenderPos(target);
-        FVector2D InnerTo = to;
-        return AddTween(target, time,
-            [=](float fPercent)
-            {
-                FVector2D targetPos = EaseFunc::easeLinear(InnerFrom, InnerTo, fPercent);
-                UMGHelper::SetRenderPos(target, targetPos);
-            });
-    }
+        TFunction<T(T, T, float)> mFunc;
 
-    static TSharedPtr<KKTweenItem> UMG_MoveLocal_Slot(UWidget* target, FVector2D to, float time)
-    {
-        FVector2D InnerFrom = UMGHelper::GetSlotPos(target);
-        FVector2D InnerTo = to;
-        return AddTween(target, time,
-            [=](float fPercent)
-            {
-                FVector2D targetPos = EaseFunc::easeLinear(InnerFrom, InnerTo, fPercent);
-                UMGHelper::SetSlotPos(target, targetPos);
-            });
+        switch(nType)
+        {
+            case EaseType::linear: { mFunc = EaseFunc::easeLinear<T>; break;}
+        }
+
+        ensureMsgf(false, TEXT("GetEaseFunc(nType) Miss : %d"), nType);
+
+        if (!mFunc.IsSet())
+        {
+            mFunc = &EaseFunc::easeLinear<T>;
+        }
+        return mFunc;
     }
 };
 

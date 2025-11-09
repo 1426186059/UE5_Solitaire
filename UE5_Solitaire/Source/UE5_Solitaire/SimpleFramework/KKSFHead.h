@@ -16,6 +16,6 @@
 #include "KKCSVParser.h"
 
 #include "KKUI/KKUI.h"
-#include "KKTween/KKTween.h"
+#include "KKTween/KKTweenExtentions.h"
 #include "KKTimer/KKTimer.h"
 #include "KKPool/KKPool.h"

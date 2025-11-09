@@ -163,5 +163,30 @@ namespace KKTweenAPI
         mTweenT.Add(mItem);
         return mItem;
     }
+
+    void KKTweenByList::Cancel(UObject* obj)
+    {
+        auto mNode = this->mTweenT.GetHead();
+        while (mNode != nullptr)
+        {
+            TSharedPtr<KKTweenItem> mItem = mNode->GetValue();
+            if (mItem->bindObj == obj)
+            {
+                mItem->toggle == false;
+            }
+            mNode = mNode->GetNextNode();
+        }
+    }
+
+    void KKTweenByList::CancelAll()
+    {
+        auto mNode = this->mTweenT.GetHead();
+        while (mNode != nullptr)
+        {
+            TSharedPtr<KKTweenItem> mItem = mNode->GetValue();
+            mItem->toggle == false;
+            mNode = mNode->GetNextNode();
+        }
+    }
 }
 #endif

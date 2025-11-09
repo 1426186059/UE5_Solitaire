@@ -47,4 +47,9 @@ TSharedPtr<KKTweenAPI::KKTweenItem> AKKTweenMgr::AddTween(UObject* obj, float ti
     return this->mManager->AddTween(obj, time, updateFunc, finishFunc);
 }
 
+void AKKTweenMgr::Cancel(UObject* obj)
+{
+    return this->mManager->Cancel(obj);
+}
+
 

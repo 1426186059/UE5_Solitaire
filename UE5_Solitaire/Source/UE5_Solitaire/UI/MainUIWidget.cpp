@@ -590,7 +590,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
             this->tableCardNodeTop7Go[nTopIndex].Add(mCardItem);
 
             UMGHelper::SetChildLastZOrder(mCardItem);
-            KKTween::UMG_MoveLocal_Slot(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnStartFunc([=,this]()
+            KKTweenExtentions::UMG_MoveLocal_SlotPos(mCardItem, to, 0.3)->SetDelay(0.05 * j)->SetOnStartFunc([=,this]()
             {
                 
             })->SetOnCompleteFunc([=, this]()

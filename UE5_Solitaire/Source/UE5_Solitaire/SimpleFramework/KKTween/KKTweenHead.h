@@ -226,6 +226,8 @@ namespace KKTweenAPI
 
         void Update(float DeltaTime);
         void SetMaxTweenCount(int nCount);
+        void Cancel(UObject* obj);
+        void CancelAll();
         TSharedPtr<KKTweenAPI::KKTweenItem> AddTween(
             UObject* obj,
             float time,
@@ -249,6 +251,8 @@ namespace KKTweenAPI
 
         void Update(float DeltaTime);
         void SetMaxTweenCount(int nCount);
+        void Cancel(UObject* obj);
+        void CancelAll();
         TSharedPtr<KKTweenAPI::KKTweenItem> AddTween(
             UObject* obj,
             float time,
@@ -288,6 +292,8 @@ private:
 public:
     void Update(float DeltaTime);
     void SetMaxTweenCount(int nCount);
+    void Cancel(UObject* obj);
+    void CancelAll();
     TSharedPtr<KKTweenAPI::KKTweenItem> AddTween(UObject* obj, float time, KKTweenAPI::Action_Float_Delegate updateFunc = nullptr, KKTweenAPI::ActionDelegate finishFunc = nullptr);
 public:
     //DECLARE_MULTICAST_DELEGATE(ActionDelegate);

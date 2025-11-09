@@ -30,7 +30,6 @@ private:
     UTextBlock* textIQMode;
     UWidget* goMagicwandTipCount;
     UTextBlock* textMagicwandCount;
-    UTextBlock* textRemainCount;
     
     UButton* SettingBtn;
     UButton* undoNodeBtn;

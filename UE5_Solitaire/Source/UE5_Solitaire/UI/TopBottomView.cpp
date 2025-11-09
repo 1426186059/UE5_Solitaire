@@ -91,8 +91,15 @@ void TopBottomView::Init(UMainUIWidget* root_uw)
     //        ThemeSolitaire.GameCollectAView : Show()
     //        end)
 
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->AddRaw(this, &TopBottomView::RefreshTopBottomUI);
-    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateGameModeState)->AddRaw(this, &TopBottomView::UpdateGameModeState);
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->AddLambda([this](void* param)
+        {
+            this->RefreshTopBottomUI();
+        });
+    KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateGameModeState)->AddLambda([this](void* param)
+        {
+            this->UpdateGameModeState();
+        });
+
     //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateMagicWandState)->AddRaw(this, &TopBottomView::UpdateMagicWandState);
     //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateTripState)->AddRaw(this, &TopBottomView::UpdateTripState);
     //KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_UpdateIQState)->AddRaw(this, &TopBottomView::UpdateIQState);
@@ -131,28 +138,24 @@ void TopBottomView::UpdateShowHideAni(bool bShow)
         this->RightObj = this->mUIRoot->GetWidgetFromName("Bottom_RightObj");
     }
 
-    LeanTween.cancel(this->DownObj);
-    LeanTween.cancel(this->RightObj);
+    KKTween::Cancel(this->DownObj);
+    KKTween::Cancel(this->RightObj);
 
     if (this->bShowBottomUI)
     {
-        LeanTween.moveLocalY(this->DownObj, 0, 0.3) :setEase(LeanTweenType.easeOutQuad);
-        LeanTween.moveLocalX(this->RightObj, 0, 0.3) : setEase(LeanTweenType.easeOutQuad);
-        LeanTween.value(0, 1, 0.3) : setEase(LeanTweenType.easeOutQuad) : setOnUpdate(function(value)
-            this->goDownObjCanvasGroup.alpha = value
-            this->goRightObjCanvasGroup.alpha = value
-            end)
+        KKTweenExtentions::UMG_MoveLocal_SlotPosY(this->DownObj, 0, 0.3, KKTween::EaseType::easeOutQuad);
+        KKTweenExtentions::UMG_MoveLocal_SlotPosX(this->RightObj, 0, 0.3, KKTween::EaseType::easeOutQuad);
+        KKTweenExtentions::UMG_Opacity(this->DownObj, 1, 0.3, KKTween::EaseType::easeOutQuad);
+        KKTweenExtentions::UMG_Opacity(this->RightObj, 1, 0.3, KKTween::EaseType::easeOutQuad);
     }
     else
     {
-        LeanTween.moveLocalY(this->DownObj, -300, 0.3) :setEase(LeanTweenType.easeOutQuad);
-        LeanTween.moveLocalX(this->RightObj, 300, 0.3) : setEase(LeanTweenType.easeOutQuad);
-        LeanTween.value(1, 0, 0.3) : setEase(LeanTweenType.easeOutQuad) : setOnUpdate(function(value)
-            this->goDownObjCanvasGroup.alpha = value
-            this->goRightObjCanvasGroup.alpha = value
-            end)
-        end
+        KKTweenExtentions::UMG_MoveLocal_SlotPosY(this->DownObj, -300, 0.3, KKTween::EaseType::easeOutQuad);
+        KKTweenExtentions::UMG_MoveLocal_SlotPosX(this->RightObj, 300, 0.3, KKTween::EaseType::easeOutQuad);
+        KKTweenExtentions::UMG_Opacity(this->DownObj, 0, 0.3, KKTween::EaseType::easeOutQuad);
+        KKTweenExtentions::UMG_Opacity(this->RightObj, 0, 0.3, KKTween::EaseType::easeOutQuad);
     }
+    
 }
 
 void TopBottomView::UpdateGameModeState()
