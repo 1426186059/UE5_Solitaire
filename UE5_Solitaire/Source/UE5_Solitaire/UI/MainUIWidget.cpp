@@ -405,10 +405,10 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             {
                 mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1]->SetTurnOverState(true, i - 1);
             }
-            else
-            {
-                ensureMsgf(false, TEXT("%d"), oriPosTypeInfo[0]);
-            }
+        }
+        else
+        {
+            ensureMsgf(false, TEXT("%d"), oriPosTypeInfo[0]);
         }
     }
 
@@ -2395,7 +2395,7 @@ void UMainUIWidget::PlayRecordUndoAni()
     else if (oriPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
     {
         auto& mListCardNode4AGo = this->tableCardNode4AGo[oriPosTypeInfo[1]];
-        if (mListCardNode4AGo[mListCardNode4AGo.Num() - 1])
+        if (mListCardNode4AGo.Num() > 0)
         {
             mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(false);
         }
@@ -2428,19 +2428,22 @@ void UMainUIWidget::PlayRecordUndoAni()
         int oriTop7Index = oriPosTypeInfo[1];
         int oriIndex = oriPosTypeInfo[2];
         auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[oriTop7Index];
-        auto mCardItem2 = mListCardNodeTop7Go[oriIndex - 1];
-        if (mCardItem2 and nStepIndex - 1 == mCardItem2->nStepIndex_ForFirstShowPokerId)
+        if (oriIndex - 1 >= 0)
         {
-            mCardItem2->SetTurnOverState(false);
-            mCardItem2->PlayTurnOverAni();
-            mCardItem2->SetEventTriggerState(false);
+            auto mCardItem2 = mListCardNodeTop7Go[oriIndex - 1];
+            if (mCardItem2 and nStepIndex - 1 == mCardItem2->nStepIndex_ForFirstShowPokerId)
+            {
+                mCardItem2->SetTurnOverState(false);
+                mCardItem2->PlayTurnOverAni();
+                mCardItem2->SetEventTriggerState(false);
+            }
         }
 
         fromPos = this->GetPosByPosTypeInfo(oriPosTypeInfo);
         UPokerItemWidget* mCardItem = nullptr;
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
-            bool bUseMagicWand = oriIndex != mListCardNodeTop7Go.Num() + 1;
+            bool bUseMagicWand = oriIndex != mListCardNodeTop7Go.Num();
             auto& mListCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[1]];
             mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
             mListCardNodeTop7Go.Insert(mCardItem, oriIndex);
