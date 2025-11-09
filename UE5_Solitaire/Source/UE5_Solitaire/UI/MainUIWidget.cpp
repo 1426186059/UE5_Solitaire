@@ -343,7 +343,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             mCardItem->ForceShowBackUI();
             mCardItem->SetEventTriggerState(i == 1);
 
-            if (i <= 3)
+            if (i <= 2)
             {
                 mCardItem->Show();
             }
@@ -356,7 +356,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             UMGHelper::SetSlotPos(mCardItem, fromPos);
         }
 
-        // ------------------ - 动画播放-------------------- -
+        // ----------------------- 动画播放---------------------------
         AudioHandler::GetSingleton()->PlaySound(TEXT("start_new"));
         for (int32 i = 0; i < 7; i++)
         {
