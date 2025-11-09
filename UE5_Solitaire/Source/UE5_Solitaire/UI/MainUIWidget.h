@@ -26,6 +26,7 @@
 
 class UPokerItemWidget;
 class UPokerAnimationItemW;
+class TopBottomView;
 
 #include "CoreMinimal.h"
 #include "MainUIWidget.generated.h"
@@ -156,4 +157,6 @@ public:
 	UImage* mBG;
 	UPROPERTY() UGameWinAniMgr* GameWinAniMgr;
 	FTimerHandle mTimer;
+
+	TSharedPtr<TopBottomView> mTopBottomView;
 };

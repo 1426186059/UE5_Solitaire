@@ -2,6 +2,7 @@
 
 
 #include "MainUIWidget.h"
+#include "TopBottomView.h"
 #include "Item/PokerItemWidget.h"
 #include "Item/PokerAnimationItemW.h"
 #include "GMWidget.h"
@@ -245,6 +246,9 @@ void UMainUIWidget::InitGame()
     this->GameWinAniMgr = NewObject<UGameWinAniMgr>(this);
     this->GameWinAniMgr->Init(this->GameWinAniParent);
     this->RecoverGame(true);
+
+    mTopBottomView = TSharedPtr<TopBottomView>(new TopBottomView());
+    mTopBottomView->Init(this);
 }
 
 void UMainUIWidget::RecoverGame(bool bPlayAni)
