@@ -17,7 +17,7 @@ void UGameWinWidget::OnBtnClicked()
     {
         this->bCanClickUI = false;
         AudioHandler::GetSingleton()->PlaySound("button");
-        this->Hide();
+        this->HideWithAni();
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->NewGameBegin_ForNormal(true);
     }
 }
@@ -26,7 +26,21 @@ void UGameWinWidget::OnShow()
 {
     this->Init();
     this->Refresh();
-    this->bCanClickUI = true;
+
+    this->bCanClickUI = false;
+    UMGAni::PlayShowAlphaAni(this, true, [=, this]()
+        {
+            this->bCanClickUI = true;
+        });
+}
+
+void UGameWinWidget::HideWithAni(bool bDestroy)
+{
+    this->bCanClickUI = false;
+    UMGAni::PlayShowAlphaAni(this, false, [=, this]()
+        {
+            this->Hide(bDestroy);
+        });
 }
 
 void UGameWinWidget::Refresh()

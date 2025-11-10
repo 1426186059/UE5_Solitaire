@@ -8,7 +8,7 @@ void UMGAni::PlayShowRightToLeftAni(UUserWidget* mUIRoot, bool bShow, TFunction<
     {
         mUIRoot->SetVisibility(ESlateVisibility::Visible);
         UMGHelper::SetSlotPos(mAniObj, FVector2D(fScreenWidth, 0));
-        KKTweenExtentions::UMG_MoveLocal_SlotPosX(mAniObj, 0, 0.45, KKTween::EaseType::easeOutSine)->SetOnCompleteFunc([=]()
+        KKTweenExtentions::UMG_MoveLocal_RenderPosX(mAniObj, 0, 0.45, KKTween::EaseType::easeOutSine)->SetOnCompleteFunc([=]()
             {
                 if (finishFunc.IsSet())
                 {
@@ -19,7 +19,7 @@ void UMGAni::PlayShowRightToLeftAni(UUserWidget* mUIRoot, bool bShow, TFunction<
     else
     {
         UMGHelper::SetSlotPos(mAniObj, FVector2D(0, 0));
-        KKTweenExtentions::UMG_MoveLocal_SlotPosX(mAniObj, fScreenWidth + 200, 0.45, KKTween::EaseType::easeOutSine)->SetOnCompleteFunc([=]()
+        KKTweenExtentions::UMG_MoveLocal_RenderPosX(mAniObj, fScreenWidth + 200, 0.45, KKTween::EaseType::easeOutSine)->SetOnCompleteFunc([=]()
             {
                 mUIRoot->SetVisibility(ESlateVisibility::Hidden);
                 if (finishFunc.IsSet())
@@ -90,17 +90,17 @@ void UMGAni::PlayShowAlphaAni(UUserWidget* mUIRoot, bool bShow, TFunction<void()
 
 void UMGAni::PlayShowDownToUpAni(UUserWidget* mUIRoot, bool bShow, TFunction<void()> finishFunc)
 {
-    float fScreenHeight = 1500;
+    float fScreenHeight = 500;
     float height = fScreenHeight + 300;
     auto mAniObj = mUIRoot->GetWidgetFromName("aniObj");
 
     if (bShow)
     {
         mUIRoot->SetVisibility(ESlateVisibility::Visible);
-        UMGHelper::SetSlotPos(mAniObj, FVector2D(0, -height));
+        UMGHelper::SetSlotPos(mAniObj, FVector2D(0, height));
         mAniObj->SetRenderOpacity(0);
 
-        KKTweenExtentions::UMG_MoveLocal_SlotPosY(mAniObj, 0.0, 0.45f, KKTween::EaseType::easeOutSine)->SetOnCompleteFunc([=]()
+        KKTweenExtentions::UMG_MoveLocal_RenderPosY(mAniObj, 0.0, 0.45f, KKTween::EaseType::easeOutSine)->SetOnCompleteFunc([=]()
             {
                 if (finishFunc.IsSet())
                 {
@@ -113,7 +113,7 @@ void UMGAni::PlayShowDownToUpAni(UUserWidget* mUIRoot, bool bShow, TFunction<voi
     else
     {
         UMGHelper::SetSlotPos(mAniObj, FVector2D(0, 0));
-        KKTweenExtentions::UMG_MoveLocal_SlotPosY(mAniObj, -height, 0.65f, KKTween::EaseType::easeInSine)->SetOnCompleteFunc([=]()
+        KKTweenExtentions::UMG_MoveLocal_RenderPosY(mAniObj, height, 0.65f, KKTween::EaseType::easeInSine)->SetOnCompleteFunc([=]()
             {
                 mUIRoot->SetVisibility(ESlateVisibility::Hidden);
                 if (finishFunc.IsSet())
