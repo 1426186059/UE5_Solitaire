@@ -6,38 +6,108 @@ void UGameBeginWidget::Init()
     if (this->bInit) return;
     this->bInit = true;
 
-    auto clickBtn = Cast<UButton>(this->GetWidgetFromName("clickBtn"));
-    clickBtn->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked);
+    auto rePlayNode = Cast<UButton>(this->GetWidgetFromName("rePlayNode"));
+    rePlayNode->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_ReStart);
+
+    auto newGameNode = Cast<UButton>(this->GetWidgetFromName("newGameNode"));
+    newGameNode->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_NewGame);
+
+    auto Draw1Btn = Cast<UButton>(this->GetWidgetFromName("Draw1Btn"));
+    Draw1Btn->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_Draw1);
+    auto Draw2Btn = Cast<UButton>(this->GetWidgetFromName("Draw2Btn"));
+    Draw2Btn->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_Draw2);
+    auto Draw3Btn = Cast<UButton>(this->GetWidgetFromName("Draw3Btn"));
+    Draw3Btn->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_Draw3);
 }
 
-void UGameBeginWidget::OnBtnClicked()
+void UGameBeginWidget::OnBtnClicked_ReStart()
 {
-   /* UE_LOG(LogTemp, Log, TEXT("UGameBeginWidget OnBtnClicked"));
     if (this->bCanClickUI)
     {
+        this->bCanClickUI = false;
+        AudioHandler::GetSingleton()->PlaySound("button");
+        this->Hide();
+        AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->NewGameBegin_ForRePlay();
+    }
+}
+
+void UGameBeginWidget::OnBtnClicked_NewGame()
+{
+    if (this->bCanClickUI)
+    {
+        this->bCanClickUI = false;
         AudioHandler::GetSingleton()->PlaySound("button");
         this->Hide();
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->NewGameBegin_ForNormal(true);
-    }*/
+    }
+}
+
+void UGameBeginWidget::OnBtnClicked_Draw1()
+{
+    if (this->bCanClickUI)
+    {
+        this->bCanClickUI = false;
+        AudioHandler::GetSingleton()->PlaySound("button");
+        DataCenter::GetSingleton()->SetDrawCount(1);
+        this->UpdateSwitchDraw3State();
+    }
+}
+
+void UGameBeginWidget::OnBtnClicked_Draw2()
+{
+    if (this->bCanClickUI)
+    {
+        this->bCanClickUI = false;
+        AudioHandler::GetSingleton()->PlaySound("button");
+        DataCenter::GetSingleton()->SetDrawCount(2);
+        this->UpdateSwitchDraw3State();
+    }
+}
+
+void UGameBeginWidget::OnBtnClicked_Draw3()
+{
+    if (this->bCanClickUI)
+    {
+        this->bCanClickUI = false;
+        AudioHandler::GetSingleton()->PlaySound("button");
+        DataCenter::GetSingleton()->SetDrawCount(3);
+        this->UpdateSwitchDraw3State();
+    }
 }
 
 void UGameBeginWidget::OnShow()
 {
-    /*this->Init();
-    this->Refresh()*/;
+    this->Init();
+    this->Refresh();
+    this->bCanClickUI = true;
 }
 
 void UGameBeginWidget::Refresh()
 {
-   /* auto textScoreValue = Cast<UTextBlock>(GetWidgetFromName(TEXT("textScoreValue")));
-    auto textTimeValue = Cast<UTextBlock>(GetWidgetFromName(TEXT("textTimeValue")));
-    auto textMoveValue = Cast<UTextBlock>(GetWidgetFromName(TEXT("textMoveValue")));
+    this->UpdateSwitchDraw3State();
+}
 
-    int nScore = RecordStepDataHandler::GetSingleton()->GetData()->nScore;
-    int nMoveCount = RecordStepDataHandler::GetSingleton()->GetData()->nMoveCount;
-    FString timeSpanStr = KKTimeTool::GetFormatTimeStr(RecordStepDataHandler::GetSingleton()->GetData()->nTime);
-    
-    textScoreValue->SetText(FText::AsNumber(nScore));
-    textTimeValue->SetText(FText::FromString(timeSpanStr));
-    textMoveValue->SetText(FText::AsNumber(nMoveCount));*/
+void UGameBeginWidget::UpdateSwitchDraw3State()
+{
+    int nSelectIndex = DataCenter::GetSingleton()->GetData()->nDrawCount - 1;
+    ensure(nSelectIndex >= 0 && nSelectIndex < 3);
+
+    auto Draw1 = Cast<UCanvasPanel>(this->GetWidgetFromName("Draw1"));
+    auto Draw2 = Cast<UCanvasPanel>(this->GetWidgetFromName("Draw2"));
+    auto Draw3 = Cast<UCanvasPanel>(this->GetWidgetFromName("Draw3"));
+
+    TArray<UCanvasPanel*> mList = { Draw1, Draw2, Draw3 };
+    for (int i = 0; i < mList.Num(); i++)
+    {
+        if (i == nSelectIndex)
+        {
+            mList[i]->GetChildAt(0)->SetVisibility(ESlateVisibility::Hidden);
+            mList[i]->GetChildAt(1)->SetVisibility(ESlateVisibility::Visible);
+        }
+        else
+        {
+            mList[i]->GetChildAt(0)->SetVisibility(ESlateVisibility::Visible);
+            mList[i]->GetChildAt(1)->SetVisibility(ESlateVisibility::Hidden);
+        }
+    }
 }

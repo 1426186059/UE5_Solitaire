@@ -57,7 +57,6 @@ public:
 	void InitGame();
 	void RecoverGame(bool bPlayAni = false);
 	void RecycleAndInitCardGo();
-	void NewGameBegin(bool bRePlay = false);
 	
 	float GetTop7_Gap_Height(int32 nTopIndex);
 	FVector2D GetCardNodeTop7MaxHeightPos(int32 nTopIndex);
@@ -68,6 +67,10 @@ public:
 	FVector2D GetCardNodeSendPokerPos();
 
 	void NewGameBegin_ForNormal(bool bForceNewGame);
+	void NewGameBegin_ForChallenge();
+	void NewGameBegin_ForRank();
+	void NewGameBegin_ForRePlay();
+	void NewGameBegin(bool bRePlay = false);
 	void UpdateGameMode();
 
 	std::tuple<bool, UPokerItemWidget*> orThisStepTurnOverPokerIsTrue(int32 nStepIndex);

@@ -653,6 +653,24 @@ void UMainUIWidget::NewGameBegin_ForNormal(bool bForceNewGame)
     }
 }
 
+void UMainUIWidget::NewGameBegin_ForChallenge()
+{
+    this->nGameMode = SolitaireGameMode::DailyChallenge;
+    this->NewGameBegin(false);
+}
+
+void UMainUIWidget::NewGameBegin_ForRank()
+{
+    this->nGameMode = SolitaireGameMode::Rank;
+    this->NewGameBegin(false);
+}
+
+void UMainUIWidget::NewGameBegin_ForRePlay()
+{
+    this->NewGameBegin(true);
+}
+
+
 void UMainUIWidget::NewGameBegin(bool bRePlay)
 {
     UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin"));

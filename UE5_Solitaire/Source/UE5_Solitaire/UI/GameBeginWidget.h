@@ -19,5 +19,12 @@ public:
 	virtual void OnShow() override;
 	virtual void Refresh() override;
 
-	UFUNCTION() void OnBtnClicked();
+	UFUNCTION() void OnBtnClicked_ReStart();
+	UFUNCTION() void OnBtnClicked_NewGame();
+	void OnBtnClicked_Draw1();
+	void OnBtnClicked_Draw2();
+	void OnBtnClicked_Draw3();
+
+	void UpdateSwitchDraw3State();
+
 };

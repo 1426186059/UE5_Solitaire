@@ -75,8 +75,19 @@ void UWUIBase::OnLayoutChanged()
 
 void UWUIBase::OnShow()
 {
-
+    
 }
+
+//void UWUIBase::HideWithAni(TFunction<void()>> mAniFunc, bool bDestroy)
+//{
+//    this->bShowUI = false;
+//    this->SetVisibility(ESlateVisibility::Hidden);
+//
+//    if (bDestroy)
+//    {
+//        UMGHelper::DestroyWidget(this);
+//    }
+//}
 
 void UWUIBase::CheckFirstLayoutOkToShow()
 {
