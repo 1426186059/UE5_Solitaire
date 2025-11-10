@@ -94,6 +94,15 @@ void AudioHandler::StopSound(UAudioComponent* mAudio)
 
 void AudioHandler::PlayBackMusic(const FString& name)
 {
+    // 加载 SoundCue
+    FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
+    USoundWave* Sound = LoadObject<USoundWave>(this, *resPath);
+    if (!Sound)
+    {
+        UE_LOG(LogTemp, Error, TEXT("UAudioHandler Error: %s"), *resPath);
+        return;
+    }
+
     if (mBGMAudioComponent == nullptr)
     {
         // 创建音频组件
@@ -101,10 +110,7 @@ void AudioHandler::PlayBackMusic(const FString& name)
         mBGMAudioComponent->RegisterComponent(); // 必须注册才能播放
         mBGMAudioComponent->SetActive(true);
     }
-
-    // 加载 SoundCue
-    FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
-    USoundWave* Sound = LoadObject<USoundWave>(this, *resPath);
+    
     mBGMAudioComponent->SetSound(Sound);
     mBGMAudioComponent->SetBoolParameter(TEXT("Loop"), true);
     mBGMAudioComponent->Play(); // 开始播放
