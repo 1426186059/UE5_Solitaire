@@ -15,6 +15,9 @@ void UGameBeginWidget::Init()
     if (this->bInit) return;
     this->bInit = true;
 
+    auto blockEvent = Cast<UButton>(this->GetWidgetFromName("blockEvent"));
+    blockEvent->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_Hide);
+
     auto rePlayNode = Cast<UButton>(this->GetWidgetFromName("rePlayNode"));
     rePlayNode->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_ReStart);
 
@@ -27,6 +30,17 @@ void UGameBeginWidget::Init()
     Draw2Btn->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_Draw2);
     auto Draw3Btn = Cast<UButton>(this->GetWidgetFromName("Draw3Btn"));
     Draw3Btn->OnClicked.AddDynamic(this, &UGameBeginWidget::OnBtnClicked_Draw3);
+
+}
+
+void UGameBeginWidget::OnBtnClicked_Hide()
+{
+    if (this->bCanClickUI)
+    {
+        this->bCanClickUI = false;
+        AudioHandler::GetSingleton()->PlaySound("button");
+        this->Hide();
+    }
 }
 
 void UGameBeginWidget::OnBtnClicked_ReStart()
@@ -53,35 +67,26 @@ void UGameBeginWidget::OnBtnClicked_NewGame()
 
 void UGameBeginWidget::OnBtnClicked_Draw1()
 {
-    if (this->bCanClickUI)
-    {
-        this->bCanClickUI = false;
-        AudioHandler::GetSingleton()->PlaySound("button");
-        DataCenter::GetSingleton()->SetDrawCount(1);
-        this->UpdateSwitchDraw3State();
-    }
+    UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_Draw1"));
+    AudioHandler::GetSingleton()->PlaySound("button");
+    DataCenter::GetSingleton()->SetDrawCount(1);
+    this->UpdateSwitchDraw3State();
 }
 
 void UGameBeginWidget::OnBtnClicked_Draw2()
 {
-    if (this->bCanClickUI)
-    {
-        this->bCanClickUI = false;
-        AudioHandler::GetSingleton()->PlaySound("button");
-        DataCenter::GetSingleton()->SetDrawCount(2);
-        this->UpdateSwitchDraw3State();
-    }
+    UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_Draw2"));
+    AudioHandler::GetSingleton()->PlaySound("button");
+    DataCenter::GetSingleton()->SetDrawCount(2);
+    this->UpdateSwitchDraw3State();
 }
 
 void UGameBeginWidget::OnBtnClicked_Draw3()
 {
-    if (this->bCanClickUI)
-    {
-        this->bCanClickUI = false;
-        AudioHandler::GetSingleton()->PlaySound("button");
-        DataCenter::GetSingleton()->SetDrawCount(3);
-        this->UpdateSwitchDraw3State();
-    }
+    UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_Draw3"));
+    AudioHandler::GetSingleton()->PlaySound("button");
+    DataCenter::GetSingleton()->SetDrawCount(3);
+    this->UpdateSwitchDraw3State();
 }
 
 void UGameBeginWidget::OnShow()
