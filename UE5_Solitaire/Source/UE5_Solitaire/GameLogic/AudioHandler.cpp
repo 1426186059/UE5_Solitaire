@@ -27,9 +27,7 @@ UAudioComponent* AudioHandler::GetAudioComponentFromPool()
     
     mAudioComponent->SetActive(true, true);
     mAudioComponent->SetFloatParameter(FName("Volume"), 1.0f);
-    mAudioComponent->SetBoolParameter(TEXT("Loop"), true);
-    //mAudioComponent->ClearFlags(RF_PendingKill);
-    //mAudioComponent->OnAudioFinished.AddDynamic(this, &AudioHandler::OnPoolSoundPlayFinished);
+    mAudioComponent->SetBoolParameter(TEXT("Loop"), false);
     return mAudioComponent;
 }
 
@@ -64,7 +62,6 @@ UAudioComponent* AudioHandler::PlaySound2(const FString& name)
 {
     FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
     USoundWave* Sound = LoadObject<USoundWave>(this, *resPath);
-
     if (!Sound)
     {
         UE_LOG(LogTemp, Error, TEXT("UAudioHandler Error: %s"), *resPath);
@@ -77,12 +74,22 @@ UAudioComponent* AudioHandler::PlaySound2(const FString& name)
         return nullptr;
     }
 
-    return nullptr;
+    UAudioComponent* mAudioComponent = this->GetAudioComponentFromPool();
+    mAudioComponent->SetSound(Sound);
+    mAudioComponent->bAutoActivate = false;
+    mAudioComponent->bStopWhenOwnerDestroyed = false;
+    mAudioComponent->bShouldRemainActiveIfDropped = true;
+    mAudioComponent->SetBoolParameter(TEXT("Loop"), true);
+    mAudioComponent->Play();
+    return mAudioComponent;
 }
 
-void AudioHandler::StopSound(const FString& name)
+void AudioHandler::StopSound(UAudioComponent* mAudio)
 {
-
+    if (mAudio)
+    {
+        mAudio->Stop();
+    }
 }
 
 void AudioHandler::PlayBackMusic(const FString& name)
@@ -92,16 +99,13 @@ void AudioHandler::PlayBackMusic(const FString& name)
         // 创建音频组件
         mBGMAudioComponent = NewObject<UAudioComponent>(this);
         mBGMAudioComponent->RegisterComponent(); // 必须注册才能播放
+        mBGMAudioComponent->SetActive(true);
     }
 
     // 加载 SoundCue
     FString resPath = FString::Printf(TEXT("/Game/ResourceABs/MainScene/Audio/%s.%s"), *name, *name);
     USoundWave* Sound = LoadObject<USoundWave>(this, *resPath);
-    
     mBGMAudioComponent->SetSound(Sound);
-    mBGMAudioComponent->bAutoActivate = false;
-    mBGMAudioComponent->bStopWhenOwnerDestroyed = false;
-    mBGMAudioComponent->bShouldRemainActiveIfDropped = true;
     mBGMAudioComponent->SetBoolParameter(TEXT("Loop"), true);
     mBGMAudioComponent->Play(); // 开始播放
 }

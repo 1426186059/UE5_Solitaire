@@ -26,7 +26,7 @@ public:
 	void Init();
 	void PlaySound(const FString& name);
 	UAudioComponent* PlaySound2(const FString& name);
-	void StopSound(const FString& name);
+	void StopSound(UAudioComponent* mAudio);
 	void PlayBackMusic(const FString& name);
 private:
 	UAudioComponent* OnPoolSoundPlayFinished();

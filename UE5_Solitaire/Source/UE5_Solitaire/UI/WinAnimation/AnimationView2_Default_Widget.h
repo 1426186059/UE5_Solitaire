@@ -17,7 +17,7 @@ class UE5_SOLITAIRE_API UAnimationView2_Default_Widget : public UWinAniBaseUW
 protected:
     virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
     virtual void Init() override;
-    virtual void CheckFirstLayoutOkToShow() override;
+    virtual void OnShow() override;
 public:
     class AnimationEntity
     {

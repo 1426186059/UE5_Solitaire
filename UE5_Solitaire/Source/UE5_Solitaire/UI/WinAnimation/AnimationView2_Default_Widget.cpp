@@ -30,17 +30,10 @@ void UAnimationView2_Default_Widget::Init()
     skipBtn->OnClicked.AddDynamic(this, &UAnimationView2_Default_Widget::onClick_Skip);
 }
 
-void UAnimationView2_Default_Widget::CheckFirstLayoutOkToShow()
+void UAnimationView2_Default_Widget::OnShow()
 {
-    if (orFirstLayoutFinish())
-    {
-        if (this->bShowUI)
-        {
-            this->SetVisibility(ESlateVisibility::Visible);
-            this->Init();
-            this->PlayAni();
-        }
-    }
+    this->Init();
+    this->PlayAni();
 }
 
 void UAnimationView2_Default_Widget::SetMgr(UGameWinAniMgr* mgr)
@@ -50,6 +43,7 @@ void UAnimationView2_Default_Widget::SetMgr(UGameWinAniMgr* mgr)
 
 void UAnimationView2_Default_Widget::PlayAni()
 {
+    this->callBack = this->mMgr->mFinishFunc;
     TArray<int32> table4AColor = this->mMgr->GetTableA4Color();
     TArray<FVector2D> table4AWorldPos = this->mMgr->GetTableA4WorldPos();
 
@@ -215,11 +209,6 @@ void UAnimationView2_Default_Widget::UpdateAllAniEntry(float dt)
 void UAnimationView2_Default_Widget::onAnimatinCallBack()
 {
     this->DoDestroyAction();
-    if (this->callBack.IsSet())
-    {
-        this->callBack();
-        this->callBack.Reset();
-    }
 }
 
 void UAnimationView2_Default_Widget::DoDestroyAction()
@@ -238,6 +227,11 @@ void UAnimationView2_Default_Widget::DoDestroyAction()
     }
     this->allNodes = {};
     UMGHelper::DestroyWidget(this);
+
+    if (this->callBack.IsSet())
+    {
+        this->callBack();
+    }
 }
 
 void UAnimationView2_Default_Widget::onClick_Skip()

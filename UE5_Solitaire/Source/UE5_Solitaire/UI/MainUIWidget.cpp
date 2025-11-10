@@ -230,6 +230,8 @@ void UMainUIWidget::RecycleAndInitCardGo()
     }
     
     //----------------------------------初始化资源------------------------------------
+    this->tableCardNodeTop7Go = {};
+    this->tableCardNode4AGo = {};
     this->tableCardNodeTop7Go.SetNumZeroed(7);
     this->tableCardNode4AGo.SetNumZeroed(4);
     this->tableCardDraw3Go = {};
@@ -1437,7 +1439,7 @@ void UMainUIWidget::PlayWinAni()
 
 void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
 {
-    AudioHandler::GetSingleton()->PlaySound("win_animation");
+    auto mWinAudio = AudioHandler::GetSingleton()->PlaySound2("win_animation");
     for (int32 i = 0; i < this->tableFinalA4AniCardItem.Num(); i++)
     {
         auto mCardItem = this->tableFinalA4AniCardItem[i];
@@ -1460,7 +1462,7 @@ void UMainUIWidget::AutoShouPai(TFunction<void()> finishFunc)
                         KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
                         if (nAniIndex == this->tableFinalA4AniCardItem.Num() - 1)
                         {
-                            AudioHandler::GetSingleton()->StopSound("win_animation");
+                            AudioHandler::GetSingleton()->StopSound(mWinAudio);
                             if (finishFunc.IsSet())
                             {
                                 finishFunc();
@@ -1477,7 +1479,8 @@ void UMainUIWidget::DoWinAnimation()
     auto mAudio = AudioHandler::GetSingleton()->PlaySound2("blast_bgm");
     this->GameWinAniMgr->PlayAni([=,this]()
         {
-            mAudio->Stop();
+            AudioHandler::GetSingleton()->StopSound(mAudio);
+
             /*   if ThemeSolitaire.StageRewardHandler : CheckOrHaveReward() then
                    ThemeSolitaire.StageRewardView : Show(function()
                        this->ShowGameEndView()
