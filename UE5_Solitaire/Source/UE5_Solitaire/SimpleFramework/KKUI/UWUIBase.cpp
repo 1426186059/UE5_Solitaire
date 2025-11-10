@@ -59,6 +59,11 @@ void UWUIBase::Hide(bool bDestroy)
     }
 }
 
+void UWUIBase::HideWithAni(bool bDestroy)
+{
+    this->Hide(bDestroy);
+}
+
 void UWUIBase::Refresh()
 {
     

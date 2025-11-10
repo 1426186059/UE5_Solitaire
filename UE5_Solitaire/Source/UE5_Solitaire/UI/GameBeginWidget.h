@@ -24,6 +24,7 @@ public:
 	virtual void Init() override;
 	virtual void OnShow() override;
 	virtual void Refresh() override;
+	virtual void HideWithAni(bool bDestroy = false) override;
 
 	UFUNCTION() void OnBtnClicked_Hide();
 	UFUNCTION() void OnBtnClicked_ReStart();

@@ -39,7 +39,7 @@ void UGameBeginWidget::OnBtnClicked_Hide()
     {
         this->bCanClickUI = false;
         AudioHandler::GetSingleton()->PlaySound("button");
-        this->Hide();
+        this->HideWithAni();
     }
 }
 
@@ -49,7 +49,7 @@ void UGameBeginWidget::OnBtnClicked_ReStart()
     {
         this->bCanClickUI = false;
         AudioHandler::GetSingleton()->PlaySound("button");
-        this->Hide();
+        this->HideWithAni();
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->NewGameBegin_ForRePlay();
     }
 }
@@ -60,7 +60,7 @@ void UGameBeginWidget::OnBtnClicked_NewGame()
     {
         this->bCanClickUI = false;
         AudioHandler::GetSingleton()->PlaySound("button");
-        this->Hide();
+        this->HideWithAni();
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->NewGameBegin_ForNormal(true);
     }
 }
@@ -93,7 +93,21 @@ void UGameBeginWidget::OnShow()
 {
     this->Init();
     this->Refresh();
-    this->bCanClickUI = true;
+
+    this->bCanClickUI = false;
+    UMGAni::PlayShowDownToUpAni(this, true, [this]()
+        {
+            this->bCanClickUI = true;
+        });
+}
+
+void UGameBeginWidget::HideWithAni(bool bDestroy)
+{
+    this->bCanClickUI = false;
+    UMGAni::PlayShowDownToUpAni(this, true, [=, this]()
+        {
+            this->Hide(bDestroy);
+        });
 }
 
 void UGameBeginWidget::Refresh()
