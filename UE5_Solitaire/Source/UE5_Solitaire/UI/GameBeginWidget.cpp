@@ -104,7 +104,7 @@ void UGameBeginWidget::OnShow()
 void UGameBeginWidget::HideWithAni(bool bDestroy)
 {
     this->bCanClickUI = false;
-    UMGAni::PlayShowDownToUpAni(this, true, [=, this]()
+    UMGAni::PlayShowDownToUpAni(this, false, [=, this]()
         {
             this->Hide(bDestroy);
         });

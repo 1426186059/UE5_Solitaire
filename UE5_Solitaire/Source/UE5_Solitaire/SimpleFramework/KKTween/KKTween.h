@@ -211,7 +211,10 @@ public:
         switch(nType)
         {
             case EaseType::linear: { mFunc = EaseFunc::easeLinear<T>; break;}
+            case EaseType::easeInQuad: { mFunc = EaseFunc::easeInQuad<T>; break; }
             case EaseType::easeOutQuad: { mFunc = EaseFunc::easeOutQuad<T>; break; }
+            case EaseType::easeInSine: { mFunc = EaseFunc::easeInSine<T>; break; }
+            case EaseType::easeOutSine: { mFunc = EaseFunc::easeOutSine<T>; break; }
         }
 
         if (!mFunc.IsSet())
