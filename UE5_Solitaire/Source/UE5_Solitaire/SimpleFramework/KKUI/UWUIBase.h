@@ -14,18 +14,22 @@ class UE5_SOLITAIRE_API UWUIBase : public UUserWidget
 protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
+	virtual FString GetMyResPath();
 	virtual void OnCreate();
+	virtual void OnLayoutChanged();
+	virtual void OnShow();
+
 	virtual void Init();
 	virtual void Show();
 	virtual void Hide(bool bDestroy = false);
 	virtual void Refresh();
-	virtual void OnLayoutChanged();
 	virtual void CheckFirstLayoutOkToShow();
 
 	bool orFirstLayoutFinish();
 	bool orInit();
 protected:
 	bool bInit;
+	bool bCanClickUI;
 	bool bFirstLayoutFinish;
 	bool bShowUI;
 	FVector2D mOldSize;

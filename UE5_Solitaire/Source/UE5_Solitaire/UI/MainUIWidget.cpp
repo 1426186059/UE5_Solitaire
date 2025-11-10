@@ -6,6 +6,7 @@
 #include "Item/PokerItemWidget.h"
 #include "Item/PokerAnimationItemW.h"
 #include "GMWidget.h"
+#include "GameWinWidget.h"
 
 void UMainUIWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -1475,17 +1476,13 @@ void UMainUIWidget::ShowGameEndView()
     {
         //ThemeSolitaire.DailyChallengeWinView : Show();
     }
-    else if (this->nGameMode == SolitaireGameMode::Trip)
-    {
-        //ThemeSolitaire.GameTripWinView : Show();
-    }
     else if (this->nGameMode == SolitaireGameMode::Rank)
     {
         //ThemeSolitaire.DailyRankWinView : Show();
     }
     else
     {
-        //ThemeSolitaire.GameWinView:Show();
+        AKKUIMgr::GetSingleton()->Get<UGameWinWidget>("GameWinCWBP")->Show();
     }
 }
 
@@ -2486,6 +2483,7 @@ void UMainUIWidget::PlayRecordUndoAni()
             }
         }
     }
+
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_RefreshTopBottomUI)->Broadcast(nullptr);
 }
 

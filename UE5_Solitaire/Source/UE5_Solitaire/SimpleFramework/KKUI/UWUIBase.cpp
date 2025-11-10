@@ -26,6 +26,11 @@ bool UWUIBase::orInit()
     return this->bInit;
 }
 
+FString UWUIBase::GetMyResPath()
+{
+    return this->GetClass()->GetName();
+}
+
 void UWUIBase::OnCreate()
 {
 
@@ -68,6 +73,11 @@ void UWUIBase::OnLayoutChanged()
     }
 }
 
+void UWUIBase::OnShow()
+{
+
+}
+
 void UWUIBase::CheckFirstLayoutOkToShow()
 {
     if (orFirstLayoutFinish())
@@ -75,6 +85,7 @@ void UWUIBase::CheckFirstLayoutOkToShow()
         if (this->bShowUI)
         {
             this->SetVisibility(ESlateVisibility::Visible);
+            this->OnShow();
         }
     }
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
+#include "UE5_Solitaire/GameLogic/GameLogic.h"
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
@@ -15,5 +16,8 @@ class UE5_SOLITAIRE_API UGameWinWidget : public UWUIBase
 
 public:
 	virtual void Init() override;
-	virtual void CheckFirstLayoutOkToShow() override;
+	virtual void OnShow() override;
+	virtual void Refresh() override;
+
+	UFUNCTION() void OnBtnClicked();
 };
