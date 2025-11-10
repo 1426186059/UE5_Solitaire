@@ -20,6 +20,7 @@ public:
 		return TEXT("/Game/ResourceABs/MainScene/BPS/UI/GameBeginCWBP.GameBeginCWBP");
 	}
 
+	virtual void OnCreate() override;
 	virtual void Init() override;
 	virtual void OnShow() override;
 	virtual void Refresh() override;

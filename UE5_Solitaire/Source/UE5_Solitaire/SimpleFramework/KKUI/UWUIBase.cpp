@@ -2,6 +2,7 @@
 
 
 #include "UWUIBase.h"
+#include "KKUIMgr.h"
 
 void UWUIBase::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
 {
@@ -28,7 +29,11 @@ bool UWUIBase::orInit()
 
 void UWUIBase::OnCreate()
 {
-
+    UMGHelper::SetParent(this, AKKUIMgr::GetSingleton()->GetRootWidget()->Layer_Popup);
+    UMGHelper::SetSlotAnchor(this, FAnchors(0, 0, 1, 1));
+    UMGHelper::SetSlotAlignment(this, FVector2D(0.5));
+    UMGHelper::SetSlotPos(this, FVector2D(0));
+    UMGHelper::SetSlotSize(this, FVector2D(0));
 }
 
 void UWUIBase::Init()
