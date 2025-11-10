@@ -22,10 +22,10 @@ public:
 
 public:
 	template<typename T>
-	void Show(FString ui_path = TEXT(""))
+	void Show()
 	{
 		static_assert(TIsDerivedFrom<T, UWUIBase>::Value, "T must be an UUserWidget derived class");
-		auto mUI = Get<T>(ui_path);
+		auto mUI = Get<T>();
 		if (mUI)
 		{
 			mUI->Show();
@@ -45,7 +45,7 @@ public:
 	}
 
 	template<typename T>
-	T* Get(FString ui_path = TEXT(""))
+	T* Get(bool bForceCreate = true)
 	{
 		static_assert(TIsDerivedFrom<T, UWUIBase>::Value, "T must be an UUserWidget derived class");
 
@@ -58,11 +58,9 @@ public:
 		else
 		{
 			mUIDic.Remove(Key);
-			bool bForceCreate = !ui_path.IsEmpty();
 			if (bForceCreate)
 			{
-				FString path = FString::Printf(TEXT("/Game/ResourceABs/MainScene/BPS/UI/%s.%s_C"), *ui_path, *ui_path);
-				T* t = Load<T>(path);
+				T* t = Load<T>();
 				if (t != nullptr)
 				{
 					t->OnCreate();
@@ -78,9 +76,15 @@ public:
 	}
 
 	template<typename T>
-	T* Load(FString ui_path)
+	T* Load()
 	{
 		static_assert(TIsDerivedFrom<T, UWUIBase>::Value, "T must be an UUserWidget derived class");
+
+		FString ui_path = T::GetMyUIPath();
+		if (!ui_path.StartsWith("/Game/"))
+		{
+			ui_path = FString::Printf(TEXT("/Game/ResourceABs/MainScene/BPS/UI/%s.%s_C"), *ui_path, *ui_path);
+		}
 
 		if (!ui_path.EndsWith("_C"))
 		{

@@ -83,6 +83,11 @@ public:
 
 
 public:
+    static FString GetMyUIPath()
+    {
+        return TEXT("/Game/ResourceABs/MainScene/BPS/UI/WinAnimation/WinAni_Default_CWBP.WinAni_Default_CWBP_C");
+    }
+
     UGameWinAniMgr* mMgr;
     // Card 数据
     const float CardWidth = 103;

@@ -14,6 +14,11 @@ class UE5_SOLITAIRE_API UGameLoseWidget : public UWUIBase
 {
 	GENERATED_BODY()
 public:
+	static FString GetMyUIPath()
+	{
+		return TEXT("GameLoseCWBP");
+	}
+
 	virtual void Init() override;
 	virtual void OnShow() override;
 	virtual void Refresh() override;

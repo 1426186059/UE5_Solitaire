@@ -12,6 +12,10 @@ class UE5_SOLITAIRE_API UGMWidget : public UWUIBase
 {
 	GENERATED_BODY()
 public:
+	static FString GetMyUIPath()
+	{
+		return TEXT("GMCWBP");
+	}
 	virtual void OnCreate() override;
 	virtual void Init() override;
 	virtual void Show() override;

@@ -39,6 +39,11 @@ protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& InMouseEvent) override;
 public:
+	static FString GetMyUIPath()
+	{
+		return TEXT("MainUICWBP");
+	}
+
 	virtual void OnCreate() override;
 	virtual void Init() override;
 	virtual void OnLayoutChanged() override;

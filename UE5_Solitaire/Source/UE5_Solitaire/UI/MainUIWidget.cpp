@@ -123,7 +123,7 @@ void UMainUIWidget::Init()
     UEHelper::PauseTimer(this, this->mTimer);
 
 #if WITH_EDITOR
-    AKKUIMgr::GetSingleton()->Show<UGMWidget>("GMCWBP");
+    AKKUIMgr::GetSingleton()->Show<UGMWidget>();
 #endif
 }
 
@@ -1500,7 +1500,7 @@ void UMainUIWidget::ShowGameEndView()
     }
     else
     {
-        AKKUIMgr::GetSingleton()->Get<UGameWinWidget>("GameWinCWBP")->Show();
+        AKKUIMgr::GetSingleton()->Get<UGameWinWidget>()->Show();
     }
 }
 

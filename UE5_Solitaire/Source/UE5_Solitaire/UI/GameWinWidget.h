@@ -15,6 +15,11 @@ class UE5_SOLITAIRE_API UGameWinWidget : public UWUIBase
 	GENERATED_BODY()
 
 public:
+	static FString GetMyUIPath()
+	{
+		return TEXT("GameWinCWBP");
+	}
+
 	virtual void Init() override;
 	virtual void OnShow() override;
 	virtual void Refresh() override;

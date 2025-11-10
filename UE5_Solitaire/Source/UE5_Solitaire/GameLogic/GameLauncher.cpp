@@ -132,7 +132,7 @@ void AGameLauncher::GoToLobby()
     if (AKKUIMgr::GetSingleton())
     {
         AKKUIMgr::GetSingleton()->Init();
-        AKKUIMgr::GetSingleton()->Show<UMainUIWidget>("MainUICWBP");
+        AKKUIMgr::GetSingleton()->Show<UMainUIWidget>();
     }
     else
     {

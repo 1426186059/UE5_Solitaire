@@ -1,5 +1,6 @@
 #include "TopBottomView.h"
 #include "MainUIWidget.h"
+#include "GameBeginWidget.h"
 
 void TopBottomView::Init(UMainUIWidget* root_uw)
 {
@@ -42,7 +43,7 @@ void TopBottomView::OnBtnClicked_GameNodeBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_GameNodeBtn"));
     AudioHandler::GetSingleton()->PlaySound("button");
-    //mUIRoot->GameBeginView->Show();
+    AKKUIMgr::GetSingleton()->Get<UGameBeginWidget>()->Show();
 }
 
 void TopBottomView::OnBtnClicked_UndoBtn()

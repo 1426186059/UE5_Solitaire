@@ -14,7 +14,11 @@ class UE5_SOLITAIRE_API UWUIBase : public UUserWidget
 protected:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 public:
-	virtual FString GetMyResPath();
+	static FString GetMyUIPath()
+	{
+		return UWUIBase::StaticClass()->GetName();
+	}
+
 	virtual void OnCreate();
 	virtual void OnLayoutChanged();
 	virtual void OnShow();

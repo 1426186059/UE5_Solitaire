@@ -26,11 +26,6 @@ bool UWUIBase::orInit()
     return this->bInit;
 }
 
-FString UWUIBase::GetMyResPath()
-{
-    return this->GetClass()->GetName();
-}
-
 void UWUIBase::OnCreate()
 {
 
