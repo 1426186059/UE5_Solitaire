@@ -15,6 +15,7 @@ void UGameWinWidget::OnBtnClicked()
     UE_LOG(LogTemp, Log, TEXT("UGameWinWidget OnBtnClicked"));
     if (this->bCanClickUI)
     {
+        this->bCanClickUI = false;
         AudioHandler::GetSingleton()->PlaySound("button");
         this->Hide();
         AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->NewGameBegin_ForNormal(true);
@@ -25,6 +26,7 @@ void UGameWinWidget::OnShow()
 {
     this->Init();
     this->Refresh();
+    this->bCanClickUI = true;
 }
 
 void UGameWinWidget::Refresh()
