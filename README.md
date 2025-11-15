@@ -105,6 +105,9 @@ UMG问题：
 
 (5) 禁止外部持有Handle，禁止内部自动管理生命周期。不要使用对象池，简单new,delete.
 
+2: void foo(int); auto p1 = foo; auto p2 = &foo;  这p2 和p1 值一样
+
+
 
 <h1>安卓打包问题</h1>
 
