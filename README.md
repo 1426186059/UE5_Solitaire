@@ -135,9 +135,14 @@ UMG问题：
 
 <h1>资源热更</h1>
 
-两个重要热更工具:
+1： 介绍两个重要热更工具:
 
-1： RunUAT(Unreal Automation Tool) = 全流程大管家：编译、Cook、生成 PakList、调用 UnrealPak、出补丁、写 CI，全都管。RunUAT.bat BuildCookRun -project=xxx -platform=Win64 -build -cook -stage -pak -archive
+(1)： RunUAT(Unreal Automation Tool) = 全流程大管家：编译、Cook、生成 PakList、调用 UnrealPak、出补丁、写 CI，全都管。RunUAT.bat BuildCookRun -project=xxx -platform=Win64 -build -cook -stage -pak -archive
 
-2： UnrealPak = 专业打包机：只认列表，把文件打成 pak（或解包、挂载），别的不管。UnrealPak.exe DLC.pak -create=PakList.txt -compress
+(2)： UnrealPak = 专业打包机：只认列表，把文件打成 pak（或解包、挂载），别的不管。UnrealPak.exe DLC.pak -create=PakList.txt -compress
 
+2: 具体实施打热更包步骤:
+
+(1)：添加系统环境变量：D:\ProgramFiles\Epic Games\UE_5.6\Engine\Binaries\Win64。
+
+(2)：打包
