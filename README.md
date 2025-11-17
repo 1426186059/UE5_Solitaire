@@ -132,3 +132,12 @@ UMG问题：
 2：未经其他优化： UE5.6开发包200M左右, 发行包140M
 
 暂时没找到能更好压缩的方法，总体而言：UE5 API 和 U3D 出入不是很大。 
+
+<h1>资源热更</h1>
+
+两个重要热更工具:
+
+1： RunUAT(Unreal Automation Tool) = 全流程大管家：编译、Cook、生成 PakList、调用 UnrealPak、出补丁、写 CI，全都管。RunUAT.bat BuildCookRun -project=xxx -platform=Win64 -build -cook -stage -pak -archive
+
+2： UnrealPak = 专业打包机：只认列表，把文件打成 pak（或解包、挂载），别的不管。UnrealPak.exe DLC.pak -create=PakList.txt -compress
+
