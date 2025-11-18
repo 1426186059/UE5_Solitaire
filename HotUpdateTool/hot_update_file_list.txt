@@ -1,2 +1,0 @@
-D:/Me/MyProject/UE5_Solitaire/UE5_Solitaire/Saved/Cooked/Android_ASTC/UE5_Solitaire/Content/ResourceABs/InitScene/**
-D:/Me/MyProject/UE5_Solitaire/UE5_Solitaire/Saved/Cooked/Android_ASTC/UE5_Solitaire/Content/ResourceABs/MainScene/**
