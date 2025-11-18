@@ -141,6 +141,8 @@ UMG问题：
 
 (2)： UnrealPak = 专业打包机：只认列表，把文件打成 pak（或解包、挂载），别的不管。UnrealPak.exe DLC.pak -create=PakList.txt -compress
 
+(3): BuildPatchTool: 适用 大型内容更新（如新章节、DLC），因为它提供了企业级的稳定性、安全性和带宽优化。
+
 
 2：母包
 
