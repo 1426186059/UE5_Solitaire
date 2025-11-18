@@ -141,7 +141,12 @@ UMG问题：
 
 (2)： UnrealPak = 专业打包机：只认列表，把文件打成 pak（或解包、挂载），别的不管。UnrealPak.exe DLC.pak -create=PakList.txt -compress
 
-2: 具体实施打热更包步骤:
+
+2：母包
+
+(1) 默认是按照关卡Map引用的资源进行打包的, 但这种打包很脱离实际：比如我有很多武器类型，比如战仙一套，战神一套，战帝一套，那么这些图集Atlas很明显都不能在关卡中引用，所以[额外资产目录]这个目录的作用就显示出来了，这个目录，会强制UE把目录下的所有资源打包进母包。
+
+3: 热更包:
 
 (1)：添加系统环境变量：D:\ProgramFiles\Epic Games\UE_5.6\Engine\Binaries\Win64。
 
