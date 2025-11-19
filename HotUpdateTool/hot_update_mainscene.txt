@@ -1,3 +1,4 @@
+D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solitaire\Content\================================================
 D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solitaire\Content\ResourceABs\MainScene\Audio\*
 D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solitaire\Content\ResourceABs\MainScene\Fonts\*
 D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solitaire\Content\ResourceABs\MainScene\BPS\UI\*
