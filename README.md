@@ -152,3 +152,6 @@ UMG问题：
 (1)：添加系统环境变量：D:\ProgramFiles\Epic Games\UE_5.6\Engine\Binaries\Win64。
 
 (2)：打包
+
+<h1>UnrealPak.exe报错</h1>
+1： LogWindows: Error: appError called: Assertion failed: Pair.Info.IsDeleteRecord() || Pair.Info.IndexDataEquals(EncodedEntry) [File:D:\build\++UE5\Sync\Engine\Source\Developer\PakFileUtilities\Private\PakFileUtilities.cpp] [Line: 2080]
