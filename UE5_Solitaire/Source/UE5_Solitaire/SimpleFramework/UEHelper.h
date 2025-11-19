@@ -6,6 +6,7 @@
 #include "CoreMinimal.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "IPlatformFilePak.h"
 
 class UEHelper
 {
@@ -86,6 +87,32 @@ public:
 
         // 3. 真正拷贝
         return Pf.CopyFile(*Dst, *Src);
+    }
+
+    //这是加载Pak模块呢
+    static FPakPlatformFile* GetFPakPlatformFile()
+    {
+        FString moduleName = TEXT("PakFile");
+        //这是加载Pak模块呢
+        FPakPlatformFile* PakFileInterface = (FPakPlatformFile*)FPlatformFileManager::Get().GetPlatformFile(*moduleName);
+        if (!PakFileInterface)
+        {
+            if (FModuleManager::Get().LoadModule(*moduleName))
+            {
+                PakFileInterface = (FPakPlatformFile*)FPlatformFileManager::Get().GetPlatformFile(*moduleName);
+            }
+            else
+            {
+                UE_LOG(LogTemp, Error, TEXT("PakFile LoadModule Failed"));
+            }
+        }
+
+        if (!PakFileInterface)
+        {
+            UE_LOG(LogTemp, Error, TEXT("PakFile Failed to get PakFile interface!"));
+        }
+
+        return PakFileInterface;
     }
     
 private:

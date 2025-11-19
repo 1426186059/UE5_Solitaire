@@ -21,6 +21,7 @@
 #include "GameFramework/Actor.h"
 #include "GameFramework/GameUserSettings.h"
 #include "EngineUtils.h"
+#include "IPlatformFilePak.h"
 #include "GameLauncher.generated.h"
 
 UCLASS()
@@ -43,6 +44,7 @@ public:
 	void CheckAndInit();
 	void Init();
 	void Release();
+	void StartInitScene();
 	void StartEnterGame(void* param);
 	void GoToLobby();
 

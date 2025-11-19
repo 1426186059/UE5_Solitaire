@@ -85,6 +85,65 @@ void AGameLauncher::Init()
     //}
 
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->AddUObject(this, &AGameLauncher::StartEnterGame);
+    this->StartInitScene();
+}
+
+void AGameLauncher::Release()
+{
+    KKEventMgr::GetSingleton()->RemoveAllListener();
+}
+
+
+//加载InitScene界面
+void AGameLauncher::StartInitScene()
+{
+    auto LoadAndMountPakFromStreamingAssets = [=, this](const FString& pakName)
+        {
+            IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+            FString SourcePakPath = FPaths::Combine(*FPaths::ProjectContentDir(), TEXT("StreamingAssets/HotUpdatePak/"), pakName);
+            FString DestPakPath = FPaths::Combine(*FPaths::ProjectSavedDir(), TEXT("HotUpdatePak/"), pakName);
+
+            if (!PlatformFile.FileExists(*DestPakPath))
+            {
+                UE_LOG(LogTemp, Log, TEXT("AGameLauncher Copying PAK from %s to %s"), *SourcePakPath, *DestPakPath);
+                if (UEHelper::SafeCopyFile(*DestPakPath, *SourcePakPath))
+                {
+                    UE_LOG(LogTemp, Log, TEXT("AGameLauncher Successfully copied PAK file."));
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Error, TEXT("AGameLauncher Failed to copy PAK file!"));
+                    return;
+                }
+            }
+            else
+            {
+                UE_LOG(LogTemp, Log, TEXT("AGameLauncher PAK file already exists at destination. Skipping copy."));
+            }
+            
+            FPakPlatformFile* PakFileInterface = UEHelper::GetFPakPlatformFile();
+            if (PakFileInterface)
+            {
+                const int32 PakPriority = 0;
+                const FString MountPoint = FPaths::ConvertRelativePathToFull(FPaths::ProjectContentDir());
+                if (PakFileInterface->Mount(*DestPakPath, PakPriority, *MountPoint))
+                {
+                    UE_LOG(LogTemp, Log, TEXT("AGameLauncher Successfully mounted PAK: %s"), *DestPakPath);
+                    UE_LOG(LogTemp, Log, TEXT("AGameLauncher Content is now accessible under: %s"), *MountPoint);
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Error, TEXT("AGameLauncher Failed to mount PAK: %s"), *DestPakPath);
+                }
+            }
+        };
+
+    auto LoadAndMountPak = [=, this]()
+        {
+            LoadAndMountPakFromStreamingAssets("hot_update_initscene.pak");
+        };
+
+    LoadAndMountPak();
 
     //加载InitScene界面
     TSubclassOf<UInitSceneWidget> BPClass = LoadClass<UInitSceneWidget>(nullptr,
@@ -94,11 +153,6 @@ void AGameLauncher::Init()
         mUInitSceneWidget = CreateWidget<UInitSceneWidget>(GetWorld(), BPClass);
         mUInitSceneWidget->Show();
     }
-}
-
-void AGameLauncher::Release()
-{
-    KKEventMgr::GetSingleton()->RemoveAllListener();
 }
 
 void AGameLauncher::StartEnterGame(void* param)

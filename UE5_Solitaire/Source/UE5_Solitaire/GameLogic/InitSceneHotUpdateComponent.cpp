@@ -50,7 +50,7 @@ void UInitSceneHotUpdateComponent::TickComponent(float DeltaTime, ELevelTick Tic
 
 void UInitSceneHotUpdateComponent::LoadAndMountPak()
 {
-    LoadAndMountPakFromStreamingAssets("hot_update_initscene.pak");
+    LoadAndMountPakFromStreamingAssets("hot_update_mainscene.pak");
 }
 
 void UInitSceneHotUpdateComponent::LoadAndMountPakFromStreamingAssets(const FString& pakName)
@@ -77,35 +77,20 @@ void UInitSceneHotUpdateComponent::LoadAndMountPakFromStreamingAssets(const FStr
         UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent PAK file already exists at destination. Skipping copy."));
     }
     
-    FPakPlatformFile* PakFileInterface = (FPakPlatformFile*)FPlatformFileManager::Get().GetPlatformFile(*pakName);
-    if (!PakFileInterface)
+    FPakPlatformFile* PakFileInterface = UEHelper::GetFPakPlatformFile();
+    if (PakFileInterface)
     {
-        if (FModuleManager::Get().LoadModule(*pakName))
+        const int32 PakPriority = 0;
+        const FString MountPoint = FPaths::ConvertRelativePathToFull(FPaths::ProjectContentDir());
+        if (PakFileInterface->Mount(*DestPakPath, PakPriority, *MountPoint))
         {
-            PakFileInterface = (FPakPlatformFile*)FPlatformFileManager::Get().GetPlatformFile(*pakName);
+            UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Successfully mounted PAK: %s"), *DestPakPath);
+            UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Content is now accessible under: %s"), *MountPoint);
         }
         else
         {
-            UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent LoadModule Failed"));
+            UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent Failed to mount PAK: %s"), *DestPakPath);
         }
-    }
-
-    if (!PakFileInterface)
-    {
-        UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent Failed to get PakFile interface!"));
-        return;
-    }
-    
-    const int32 PakPriority = 0;
-    const FString MountPoint = FPaths::ProjectContentDir();
-    if (PakFileInterface->Mount(*DestPakPath, PakPriority, *MountPoint))
-    {
-        UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Successfully mounted PAK: %s"), *DestPakPath);
-        UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Content is now accessible under: %s"), *MountPoint);
-    }
-    else
-    {
-        UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent Failed to mount PAK: %s"), *DestPakPath);
     }
 }
 
