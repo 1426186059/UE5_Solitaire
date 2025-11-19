@@ -135,7 +135,7 @@ UMG问题：
 
 <h1>资源热更</h1>
 
-1： 介绍两个重要热更工具:
+1： 介绍几个重要热更工具:
 
 (1)： RunUAT(Unreal Automation Tool) = 全流程大管家：编译、Cook、生成 PakList、调用 UnrealPak、出补丁、写 CI，全都管。RunUAT.bat BuildCookRun -project=xxx -platform=Win64 -build -cook -stage -pak -archive
 

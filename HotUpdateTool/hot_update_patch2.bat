@@ -1,9 +1,9 @@
 UnrealPak.exe ^
 D:/Me/MyProject/UE5_Solitaire/HotUpdatePak/hot_update_initscene.pak ^
 -Create="D:/Me/MyProject/UE5_Solitaire/HotUpdateTool/hot_update_initscene.txt" ^
--compressed
+-compressed -Log -Verbose -Debug
 
 UnrealPak.exe ^
 D:/Me/MyProject/UE5_Solitaire/HotUpdatePak/hot_update_mainscene.pak ^
 -Create="D:/Me/MyProject/UE5_Solitaire/HotUpdateTool/hot_update_mainscene.txt" ^
--compressed
+-compressed -Log -Verbose -Debug
