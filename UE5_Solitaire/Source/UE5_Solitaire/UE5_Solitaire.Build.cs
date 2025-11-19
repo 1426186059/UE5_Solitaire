@@ -17,7 +17,8 @@ public class UE5_Solitaire : ModuleRules
 			"Paper2D",
             "Slate", 
 			"SlateCore",
-            "Json", 
+            "Json",
+            "PakFile",
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] {

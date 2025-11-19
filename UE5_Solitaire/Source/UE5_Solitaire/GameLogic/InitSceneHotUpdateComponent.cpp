@@ -1,7 +1,14 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "InitSceneHotUpdateComponent.h"
+
+//#include "HAL/PlatformFilemanager.h"
+//#include "Misc/FileHelper.h"
+//#include "Serialization/MemoryReader.h"
+//#include "Serialization/MemoryWriter.h"
+//#include "Internationalization/TextPackageNamespaceUtil.h"
+#include <IPlatformFilePak.h>
 
 // Sets default values
 UInitSceneHotUpdateComponent::UInitSceneHotUpdateComponent()
@@ -14,12 +21,11 @@ UInitSceneHotUpdateComponent::UInitSceneHotUpdateComponent()
 void UInitSceneHotUpdateComponent::BeginPlay()
 {
 	Super::BeginPlay();
-    //this->RequestAllPrimaryAsset();
+    this->LoadAndMountPak();
     this->RequestLoadAllRes();
-    //UE_LOG(LogTemp, Log, TEXT("UInitSceneWidget Show 111111"));
 }
 
-// Ã¿Ö¡ Tick£¨»ò¶¨Ê±Æ÷£©ÀïÂÖÑ¯
+// æ¯å¸§ Tickï¼ˆæˆ–å®šæ—¶å™¨ï¼‰é‡Œè½®è¯¢
 void UInitSceneHotUpdateComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -29,7 +35,7 @@ void UInitSceneHotUpdateComponent::TickComponent(float DeltaTime, ELevelTick Tic
         {
             float Percent = mFStreamableHandle->GetProgress();          // 0.0~1.0
             int32 Loaded, Requested;
-            mFStreamableHandle->GetLoadedCount(Loaded, Requested);    // ÒÑ¼ÓÔØ / ×ÜÁ¿
+            mFStreamableHandle->GetLoadedCount(Loaded, Requested);    // å·²åŠ è½½ / æ€»é‡
             this->UpdateProgressFunc->Broadcast(Percent);
 
             UE_LOG(LogTemp, Log, TEXT("UI AInitSceneMgr Loading: %.0f (%d / %d)"), Percent, Loaded, Requested);
@@ -39,6 +45,67 @@ void UInitSceneHotUpdateComponent::TickComponent(float DeltaTime, ELevelTick Tic
         {
             this->UpdateProgressFunc->Broadcast(1.0f);
         }
+    }
+}
+
+void UInitSceneHotUpdateComponent::LoadAndMountPak()
+{
+    LoadAndMountPakFromStreamingAssets("hot_update_initscene.pak");
+}
+
+void UInitSceneHotUpdateComponent::LoadAndMountPakFromStreamingAssets(const FString& pakName)
+{
+    IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+    FString SourcePakPath = FPaths::Combine(*FPaths::ProjectContentDir(), TEXT("StreamingAssets/HotUpdatePak/"), pakName);
+    FString DestPakPath = FPaths::Combine(*FPaths::ProjectSavedDir(), TEXT("HotUpdatePak/"), pakName);
+
+    if (!PlatformFile.FileExists(*DestPakPath))
+    {
+        UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Copying PAK from %s to %s"), *SourcePakPath, *DestPakPath);
+        if (UEHelper::SafeCopyFile(*DestPakPath, *SourcePakPath))
+        {
+            UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Successfully copied PAK file."));
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent Failed to copy PAK file!"));
+            return;
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent PAK file already exists at destination. Skipping copy."));
+    }
+    
+    FPakPlatformFile* PakFileInterface = (FPakPlatformFile*)FPlatformFileManager::Get().GetPlatformFile(*pakName);
+    if (!PakFileInterface)
+    {
+        if (FModuleManager::Get().LoadModule(*pakName))
+        {
+            PakFileInterface = (FPakPlatformFile*)FPlatformFileManager::Get().GetPlatformFile(*pakName);
+        }
+        else
+        {
+            UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent LoadModule Failed"));
+        }
+    }
+
+    if (!PakFileInterface)
+    {
+        UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent Failed to get PakFile interface!"));
+        return;
+    }
+    
+    const int32 PakPriority = 0;
+    const FString MountPoint = FPaths::ProjectContentDir();
+    if (PakFileInterface->Mount(*DestPakPath, PakPriority, *MountPoint))
+    {
+        UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Successfully mounted PAK: %s"), *DestPakPath);
+        UE_LOG(LogTemp, Log, TEXT("UInitSceneHotUpdateComponent Content is now accessible under: %s"), *MountPoint);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("UInitSceneHotUpdateComponent Failed to mount PAK: %s"), *DestPakPath);
     }
 }
 

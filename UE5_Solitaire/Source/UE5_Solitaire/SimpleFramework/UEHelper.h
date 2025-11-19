@@ -73,6 +73,20 @@ public:
     {
         GetKKWorld(obj)->GetTimerManager().PauseTimer(mHandle);
     }
+
+    static bool SafeCopyFile(const FString& Dst, const FString& Src)
+    {
+        // 1. 建目录
+        FString DstDir = FPaths::GetPath(Dst);
+        IPlatformFile& Pf = FPlatformFileManager::Get().GetPlatformFile();
+        if (!Pf.DirectoryExists(*DstDir))
+        {
+            Pf.CreateDirectoryTree(*DstDir);
+        }
+
+        // 3. 真正拷贝
+        return Pf.CopyFile(*Dst, *Src);
+    }
     
 private:
     // 禁止拷贝和移动（单例不应被复制）

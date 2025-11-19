@@ -5,7 +5,7 @@
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 #include "GameConst.h"
-
+#include "UE5_Solitaire/SimpleFramework/KKSFHead.h"
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "InitSceneHotUpdateComponent.generated.h"
@@ -24,6 +24,8 @@ protected:
 public:	
 	void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
+	void LoadAndMountPak();
+	void LoadAndMountPakFromStreamingAssets(const FString& pakPath);
 	void RequestAllPrimaryAsset();
 	void OnAssetLoadCompleted();
 	void RequestLoadAllRes();
