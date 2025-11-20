@@ -23,59 +23,7 @@
 
 5：GEngine->GetWorld() 一直是 nullptr, 奇怪！ (得用其他API) ，换成： GEngine->GameViewport->GetWorld();这个就有值。
 
-6：Actor单例，无法使用泛型模板， 这样如何构造一个通用的单例基类，成为了一个问题。下面是我找到的解决办法:
-	
-	static TMap<TSubclassOf<AActor>, TWeakObjectPtr<AActor>> mInstanceDic;
-    
-    template<typename T>
-	static T* GetActorSingleton(bool bForceCreate = true)
-	{
-		static_assert(TIsDerivedFrom<T, AActor>::Value, "T must be an AActor derived class");
-
-		TSubclassOf<AActor> Key = T::StaticClass();
-		TWeakObjectPtr<AActor>* mInstancePtr = mInstanceDic.Find(Key);
-		if (mInstancePtr)
-		{
-			return Cast<T>(mInstancePtr->Get());
-		}
-		else
-		{
-			if (bForceCreate)
-			{
-				TWeakObjectPtr<AActor> mInstance = UEHelper::GetKKWorld()->SpawnActor<T>(Key);
-				mInstanceDic.Add(Key, mInstance);
-				return Cast<T>(mInstance.Get());
-			}
-			else
-			{
-				return nullptr;
-			}
-		}
-
-	}
-
-    void AddSingleton()
-	{
-		TSubclassOf<AActor> mKey = this->GetClass();
-		if (!mInstanceDic.Contains(mKey))
-		{
-			mInstanceDic.Add(mKey, this);
-		}
-		else
-		{
-			TWeakObjectPtr<AActor>* mInstance = mInstanceDic.Find(mKey);
-			if (mInstance->Get() != this)
-			{
-				UE_LOG(LogTemp, Error, TEXT("KKActorSingleton Error"));
-			}
-		}
-	}
-
-	void RemoveSingleton()
-	{
-		TSubclassOf<AActor> mKey = this->GetClass();
-		mInstanceDic.Remove(mKey);
-	}
+6：Actor单例，无法使用泛型模板， 这样如何构造一个通用的单例基类，成为了一个问题。源码中有我找到的解决办法。
 
 7： Excel导出为CSV导入UE5, 最好的方法是使用UE5 的 UDataTable，否则各种乱码问题，不能一眼识别，运行直接崩。
 
