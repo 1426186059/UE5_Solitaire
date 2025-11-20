@@ -149,9 +149,21 @@ UMG问题：
 
 3: 热更包:
 
-(1)：添加系统环境变量：D:\ProgramFiles\Epic Games\UE_5.6\Engine\Binaries\Win64。
+(1)：添加系统环境变量：D:\ProgramFiles\Epic Games\UE_5.6\Engine\Binaries\Win64。这样方便调用 UnrealPak.exe 进行打包
 
-(2)：打包
+(2)：新建一个类似 PakList.txt 文本文档，里面每行输入要打包生成的资源目录, 这些目录来自 Cooked 生成下的Content下的目录，不是项目工程Content下的目录。
+
+(3)：新建一个bat文件，里边 输入命令 UnrealPak.exe 进行打包的参数，进行打包。
+
+(4): 我们测试热更，不一定非要用Web服务器，我们可以把Pak放到 [额外非资产目录](上面提到过的) ,然后进行打母包，这样我们指定的Pak 就放到APK里，游戏启动后，加载这些Pak。 
+
+(5)：打好包后，在代码中进行加载，加载完后，遇到的最大问题：Mount好了，但资源加载不出来的问题：这个时候得想个巧妙的办法，让打包出来的Pak里资源相对路径，是Content目录的相对路径，为此我想到了一个办法：我们可以指定一个不存在的资源路径：比如：
+
+D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solitaire\Content\================================================
+
+上面这行显示的资源，肯定是不存在的，但是他能帮助 UnrealPak.exe 找到共同的资源父目录 ~~~/Content/, 这样打包出来的资源相对路径 就好了。 
 
 <h1>UnrealPak.exe报错</h1>
 1： LogWindows: Error: appError called: Assertion failed: Pair.Info.IsDeleteRecord() || Pair.Info.IndexDataEquals(EncodedEntry) [File:D:\build\++UE5\Sync\Engine\Source\Developer\PakFileUtilities\Private\PakFileUtilities.cpp] [Line: 2080]
+
+解决方法：不要用顶层目录，而是把需要的深层目录 一一加进去，为此我写了一个C#命令行工具，一键扫描所有子目录，输入到一个 类似 PakList.txt 的文本文档就好了。
