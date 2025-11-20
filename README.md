@@ -155,11 +155,11 @@ UMG问题：
 
 (3)：新建一个bat文件，里边 输入命令 UnrealPak.exe 进行打包的参数，进行打包。
 
-(4): 我们测试热更，不一定非要用Web服务器，我们可以把Pak放到 [额外非资产目录](上面提到过的) ,然后进行打母包，这样我们指定的Pak 就放到APK里，游戏启动后，加载这些Pak。 
+(4): 我们测试热更，不一定非要用Web服务器，我们可以把Pak放到 [额外非资产目录](在项目设置里设置) ,然后进行打母包，这样我们指定的Pak 就放到APK里，游戏启动后，加载这些Pak。 
 
 (5)：打好包后，在代码中进行加载，加载完后，遇到的最大问题：Mount好了，但资源加载不出来的问题：这个时候得想个巧妙的办法，让打包出来的Pak里资源相对路径，是Content目录的相对路径，为此我想到了一个办法：我们可以指定一个不存在的资源路径：比如：
 
-D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solitaire\Content\================================================
+D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solitaire\Content\\================================================
 
 上面这行显示的资源，肯定是不存在的，但是他能帮助 UnrealPak.exe 找到共同的资源父目录 ~~~/Content/, 这样打包出来的资源相对路径 就好了。 
 
