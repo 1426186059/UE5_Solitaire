@@ -115,3 +115,7 @@ D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solita
 1： LogWindows: Error: appError called: Assertion failed: Pair.Info.IsDeleteRecord() || Pair.Info.IndexDataEquals(EncodedEntry) [File:D:\build\++UE5\Sync\Engine\Source\Developer\PakFileUtilities\Private\PakFileUtilities.cpp] [Line: 2080]
 
 解决方法：不要用顶层目录，而是把需要的深层目录 一一加进去，为此我写了一个C#命令行工具，一键扫描所有子目录，输入到一个 类似 PakList.txt 的文本文档就好了。
+
+2： 这个C#命令行工具，一键扫描所有子目录，会有问题，比如 UI 目录下有多个蓝图，并且这个目录下还有多个文件夹，那么打出来的相对路径会有问题
+
+解决方法：一键扫描所有子目录后，对目录进行排序，长路径在前，短路径在后，这样就可以避免这个问题。

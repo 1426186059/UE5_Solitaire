@@ -1,23 +1,36 @@
-﻿namespace GenPakAllSubDir
+﻿using System.IO;
+
+namespace GenPakAllSubDir
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            List<string> list = new List<string>();
             Console.WriteLine("BaseDirectory: " + AppContext.BaseDirectory);
 
-            string mFileContent = "";
+            List<string> list = new List<string>();
             foreach (var v in Directory.GetDirectories(AppContext.BaseDirectory, "*", SearchOption.AllDirectories))
             {
-                string path = v;
-                if (Directory.GetFiles(path).Length > 0)
+                if (Directory.GetFiles(v).Length > 0)
                 {
-                    mFileContent += path + Path.DirectorySeparatorChar + "*\n";
+                    list.Add(v);
                 }
             }
 
+            list.Sort((x, y) =>
+            {
+                return -(x.Length - y.Length);
+            });
+
+            string mFileContent = "";
+            foreach (var path in list)
+            {
+                mFileContent += path + Path.DirectorySeparatorChar + "*\n";
+            }
+            mFileContent += GetContentDirEmptyAsset();
+
             File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "pak_dir_list.txt"), mFileContent);
+
             Console.WriteLine("--------- Finish ---------");
             while (true)
             {
@@ -27,6 +40,18 @@
                     break;
                 }
             }
+        }
+
+        static string GetContentDirEmptyAsset()
+        {
+            string content1 = $"{Path.DirectorySeparatorChar}Content{Path.DirectorySeparatorChar}";
+            if (AppContext.BaseDirectory.Contains(content1))
+            {
+                int nIndex = AppContext.BaseDirectory.IndexOf(content1);
+                string contentDir = AppContext.BaseDirectory.Substring(0, nIndex + content1.Length);
+                return Path.Combine(contentDir, "============================================.empty"); 
+            }
+            return "";
         }
     }
 }
