@@ -1,0 +1,8 @@
+[
+  {
+    "Path": "*",
+    "bCompressed": true,
+    "CompressionMethod": "Zstd",
+    "CompressionLevel": 12
+  }
+]

@@ -119,3 +119,5 @@ D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solita
 2： 这个C#命令行工具，一键扫描所有子目录，会有问题，比如 UI 目录下有多个蓝图，并且这个目录下还有多个文件夹，那么打出来的相对路径会有问题
 
 解决方法：一键扫描所有子目录后，对目录进行排序，长路径在前，短路径在后，这样就可以避免这个问题。
+
+3：默认UnrealPak.exe 手动打包Pak 不压缩，我试了很多选项，只有 -compress 可以压缩成功，但是命令行提示： LogPakFile: Warning: -compress is deprecated, use -compressed with UAT instead，我不知道怎么办了。
