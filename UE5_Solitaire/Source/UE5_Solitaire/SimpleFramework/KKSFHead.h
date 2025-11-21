@@ -12,9 +12,9 @@
 #include "KKEventMgr.h"
 #include "UEHelper.h"
 #include "KKDBSaveMgr.h"
-#include "KKType/KKInstanceIdBase.h"
 #include "KKCSVParser.h"
 
+#include "KKType/KKType.h"
 #include "KKUI/KKUI.h"
 #include "KKTween/KKTweenExtentions.h"
 #include "KKTimer/KKTimer.h"

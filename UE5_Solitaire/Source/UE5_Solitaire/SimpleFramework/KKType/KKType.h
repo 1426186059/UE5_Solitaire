@@ -4,21 +4,6 @@
 
 #include "CoreMinimal.h"
 
-class KKInstanceIdBase
-{
-	uint64 nInstanceId = 0;
-public:
-	uint64 GetInstanceId()
-	{
-		if (nInstanceId == 0)
-		{
-			static uint64 InnerAutoAddID;
-			nInstanceId = ++InnerAutoAddID;
-		}
-		return this->nInstanceId;
-	}
-};
-
 class KKTypeInnerFunc
 {
 public:
