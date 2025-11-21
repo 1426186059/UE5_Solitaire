@@ -2667,12 +2667,15 @@ void UMainUIWidget::PlayRecordForwardAni()
             }
             else
             {
-                auto nNowLastTop7CardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
-                if (nNowLastTop7CardItem && nNowLastTop7CardItem->orTurnOverStateIsTrue() == false)
+                if (mListCardNodeTop7Go.Num() > 0)
                 {
-                    nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex);
-                    nNowLastTop7CardItem->PlayTurnOverAni();
-                    nNowLastTop7CardItem->SetEventTriggerState(true);
+                    auto nNowLastTop7CardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
+                    if (nNowLastTop7CardItem->orTurnOverStateIsTrue() == false)
+                    {
+                        nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex);
+                        nNowLastTop7CardItem->PlayTurnOverAni();
+                        nNowLastTop7CardItem->SetEventTriggerState(true);
+                    }
                 }
             }
 
