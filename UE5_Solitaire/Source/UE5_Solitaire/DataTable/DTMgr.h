@@ -19,13 +19,13 @@ template<typename T>
 class UDataTableTMgr : KKTypeTBase<UDataTableTMgr<T>>
 {
 private:
-    UDataTable* mTable;
+    TStrongObjectPtr<UDataTable> mTable;
     TArray<T*> mTableT = {};
 public:
     UDataTableTMgr(UDataTable* t)
     {
         static_assert(TIsDerivedFrom<T, FTableRowBase>::Value, "T must be an FTableRowBase derived class");
-        this->mTable = t;
+        this->mTable = TStrongObjectPtr<UDataTable>(t);
     }
 
     const TArray<T*>* GetTableT()
