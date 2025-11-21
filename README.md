@@ -121,3 +121,5 @@ D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solita
 解决方法：一键扫描所有子目录后，对目录进行排序，长路径在前，短路径在后，这样就可以避免这个问题。
 
 3：默认UnrealPak.exe 手动打包Pak 不压缩，我试了很多选项，只有 -compress 可以压缩成功，但是命令行提示： LogPakFile: Warning: -compress is deprecated, use -compressed with UAT instead，我不知道怎么办了。
+
+4: 热更后，发现在Android上某些看起来非常正常的逻辑报错了, 正在排查原因：
