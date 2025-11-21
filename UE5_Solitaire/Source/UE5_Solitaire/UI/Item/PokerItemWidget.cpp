@@ -94,7 +94,7 @@ FReply UPokerItemWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnTouchStarted :%d, FingerIndex: %d"), this->nPokerId, FingerIndex);
     if (FingerIndex == 0)
     {
-        this->fLastMouseDownTime = InGestureEvent.GetMillisecondsSinceEvent();
+        this->fLastMouseDownTime = UEHelper::GetTime_Time();
         this->CurrentTouchPosition = InGestureEvent.GetScreenSpacePosition();
         this->OnDragBegin();
         return FReply::Handled().CaptureMouse(TakeWidget());
@@ -116,7 +116,8 @@ FReply UPokerItemWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const F
     {
         this->CurrentTouchPosition = InGestureEvent.GetScreenSpacePosition();
         this->OnDragEnd();
-        if (InGestureEvent.GetMillisecondsSinceEvent() - this->fLastMouseDownTime < 200)
+        
+        if (UEHelper::GetTime_Time() - this->fLastMouseDownTime < 0.15)
         {
             this->OnClickMe();
         }
