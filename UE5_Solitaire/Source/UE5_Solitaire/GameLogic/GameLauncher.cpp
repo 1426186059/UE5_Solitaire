@@ -161,7 +161,6 @@ void AGameLauncher::StartEnterGame(void* param)
     KKEventMgr::GetSingleton()->GetEventList(GameConst::EventId_InitSceneDoFinishOK)->RemoveAll(this);
 
     //¼ÓÔØCSVÅäÖÃ±í
-    CSVConfigMgr::GetSingleton()->Init();
     ADTMgr::GetSingleton()->Init();
 
     AKKDBSaveMgr::GetSingleton()->Init();
