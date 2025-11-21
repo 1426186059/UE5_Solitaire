@@ -328,7 +328,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 nCount++;
                 auto mCardItem = TArrayExtentions::Remove(this->mSendCardListGo);
                 this->tableCardDraw3Go.Insert(mCardItem, 0);
-                mCardItem->SetTurnOverState(true, i - 1);
+                mCardItem->SetTurnOverState(true, i);
             }
         }
         else if (oriPosTypeInfo[0] == SolitairePokerPosType::Draw3Pos)
@@ -388,7 +388,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
                 auto mCardItem = TArrayExtentions::Remove(mListCardNodeTop7Go, oriIndex);
                 if (bUseMagicWand)
                 {
-                    mCardItem->SetTurnOverState(true, i - 1);
+                    mCardItem->SetTurnOverState(true, i);
                 }
 
                 auto& mListCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[1]];
@@ -406,7 +406,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
 
             if (mListCardNodeTop7Go.Num() > 0)
             {
-                mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1]->SetTurnOverState(true, i - 1);
+                mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1]->SetTurnOverState(true, i);
             }
         }
         else
@@ -1676,7 +1676,7 @@ std::tuple<bool, UPokerItemWidget*> UMainUIWidget::orThisStepTurnOverPokerIsTrue
         for (int32 j = 0; j < this->tableCardNodeTop7Go[i].Num(); j++)
         {
             auto mCardItem = this->tableCardNodeTop7Go[i][j];
-            if (mCardItem->nStepIndex_ForFirstShowPokerId == nStepIndex - 1)
+            if (mCardItem->nStepIndex_ForFirstShowPokerId == nStepIndex)
             {
                 return {true, mCardItem};
             }
@@ -2300,8 +2300,8 @@ TArray<int32> UMainUIWidget::GetPokerPosType(UPokerItemWidget* mDragCardItem)
 //------------------------------------------------Íæ¼Ò¼ÇÂ¼------------------------------------------------------------ -
 int32 UMainUIWidget::GetNowRecordStepIndex()
 {
-    auto [A, B] = RecordStepDataHandler::GetSingleton()->GetNowStepRecord();
-    return A;
+    auto [nStepIndex, nLastOpInfo] = RecordStepDataHandler::GetSingleton()->GetNowStepRecord();
+    return nStepIndex;
 }
 
 void UMainUIWidget::PlayRecordUndoAni()
@@ -2452,7 +2452,7 @@ void UMainUIWidget::PlayRecordUndoAni()
         if (oriIndex - 1 >= 0 && oriIndex - 1 < mListCardNodeTop7Go.Num())
         {
             auto mCardItem2 = mListCardNodeTop7Go[oriIndex - 1];
-            if (nStepIndex - 1 == mCardItem2->nStepIndex_ForFirstShowPokerId)
+            if (nStepIndex == mCardItem2->nStepIndex_ForFirstShowPokerId)
             {
                 mCardItem2->SetTurnOverState(false);
                 mCardItem2->PlayTurnOverAni();
@@ -2464,7 +2464,7 @@ void UMainUIWidget::PlayRecordUndoAni()
         UPokerItemWidget* mCardItem = nullptr;
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
-            bool bUseMagicWand = oriIndex != mListCardNodeTop7Go.Num() - 1;
+            bool bUseMagicWand = oriIndex != mListCardNodeTop7Go.Num();
             auto& mListCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[1]];
             mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
             mListCardNodeTop7Go.Insert(mCardItem, oriIndex);
@@ -2553,7 +2553,7 @@ void UMainUIWidget::PlayRecordForwardAni()
             this->tableCardDraw3Go.Insert(mCardItem, 0);
 
             UMGHelper::SetChildLastZOrder(mCardItem);
-            mCardItem->SetTurnOverState(true, nStepIndex - 1);
+            mCardItem->SetTurnOverState(true, nStepIndex);
             mCardItem->PlayTurnOverAni();
             this->OnClickDraw3Move(mCardItem, fromPos, toPos, false);
         }
@@ -2650,7 +2650,7 @@ void UMainUIWidget::PlayRecordForwardAni()
             auto mCardItem = TArrayExtentions::Remove(mListCardNodeTop7Go, nRemoveIndex);
             if (bUseMagicWand)
             {
-                mCardItem->SetTurnOverState(true, nStepIndex - 1);
+                mCardItem->SetTurnOverState(true, nStepIndex);
                 mCardItem->PlayTurnOverAni();
                 mCardItem->SetEventTriggerState(true);
             }
@@ -2659,7 +2659,7 @@ void UMainUIWidget::PlayRecordForwardAni()
                 auto nNowLastTop7CardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
                 if (nNowLastTop7CardItem && nNowLastTop7CardItem->orTurnOverStateIsTrue() == false)
                 {
-                    nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex - 1);
+                    nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex);
                     nNowLastTop7CardItem->PlayTurnOverAni();
                     nNowLastTop7CardItem->SetEventTriggerState(true);
                 }
@@ -2686,7 +2686,7 @@ void UMainUIWidget::PlayRecordForwardAni()
                 auto nNowLastTop7CardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
                 if (nNowLastTop7CardItem->orTurnOverStateIsTrue() == false)
                 {
-                    nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex - 1);
+                    nNowLastTop7CardItem->SetTurnOverState(true, nStepIndex);
                     nNowLastTop7CardItem->PlayTurnOverAni();
                     nNowLastTop7CardItem->SetEventTriggerState(true);
                 }
