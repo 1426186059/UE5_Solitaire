@@ -155,13 +155,13 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     nDifficultLayer = FMath::Clamp(nDifficultLayer, 1, 10);
     nGameLevel = FMath::Max(nGameLevel, 1);
 
-    auto mTable = CSVConfigMgr::GetSingleton()->GetCSV<csv_jianhuan_vita>()->GetTable();
+    auto mTable = ADTMgr::GetSingleton()->Get<FDT_jianhuan_vita>()->GetTableT();
 
     TArray<int> tableIndex = {};
     for (int k = 0; k < mTable->Num(); k++)
     {
-        const FDT_jianhuan_vita& v = (*mTable)[k];
-        if (v.layer == nDifficultLayer)
+        FDT_jianhuan_vita* v = (*mTable)[k];
+        if (v->layer == nDifficultLayer)
         {
             tableIndex.Add(k);
         }
@@ -170,7 +170,7 @@ TArray<int> CardHandler::GetInitCards_ExcelRandom(int nDifficultLayer, int nGame
     if (tableIndex.Num() > 0)
     {
         int nRandomIndex = tableIndex[KKRandomTool::RandomArrayInt(tableIndex.Num())];
-        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId(&(*mTable)[nRandomIndex]);
+        auto [bTrue, tablePokerId] = this->GetExcelTablePokerId((*mTable)[nRandomIndex]);
         if (bTrue)
         {
             return tablePokerId;

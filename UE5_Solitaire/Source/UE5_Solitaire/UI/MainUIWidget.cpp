@@ -675,7 +675,7 @@ void UMainUIWidget::NewGameBegin_ForRePlay()
 
 void UMainUIWidget::NewGameBegin(bool bRePlay)
 {
-    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin"));
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin 000000"));
     // ----------------------------------------------广告--------------------------------------------
     //if (ThemeSolitaire.Config:orTriggerBannerAds() then
     //     if not GoogleAdsHandler.bShowBannerAds then
@@ -688,8 +688,10 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     //             end
 
     //--------------------------------------对上把数据 记录整理--------------------------------------------
-    if (DataCenter::GetSingleton()->data->nTotalGameCount > 0)
+    if (DataCenter::GetSingleton()->GetData()->nTotalGameCount > 0)
     {
+        UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin DataCenter::GetSingleton()->GetData()->nTotalGameCount > 0"));
+        RecordStepDataHandler::GetSingleton()->GetData()->bWin = true;
         if (RecordStepDataHandler::GetSingleton()->GetData()->nGameMode == SolitaireGameMode::Normal)
         {
             if (RecordStepDataHandler::GetSingleton()->GetData()->bWin)
@@ -712,7 +714,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
         if (RecordStepDataHandler::GetSingleton()->GetData()->bWin)
         {
-            if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 2 && DataCenter::GetSingleton()->data->bFastGame == false)
+            if (DataCenter::GetSingleton()->GetData()->nNomalModeTotalWinCount == 2 && DataCenter::GetSingleton()->GetData()->bFastGame == false)
             {
                 KKTween::delayedCall(1.0, []()
                     {
@@ -720,7 +722,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
                     });
             };
 
-            if (DataCenter::GetSingleton()->data->nNomalModeTotalWinCount == 4 && DataCenter::GetSingleton()->data->nMusicIndex == 0)
+            if (DataCenter::GetSingleton()->GetData()->nNomalModeTotalWinCount == 4 && DataCenter::GetSingleton()->GetData()->nMusicIndex == 0)
             {
                 KKTween::delayedCall(1.0, []()
                     {
@@ -747,6 +749,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     //--------------------------------------事件---------------------------------- -
     //this->PrintGameStartInfo();
 
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin 1111111"));
     TArray<int32> mSendCardList = {};
     if (bRePlay)
     {
@@ -774,6 +777,7 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
 
     this->mLastSendCardList = mSendCardList;
 
+    UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin 222222: %d %d"), mSendCardList.Num(), this->nGameMode);
     ensureMsgf(mSendCardList.Num() == 52, TEXT("%d"), mSendCardList.Num());
     ensureMsgf(this->mSendCardListGo.Num() == 52, TEXT("%d"), this->mSendCardListGo.Num());
     RecordStepDataHandler::GetSingleton()->InitStepRecord(this->nGameMode, mSendCardList);
