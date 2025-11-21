@@ -2464,7 +2464,7 @@ void UMainUIWidget::PlayRecordUndoAni()
         UPokerItemWidget* mCardItem = nullptr;
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
-            bool bUseMagicWand = oriIndex != mListCardNodeTop7Go.Num();
+            bool bUseMagicWand = oriIndex != mListCardNodeTop7Go.Num() - 1;
             auto& mListCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[1]];
             mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
             mListCardNodeTop7Go.Insert(mCardItem, oriIndex);
@@ -2539,6 +2539,7 @@ void UMainUIWidget::PlayRecordForwardAni()
     const auto& targetPosTypeInfo = nLastOpInfo->toPosTypeInfo;
     auto fromPos = this->GetPosByPosTypeInfo(oriPosTypeInfo);
     auto toPos = this->GetPosByPosTypeInfo(targetPosTypeInfo);
+    RecordStepDataHandler::GetSingleton()->PrintOp(*nLastOpInfo);
 
     if (oriPosTypeInfo[0] == SolitairePokerPosType::SendPokerPos)
     {
