@@ -19,17 +19,34 @@ public:
 	}
 };
 
+class KKTypeInnerFunc
+{
+public:
+	static uint16 GetTypeId()
+	{
+		static uint16 nKKTypeInnerAutoAddID;
+		check(nKKTypeInnerAutoAddID < UINT16_MAX)
+		return ++nKKTypeInnerAutoAddID;
+	}
+private:
+	KKTypeInnerFunc() = delete;
+	~KKTypeInnerFunc() = delete;
+	KKTypeInnerFunc(const KKTypeInnerFunc&) = delete;
+	KKTypeInnerFunc& operator=(const KKTypeInnerFunc&) = delete;
+	KKTypeInnerFunc(KKTypeInnerFunc&&) = delete;
+	KKTypeInnerFunc& operator=(KKTypeInnerFunc&&) = delete;
+};
+
 template<typename T>
 class KKTypeTBase
 {
 public:
-	static uint64 GetTypeId()
+	static uint16 GetTypeId()
 	{
-		static uint64 nKKTypeId;
+		static uint16 nKKTypeId;
 		if (nKKTypeId == 0)
 		{
-			static uint64 nKKTypeInnerAutoAddID;
-			nKKTypeId = ++nKKTypeInnerAutoAddID;
+			nKKTypeId = KKTypeInnerFunc::GetTypeId();
 		}
 		return nKKTypeId;
 	}
