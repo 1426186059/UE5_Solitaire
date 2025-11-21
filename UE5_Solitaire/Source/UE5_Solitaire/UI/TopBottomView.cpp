@@ -49,14 +49,14 @@ void TopBottomView::OnBtnClicked_GameNodeBtn()
 void TopBottomView::OnBtnClicked_UndoBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_UndoBtn"));
-    AudioHandler::GetSingleton()->PlaySound("button");
+    //AudioHandler::GetSingleton()->PlaySound("button");
     mUIRoot->PlayRecordUndoAni();
 }
 
 void TopBottomView::OnBtnClicked_ForwardBtn()
 {
     UE_LOG(LogTemp, Log, TEXT("TopBottomView OnBtnClicked_ForwardBtn"));
-    AudioHandler::GetSingleton()->PlaySound("button");
+    //AudioHandler::GetSingleton()->PlaySound("button");
     mUIRoot->PlayRecordForwardAni();
 }
 
