@@ -33,7 +33,7 @@ namespace KKTweenAPI
         float sumTime;
         int32 nLoopCount;
         int32 nLoopPingTong;
-        int32 nId;
+        uint32 nVersion;
         Action_Float_Delegate updateFunc;
         ActionDelegate finishFunc;
         ActionDelegate startFunc;
@@ -73,9 +73,8 @@ namespace KKTweenAPI
 
         void OnPoolRecycle()
         {
-            nId++;
-            ensureMsgf(nId <= MAX_int32, TEXT("KKTweenItem Error"));
             Reset();
+            IncrementVersion();
         }
 
         void OnPoolDestory()
@@ -92,6 +91,16 @@ namespace KKTweenAPI
         KKTweenItem()
         {
             Reset();
+            IncrementVersion();
+        }
+
+        void IncrementVersion()
+        {
+            nVersion++;
+            if (nVersion == 0)
+            {
+                nVersion++;
+            }
         }
 
         void Reset()

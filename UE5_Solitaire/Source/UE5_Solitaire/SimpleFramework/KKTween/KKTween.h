@@ -22,14 +22,15 @@ public:
     struct Handle
     {
     private:
-        int nId = -1;
+        uint32 nVersion = 0;
         TWeakPtr<KKTweenItem> mInnerPtr;
 
         friend class KKTween;
         Handle(TSharedPtr<KKTweenItem> mItem)
         {
             this->mInnerPtr = mItem;
-            this->nId = mItem->nId;
+            this->nVersion = mItem->nVersion;
+            check(this->nVersion > 0);
         }
     public:
         Handle()
@@ -39,7 +40,7 @@ public:
 
         bool IsValid()
         {
-            return mInnerPtr.IsValid() && mInnerPtr.Pin()->nId == nId;
+            return this->nVersion > 0 && mInnerPtr.IsValid() && mInnerPtr.Pin()->nVersion == nVersion;
         }
 
         void AppendTween(Handle mOtherTween)
@@ -58,7 +59,7 @@ public:
             }
 
             mInnerPtr.Reset();
-            nId = -1;
+            nVersion = 0;
         }
 
         void Reset()
