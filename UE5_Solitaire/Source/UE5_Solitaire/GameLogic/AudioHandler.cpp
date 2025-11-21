@@ -34,7 +34,6 @@ UAudioComponent* AudioHandler::GetAudioComponentFromPool()
 UAudioComponent* AudioHandler::OnPoolSoundPlayFinished()
 {
     UAudioComponent* AC = mAudioComponentPool.Pop();
-    //AC->ClearFlags(RF_PendingKill);
     return AC;
 }
 
@@ -76,10 +75,6 @@ UAudioComponent* AudioHandler::PlaySound2(const FString& name)
 
     UAudioComponent* mAudioComponent = this->GetAudioComponentFromPool();
     mAudioComponent->SetSound(Sound);
-    mAudioComponent->bAutoActivate = false;
-    mAudioComponent->bStopWhenOwnerDestroyed = false;
-    mAudioComponent->bShouldRemainActiveIfDropped = true;
-    mAudioComponent->SetBoolParameter(TEXT("Loop"), true);
     mAudioComponent->Play();
     return mAudioComponent;
 }

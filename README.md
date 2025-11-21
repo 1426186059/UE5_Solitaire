@@ -117,14 +117,14 @@ D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solita
 
 上面这行显示的资源，肯定是不存在的，但是他能帮助 UnrealPak.exe 找到共同的资源父目录 ~~~/Content/, 这样打包出来的资源相对路径 就好了。 
 
-<h1>UnrealPak.exe报错</h1>
-1： LogWindows: Error: appError called: Assertion failed: Pair.Info.IsDeleteRecord() || Pair.Info.IndexDataEquals(EncodedEntry) [File:D:\build\++UE5\Sync\Engine\Source\Developer\PakFileUtilities\Private\PakFileUtilities.cpp] [Line: 2080]
+<h1>手动打Pak包问题</h1>
+1：UnrealPak.exe报错: LogWindows: Error: appError called: Assertion failed: Pair.Info.IsDeleteRecord() || Pair.Info.IndexDataEquals(EncodedEntry) [File:D:\build\++UE5\Sync\Engine\Source\Developer\PakFileUtilities\Private\PakFileUtilities.cpp] [Line: 2080]
 
 解决方法：不要用顶层目录，而是把需要的深层目录 一一加进去，为此我写了一个C#命令行工具，一键扫描所有子目录，输入到一个 类似 PakList.txt 的文本文档就好了。
 
-2： 这个C#命令行工具，一键扫描所有子目录，会有问题，比如 UI 目录下有多个蓝图，并且这个目录下还有多个文件夹，那么打出来的相对路径会有问题
+2： 这个C#命令行工具，一键扫描所有子目录，会有问题，比如 UI 目录下有多个蓝图，并且这个目录下还有多个文件夹，那么打出来的嵌套文件夹下的资源相对路径会有问题
 
-解决方法：一键扫描所有子目录后，对目录进行排序，长路径在前，短路径在后，这样就可以避免这个问题。
+解决方法：修改C#命令行工具, 一键扫描所有子目录后，对目录进行排序，长路径在前，短路径在后，这样就可以避免这个问题。
 
 3：默认UnrealPak.exe 手动打包Pak 不压缩，我试了很多选项，只有 -compress 可以压缩成功，但是命令行提示： LogPakFile: Warning: -compress is deprecated, use -compressed with UAT instead，我不知道怎么办了。
 

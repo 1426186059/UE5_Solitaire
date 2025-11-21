@@ -73,7 +73,7 @@ void RecordStepDataHandler::ResetUndoCountTo0()
 	while (this->GetData()->nUndoCount > 0)
 	{
 		this->GetData()->tableOpStepItem.Pop();
-		this->GetData()->nUndoCount = this->GetData()->nUndoCount - 1;
+		this->GetData()->nUndoCount--;
 	}
 }
 
