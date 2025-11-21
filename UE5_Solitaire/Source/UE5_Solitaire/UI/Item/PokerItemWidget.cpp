@@ -94,6 +94,7 @@ FReply UPokerItemWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const
     UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget NativeOnTouchStarted :%d, FingerIndex: %d"), this->nPokerId, FingerIndex);
     if (FingerIndex == 0)
     {
+        this->fLastMouseDownTime = InGestureEvent.GetMillisecondsSinceEvent();
         this->CurrentTouchPosition = InGestureEvent.GetScreenSpacePosition();
         this->OnDragBegin();
         return FReply::Handled().CaptureMouse(TakeWidget());
@@ -115,6 +116,10 @@ FReply UPokerItemWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const F
     {
         this->CurrentTouchPosition = InGestureEvent.GetScreenSpacePosition();
         this->OnDragEnd();
+        if (InGestureEvent.GetMillisecondsSinceEvent() - this->fLastMouseDownTime < 200)
+        {
+            this->OnClickMe();
+        }
         return FReply::Handled().ReleaseMouseCapture();
     }
     return Super::NativeOnTouchEnded(InGeometry, InGestureEvent);
@@ -161,24 +166,23 @@ void UPokerItemWidget::OnDragEnd()
     }
 }
 
+void UPokerItemWidget::OnClickMe()
+{
+    UE_LOG(LogTemp, Log, TEXT("UPokerItemWidget OnClickMe :%d"), this->nPokerId);
+    //GameView.CardHintEffectPool:Reset()
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->OnClickToMovePokerPos(this);
+    AKKUIMgr::GetSingleton()->Get<UMainUIWidget>()->TellRobot_PlayerAlive();
+}
+
 void UPokerItemWidget::Init()
 {
     if (this->bInit) return;
     this->bInit = true;
 
     this->mIcon = Cast<UImage>(this->GetWidgetFromName(TEXT("Icon")));
-    if (!this->mIcon)
-    {
-        UE_LOG(LogTemp, Error, TEXT("mIcon == null"));
-        return;
-    }
-
     this->tranCardItemAni = this->GetWidgetFromName("CardItemAni");
-    if (!this->tranCardItemAni)
-    {
-        UE_LOG(LogTemp, Error, TEXT("tranCardItemAni == null"));
-        return;
-    }
+    //auto mClickBtn = Cast<UButton>(this->GetWidgetFromName("clickBtn"));
+    //mClickBtn->OnClicked.AddDynamic(this, &UGMWidget::OnBtnClicked_AutoShouPaiBtn);
 }
 
 void UPokerItemWidget::Show()

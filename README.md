@@ -129,3 +129,5 @@ D:\Me\MyProject\UE5_Solitaire\UE5_Solitaire\Saved\Cooked\Android_ASTC\UE5_Solita
 3：默认UnrealPak.exe 手动打包Pak 不压缩，我试了很多选项，只有 -compress 可以压缩成功，但是命令行提示： LogPakFile: Warning: -compress is deprecated, use -compressed with UAT instead，我不知道怎么办了。
 
 4: 热更后，发现在Android上某些看起来非常正常的逻辑报错了, 正在排查原因：
+
+原因找到了：纯C++类持有 UObject* 指针对象, GC的问题

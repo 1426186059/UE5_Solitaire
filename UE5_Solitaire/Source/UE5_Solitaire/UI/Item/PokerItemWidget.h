@@ -43,6 +43,8 @@ protected:
 	void OnDragBegin();
 	void OnDrag();
 	void OnDragEnd();
+	UFUNCTION() void OnClickMe();
+
 public:
 	void Init();
 	void Show();
@@ -65,6 +67,7 @@ public:
 	FVector2D beginScreenSpacePos;
 	FVector2D CurrentTouchPosition;
 	bool bInDrag = false;
+	float fLastMouseDownTime = 0.0f;
 private:
 	bool bInit;
 	bool bShow;
