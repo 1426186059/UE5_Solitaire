@@ -690,8 +690,6 @@ void UMainUIWidget::NewGameBegin(bool bRePlay)
     //--------------------------------------对上把数据 记录整理--------------------------------------------
     if (DataCenter::GetSingleton()->GetData()->nTotalGameCount > 0)
     {
-        UE_LOG(LogTemp, Log, TEXT("UMainUIWidget NewGameBegin DataCenter::GetSingleton()->GetData()->nTotalGameCount > 0"));
-        RecordStepDataHandler::GetSingleton()->GetData()->bWin = true;
         if (RecordStepDataHandler::GetSingleton()->GetData()->nGameMode == SolitaireGameMode::Normal)
         {
             if (RecordStepDataHandler::GetSingleton()->GetData()->bWin)
