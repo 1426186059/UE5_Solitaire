@@ -91,7 +91,7 @@ std::tuple<int32, FRecordStepData_OpStepItem*> RecordStepDataHandler::GetNowStep
 	}
 	else
 	{
-		return { nStepIndex, nullptr };
+		return { -1, nullptr };
 	}
 }
 

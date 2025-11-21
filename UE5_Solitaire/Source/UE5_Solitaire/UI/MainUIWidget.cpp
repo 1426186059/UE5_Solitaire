@@ -384,7 +384,7 @@ void UMainUIWidget::RecoverGame(bool bPlayAni)
             auto& mListCardNodeTop7Go = this->tableCardNodeTop7Go[oriTop7Index];
             if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
             {
-                bool bUseMagicWand = oriIndex < mListCardNodeTop7Go.Num();
+                bool bUseMagicWand = oriIndex < mListCardNodeTop7Go.Num() - 1;
                 auto mCardItem = TArrayExtentions::Remove(mListCardNodeTop7Go, oriIndex);
                 if (bUseMagicWand)
                 {
@@ -1607,7 +1607,7 @@ TArray<UPokerItemWidget*> UMainUIWidget::SetDragEndRemoveSelfFromArray(UPokerIte
             auto mCardItem = mListCardNodeTop7Go[mListCardNodeTop7Go.Num() - 1];
             if (!mCardItem->orTurnOverStateIsTrue())
             {
-                mCardItem->SetTurnOverState(true);
+                mCardItem->SetTurnOverState(true, this->GetNextRecordStepIndex());
                 mCardItem->SetEventTriggerState(true);
                 mCardItem->PlayTurnOverAni();
                 //CollectPokerTaskDataHandler:Collect(mCardItem.nPokerId)
@@ -2304,6 +2304,11 @@ int32 UMainUIWidget::GetNowRecordStepIndex()
     return nStepIndex;
 }
 
+int32 UMainUIWidget::GetNextRecordStepIndex()
+{
+    return this->GetNowRecordStepIndex() + 1;
+}
+
 void UMainUIWidget::PlayRecordUndoAni()
 {
     //this->CardHintEffectPool->Reset();
@@ -2337,7 +2342,7 @@ void UMainUIWidget::PlayRecordUndoAni()
         int nCount = 0;
         while (nCount < nSendPokerCount)
         {
-            nCount = nCount + 1;
+            nCount++;
             auto mCardItem = TArrayExtentions::Remove(this->tableCardDraw3Go, 0);
             this->mSendCardListGo.Add(mCardItem);
 
@@ -2363,8 +2368,14 @@ void UMainUIWidget::PlayRecordUndoAni()
         UPokerItemWidget* mCardItem = nullptr;
         if (targetPosTypeInfo[0] == SolitairePokerPosType::A4Pos)
         {
-            mCardItem = TArrayExtentions::Remove(this->tableCardNode4AGo[targetPosTypeInfo[1]]);
+            auto& mListCardNode4AGo = this->tableCardNode4AGo[targetPosTypeInfo[1]];
+            mCardItem = TArrayExtentions::Remove(mListCardNode4AGo);
             this->tableCardDraw3Go.Insert(mCardItem, 0);
+
+            if (mListCardNode4AGo.Num() > 0)
+            {
+                mListCardNode4AGo[mListCardNode4AGo.Num() - 1]->SetEventTriggerState(true);
+            }
         }
         else if (targetPosTypeInfo[0] == SolitairePokerPosType::Top7Pos)
         {

@@ -136,6 +136,7 @@ public:
 
 	void RefreshAllPokerState();
 	int32 GetNowRecordStepIndex();
+	int32 GetNextRecordStepIndex();
 	void PlayRecordUndoAni();
 	void PlayRecordForwardAni();
 
