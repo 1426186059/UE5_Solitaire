@@ -8,10 +8,9 @@ public class UE5_SolitaireEditorTarget : TargetRules
 	public UE5_SolitaireEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		DefaultBuildSettings = BuildSettingsVersion.V5;
+		DefaultBuildSettings = BuildSettingsVersion.V6;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
 
 		ExtraModuleNames.AddRange( new string[] { "UE5_Solitaire" } );
-
-
 	}
 }

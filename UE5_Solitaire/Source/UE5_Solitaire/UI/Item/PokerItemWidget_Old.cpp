@@ -206,7 +206,7 @@ void UPokerItemWidget::UpdateVisibaleState()
         }
         else
         {
-            this->SetVisibility(ESlateVisibility::HitTestInvisible); //²»¿Éµã»÷ºÍÍÏ×§¡£
+            this->SetVisibility(ESlateVisibility::HitTestInvisible); //ä¸å¯ç‚¹å‡»å’Œæ‹–æ‹½ã€‚
         }
     }
     else
@@ -215,7 +215,7 @@ void UPokerItemWidget::UpdateVisibaleState()
     }
 }
 
-//--²¥·Å·­ÅÆ¶¯»­
+//--æ’­æ”¾ç¿»ç‰ŒåŠ¨ç”»
 void UPokerItemWidget::PlayTurnOverAni()
 {
     this->mTurnOverTween1.Cancel();
